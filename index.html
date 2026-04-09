@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com https://cdnjs.cloudflare.com https://api.anthropic.com; img-src 'self' data:; connect-src https://api.anthropic.com;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src https://*.workers.dev;">
 <title>Physio-Orakel</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -392,9 +392,9 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
   <div class="key-backdrop" onclick="closeKeyModal()"></div>
   <div class="key-panel">
     <div class="key-panel-title serif">Zugangscode eingeben</div>
-    <div class="key-panel-sub">Anthropic API-Key — wird verschlüsselt gespeichert</div>
+    <div class="key-panel-sub">Wochen-Code von deinem Kursleiter</div>
     <div class="key-input-wrap">
-      <input type="password" id="apiKeyInput" placeholder="sk-ant-..." autocomplete="off">
+      <input type="password" id="apiKeyInput" placeholder="Code eingeben..." autocomplete="off">
       <button class="btn btn-primary" onclick="saveApiKey()" style="padding:.55rem 1rem;font-size:.82rem;flex-shrink:0">Bestätigen</button>
     </div>
     <div class="key-status" id="keyStatus"></div>
@@ -824,31 +824,30 @@ function goTo(id){
   }
 }
 
-// ── API Key Modal System ─────────────────────────────────────────────────────
-const API_KEY_STORAGE='physio_orakel_apikey';
+// ── Access Code + Worker Proxy ────────────────────────────────────────────────
+const WORKER_URL='https://physio-orakel-api.csmybgcyhh.workers.dev';
+const ACCESS_CODE_KEY='physio_orakel_code';
 let hasApiKey=false;
 function openKeyModal(){document.getElementById('keyOverlay').classList.add('active')}
-function closeKeyModal(){
-  document.getElementById('keyOverlay').classList.remove('active');
-}
+function closeKeyModal(){document.getElementById('keyOverlay').classList.remove('active')}
 function saveApiKey(){
   const val=document.getElementById('apiKeyInput').value.trim();
-  if(!val.startsWith('sk-ant-')){showKeyStatus('Ungültiges Format — muss mit sk-ant- beginnen','var(--red2)');return}
-  try{localStorage.setItem(API_KEY_STORAGE,val)}catch{}
+  if(!val){showKeyStatus('Bitte Code eingeben','var(--red2)');return}
+  try{localStorage.setItem(ACCESS_CODE_KEY,val)}catch{}
   hasApiKey=true;
-  showKeyStatus('Key gespeichert','var(--success)');
+  showKeyStatus('Code gespeichert','var(--success)');
   document.getElementById('keyCornerBtn').classList.add('has-key');
   document.getElementById('apiKeyInput').value='';
   setTimeout(()=>closeKeyModal(),800);
 }
 function loadApiKey(){
   try{
-    const k=localStorage.getItem(API_KEY_STORAGE);
+    const k=localStorage.getItem(ACCESS_CODE_KEY);
     if(k){hasApiKey=true;document.getElementById('keyCornerBtn').classList.add('has-key')}
     else{hasApiKey=false;openKeyModal()}
   }catch{hasApiKey=false;openKeyModal()}
 }
-function getApiKey(){try{return localStorage.getItem(API_KEY_STORAGE)||''}catch{return ''}}
+function getAccessCode(){try{return localStorage.getItem(ACCESS_CODE_KEY)||''}catch{return ''}}
 function showKeyStatus(msg,color){const el=document.getElementById('keyStatus');el.textContent=msg;el.style.color=color;setTimeout(()=>{el.textContent=''},3000)}
 loadApiKey();
 
@@ -1100,7 +1099,7 @@ async function callAnthropicWithRetry(sys,usr,maxTokens,retries=2){
   let lastErr;
   for(let attempt=0;attempt<=retries;attempt++){
     try{
-      const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':getApiKey(),'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:maxTokens,system:sys,messages:[{role:'user',content:usr}]})});
+      const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json','X-Access-Code':getAccessCode()},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:maxTokens,system:sys,messages:[{role:'user',content:usr}]})});
       if(!res.ok){let m='API '+res.status;try{const j=await res.json();m=j.error?.message||m}catch{}
         if((res.status===429||res.status===529)&&attempt<retries){const wait=Math.pow(2,attempt+1)*1000;updateLoadingMsg(`Rate-Limit — Retry in ${wait/1000}s…`);await new Promise(r=>setTimeout(r,wait));continue}
         throw new Error(m)}
@@ -1307,7 +1306,7 @@ Kurzerklärung: ${q.explanation||''}
 Thema: ${q.topic||''}`;
 
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':getApiKey(),'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2048,system:'Du bist ein Physiologie-Dozent an der Semmelweis Universität. Erkläre verständlich, präzise und klinisch relevant auf Deutsch.',messages:[{role:'user',content:prompt}]})});
+    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json','X-Access-Code':getAccessCode()},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2048,system:'Du bist ein Physiologie-Dozent an der Semmelweis Universität. Erkläre verständlich, präzise und klinisch relevant auf Deutsch.',messages:[{role:'user',content:prompt}]})});
     if(!res.ok)throw new Error('API-Fehler');
     const data=await res.json();
     const text=data.content.map(b=>b.text||'').join('');
