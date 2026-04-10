@@ -1158,6 +1158,7 @@ async function startWochentest(){
     const usr=`Vorlesungstranskript der Woche:\n---\n${wtCtx}\n---${warning?'\n'+warning:''}\nSchwierigkeit: ${hard?'Hard':'Normal'}\nErstelle ${n} Wochentest-Fragen.`;
     state.questions=await callAnthropicWithRetry(sys,usr,8192);
     stopEKG();state.userAnswers={};state.evaluated=false;state.currentQuestionIndex=0;state.quizStartTime=Date.now();
+    document.getElementById('evalBtn').textContent='Auswerten';document.getElementById('evalBtn').disabled=false;
     renderQuiz();goTo('s4');startStopwatch();
   }catch(err){
     stopEKG();lt.style.color='var(--red2)';lt.textContent='Fehler: '+err.message;
@@ -1280,6 +1281,7 @@ async function startQuiz(){
   try{
     state.questions=await generateQuestions();
     stopEKG();state.userAnswers={};state.evaluated=false;state.currentQuestionIndex=0;state.quizStartTime=Date.now();
+    document.getElementById('evalBtn').textContent='Auswerten';document.getElementById('evalBtn').disabled=false;
     renderQuiz();goTo('s4');
     startStopwatch();
     if(state.examMode)startExamTimer();
