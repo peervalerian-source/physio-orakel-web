@@ -844,7 +844,7 @@ const MAX_CONTEXT_CHARS=120000;
 // ── State ─────────────────────────────────────────────────────────────────────
 const state={
   fileText:'',fileName:'',
-  wtText:'',
+  wtText:'',isWochentest:false,
   poolText:'',poolName:'',
   sourceMode:'ki',
   altMode:'exact',
@@ -1095,6 +1095,7 @@ async function uploadWtTranscript(){
 async function startWochentest(){
   if(!hasApiKey){openKeyModal();return}
   if(!state.wtText){alert('Kein Wochentest-Material vorhanden.');return}
+  state.isWochentest=true;
   const n=10;
   const hard=wtDifficulty==='hard';
   document.getElementById('wtStartBtn').disabled=true;
@@ -1223,6 +1224,7 @@ function prepareTextForPrompt(text,maxChars=MAX_CONTEXT_CHARS){
 // ── Generate ──────────────────────────────────────────────────────────────────
 async function startQuiz(){
   if(!hasApiKey){openKeyModal();return}
+  state.isWochentest=false;
   document.getElementById('startBtn').disabled=true;
   goTo('s3');startEKG();
   const lt=document.getElementById('loadingText');
@@ -1540,7 +1542,7 @@ function newRound(){
   const ring=document.getElementById('ringCircle');ring.style.transition='none';ring.setAttribute('stroke-dashoffset','415');
   document.getElementById('evalBtn').textContent='Auswerten';document.getElementById('evalBtn').disabled=false;
   document.getElementById('startBtn').disabled=false;
-  startQuiz();
+  if(state.isWochentest)startWochentest();else startQuiz();
 }
 
 // ── Particle system ───────────────────────────────────────────────────────────
