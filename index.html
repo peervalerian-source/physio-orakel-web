@@ -1143,6 +1143,7 @@ async function startWochentest(){
   if(!hasApiKey){openKeyModal();return}
   if(!state.wtText){alert('Kein Wochentest-Material vorhanden.');return}
   state.isWochentest=true;
+  saveQuizConfig();
   const n=10;
   const hard=wtDifficulty==='hard';
   document.getElementById('wtStartBtn').disabled=true;
@@ -1273,6 +1274,7 @@ function prepareTextForPrompt(text,maxChars=MAX_CONTEXT_CHARS){
 async function startQuiz(){
   if(!hasApiKey){openKeyModal();return}
   state.isWochentest=false;
+  saveQuizConfig();
   document.getElementById('startBtn').disabled=true;
   goTo('s3');startEKG();
   const lt=document.getElementById('loadingText');
@@ -1585,7 +1587,23 @@ function buildResult(pct,pts,max,topicScores){
   });
 }
 
+// Save quiz config before starting so newRound can restore it
+let lastQuizConfig=null;
+function saveQuizConfig(){
+  lastQuizConfig={sourceMode:state.sourceMode,altMode:state.altMode,difficulty:state.difficulty,count:state.count,examMode:state.examMode,selectedSubs:new Set(state.selectedSubs),isWochentest:state.isWochentest};
+}
+function restoreQuizConfig(){
+  if(!lastQuizConfig)return;
+  state.sourceMode=lastQuizConfig.sourceMode;
+  state.altMode=lastQuizConfig.altMode;
+  state.difficulty=lastQuizConfig.difficulty;
+  state.count=lastQuizConfig.count;
+  state.examMode=lastQuizConfig.examMode;
+  state.selectedSubs=new Set(lastQuizConfig.selectedSubs);
+  state.isWochentest=lastQuizConfig.isWochentest;
+}
 function newRound(){
+  restoreQuizConfig();
   state.questions=[];state.userAnswers={};state.evaluated=false;state.currentQuestionIndex=0;state.isDailyChallenge=false;
   stopExamTimer();stopParticles();updateStreakDisplay(0);
   const ring=document.getElementById('ringCircle');ring.style.transition='none';ring.setAttribute('stroke-dashoffset','415');
