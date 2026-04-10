@@ -406,6 +406,32 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
 </button>
 
+<!-- Wochentest Admin modal -->
+<div class="key-overlay" id="wtAdminOverlay" style="display:none">
+  <div class="key-backdrop" onclick="closeWtAdmin()"></div>
+  <div class="key-panel" style="max-width:540px;max-height:85vh;overflow-y:auto">
+    <div class="key-panel-title serif">Wochentest-Material verwalten</div>
+    <div class="key-panel-sub">VO-Transkript für den kommenden Wochentest</div>
+    <div style="margin:.8rem 0 .4rem"><label style="font-size:.78rem;color:var(--text3)">Admin-Key</label></div>
+    <input type="password" id="wtAdminKeyInput" placeholder="Admin-Key eingeben..." autocomplete="off" style="width:100%;box-sizing:border-box;padding:.5rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.85rem;margin-bottom:.6rem">
+    <div style="margin:.4rem 0"><label style="font-size:.78rem;color:var(--text3)">Titel (optional)</label></div>
+    <input type="text" id="wtTitleInput" placeholder="z.B. Woche 5 — Herz-Kreislauf" style="width:100%;box-sizing:border-box;padding:.5rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.85rem;margin-bottom:.6rem">
+    <div style="margin:.4rem 0;display:flex;justify-content:space-between;align-items:center">
+      <label style="font-size:.78rem;color:var(--text3)">Transkript einfügen oder hochladen</label>
+      <label class="btn" style="font-size:.72rem;padding:.3rem .6rem;cursor:pointer">
+        Datei wählen
+        <input type="file" id="wtAdminFileInput" accept=".pdf,.txt,.md" style="display:none">
+      </label>
+    </div>
+    <textarea id="wtTranscriptInput" placeholder="VO-Transkript hier einfügen..." style="width:100%;box-sizing:border-box;min-height:200px;padding:.6rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.82rem;font-family:inherit;resize:vertical;line-height:1.5"></textarea>
+    <div id="wtAdminStatus" style="font-size:.78rem;color:var(--text3);margin:.4rem 0"></div>
+    <div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:.6rem">
+      <button class="btn" onclick="closeWtAdmin()">Abbrechen</button>
+      <button class="btn btn-primary" onclick="uploadWtTranscript()" id="wtUploadBtn">Hochladen</button>
+    </div>
+  </div>
+</div>
+
 <!-- Particle canvas -->
 <canvas id="particleCanvas"></canvas>
 
@@ -501,6 +527,29 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 
     <div style="text-align:center;margin-top:2rem">
       <button class="btn btn-primary btn-large" onclick="goTo('s2')">Weiter zur Konfiguration</button>
+    </div>
+
+    <div class="divider" style="margin:2.5rem 0 1.5rem"></div>
+
+    <div class="section-label" style="display:flex;align-items:center;gap:.5rem">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--red2)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Wochentest üben
+    </div>
+    <div id="wtStatus" style="font-size:.78rem;color:var(--text3);margin:0 0 .8rem;line-height:1.5"></div>
+    <div id="wtReady" style="display:none">
+      <div style="display:flex;gap:.5rem;justify-content:center;margin-bottom:.8rem">
+        <button class="ssw active" id="wtDiffNormal" onclick="setWtDiff('normal')">Normal</button>
+        <button class="ssw" id="wtDiffHard" onclick="setWtDiff('hard')">Hard</button>
+      </div>
+      <div style="text-align:center">
+        <button class="btn btn-primary btn-large" onclick="startWochentest()" id="wtStartBtn">Übung für den kommenden Wochentest starten</button>
+      </div>
+    </div>
+    <div id="wtEmpty" style="display:none;text-align:center;padding:.8rem;font-size:.82rem;color:var(--text3);background:var(--bg2);border-radius:8px">
+      Noch kein Wochentest-Material hinterlegt.
+    </div>
+    <div id="wtAdminWrap" style="display:none;margin-top:.8rem;text-align:center">
+      <button class="btn" style="font-size:.75rem;padding:.4rem .8rem" onclick="openWtAdmin()">Material aktualisieren</button>
     </div>
   </div>
 </div>
@@ -778,6 +827,7 @@ const MAX_CONTEXT_CHARS=120000;
 // ── State ─────────────────────────────────────────────────────────────────────
 const state={
   fileText:'',fileName:'',
+  wtText:'',
   poolText:'',poolName:'',
   sourceMode:'ki',
   altMode:'exact',
@@ -838,7 +888,7 @@ function saveApiKey(){
   showKeyStatus('Code gespeichert','var(--success)');
   document.getElementById('keyCornerBtn').classList.add('has-key');
   document.getElementById('apiKeyInput').value='';
-  setTimeout(()=>closeKeyModal(),800);
+  setTimeout(()=>{closeKeyModal();loadWochentest()},800);
 }
 function loadApiKey(){
   try{
@@ -948,6 +998,109 @@ function handlePoolFile(file){
   const r=new FileReader();r.onload=e=>{const txt=e.target.result;state.poolText=txt;state.poolName=file.name;document.getElementById('poolFileName').textContent='Geladen: '+file.name;savePoolToStorage(txt,file.name)};r.readAsText(file);
 }
 
+// ── Wochentest ────────────────────────────────────────────────────────────────
+let wtDifficulty='normal';
+const ADMIN_KEY_STORE='physio_orakel_admin_key';
+
+function setWtDiff(d){
+  wtDifficulty=d;
+  document.getElementById('wtDiffNormal').className='ssw'+(d==='normal'?' active':'');
+  document.getElementById('wtDiffHard').className='ssw'+(d==='hard'?' active':'');
+}
+
+async function loadWochentest(){
+  if(!hasApiKey){document.getElementById('wtStatus').textContent='Bitte zuerst Zugangscode eingeben.';document.getElementById('wtReady').style.display='none';document.getElementById('wtEmpty').style.display='none';return}
+  try{
+    const res=await fetch(WORKER_URL+'/transcript',{headers:{'X-Access-Code':getAccessCode()}});
+    if(!res.ok)throw new Error('Fehler '+res.status);
+    const data=await res.json();
+    if(data.transcript){
+      state.wtText=data.transcript;
+      const meta=data.meta||{};
+      const date=meta.date?new Date(meta.date).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'}):'';
+      document.getElementById('wtStatus').innerHTML=`<span style="color:var(--green2,#4ade80)">●</span> ${meta.title||'Material bereit'}${date?' — aktualisiert am '+date:''} (${meta.size||'?'} KB)`;
+      document.getElementById('wtReady').style.display='block';
+      document.getElementById('wtEmpty').style.display='none';
+      // Show admin button if admin key stored
+      if(localStorage.getItem(ADMIN_KEY_STORE))document.getElementById('wtAdminWrap').style.display='block';
+    }else{
+      state.wtText='';
+      document.getElementById('wtStatus').textContent='';
+      document.getElementById('wtReady').style.display='none';
+      document.getElementById('wtEmpty').style.display='block';
+    }
+  }catch(e){
+    document.getElementById('wtStatus').textContent='Wochentest konnte nicht geladen werden.';
+    document.getElementById('wtReady').style.display='none';
+    document.getElementById('wtEmpty').style.display='none';
+  }
+}
+
+function openWtAdmin(){
+  document.getElementById('wtAdminOverlay').style.display='flex';
+  const savedKey=localStorage.getItem(ADMIN_KEY_STORE)||'';
+  document.getElementById('wtAdminKeyInput').value=savedKey;
+  document.getElementById('wtAdminStatus').textContent='';
+}
+function closeWtAdmin(){document.getElementById('wtAdminOverlay').style.display='none'}
+
+document.getElementById('wtAdminFileInput').addEventListener('change',async e=>{
+  const file=e.target.files[0];if(!file)return;
+  const ext=file.name.split('.').pop().toLowerCase();
+  const ta=document.getElementById('wtTranscriptInput');
+  if(ext==='txt'||ext==='md'){
+    const r=new FileReader();r.onload=ev=>{ta.value=ev.target.result;document.getElementById('wtAdminStatus').textContent=`${file.name} geladen (${Math.round(ev.target.result.length/1024)} KB)`};r.readAsText(file);
+  }else if(ext==='pdf'){
+    document.getElementById('wtAdminStatus').textContent='PDF wird extrahiert…';
+    try{const text=await extractPdfText(file);ta.value=text;document.getElementById('wtAdminStatus').textContent=`${file.name} extrahiert (${Math.round(text.length/1024)} KB)`}catch(err){document.getElementById('wtAdminStatus').textContent='PDF-Fehler: '+err.message}
+  }
+});
+
+async function uploadWtTranscript(){
+  const adminKey=document.getElementById('wtAdminKeyInput').value.trim();
+  const transcript=document.getElementById('wtTranscriptInput').value.trim();
+  const title=document.getElementById('wtTitleInput').value.trim();
+  if(!adminKey){document.getElementById('wtAdminStatus').textContent='Admin-Key fehlt.';return}
+  if(!transcript){document.getElementById('wtAdminStatus').textContent='Kein Transkript eingegeben.';return}
+  document.getElementById('wtUploadBtn').disabled=true;
+  document.getElementById('wtAdminStatus').textContent='Wird hochgeladen…';
+  try{
+    const res=await fetch(WORKER_URL+'/transcript',{method:'PUT',headers:{'Content-Type':'application/json','X-Admin-Key':adminKey},body:JSON.stringify({transcript,title})});
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.error||'Fehler '+res.status);
+    localStorage.setItem(ADMIN_KEY_STORE,adminKey);
+    document.getElementById('wtAdminStatus').textContent='Erfolgreich hochgeladen!';
+    setTimeout(()=>{closeWtAdmin();loadWochentest()},1000);
+  }catch(e){document.getElementById('wtAdminStatus').textContent='Fehler: '+e.message}
+  document.getElementById('wtUploadBtn').disabled=false;
+}
+
+async function startWochentest(){
+  if(!hasApiKey){openKeyModal();return}
+  if(!state.wtText){alert('Kein Wochentest-Material vorhanden.');return}
+  const n=10;
+  const hard=wtDifficulty==='hard';
+  document.getElementById('wtStartBtn').disabled=true;
+  state.sourceMode='ki';state.examMode=false;state.count='10';state.difficulty=wtDifficulty;
+  goTo('s3');startEKG();
+  const lt=document.getElementById('loadingText');
+  lt.textContent=LOADING_MSGS[Math.floor(Math.random()*LOADING_MSGS.length)];
+  lt.style.color='';
+  try{
+    const{text:wtCtx,warning}=prepareTextForPrompt(state.wtText);
+    const jsonFormat=`[{"id":1,"topic":"Kurzname","question":"Welche der folgenden Aussagen sind richtig?","options":[{"key":"a","text":"..."},{"key":"b","text":"..."},{"key":"c","text":"..."},{"key":"d","text":"..."}],"correct":["a","c"],"explanation":"Max 2 Sätze: erst Buchstaben der richtigen Antworten nennen, dann knapp warum die anderen falsch sind."}]`;
+    const sys=`Du bist ein Experte für Physiologie-Prüfungen der Semmelweis Universität Budapest.\nGeneriere exakt ${n} Multiple-Choice-Fragen als Wochentest-Übung, basierend AUSSCHLIESSLICH auf dem gegebenen Vorlesungstranskript.\nAntworte NUR mit einem validen JSON-Array, kein Text davor/danach, keine Backticks.\nFormat: ${jsonFormat}\nRegeln: 4-5 Optionen (a-e), 2-4 richtige Antworten, Fragen sollen den Stoff der Vorlesung gezielt abprüfen. Decke möglichst viele verschiedene Themen aus dem Transkript ab.\n${hard?'HARD: Steigere Schwierigkeit — Ausnahmen, klinische Vignetten, subtile Verwechslungen.':''}`;
+    const usr=`Vorlesungstranskript der Woche:\n---\n${wtCtx}\n---${warning?'\n'+warning:''}\nSchwierigkeit: ${hard?'Hard':'Normal'}\nErstelle ${n} Wochentest-Fragen.`;
+    state.questions=await callAnthropicWithRetry(sys,usr,8192);
+    stopEKG();state.userAnswers={};state.evaluated=false;state.currentQuestionIndex=0;state.quizStartTime=Date.now();
+    renderQuiz();goTo('s4');startStopwatch();
+  }catch(err){
+    stopEKG();lt.style.color='var(--red2)';lt.textContent='Fehler: '+err.message;
+    setTimeout(()=>{document.getElementById('wtStartBtn').disabled=false;goTo('s1')},4000);
+  }
+  document.getElementById('wtStartBtn').disabled=false;
+}
+
 // ── Source mode ───────────────────────────────────────────────────────────────
 function setSourceMode(mode){
   if(mode==='alt'&&!state.poolText){document.getElementById('noPoolWarning').style.display='block';return}
@@ -995,6 +1148,9 @@ function updateGroupUI(gid){const g=TOPIC_GROUPS.find(x=>x.id===gid);if(!g)retur
 buildTopicArea();
 loadPoolFromStorage();
 loadTheme();
+loadWochentest();
+// Show admin button if admin key previously stored
+if(localStorage.getItem(ADMIN_KEY_STORE))document.getElementById('wtAdminWrap').style.display='block';
 
 // ── Exam mode toggle ─────────────────────────────────────────────────────────
 function toggleExamMode(){
