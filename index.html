@@ -406,6 +406,30 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
 </button>
 
+<!-- Altfragenpool Admin modal -->
+<div class="key-overlay" id="poolAdminOverlay" style="display:none">
+  <div class="key-backdrop" onclick="closePoolAdmin()"></div>
+  <div class="key-panel" style="max-width:540px;max-height:85vh;overflow-y:auto">
+    <div class="key-panel-title serif">Altfragenpool verwalten</div>
+    <div class="key-panel-sub">Altfragen zentral für alle Studenten hinterlegen</div>
+    <div style="margin:.8rem 0 .4rem"><label style="font-size:.78rem;color:var(--text3)">Admin-Key</label></div>
+    <input type="password" id="poolAdminKeyInput" placeholder="Admin-Key eingeben..." autocomplete="off" style="width:100%;box-sizing:border-box;padding:.5rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.85rem;margin-bottom:.6rem">
+    <div style="margin:.4rem 0;display:flex;justify-content:space-between;align-items:center">
+      <label style="font-size:.78rem;color:var(--text3)">Altfragen einfügen oder hochladen</label>
+      <label class="btn" style="font-size:.72rem;padding:.3rem .6rem;cursor:pointer">
+        Datei wählen
+        <input type="file" id="poolAdminFileInput" accept=".txt,.md,.pdf" style="display:none">
+      </label>
+    </div>
+    <textarea id="poolTextInput" placeholder="Altfragen hier einfügen..." style="width:100%;box-sizing:border-box;min-height:200px;padding:.6rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.82rem;font-family:inherit;resize:vertical;line-height:1.5"></textarea>
+    <div id="poolAdminStatus" style="font-size:.78rem;color:var(--text3);margin:.4rem 0"></div>
+    <div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:.6rem">
+      <button class="btn" onclick="closePoolAdmin()">Abbrechen</button>
+      <button class="btn btn-primary" onclick="uploadPool()" id="poolUploadBtn">Hochladen</button>
+    </div>
+  </div>
+</div>
+
 <!-- Wochentest Admin modal -->
 <div class="key-overlay" id="wtAdminOverlay" style="display:none">
   <div class="key-backdrop" onclick="closeWtAdmin()"></div>
@@ -513,16 +537,10 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
     </div>
     <p class="skip-hint">Kein Skript? Die KI generiert Fragen aus dem <strong>offiziellen Semmelweis-Themenkatalog</strong>.</p>
 
-    <div class="section-label" style="margin-top:1.5rem">Altfragenpool hinterlegen</div>
+    <div class="section-label" style="margin-top:1.5rem">Altfragenpool</div>
     <div id="poolStatusWrap"></div>
-    <div class="drop-zone" id="poolZone">
-      <div class="drop-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--cream)" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
-      </div>
-      <div class="drop-title" id="poolZoneTitle">Altfragenpool als TXT hochladen</div>
-      <div class="drop-sub">Wird lokal gespeichert — bleibt zwischen Sitzungen erhalten</div>
-      <div class="file-name fn-purple" id="poolFileName"></div>
-      <input type="file" id="poolInput" accept=".txt">
+    <div id="poolAdminWrap" style="margin-top:.4rem;text-align:center">
+      <button class="btn" style="font-size:.75rem;padding:.4rem .8rem" onclick="openPoolAdmin()">Altfragenpool aktualisieren</button>
     </div>
 
     <div style="text-align:center;margin-top:2rem">
@@ -905,7 +923,7 @@ function saveApiKey(){
   showKeyStatus('Code gespeichert','var(--success)');
   document.getElementById('keyCornerBtn').classList.add('has-key');
   document.getElementById('apiKeyInput').value='';
-  setTimeout(()=>{closeKeyModal();loadWochentest()},800);
+  setTimeout(()=>{closeKeyModal();loadPoolFromServer();loadWochentest()},800);
 }
 function loadApiKey(){
   try{
@@ -959,16 +977,56 @@ function startEKG(){
 }
 function stopEKG(){if(ekgRaf){cancelAnimationFrame(ekgRaf);ekgRaf=null}}
 
-// ── Pool persistence ──────────────────────────────────────────────────────────
-function loadPoolFromStorage(){try{const txt=localStorage.getItem(POOL_KEY);const meta=JSON.parse(localStorage.getItem(POOL_META_KEY)||'{}');if(txt){state.poolText=txt;state.poolName=meta.name||'Altfragenpool';renderPoolStatus(meta)}}catch{}}
-function savePoolToStorage(text,name){try{localStorage.setItem(POOL_KEY,text);const meta={name,date:new Date().toLocaleDateString('de-DE'),size:Math.round(text.length/1024)};localStorage.setItem(POOL_META_KEY,JSON.stringify(meta));renderPoolStatus(meta)}catch(e){alert('Speichern fehlgeschlagen: '+e.message)}}
-function clearPool(){try{localStorage.removeItem(POOL_KEY);localStorage.removeItem(POOL_META_KEY)}catch{}state.poolText='';state.poolName='';renderPoolStatus(null);document.getElementById('poolFileName').textContent='';document.getElementById('poolZone').classList.remove('has-pool');if(state.sourceMode==='alt')setSourceMode('ki')}
+// ── Pool (centralized) ───────────────────────────────────────────────────────
 function renderPoolStatus(meta){
   const wrap=document.getElementById('poolStatusWrap');
-  if(!meta||!state.poolText){wrap.innerHTML='';return}
-  wrap.innerHTML=`<div class="pool-status"><div class="pool-status-left"><div class="pool-dot"></div><div><div class="pool-name">${meta.name||'Altfragenpool'}</div><div class="pool-meta">Gespeichert am ${meta.date||'—'} · ${meta.size||'?'} KB</div></div></div><button class="pool-clear" onclick="clearPool()">Entfernen</button></div>`;
-  document.getElementById('poolZoneTitle').textContent='Pool aktualisieren';
-  document.getElementById('poolZone').classList.add('has-pool');
+  if(!meta||!state.poolText){wrap.innerHTML='<div style="font-size:.78rem;color:var(--text3);text-align:center;padding:.4rem">Kein Altfragenpool hinterlegt.</div>';return}
+  const date=meta.date?new Date(meta.date).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'}):'';
+  wrap.innerHTML=`<div class="pool-status"><div class="pool-status-left"><div class="pool-dot"></div><div><div class="pool-name">${meta.name||'Altfragenpool'}</div><div class="pool-meta">${date?'Aktualisiert am '+date+' · ':''} ${meta.size||'?'} KB</div></div></div></div>`;
+}
+async function loadPoolFromServer(){
+  if(!hasApiKey)return;
+  try{
+    const res=await fetch(WORKER_URL+'/pool',{headers:{'X-Access-Code':getAccessCode()}});
+    if(!res.ok)return;
+    const data=await res.json();
+    if(data.pool){state.poolText=data.pool;state.poolName=(data.meta&&data.meta.name)||'Altfragenpool';renderPoolStatus(data.meta)}
+    else{state.poolText='';renderPoolStatus(null)}
+  }catch{}
+}
+function openPoolAdmin(){
+  document.getElementById('poolAdminOverlay').style.display='flex';
+  document.getElementById('poolAdminKeyInput').value=localStorage.getItem(ADMIN_KEY_STORE)||'';
+  document.getElementById('poolAdminStatus').textContent='';
+}
+function closePoolAdmin(){document.getElementById('poolAdminOverlay').style.display='none'}
+document.getElementById('poolAdminFileInput').addEventListener('change',async e=>{
+  const file=e.target.files[0];if(!file)return;
+  const ext=file.name.split('.').pop().toLowerCase();
+  const ta=document.getElementById('poolTextInput');
+  if(ext==='txt'||ext==='md'){
+    const r=new FileReader();r.onload=ev=>{ta.value=ev.target.result;document.getElementById('poolAdminStatus').textContent=`${file.name} geladen (${Math.round(ev.target.result.length/1024)} KB)`};r.readAsText(file);
+  }else if(ext==='pdf'){
+    document.getElementById('poolAdminStatus').textContent='PDF wird extrahiert…';
+    try{const text=await extractPdfText(file);ta.value=text;document.getElementById('poolAdminStatus').textContent=`${file.name} extrahiert (${Math.round(text.length/1024)} KB)`}catch(err){document.getElementById('poolAdminStatus').textContent='PDF-Fehler: '+err.message}
+  }
+});
+async function uploadPool(){
+  const adminKey=document.getElementById('poolAdminKeyInput').value.trim();
+  const pool=document.getElementById('poolTextInput').value.trim();
+  if(!adminKey){document.getElementById('poolAdminStatus').textContent='Admin-Key fehlt.';return}
+  if(!pool){document.getElementById('poolAdminStatus').textContent='Kein Altfragenpool eingegeben.';return}
+  document.getElementById('poolUploadBtn').disabled=true;
+  document.getElementById('poolAdminStatus').textContent='Wird hochgeladen…';
+  try{
+    const res=await fetch(WORKER_URL+'/pool',{method:'PUT',headers:{'Content-Type':'application/json','X-Admin-Key':adminKey},body:JSON.stringify({pool,name:'Altfragenpool'})});
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.error||'Fehler '+res.status);
+    localStorage.setItem(ADMIN_KEY_STORE,adminKey);
+    document.getElementById('poolAdminStatus').textContent='Erfolgreich hochgeladen!';
+    setTimeout(()=>{closePoolAdmin();loadPoolFromServer()},1000);
+  }catch(e){document.getElementById('poolAdminStatus').textContent='Fehler: '+e.message}
+  document.getElementById('poolUploadBtn').disabled=false;
 }
 
 // ── File upload ───────────────────────────────────────────────────────────────
@@ -1002,17 +1060,6 @@ async function extractPdfText(file){
   const buf=await file.arrayBuffer();const pdf=await pdfjsLib.getDocument({data:buf}).promise;const pages=[];
   for(let i=1;i<=pdf.numPages;i++){const page=await pdf.getPage(i);const tc=await page.getTextContent();pages.push(tc.items.map(it=>it.str).join(' '))}
   const text=pages.join('\n\n');if(!text.trim())throw new Error('Kein Text im PDF gefunden (gescanntes Dokument?)');return text;
-}
-
-// ── Pool upload ───────────────────────────────────────────────────────────────
-const pz=document.getElementById('poolZone'),pi=document.getElementById('poolInput');
-pz.addEventListener('dragover',e=>{e.preventDefault();pz.classList.add('drag')});
-pz.addEventListener('dragleave',()=>pz.classList.remove('drag'));
-pz.addEventListener('drop',e=>{e.preventDefault();pz.classList.remove('drag');handlePoolFile(e.dataTransfer.files[0])});
-pi.addEventListener('change',e=>handlePoolFile(e.target.files[0]));
-function handlePoolFile(file){
-  if(!file||!file.name.endsWith('.txt'))return;
-  const r=new FileReader();r.onload=e=>{const txt=e.target.result;state.poolText=txt;state.poolName=file.name;document.getElementById('poolFileName').textContent='Geladen: '+file.name;savePoolToStorage(txt,file.name)};r.readAsText(file);
 }
 
 // ── Wochentest ────────────────────────────────────────────────────────────────
@@ -1164,8 +1211,8 @@ function updateSubUI(sid){const el=document.getElementById('stc_'+sid);if(!el)re
 function updateGroupUI(gid){const g=TOPIC_GROUPS.find(x=>x.id===gid);if(!g)return;const sel=g.subs.filter(s=>state.selectedSubs.has(s.id)).length;const chk=document.getElementById('chk_'+gid),cnt=document.getElementById('cnt_'+gid);if(cnt)cnt.textContent=sel+' / '+g.subs.length;if(!chk)return;chk.classList.remove('partial','full');chk.textContent='';if(sel===g.subs.length){chk.classList.add('full');chk.textContent='✓'}else if(sel>0){chk.classList.add('partial');chk.textContent='–'}}
 
 buildTopicArea();
-loadPoolFromStorage();
 loadTheme();
+loadPoolFromServer();
 loadWochentest();
 // Show admin button if admin key previously stored
 if(localStorage.getItem(ADMIN_KEY_STORE))document.getElementById('wtAdminWrap').style.display='block';
