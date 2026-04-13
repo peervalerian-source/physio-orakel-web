@@ -1155,9 +1155,11 @@ async function startWochentest(){
   try{
     const{text:wtCtx,warning}=prepareTextForPrompt(state.wtText);
     const jsonFormat=`[{"id":1,"topic":"Kurzname","question":"Welche der folgenden Aussagen sind richtig?","options":[{"key":"a","text":"..."},{"key":"b","text":"..."},{"key":"c","text":"..."},{"key":"d","text":"..."}],"correct":["a","c"],"explanation":"Max 2 Sätze: erst Buchstaben der richtigen Antworten nennen, dann knapp warum die anderen falsch sind."}]`;
-    const sys=`Du bist ein Experte für Physiologie-Prüfungen der Semmelweis Universität Budapest.\nGeneriere exakt ${n} Multiple-Choice-Fragen als Wochentest-Übung, basierend AUSSCHLIESSLICH auf dem gegebenen Vorlesungstranskript.\nAntworte NUR mit einem validen JSON-Array, kein Text davor/danach, keine Backticks.\nFormat: ${jsonFormat}\nRegeln: 4-5 Optionen (a-e), 2-4 richtige Antworten, Fragen sollen den Stoff der Vorlesung gezielt abprüfen. Decke möglichst viele verschiedene Themen aus dem Transkript ab.\n${hard?'HARD: Steigere Schwierigkeit — Ausnahmen, klinische Vignetten, subtile Verwechslungen.':''}`;
+    const varHint=buildVariationHint();
+    const sys=`Du bist ein Experte für Physiologie-Prüfungen der Semmelweis Universität Budapest.\nGeneriere exakt ${n} Multiple-Choice-Fragen als Wochentest-Übung, basierend AUSSCHLIESSLICH auf dem gegebenen Vorlesungstranskript.\nAntworte NUR mit einem validen JSON-Array, kein Text davor/danach, keine Backticks.\nFormat: ${jsonFormat}\nRegeln: 4-5 Optionen (a-e), 2-4 richtige Antworten, Fragen sollen den Stoff der Vorlesung gezielt abprüfen. Decke den GESAMTEN Text gleichmäßig ab — verteile Fragen über alle Abschnitte (Anfang, Mitte, Ende), nicht nur prominente Stellen.\n${hard?'HARD: Steigere Schwierigkeit — Ausnahmen, klinische Vignetten, subtile Verwechslungen.':''}${varHint}`;
     const usr=`Vorlesungstranskript der Woche:\n---\n${wtCtx}\n---${warning?'\n'+warning:''}\nSchwierigkeit: ${hard?'Hard':'Normal'}\nErstelle ${n} Wochentest-Fragen.`;
     state.questions=await callAnthropicWithRetry(sys,usr,8192);
+    savePrevQuestionTopics(state.questions);
     stopEKG();state.userAnswers={};state.evaluated=false;state.currentQuestionIndex=0;state.quizStartTime=Date.now();
     document.getElementById('evalBtn').textContent='Auswerten';document.getElementById('evalBtn').disabled=false;
     renderQuiz();goTo('s4');startStopwatch();
@@ -1282,6 +1284,7 @@ async function startQuiz(){
   lt.style.color='';
   try{
     state.questions=await generateQuestions();
+    savePrevQuestionTopics(state.questions);
     stopEKG();state.userAnswers={};state.evaluated=false;state.currentQuestionIndex=0;state.quizStartTime=Date.now();
     document.getElementById('evalBtn').textContent='Auswerten';document.getElementById('evalBtn').disabled=false;
     renderQuiz();goTo('s4');
@@ -1303,17 +1306,19 @@ async function generateQuestions(){
   const jsonFormat=`[{"id":1,"topic":"Kurzname","question":"Welche der folgenden Aussagen sind richtig?","options":[{"key":"a","text":"..."},{"key":"b","text":"..."},{"key":"c","text":"..."},{"key":"d","text":"..."}],"correct":["a","c"],"explanation":"Max 2 Sätze: erst Buchstaben der richtigen Antworten nennen, dann knapp warum die anderen falsch sind."}]`;
   let sys,usr;
 
+  const varHint=buildVariationHint();
+
   if(isAlt&&state.altMode==='exact'){
     const{text:poolCtx}=prepareTextForPrompt(state.poolText);
-    sys=`Du bist ein Experte für Physiologie-Prüfungen der Semmelweis Universität Budapest.\nExtrahiere exakt ${n} Fragen aus dem gegebenen Altfragenpool.\nAntworte NUR mit einem validen JSON-Array, kein Text davor/danach, keine Backticks.\nFormat: ${jsonFormat}\nRegeln: Übernimm die Fragen EXAKT wie im Pool — ändere nichts am Wortlaut. Wenn ein Themenfilter angegeben ist, wähle nur passende Fragen.`;
+    sys=`Du bist ein Experte für Physiologie-Prüfungen der Semmelweis Universität Budapest.\nExtrahiere exakt ${n} Fragen aus dem gegebenen Altfragenpool.\nAntworte NUR mit einem validen JSON-Array, kein Text davor/danach, keine Backticks.\nFormat: ${jsonFormat}\nRegeln: Übernimm die Fragen EXAKT wie im Pool — ändere nichts am Wortlaut. Wenn ein Themenfilter angegeben ist, wähle nur passende Fragen. Wähle bei jeder Runde ANDERE Fragen aus dem Pool — maximale Abdeckung über mehrere Runden.${varHint}`;
     usr=`Altfragenpool:\n---\n${poolCtx}\n---\nThemenfilter: ${topicCtx}\nExtrahiere ${n} Fragen.`;
   } else if(isAlt&&state.altMode==='varied'){
     const{text:poolCtx}=prepareTextForPrompt(state.poolText);
-    sys=`Du bist ein Experte für Physiologie-Prüfungen der Semmelweis Universität Budapest.\nNutze den gegebenen Altfragenpool als Vorlage und erstelle ${n} neue, ähnliche Fragen im gleichen Stil.\nAntworte NUR mit einem validen JSON-Array, kein Text davor/danach, keine Backticks.\nFormat: ${jsonFormat}\nRegeln: Variiere Fragestellung und Optionen, behalte aber Schwierigkeitsgrad und Thema bei. Nutze den GESAMTEN Pool als Wissensbasis.\n${hard?'HARD: Steigere Schwierigkeit durch Ausnahmen, klinische Vignetten, Verwechslungen.':''}`;
+    sys=`Du bist ein Experte für Physiologie-Prüfungen der Semmelweis Universität Budapest.\nNutze den gegebenen Altfragenpool als Vorlage und erstelle ${n} neue, ähnliche Fragen im gleichen Stil.\nAntworte NUR mit einem validen JSON-Array, kein Text davor/danach, keine Backticks.\nFormat: ${jsonFormat}\nRegeln: Variiere Fragestellung und Optionen, behalte aber Schwierigkeitsgrad und Thema bei. Nutze den GESAMTEN Pool als Wissensbasis — decke über mehrere Runden alle Bereiche gleichmäßig ab.\n${hard?'HARD: Steigere Schwierigkeit durch Ausnahmen, klinische Vignetten, Verwechslungen.':''}${varHint}`;
     usr=`Altfragenpool als Vorlage:\n---\n${poolCtx}\n---\nThemenfilter: ${topicCtx}\nSchwierigkeit: ${hard?'Hard':'Normal'}\nErstelle ${n} variierte Fragen.`;
   } else {
-    sys=`Du bist ein Experte für Physiologie-Prüfungen der Semmelweis Universität Budapest.\nGeneriere exakt ${n} Multiple-Choice-Fragen im typischen Semmelweis-Stil.\nAntworte NUR mit einem validen JSON-Array, kein Text davor/danach, keine Backticks.\nFormat: ${jsonFormat}\nRegeln: 4-5 Optionen (a-e), 2-4 richtige Antworten, Aussagen beginnen direkt mit Subjekt, subtile Distraktoren (falsches Organ/Richtung/Rezeptortyp), Enzym-/Rezeptornamen explizit.\n${hard?'HARD: mind. 1-2 klinische Fallvignetten, Ausnahmen, Verwechslungen.':''}`;
-    if(state.fileText){const{text:scriptCtx,warning}=prepareTextForPrompt(state.fileText);usr=`Themen: ${topicCtx}\nSchwierigkeit: ${hard?'Hard':'Normal'}\n\nFragen AUSSCHLIESSLICH aus dem folgenden Skript ableiten. Nutze den GESAMTEN sichtbaren Text als Wissensbasis.${warning?'\n'+warning:''}\n\n---\n${scriptCtx}\n---`}
+    sys=`Du bist ein Experte für Physiologie-Prüfungen der Semmelweis Universität Budapest.\nGeneriere exakt ${n} Multiple-Choice-Fragen im typischen Semmelweis-Stil.\nAntworte NUR mit einem validen JSON-Array, kein Text davor/danach, keine Backticks.\nFormat: ${jsonFormat}\nRegeln: 4-5 Optionen (a-e), 2-4 richtige Antworten, Aussagen beginnen direkt mit Subjekt, subtile Distraktoren (falsches Organ/Richtung/Rezeptortyp), Enzym-/Rezeptornamen explizit. Decke den GESAMTEN Text gleichmäßig ab — nicht nur Anfang oder prominente Abschnitte.\n${hard?'HARD: mind. 1-2 klinische Fallvignetten, Ausnahmen, Verwechslungen.':''}${varHint}`;
+    if(state.fileText){const{text:scriptCtx,warning}=prepareTextForPrompt(state.fileText);usr=`Themen: ${topicCtx}\nSchwierigkeit: ${hard?'Hard':'Normal'}\n\nFragen AUSSCHLIESSLICH aus dem folgenden Skript ableiten. Nutze den GESAMTEN sichtbaren Text als Wissensbasis — verteile Fragen gleichmäßig über alle Abschnitte (Anfang, Mitte, Ende).${warning?'\n'+warning:''}\n\n---\n${scriptCtx}\n---`}
     else usr=`Themen: ${topicCtx}\nSchwierigkeit: ${hard?'Hard':'Normal'}\nFragen AUSSCHLIESSLICH aus dem offiziellen Semmelweis-Rigorosum-Themenkatalog.`;
   }
 
@@ -1585,6 +1590,29 @@ function buildResult(pct,pts,max,topicScores){
     bl.innerHTML=`<div class="q-number">Frage ${i+1} · ${q.topic||''}</div><div class="q-text serif">${q.question}</div><div class="options">${optsHtml}</div><div class="feedback-block" style="margin-top:.85rem"><div class="fb-row"><span class="fb-status ${s.c}">${s.t}</span><span class="fb-score">${score.toFixed(2).replace('.',',')} / 1,00 Pkt.</span></div><div class="fb-explain">${q.explanation||''}</div><button class="btn btn-explain" onclick="deepDive(${i},this,'rv_ddive')">🔬 Erklär mir das</button><div id="rv_ddive${i}"></div></div>`;
     rv.appendChild(bl);
   });
+}
+
+// ── Variation tracking ────────────────────────────────────────────────────────
+const PREV_QUESTIONS_KEY='physio_orakel_prev_questions';
+function getPrevQuestionTopics(){
+  try{return JSON.parse(localStorage.getItem(PREV_QUESTIONS_KEY)||'[]')}catch{return[]}
+}
+function savePrevQuestionTopics(questions){
+  try{
+    const prev=getPrevQuestionTopics();
+    const newTopics=questions.map(q=>(q.topic||'')+'::'+((q.question||'').slice(0,60)));
+    // Keep last 100 entries for variation tracking
+    const merged=[...prev,...newTopics].slice(-100);
+    localStorage.setItem(PREV_QUESTIONS_KEY,JSON.stringify(merged));
+  }catch{}
+}
+function buildVariationHint(){
+  const prev=getPrevQuestionTopics();
+  if(!prev.length)return'';
+  const recent=prev.slice(-30);
+  const topics=[...new Set(recent.map(e=>e.split('::')[0]).filter(Boolean))];
+  if(!topics.length)return'';
+  return`\nWICHTIG FÜR VARIATION: Die folgenden Themen/Fragen wurden kürzlich gestellt — wähle ANDERE Schwerpunkte, andere Aspekte, andere Konzepte. Vermeide Wiederholung:\n- ${topics.join('\n- ')}\nWähle Fragen aus Bereichen des Textes, die bisher NICHT abgefragt wurden. Variiere die Fragestellungen maximal.`;
 }
 
 // Save quiz config before starting so newRound can restore it
