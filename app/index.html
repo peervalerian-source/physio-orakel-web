@@ -2017,13 +2017,13 @@ async function renderLeaderboard(){
     const myUsername=currentUser?currentUser.username:'';
     const html='<div style="border:1px solid var(--rule);background:var(--pure)">'+rows.map((r,i)=>{
       const lvl=Math.floor((r.xp||0)/200)+1;
-      const rank=getRank(lvl);
+      const rank=getRank(lvl,r.username);
       const isMe=r.username===myUsername;
       const rankIdx=i+1;
       const rankColor=rankIdx===1?'var(--swiss-red)':rankIdx===2?'var(--ink)':rankIdx===3?'var(--mid)':'var(--mid)';
       return `<div style="display:grid;grid-template-columns:36px 1fr auto auto;gap:14px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--rule);${isMe?'background:var(--paper);':''}">
         <div style="font-size:14px;font-weight:600;color:${rankColor};font-variant-numeric:tabular-nums;letter-spacing:-0.02em">${String(rankIdx).padStart(2,'0')}</div>
-        <div style="font-size:12px;color:var(--ink);font-weight:${isMe?'600':'500'};letter-spacing:0.01em">${r.username}${isMe?' <span style="color:var(--swiss-red);font-size:9px;letter-spacing:0.14em">· DU</span>':''}</div>
+        <div style="font-size:12px;color:var(--ink);font-weight:${isMe?'600':'500'};letter-spacing:0.01em">${r.username}${(()=>{const v=getVipBadge(r.username);return v?` <span style="color:${v.color};font-size:9px;letter-spacing:0.14em;font-weight:600">(${v.label})</span>`:''})()}${isMe?' <span style="color:var(--swiss-red);font-size:9px;letter-spacing:0.14em">· DU</span>':''}</div>
         <div style="font-size:10px;color:var(--mid);letter-spacing:0.08em;text-transform:uppercase">${rank.icon} ${rank.title}</div>
         <div style="font-size:11px;color:var(--ink);font-variant-numeric:tabular-nums;font-weight:600;min-width:56px;text-align:right">${r.xp||0} XP</div>
       </div>`;
@@ -2133,7 +2133,15 @@ const RANKS=[
   {min:50,max:74, title:'Primarius',               icon:'🏆', color:'#e11d48'},
   {min:75,max:Infinity, title:'Professor emeritus',icon:'📜', color:'#f59e0b'},
 ];
-function getRank(level){
+// Special VIP badges (shown in parentheses alongside normal rank)
+const VIP_BADGES={
+  'johnnywespos': {label:'CEO', color:'#DA291C'},
+};
+function getVipBadge(username){
+  if(!username)return null;
+  return VIP_BADGES[username.toLowerCase()]||null;
+}
+function getRank(level,username){
   return RANKS.find(r=>level>=r.min&&level<=r.max)||RANKS[0];
 }
 function getNextRank(level){
@@ -2145,7 +2153,8 @@ function addXP(amount){
   const newLevel=getLevel(stats.xp);
   if(newLevel>oldLevel){
     playLevelUp();
-    const oldR=getRank(oldLevel),newR=getRank(newLevel);
+    const uname=currentUser?currentUser.username:null;
+    const oldR=getRank(oldLevel,uname),newR=getRank(newLevel,uname);
     if(newR.title!==oldR.title){
       showToast(newR.icon,`Befördert zum ${newR.title}!`,`Level ${newLevel} erreicht`,'toast-levelup');
     }else{
@@ -2250,9 +2259,12 @@ function markDailyChallengeCompleted(){
 function renderGamification(stats){
   // XP section
   const xp=stats.xp||0,level=getLevel(xp),xpInLevel=xp%200,pctXP=Math.round(xpInLevel/200*100);
-  const rank=getRank(level),nextRank=getNextRank(level);
+  const uname=currentUser?currentUser.username:null;
+  const rank=getRank(level,uname),nextRank=getNextRank(level);
   const xpEl=document.getElementById('xpSection');
-  if(xpEl)xpEl.innerHTML=`<div class="xp-header"><div class="xp-level" style="display:flex;align-items:center;gap:.4rem"><span style="font-size:1.4rem">${rank.icon}</span><div><div style="color:${rank.color};font-weight:600;font-size:1rem;line-height:1.1">${rank.title}</div><div style="font-size:.7rem;color:var(--text3);font-weight:400">Level ${level}</div></div></div><div class="xp-label">${xp} XP · ${200-xpInLevel} XP bis Level ${level+1}</div></div><div class="xp-track"><div class="xp-fill" style="width:${pctXP}%;background:${rank.color}"></div></div>${nextRank?`<div style="font-size:.72rem;color:var(--text3);margin-top:.4rem;text-align:right">Nächste Beförderung: ${nextRank.icon} ${nextRank.title} (Level ${nextRank.min})</div>`:''}`;
+  const vip=getVipBadge(uname);
+  const vipBadge=vip?` <span style="color:${vip.color};font-size:.7rem;letter-spacing:0.14em;font-weight:600;margin-left:.4rem">(${vip.label})</span>`:'';
+  if(xpEl)xpEl.innerHTML=`<div class="xp-header"><div class="xp-level" style="display:flex;align-items:center;gap:.4rem"><span style="font-size:1.4rem">${rank.icon}</span><div><div style="color:${rank.color};font-weight:600;font-size:1rem;line-height:1.1">${rank.title}${vipBadge}</div><div style="font-size:.7rem;color:var(--text3);font-weight:400">Level ${level}</div></div></div><div class="xp-label">${xp} XP · ${200-xpInLevel} XP bis Level ${level+1}</div></div><div class="xp-track"><div class="xp-fill" style="width:${pctXP}%;background:${rank.color}"></div></div>${nextRank?`<div style="font-size:.72rem;color:var(--text3);margin-top:.4rem;text-align:right">Nächste Beförderung: ${nextRank.icon} ${nextRank.title} (Level ${nextRank.min})</div>`:''}`;
 
   // Daily challenge
   const dc=getDailyChallenge();const done=isDailyChallengeCompleted();
