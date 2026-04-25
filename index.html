@@ -387,17 +387,33 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 </button>
 <div class="toast-container" id="toastContainer"></div>
 
-<!-- API Key modal -->
-<div class="key-overlay" id="keyOverlay">
-  <div class="key-backdrop" onclick="closeKeyModal()"></div>
-  <div class="key-panel">
-    <div class="key-panel-title serif">Zugangscode eingeben</div>
-    <div class="key-panel-sub">Wochencode bei Peer anfragen</div>
-    <div class="key-input-wrap">
-      <input type="password" id="apiKeyInput" placeholder="Code eingeben..." autocomplete="off">
-      <button class="btn btn-primary" onclick="saveApiKey()" style="padding:.55rem 1rem;font-size:.82rem;flex-shrink:0">Bestätigen</button>
+<!-- Auth modal (Login + Register) -->
+<div class="key-overlay" id="authOverlay">
+  <div class="key-backdrop"></div>
+  <div class="key-panel" style="max-width:420px">
+    <div style="display:flex;gap:.4rem;margin-bottom:.8rem">
+      <button class="ssw active" id="authTabLogin" onclick="setAuthTab('login')" style="flex:1">Anmelden</button>
+      <button class="ssw" id="authTabRegister" onclick="setAuthTab('register')" style="flex:1">Registrieren</button>
     </div>
-    <div class="key-status" id="keyStatus"></div>
+    <div class="key-panel-title serif" id="authTitle">Anmelden</div>
+    <div class="key-panel-sub" id="authSub">Mit deinem Account-Login + Wochencode</div>
+
+    <div id="authFormLogin" style="margin-top:.6rem">
+      <input type="text" id="loginUser" placeholder="Username oder Email" autocomplete="username" style="width:100%;box-sizing:border-box;padding:.5rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.85rem;margin-bottom:.4rem">
+      <input type="password" id="loginPass" placeholder="Passwort" autocomplete="current-password" style="width:100%;box-sizing:border-box;padding:.5rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.85rem;margin-bottom:.4rem">
+      <input type="password" id="loginCode" placeholder="Wochencode" autocomplete="off" style="width:100%;box-sizing:border-box;padding:.5rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.85rem;margin-bottom:.6rem">
+      <button class="btn btn-primary" onclick="doLogin()" style="width:100%">Anmelden</button>
+    </div>
+
+    <div id="authFormRegister" style="display:none;margin-top:.6rem">
+      <input type="text" id="regUser" placeholder="Username (3-20 Zeichen)" autocomplete="username" style="width:100%;box-sizing:border-box;padding:.5rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.85rem;margin-bottom:.4rem">
+      <input type="email" id="regEmail" placeholder="Email" autocomplete="email" style="width:100%;box-sizing:border-box;padding:.5rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.85rem;margin-bottom:.4rem">
+      <input type="password" id="regPass" placeholder="Passwort (mind. 6 Zeichen)" autocomplete="new-password" style="width:100%;box-sizing:border-box;padding:.5rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.85rem;margin-bottom:.4rem">
+      <input type="password" id="regCode" placeholder="Wochencode" autocomplete="off" style="width:100%;box-sizing:border-box;padding:.5rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.85rem;margin-bottom:.6rem">
+      <button class="btn btn-primary" onclick="doRegister()" style="width:100%">Account erstellen</button>
+    </div>
+
+    <div class="key-status" id="authStatus" style="margin-top:.6rem"></div>
   </div>
 </div>
 
@@ -909,32 +925,96 @@ function goTo(id){
   }
 }
 
-// ── Access Code + Worker Proxy ────────────────────────────────────────────────
+// ── Auth + Worker Proxy ────────────────────────────────────────────────────
 const WORKER_URL='https://physio-orakel-api.csmybgcyhh.workers.dev';
 const ACCESS_CODE_KEY='physio_orakel_code';
+const SESSION_TOKEN_KEY='physio_orakel_session';
+const USER_KEY='physio_orakel_user';
 let hasApiKey=false;
-function openKeyModal(){document.getElementById('keyOverlay').classList.add('active')}
-function closeKeyModal(){document.getElementById('keyOverlay').classList.remove('active')}
-function saveApiKey(){
-  const val=document.getElementById('apiKeyInput').value.trim();
-  if(!val){showKeyStatus('Bitte Code eingeben','var(--red2)');return}
-  try{localStorage.setItem(ACCESS_CODE_KEY,val)}catch{}
-  hasApiKey=true;
-  showKeyStatus('Code gespeichert','var(--success)');
-  document.getElementById('keyCornerBtn').classList.add('has-key');
-  document.getElementById('apiKeyInput').value='';
-  setTimeout(()=>{closeKeyModal();loadPoolFromServer();loadWochentest()},800);
+let currentUser=null;
+function openKeyModal(){document.getElementById('authOverlay').classList.add('active')}
+function closeKeyModal(){document.getElementById('authOverlay').classList.remove('active')}
+function setAuthTab(tab){
+  document.getElementById('authTabLogin').className='ssw'+(tab==='login'?' active':'');
+  document.getElementById('authTabRegister').className='ssw'+(tab==='register'?' active':'');
+  document.getElementById('authFormLogin').style.display=tab==='login'?'block':'none';
+  document.getElementById('authFormRegister').style.display=tab==='register'?'block':'none';
+  document.getElementById('authTitle').textContent=tab==='login'?'Anmelden':'Account erstellen';
+  document.getElementById('authSub').textContent=tab==='login'?'Mit deinem Account-Login + Wochencode':'Username, Email, Passwort + Wochencode';
+  document.getElementById('authStatus').textContent='';
 }
-function loadApiKey(){
+function showAuthStatus(msg,color){const el=document.getElementById('authStatus');el.textContent=msg;el.style.color=color}
+async function doLogin(){
+  const username=document.getElementById('loginUser').value.trim();
+  const password=document.getElementById('loginPass').value;
+  const accessCode=document.getElementById('loginCode').value.trim();
+  if(!username||!password||!accessCode){showAuthStatus('Alle Felder ausfüllen','var(--red2)');return}
+  showAuthStatus('Wird angemeldet…','var(--text3)');
   try{
-    const k=localStorage.getItem(ACCESS_CODE_KEY);
-    if(k){hasApiKey=true;document.getElementById('keyCornerBtn').classList.add('has-key')}
-    else{hasApiKey=false;openKeyModal()}
-  }catch{hasApiKey=false;openKeyModal()}
+    const res=await fetch(WORKER_URL+'/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password,accessCode})});
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.error||'Fehler');
+    onAuthSuccess(data,accessCode);
+  }catch(e){showAuthStatus(e.message,'var(--red2)')}
 }
+async function doRegister(){
+  const username=document.getElementById('regUser').value.trim();
+  const email=document.getElementById('regEmail').value.trim();
+  const password=document.getElementById('regPass').value;
+  const accessCode=document.getElementById('regCode').value.trim();
+  if(!username||!email||!password||!accessCode){showAuthStatus('Alle Felder ausfüllen','var(--red2)');return}
+  showAuthStatus('Account wird erstellt…','var(--text3)');
+  try{
+    const res=await fetch(WORKER_URL+'/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,email,password,accessCode})});
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.error||'Fehler');
+    onAuthSuccess(data,accessCode);
+  }catch(e){showAuthStatus(e.message,'var(--red2)')}
+}
+function onAuthSuccess(data,accessCode){
+  try{
+    localStorage.setItem(SESSION_TOKEN_KEY,data.token);
+    localStorage.setItem(USER_KEY,JSON.stringify(data.user));
+    localStorage.setItem(ACCESS_CODE_KEY,accessCode);
+  }catch{}
+  currentUser=data.user;hasApiKey=true;
+  showAuthStatus('Erfolgreich!','var(--success)');
+  document.getElementById('keyCornerBtn').classList.add('has-key');
+  updateUserBadge();
+  setTimeout(()=>{closeKeyModal();syncStatsFromServer().then(()=>{loadPoolFromServer();loadWochentest()})},600);
+}
+async function logout(){
+  const tok=getSessionToken();
+  if(tok){try{await fetch(WORKER_URL+'/auth/logout',{method:'POST',headers:{'X-Session-Token':tok}})}catch{}}
+  try{localStorage.removeItem(SESSION_TOKEN_KEY);localStorage.removeItem(USER_KEY);localStorage.removeItem(ACCESS_CODE_KEY)}catch{}
+  currentUser=null;hasApiKey=false;
+  document.getElementById('keyCornerBtn').classList.remove('has-key');
+  updateUserBadge();
+  openKeyModal();
+}
+function getSessionToken(){try{return localStorage.getItem(SESSION_TOKEN_KEY)||''}catch{return ''}}
 function getAccessCode(){try{return localStorage.getItem(ACCESS_CODE_KEY)||''}catch{return ''}}
-function showKeyStatus(msg,color){const el=document.getElementById('keyStatus');el.textContent=msg;el.style.color=color;setTimeout(()=>{el.textContent=''},3000)}
-loadApiKey();
+function loadSession(){
+  try{
+    const tok=localStorage.getItem(SESSION_TOKEN_KEY);
+    const userStr=localStorage.getItem(USER_KEY);
+    if(tok&&userStr){currentUser=JSON.parse(userStr);hasApiKey=true;document.getElementById('keyCornerBtn').classList.add('has-key');updateUserBadge();return true}
+  }catch{}
+  hasApiKey=false;openKeyModal();return false;
+}
+function updateUserBadge(){
+  let badge=document.getElementById('userBadge');
+  if(!currentUser){if(badge)badge.remove();return}
+  if(!badge){
+    badge=document.createElement('div');badge.id='userBadge';
+    badge.style.cssText='position:fixed;top:.8rem;right:.8rem;background:var(--bg2);color:var(--cream);padding:.4rem .7rem;border-radius:20px;border:1px solid var(--border);font-size:.78rem;z-index:100;display:flex;align-items:center;gap:.5rem;cursor:pointer';
+    badge.title='Klicken zum Abmelden';
+    badge.onclick=()=>{if(confirm('Wirklich abmelden?'))logout()};
+    document.body.appendChild(badge);
+  }
+  badge.innerHTML=`<span style="font-size:.9rem">👤</span><span>${currentUser.username}</span>`;
+}
+loadSession();
 
 // ── EKG Canvas ───────────────────────────────────────────────────────────────
 let ekgRaf=null;
@@ -1710,7 +1790,46 @@ function launchBloodRain(){
 
 // ── Stats / Lernhistorie ──────────────────────────────────────────────────────
 function loadStats(){try{return JSON.parse(localStorage.getItem(STATS_KEY)||'{"sessions":[]}')}catch{return{sessions:[]}}}
-function saveStats(data){try{localStorage.setItem(STATS_KEY,JSON.stringify(data))}catch{}}
+function saveStats(data){try{localStorage.setItem(STATS_KEY,JSON.stringify(data))}catch{}scheduleStatsSync()}
+
+// Server stats sync
+let _statsSyncTimer=null;
+function scheduleStatsSync(){
+  if(!currentUser)return;
+  clearTimeout(_statsSyncTimer);
+  _statsSyncTimer=setTimeout(syncStatsToServer,1500);
+}
+async function syncStatsToServer(){
+  if(!currentUser)return;
+  const tok=getSessionToken();if(!tok)return;
+  const s=loadStats();
+  try{
+    await fetch(WORKER_URL+'/stats',{method:'PUT',headers:{'Content-Type':'application/json','X-Session-Token':tok},body:JSON.stringify({xp:s.xp||0,bestStreak:s.bestStreak||0,sessions:s.sessions||[],achievements:s.achievements||[],dailyChallengeDone:s.dailyChallengeDone||''})});
+  }catch{}
+}
+async function syncStatsFromServer(){
+  if(!currentUser)return;
+  const tok=getSessionToken();if(!tok)return;
+  try{
+    const res=await fetch(WORKER_URL+'/stats',{headers:{'X-Session-Token':tok}});
+    if(!res.ok)return;
+    const remote=await res.json();
+    const local=loadStats();
+    // Merge: take server data as authoritative for cross-device sync
+    const merged={
+      xp:Math.max(remote.xp||0,local.xp||0),
+      bestStreak:Math.max(remote.bestStreak||0,local.bestStreak||0),
+      sessions:remote.sessions&&remote.sessions.length?remote.sessions:(local.sessions||[]),
+      achievements:[...new Set([...(remote.achievements||[]),...(local.achievements||[])])],
+      dailyChallengeDone:remote.dailyChallengeDone||local.dailyChallengeDone||''
+    };
+    try{localStorage.setItem(STATS_KEY,JSON.stringify(merged))}catch{}
+    // Push merged back if local had newer data
+    if((local.xp||0)>(remote.xp||0)||(local.sessions||[]).length>(remote.sessions||[]).length){
+      syncStatsToServer();
+    }
+  }catch{}
+}
 
 function saveSessionStats(pct,pts,max,topicScores){
   const stats=loadStats();
