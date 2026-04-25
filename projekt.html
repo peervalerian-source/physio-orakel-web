@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Physio-Orakel — Nephron.at</title>
+<meta name="description" content="App zur Übung der Physiologie-Wochentests an der Semmelweis Universität Budapest.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #F5F4F1;
+  --pure: #FFFFFF;
+  --ink: #0A0A0A;
+  --mid: #7A7A78;
+  --red: #DA291C;
+  --rule: #D8D6D1;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: "Helvetica Neue", "Inter", Arial, sans-serif;
+  font-feature-settings: "tnum" 1;
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  line-height: 1.4;
+  display: flex;
+  flex-direction: column;
+}
+a { color: inherit; text-decoration: none; }
+
+/* ─── Nav ──────────────────────────────────────── */
+.nav {
+  border-bottom: 1px solid var(--rule);
+  padding: 18px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--paper);
+}
+.nav-brand { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+.nav-brand span { color: var(--red); }
+.nav-links { display: flex; gap: 32px; }
+.nav-links a {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mid);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.15s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--ink); }
+.nav-links a.active::before { content: "◢ "; color: var(--red); }
+
+/* ─── Main ─────────────────────────────────────── */
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 60px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+.marker {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--red);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 32px;
+}
+.marker::before { content: "◢ "; }
+.headline {
+  font-weight: 500;
+  font-size: 88px;
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+  margin-bottom: 48px;
+  text-wrap: pretty;
+}
+
+.body-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 32px;
+  max-width: 900px;
+  margin-bottom: 56px;
+}
+.body-meta {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mid);
+  font-weight: 500;
+  padding-top: 6px;
+}
+.body-text {
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.cta-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 32px;
+  max-width: 900px;
+}
+.cta-meta {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mid);
+  font-weight: 500;
+  padding-top: 18px;
+}
+.btn-primary {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 18px 32px;
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--ink);
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: inherit;
+  display: inline-block;
+}
+.btn-primary:hover { background: var(--red); border-color: var(--red); }
+
+/* ─── Footer ───────────────────────────────────── */
+footer {
+  border-top: 1px solid var(--rule);
+  padding: 16px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mid);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Mobile ───────────────────────────────────── */
+@media (max-width: 800px) {
+  .nav { padding: 14px 24px; }
+  .nav-links { gap: 18px; }
+  .nav-links a { font-size: 10px; letter-spacing: 0.1em; }
+  main { padding: 48px 24px; }
+  .headline { font-size: 48px; }
+  .body-row, .cta-row { grid-template-columns: 1fr; gap: 12px; }
+  .body-text { font-size: 16px; }
+  footer { padding: 14px 24px; flex-direction: column; gap: 8px; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">Nephron<span>.at</span></div>
+  <div class="nav-links">
+    <a href="landing.html">N° 01 Mission</a>
+    <a href="projekt.html" class="active">N° 02 Physio-Orakel</a>
+    <a href="disclaimer.html">N° 03 Disclaimer</a>
+  </div>
+</nav>
+
+<main>
+  <div class="marker">N° 02 — Projekt</div>
+  <h1 class="headline">Physio-Orakel.</h1>
+  <div class="body-row">
+    <div class="body-meta">Beschreibung</div>
+    <div class="body-text">
+      Eine Anwendung zur Übung der Physiologie-Wochentests an der <strong>Semmelweis Universität Budapest</strong>. KI-generierte Multiple-Choice-Fragen aus deinen Vorlesungstranskripten und dem Altfragenpool, kombiniert mit einer vollständigen Rigorosum-Simulation.
+    </div>
+  </div>
+  <div class="cta-row">
+    <div class="cta-meta">Anwendung</div>
+    <div>
+      <a href="index.html" class="btn-primary">Anwendung starten →</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div>◢ Nephron.at — Physio-Orakel</div>
+  <div>Est. 2026 · Budapest</div>
+</footer>
+
+</body>
+</html>
