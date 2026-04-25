@@ -50,6 +50,12 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
 .screen.active{display:block;animation:fadeIn .25s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 
+/* ── Back to landing ──────────────────────────────────────────────────────── */
+.back-home{position:fixed;top:14px;left:14px;z-index:100;height:32px;padding:0 14px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.04em;font-weight:500;font-family:inherit;transition:all .15s}
+.back-home:hover{border-color:var(--ink);background:var(--pure)}
+.back-home-label{font-weight:600;letter-spacing:-0.01em;font-size:13px}
+@media(max-width:600px){.back-home-label{display:none}.back-home{padding:0;width:32px;justify-content:center}}
+
 /* ── Top toolbar buttons ──────────────────────────────────────────────────── */
 .theme-toggle,.stats-toggle,.sound-toggle{position:fixed;top:14px;z-index:100;width:32px;height:32px;border:1px solid var(--rule);background:var(--paper);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;color:var(--ink);border-radius:0}
 .theme-toggle{right:16px}.stats-toggle{right:54px}.sound-toggle{right:92px}
@@ -422,6 +428,11 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
 </style>
 </head>
 <body>
+<!-- Back to Nephron.at -->
+<a href="landing.html" class="back-home" title="Zurück zur Hauptseite Nephron.at">
+  <span style="font-size:13px;line-height:1">←</span>
+  <span class="back-home-label">Nephron<span style="color:var(--swiss-red)">.at</span></span>
+</a>
 <!-- Theme toggle -->
 <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" title="Hell/Dunkel">
   <svg id="sunIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
@@ -593,6 +604,14 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
   </div>
   <div class="container">
 
+    <!-- Login hint when not logged in -->
+    <div id="loginHint" style="display:none;border:1px solid var(--swiss-red);background:var(--paper);padding:24px 28px;margin-bottom:32px">
+      <div style="font-size:10px;color:var(--swiss-red);letter-spacing:0.2em;text-transform:uppercase;font-weight:500;margin-bottom:10px">◢ Hinweis</div>
+      <div style="font-size:15px;color:var(--ink);font-weight:500;margin-bottom:8px;letter-spacing:-0.005em">Bitte zuerst anmelden, um das Physio-Orakel zu nutzen.</div>
+      <div style="font-size:12px;color:var(--mid);line-height:1.6;margin-bottom:16px">Du brauchst einen Account und den aktuellen Wochencode. Wenn du noch keinen hast, kannst du dich kostenlos registrieren.</div>
+      <button class="btn btn-primary" onclick="openKeyModal()" style="font-size:11px">Anmelden / Registrieren</button>
+    </div>
+
     <div class="section-label">Wochentest üben</div>
     <div id="wtStatus" style="font-size:.78rem;color:var(--text3);margin:0 0 .8rem;line-height:1.5"></div>
     <div id="wtReady" style="display:none">
@@ -607,8 +626,8 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
     <div id="wtEmpty" style="display:none;text-align:center;padding:.8rem;font-size:.82rem;color:var(--text3);background:var(--bg2);border-radius:8px">
       Noch kein Wochentest-Material hinterlegt.
     </div>
-    <div id="wtAdminWrap" style="margin-top:.8rem;text-align:center">
-      <button class="btn" style="font-size:.75rem;padding:.4rem .8rem" onclick="openWtAdmin()">Material aktualisieren</button>
+    <div id="wtAdminWrap" style="margin-top:.8rem;text-align:right">
+      <button onclick="openWtAdmin()" style="font-size:9px;padding:4px 8px;background:transparent;border:none;color:var(--mid);cursor:pointer;font-family:inherit;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;border-bottom:1px solid var(--rule)" onmouseover="this.style.color='var(--ink)';this.style.borderColor='var(--ink)'" onmouseout="this.style.color='var(--mid)';this.style.borderColor='var(--rule)'">admin · material</button>
     </div>
 
     <div class="divider" style="margin:2.5rem 0 1.5rem"></div>
@@ -627,8 +646,8 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
 
     <div class="section-label" style="margin-top:1.5rem">Altfragenpool</div>
     <div id="poolStatusWrap"></div>
-    <div id="poolAdminWrap" style="margin-top:.4rem;text-align:center">
-      <button class="btn" style="font-size:.75rem;padding:.4rem .8rem" onclick="openPoolAdmin()">Altfragenpool aktualisieren</button>
+    <div id="poolAdminWrap" style="margin-top:.4rem;text-align:right">
+      <button onclick="openPoolAdmin()" style="font-size:9px;padding:4px 8px;background:transparent;border:none;color:var(--mid);cursor:pointer;font-family:inherit;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;border-bottom:1px solid var(--rule)" onmouseover="this.style.color='var(--ink)';this.style.borderColor='var(--ink)'" onmouseout="this.style.color='var(--mid)';this.style.borderColor='var(--rule)'">admin · altfragenpool</button>
     </div>
 
     <div style="text-align:center;margin-top:2rem">
@@ -1059,7 +1078,7 @@ function onAuthSuccess(data,accessCode){
   currentUser=data.user;hasApiKey=true;
   showAuthStatus('Erfolgreich!','var(--success)');
   document.getElementById('keyCornerBtn').classList.add('has-key');
-  updateUserBadge();
+  updateUserBadge();updateLoginHintVisibility();
   setTimeout(()=>{closeKeyModal();syncStatsFromServer().then(()=>{loadPoolFromServer();loadWochentest()})},600);
 }
 async function logout(){
@@ -1068,7 +1087,7 @@ async function logout(){
   try{localStorage.removeItem(SESSION_TOKEN_KEY);localStorage.removeItem(USER_KEY);localStorage.removeItem(ACCESS_CODE_KEY)}catch{}
   currentUser=null;hasApiKey=false;
   document.getElementById('keyCornerBtn').classList.remove('has-key');
-  updateUserBadge();
+  updateUserBadge();updateLoginHintVisibility();
   openKeyModal();
 }
 function getSessionToken(){try{return localStorage.getItem(SESSION_TOKEN_KEY)||''}catch{return ''}}
@@ -1077,9 +1096,27 @@ function loadSession(){
   try{
     const tok=localStorage.getItem(SESSION_TOKEN_KEY);
     const userStr=localStorage.getItem(USER_KEY);
-    if(tok&&userStr){currentUser=JSON.parse(userStr);hasApiKey=true;document.getElementById('keyCornerBtn').classList.add('has-key');updateUserBadge();return true}
+    if(tok&&userStr){currentUser=JSON.parse(userStr);hasApiKey=true;document.getElementById('keyCornerBtn').classList.add('has-key');updateUserBadge();updateLoginHintVisibility();return true}
   }catch{}
-  hasApiKey=false;openKeyModal();return false;
+  hasApiKey=false;openKeyModal();updateLoginHintVisibility();return false;
+}
+function updateLoginHintVisibility(){
+  const hint=document.getElementById('loginHint');
+  if(!hint)return;
+  // S1 main content sections (Wochentest, Skript, Pool, Weiter, Disclaimer)
+  const isLoggedIn=!!currentUser;
+  hint.style.display=isLoggedIn?'none':'block';
+  // Hide function sections when logged out
+  const sectionsToHide=['wtStatus','wtReady','wtEmpty','wtAdminWrap'];
+  // Find all main content elements after loginHint and toggle
+  const container=hint.parentElement;
+  if(!container)return;
+  Array.from(container.children).forEach(child=>{
+    if(child===hint)return;
+    if(child.classList&&child.classList.contains('container'))return;
+    child.style.opacity=isLoggedIn?'':'0.35';
+    child.style.pointerEvents=isLoggedIn?'':'none';
+  });
 }
 function updateUserBadge(){
   let badge=document.getElementById('userBadge');
