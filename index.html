@@ -57,10 +57,14 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
 @media(max-width:600px){.back-home-label{display:none}.back-home{padding:0;width:32px;justify-content:center}}
 
 /* ── Top toolbar buttons ──────────────────────────────────────────────────── */
-.theme-toggle,.stats-toggle,.sound-toggle{position:fixed;top:14px;z-index:100;width:32px;height:32px;border:1px solid var(--rule);background:var(--paper);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;color:var(--ink);border-radius:0}
-.theme-toggle{right:16px}.stats-toggle{right:54px}.sound-toggle{right:92px}
+.theme-toggle,.stats-toggle,.sound-toggle{position:fixed;top:14px;z-index:100;height:32px;border:1px solid var(--rule);background:var(--paper);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;color:var(--ink);border-radius:0;font-family:inherit}
+.theme-toggle,.sound-toggle{width:32px}
+.stats-toggle{padding:0 14px;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;color:var(--ink)}
+.theme-toggle{right:16px}.stats-toggle{right:54px}.sound-toggle{right:170px}
 .theme-toggle:hover,.stats-toggle:hover,.sound-toggle:hover{border-color:var(--ink);background:var(--pure)}
+.stats-toggle:hover{background:var(--ink);color:var(--paper)}
 .sound-toggle.muted{opacity:.4}
+@media(max-width:600px){.stats-toggle{padding:0;width:32px}.stats-toggle .stats-label{display:none}.sound-toggle{right:130px}}
 
 /* ── Header ───────────────────────────────────────────────────────────────── */
 .header{text-align:left;padding:48px 60px 32px;border-bottom:1px solid var(--rule);position:relative;background:var(--paper)}
@@ -379,12 +383,12 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
 .key-input-wrap input:focus{border-color:var(--swiss-red)}
 .key-input-wrap input.code-valid{border-color:var(--success);background:var(--success-bg);color:var(--success);transition:all .25s ease}
 .key-status{font-size:10px;height:14px;margin-bottom:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:500}
-.key-btn{position:fixed;top:14px;right:130px;z-index:100;height:32px;padding:0 14px;border-radius:0;border:1px solid var(--swiss-red);background:var(--paper);cursor:pointer;display:flex;align-items:center;gap:8px;justify-content:center;font-size:11px;color:var(--swiss-red);-webkit-app-region:no-drag;transition:all .15s;font-family:inherit;letter-spacing:0.12em;text-transform:uppercase;font-weight:500}
+.key-btn{position:fixed;top:14px;right:210px;z-index:100;height:32px;padding:0 14px;border-radius:0;border:1px solid var(--swiss-red);background:var(--paper);cursor:pointer;display:flex;align-items:center;gap:8px;justify-content:center;font-size:11px;color:var(--swiss-red);-webkit-app-region:no-drag;transition:all .15s;font-family:inherit;letter-spacing:0.12em;text-transform:uppercase;font-weight:500}
 .key-btn:hover{background:var(--swiss-red);color:var(--paper);transform:none;border-color:var(--swiss-red)}
 .key-btn.has-key{color:var(--success);border-color:var(--success)}
 .key-btn.has-key:hover{background:var(--success);color:var(--paper);border-color:var(--success)}
 .key-btn-label{font-size:10px;letter-spacing:0.14em;font-weight:500}
-@media(max-width:600px){.key-btn-label{display:none}.key-btn{right:130px;padding:0;width:32px}}
+@media(max-width:600px){.key-btn-label{display:none}.key-btn{right:170px;padding:0;width:32px}}
 
 /* Inputs (used in admin modals etc.) */
 .key-panel input[type="text"],.key-panel input[type="email"],.key-panel input[type="password"]{
@@ -406,7 +410,7 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
 .challenge-done::before{content:"◢ "}
 
 /* ── User badge ───────────────────────────────────────────────────────────── */
-#userBadge{position:fixed!important;top:14px!important;right:280px!important;background:var(--paper)!important;color:var(--ink)!important;padding:8px 14px!important;border-radius:0!important;border:1px solid var(--rule)!important;font-size:11px!important;letter-spacing:0.04em!important;font-weight:500!important;z-index:100!important;display:flex!important;align-items:center!important;gap:8px!important;cursor:pointer!important;height:32px!important;box-sizing:border-box!important}
+#userBadge{position:fixed!important;top:14px!important;right:360px!important;background:var(--paper)!important;color:var(--ink)!important;padding:8px 14px!important;border-radius:0!important;border:1px solid var(--rule)!important;font-size:11px!important;letter-spacing:0.04em!important;font-weight:500!important;z-index:100!important;display:flex!important;align-items:center!important;gap:8px!important;cursor:pointer!important;height:32px!important;box-sizing:border-box!important}
 #userBadge:hover{border-color:var(--ink)!important}
 
 @media(max-width:600px){
@@ -439,8 +443,9 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
   <svg id="moonIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
 </button>
 <!-- Stats toggle -->
-<button class="stats-toggle" id="statsBtn" onclick="toggleStats()" title="Lernhistorie">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="14" width="4" height="7" rx="1"/><rect x="10" y="9" width="4" height="12" rx="1"/><rect x="16" y="4" width="4" height="17" rx="1"/></svg>
+<button class="stats-toggle" id="statsBtn" onclick="toggleStats()" title="Statistik & Verlauf">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="14" width="4" height="7" rx="0"/><rect x="10" y="9" width="4" height="12" rx="0"/><rect x="16" y="4" width="4" height="17" rx="0"/></svg>
+  <span class="stats-label">Statistik</span>
 </button>
 <button class="sound-toggle" id="soundBtn" onclick="toggleSound()" title="Sound an/aus">
   <svg id="soundOn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
@@ -551,6 +556,9 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
     <div id="challengeArea"></div>
     <div class="section-label">Achievements</div>
     <div class="achievement-grid" id="achievementGrid"></div>
+    <div class="section-label">Globales Ranking</div>
+    <div id="leaderboardArea" style="margin-top:8px"></div>
+
     <div class="section-label">Schwachstellen-Heatmap</div>
     <div class="heatmap" id="heatmap"></div>
     <div id="weaknessBtn" style="display:none;text-align:center;margin:1rem 0">
@@ -1962,7 +1970,38 @@ function saveSessionStats(pct,pts,max,topicScores){
   saveStats(stats);
 }
 
-function toggleStats(){document.getElementById('statsOverlay').classList.toggle('active');if(document.getElementById('statsOverlay').classList.contains('active'))renderStats()}
+function toggleStats(){document.getElementById('statsOverlay').classList.toggle('active');if(document.getElementById('statsOverlay').classList.contains('active')){renderStats();renderLeaderboard()}}
+
+async function renderLeaderboard(){
+  const el=document.getElementById('leaderboardArea');if(!el)return;
+  const tok=getSessionToken();
+  if(!tok){el.innerHTML='<div style="font-size:11px;color:var(--mid);padding:14px;text-align:center;border:1px solid var(--rule);background:var(--pure)">Anmelden, um das Ranking zu sehen</div>';return}
+  el.innerHTML='<div style="font-size:10px;color:var(--mid);padding:12px;text-align:center;letter-spacing:0.1em;text-transform:uppercase">Lädt…</div>';
+  try{
+    const res=await fetch(WORKER_URL+'/leaderboard',{headers:{'X-Session-Token':tok}});
+    if(!res.ok)throw new Error('Fehler');
+    const data=await res.json();
+    const rows=data.leaderboard||[];
+    if(!rows.length){el.innerHTML='<div style="font-size:11px;color:var(--mid);padding:14px;text-align:center;border:1px solid var(--rule);background:var(--pure)">Noch keine Daten</div>';return}
+    const myUsername=currentUser?currentUser.username:'';
+    const html='<div style="border:1px solid var(--rule);background:var(--pure)">'+rows.map((r,i)=>{
+      const lvl=Math.floor((r.xp||0)/200)+1;
+      const rank=getRank(lvl);
+      const isMe=r.username===myUsername;
+      const rankIdx=i+1;
+      const rankColor=rankIdx===1?'var(--swiss-red)':rankIdx===2?'var(--ink)':rankIdx===3?'var(--mid)':'var(--mid)';
+      return `<div style="display:grid;grid-template-columns:36px 1fr auto auto;gap:14px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--rule);${isMe?'background:var(--paper);':''}">
+        <div style="font-size:14px;font-weight:600;color:${rankColor};font-variant-numeric:tabular-nums;letter-spacing:-0.02em">${String(rankIdx).padStart(2,'0')}</div>
+        <div style="font-size:12px;color:var(--ink);font-weight:${isMe?'600':'500'};letter-spacing:0.01em">${r.username}${isMe?' <span style="color:var(--swiss-red);font-size:9px;letter-spacing:0.14em">· DU</span>':''}</div>
+        <div style="font-size:10px;color:var(--mid);letter-spacing:0.08em;text-transform:uppercase">${rank.icon} ${rank.title}</div>
+        <div style="font-size:11px;color:var(--ink);font-variant-numeric:tabular-nums;font-weight:600;min-width:56px;text-align:right">${r.xp||0} XP</div>
+      </div>`;
+    }).join('')+'</div>';
+    el.innerHTML=html;
+  }catch(e){
+    el.innerHTML='<div style="font-size:11px;color:var(--mid);padding:14px;text-align:center;border:1px solid var(--rule);background:var(--pure)">Ranking nicht verfügbar</div>';
+  }
+}
 
 function renderStats(){
   const stats=loadStats();const sessions=stats.sessions;
