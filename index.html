@@ -1811,11 +1811,42 @@ function showToast(icon,title,text,cls=''){
 // ── XP & Level system ────────────────────────────────────────────────────────
 function getXP(){const s=loadStats();return s.xp||0}
 function getLevel(xp){return Math.floor((xp||0)/200)+1}
+
+// Medical career ranks
+const RANKS=[
+  {min:1, max:2,  title:'Erstsemestler',          icon:'🎓', color:'#94a3b8'},
+  {min:3, max:4,  title:'Medizinstudent',          icon:'📚', color:'#94a3b8'},
+  {min:5, max:6,  title:'Pflegepraktikant',        icon:'🩹', color:'#7dd3fc'},
+  {min:7, max:9,  title:'Famulant',                icon:'🩺', color:'#38bdf8'},
+  {min:10,max:12, title:'KPJ-Student',             icon:'📋', color:'#0ea5e9'},
+  {min:13,max:15, title:'Turnusarzt',              icon:'⚕️', color:'#0284c7'},
+  {min:16,max:19, title:'Assistenzarzt',           icon:'💉', color:'#3b82f6'},
+  {min:20,max:24, title:'Facharzt',                icon:'🔬', color:'#6366f1'},
+  {min:25,max:29, title:'Oberarzt',                icon:'🏥', color:'#8b5cf6'},
+  {min:30,max:39, title:'Leitender Oberarzt',      icon:'⭐', color:'#a855f7'},
+  {min:40,max:49, title:'Chefarzt',                icon:'👑', color:'#c026d3'},
+  {min:50,max:74, title:'Primarius',               icon:'🏆', color:'#e11d48'},
+  {min:75,max:Infinity, title:'Professor emeritus',icon:'📜', color:'#f59e0b'},
+];
+function getRank(level){
+  return RANKS.find(r=>level>=r.min&&level<=r.max)||RANKS[0];
+}
+function getNextRank(level){
+  return RANKS.find(r=>r.min>level)||null;
+}
 function addXP(amount){
   const stats=loadStats();const oldXP=stats.xp||0;const oldLevel=getLevel(oldXP);
   stats.xp=oldXP+amount;saveStats(stats);
   const newLevel=getLevel(stats.xp);
-  if(newLevel>oldLevel){playLevelUp();showToast('⭐',`Level ${newLevel}!`,`${stats.xp} XP gesammelt`,'toast-levelup')}
+  if(newLevel>oldLevel){
+    playLevelUp();
+    const oldR=getRank(oldLevel),newR=getRank(newLevel);
+    if(newR.title!==oldR.title){
+      showToast(newR.icon,`Befördert zum ${newR.title}!`,`Level ${newLevel} erreicht`,'toast-levelup');
+    }else{
+      showToast('⭐',`Level ${newLevel}!`,`${stats.xp} XP gesammelt`,'toast-levelup');
+    }
+  }
   return{xp:stats.xp,level:newLevel,gained:amount};
 }
 
@@ -1914,8 +1945,9 @@ function markDailyChallengeCompleted(){
 function renderGamification(stats){
   // XP section
   const xp=stats.xp||0,level=getLevel(xp),xpInLevel=xp%200,pctXP=Math.round(xpInLevel/200*100);
+  const rank=getRank(level),nextRank=getNextRank(level);
   const xpEl=document.getElementById('xpSection');
-  if(xpEl)xpEl.innerHTML=`<div class="xp-header"><div class="xp-level">Level ${level}</div><div class="xp-label">${xp} XP · ${200-xpInLevel} XP bis Level ${level+1}</div></div><div class="xp-track"><div class="xp-fill" style="width:${pctXP}%"></div></div>`;
+  if(xpEl)xpEl.innerHTML=`<div class="xp-header"><div class="xp-level" style="display:flex;align-items:center;gap:.4rem"><span style="font-size:1.4rem">${rank.icon}</span><div><div style="color:${rank.color};font-weight:600;font-size:1rem;line-height:1.1">${rank.title}</div><div style="font-size:.7rem;color:var(--text3);font-weight:400">Level ${level}</div></div></div><div class="xp-label">${xp} XP · ${200-xpInLevel} XP bis Level ${level+1}</div></div><div class="xp-track"><div class="xp-fill" style="width:${pctXP}%;background:${rank.color}"></div></div>${nextRank?`<div style="font-size:.72rem;color:var(--text3);margin-top:.4rem;text-align:right">Nächste Beförderung: ${nextRank.icon} ${nextRank.title} (Level ${nextRank.min})</div>`:''}`;
 
   // Daily challenge
   const dc=getDailyChallenge();const done=isDailyChallengeCompleted();
