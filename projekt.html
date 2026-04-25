@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nephron.at</title>
-<meta name="description" content="Eine Lernplattform, die sich an deine spezifischen Unterlagen anpasst. Gebaut von Medizinstudenten für Medizinstudierende.">
+<title>Physio-Orakel — Nephron.at</title>
+<meta name="description" content="App zur Übung der Physiologie-Wochentests an der Semmelweis Universität Budapest.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -32,7 +32,6 @@ body {
   flex-direction: column;
 }
 a { color: inherit; text-decoration: none; }
-em { font-style: italic; }
 
 /* ─── Nav ──────────────────────────────────────── */
 .nav {
@@ -84,20 +83,18 @@ main {
   font-size: 88px;
   line-height: 0.92;
   letter-spacing: -0.045em;
-  margin-bottom: 56px;
+  margin-bottom: 48px;
   text-wrap: pretty;
-  max-width: 1100px;
 }
-.headline em { color: var(--red); font-style: italic; font-weight: 400; }
 
-.mission {
+.body-row {
   display: grid;
   grid-template-columns: 200px 1fr;
   gap: 32px;
   max-width: 900px;
-  margin-top: 40px;
+  margin-bottom: 56px;
 }
-.mission-meta {
+.body-meta {
   font-size: 10px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -105,15 +102,42 @@ main {
   font-weight: 500;
   padding-top: 6px;
 }
-.mission-text {
+.body-text {
   font-size: 18px;
   line-height: 1.55;
   color: var(--ink);
   text-wrap: pretty;
 }
-.mission-text p { margin-bottom: 16px; }
-.mission-text p:last-child { margin-bottom: 0; }
-.mission-text strong { font-weight: 600; }
+
+.cta-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 32px;
+  max-width: 900px;
+}
+.cta-meta {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mid);
+  font-weight: 500;
+  padding-top: 18px;
+}
+.btn-primary {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 18px 32px;
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--ink);
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: inherit;
+  display: inline-block;
+}
+.btn-primary:hover { background: var(--red); border-color: var(--red); }
 
 /* ─── Footer ───────────────────────────────────── */
 footer {
@@ -137,8 +161,8 @@ footer {
   .nav-links a { font-size: 10px; letter-spacing: 0.1em; }
   main { padding: 48px 24px; }
   .headline { font-size: 48px; }
-  .mission { grid-template-columns: 1fr; gap: 12px; }
-  .mission-text { font-size: 16px; }
+  .body-row, .cta-row { grid-template-columns: 1fr; gap: 12px; }
+  .body-text { font-size: 16px; }
   footer { padding: 14px 24px; flex-direction: column; gap: 8px; align-items: flex-start; }
 }
 </style>
@@ -148,30 +172,32 @@ footer {
 <nav class="nav">
   <div class="nav-brand">Nephron<span>.at</span></div>
   <div class="nav-links">
-    <a href="/" class="active">N° 01 Mission</a>
-    <a href="/projekt.html">N° 02 Physio-Orakel</a>
+    <a href="/">N° 01 Mission</a>
+    <a href="/projekt.html" class="active">N° 02 Physio-Orakel</a>
     <a href="/disclaimer.html">N° 03 Disclaimer</a>
   </div>
 </nav>
 
 <main>
-  <div class="marker">N° 01 — Mission · Est. 2026</div>
-  <h1 class="headline">
-    Eine Lernplattform,<br/>die sich an <em>dich</em><br/>anpasst — nicht umgekehrt.
-  </h1>
-  <div class="mission">
-    <div class="mission-meta">Manifest</div>
-    <div class="mission-text">
-      <p>Medizin lernen heißt: <strong>Berge von Stoff, zu wenig Zeit</strong> und das Gefühl, nie genug zu wissen.</p>
-      <p>Wir glauben, dass es nicht an der Motivation scheitert — sondern an den Werkzeugen. Deshalb bauen wir eine Lernplattform, die sich an deine spezifischen Unterlagen anpasst.</p>
-      <p><strong>Gebaut von Medizinstudenten. Für Medizinstudierende.</strong></p>
+  <div class="marker">N° 02 — Projekt</div>
+  <h1 class="headline">Physio-Orakel.</h1>
+  <div class="body-row">
+    <div class="body-meta">Beschreibung</div>
+    <div class="body-text">
+      Eine Anwendung zur Übung der Physiologie-Wochentests an der <strong>Semmelweis Universität Budapest</strong>. KI-generierte Multiple-Choice-Fragen aus deinen Vorlesungstranskripten und dem Altfragenpool, kombiniert mit einer vollständigen Rigorosum-Simulation.
+    </div>
+  </div>
+  <div class="cta-row">
+    <div class="cta-meta">Anwendung</div>
+    <div>
+      <a href="/app/" class="btn-primary">Anwendung starten →</a>
     </div>
   </div>
 </main>
 
 <footer>
-  <div>◢ Nephron.at — Budapest · Wien</div>
-  <div>Weitere Projekte in Arbeit</div>
+  <div>◢ Nephron.at — Physio-Orakel</div>
+  <div>Est. 2026 · Budapest</div>
 </footer>
 
 </body>

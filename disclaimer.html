@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nephron.at</title>
-<meta name="description" content="Eine Lernplattform, die sich an deine spezifischen Unterlagen anpasst. Gebaut von Medizinstudenten für Medizinstudierende.">
+<title>Disclaimer — Nephron.at</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -18,7 +17,7 @@
   --rule: #D8D6D1;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; }
+html, body { min-height: 100%; }
 body {
   font-family: "Helvetica Neue", "Inter", Arial, sans-serif;
   font-feature-settings: "tnum" 1;
@@ -30,11 +29,11 @@ body {
   line-height: 1.4;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 a { color: inherit; text-decoration: none; }
-em { font-style: italic; }
+strong { font-weight: 600; }
 
-/* ─── Nav ──────────────────────────────────────── */
 .nav {
   border-bottom: 1px solid var(--rule);
   padding: 18px 60px;
@@ -58,12 +57,8 @@ em { font-style: italic; }
 .nav-links a:hover, .nav-links a.active { color: var(--ink); }
 .nav-links a.active::before { content: "◢ "; color: var(--red); }
 
-/* ─── Main ─────────────────────────────────────── */
 main {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   padding: 80px 60px;
   max-width: 1200px;
   width: 100%;
@@ -81,41 +76,35 @@ main {
 .marker::before { content: "◢ "; }
 .headline {
   font-weight: 500;
-  font-size: 88px;
-  line-height: 0.92;
-  letter-spacing: -0.045em;
+  font-size: 64px;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
   margin-bottom: 56px;
   text-wrap: pretty;
-  max-width: 1100px;
 }
-.headline em { color: var(--red); font-style: italic; font-weight: 400; }
 
-.mission {
+.disclaimer-grid {
   display: grid;
   grid-template-columns: 200px 1fr;
   gap: 32px;
   max-width: 900px;
-  margin-top: 40px;
 }
-.mission-meta {
+.disc-meta {
   font-size: 10px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--mid);
   font-weight: 500;
-  padding-top: 6px;
+  padding-top: 4px;
 }
-.mission-text {
-  font-size: 18px;
-  line-height: 1.55;
+.disc-text {
+  font-size: 14px;
+  line-height: 1.7;
   color: var(--ink);
-  text-wrap: pretty;
 }
-.mission-text p { margin-bottom: 16px; }
-.mission-text p:last-child { margin-bottom: 0; }
-.mission-text strong { font-weight: 600; }
+.disc-text p { margin-bottom: 16px; }
+.disc-text p:last-child { margin-bottom: 0; }
 
-/* ─── Footer ───────────────────────────────────── */
 footer {
   border-top: 1px solid var(--rule);
   padding: 16px 60px;
@@ -130,15 +119,13 @@ footer {
   font-variant-numeric: tabular-nums;
 }
 
-/* ─── Mobile ───────────────────────────────────── */
 @media (max-width: 800px) {
   .nav { padding: 14px 24px; }
   .nav-links { gap: 18px; }
   .nav-links a { font-size: 10px; letter-spacing: 0.1em; }
   main { padding: 48px 24px; }
-  .headline { font-size: 48px; }
-  .mission { grid-template-columns: 1fr; gap: 12px; }
-  .mission-text { font-size: 16px; }
+  .headline { font-size: 40px; }
+  .disclaimer-grid { grid-template-columns: 1fr; gap: 12px; }
   footer { padding: 14px 24px; flex-direction: column; gap: 8px; align-items: flex-start; }
 }
 </style>
@@ -148,30 +135,30 @@ footer {
 <nav class="nav">
   <div class="nav-brand">Nephron<span>.at</span></div>
   <div class="nav-links">
-    <a href="/" class="active">N° 01 Mission</a>
+    <a href="/">N° 01 Mission</a>
     <a href="/projekt.html">N° 02 Physio-Orakel</a>
-    <a href="/disclaimer.html">N° 03 Disclaimer</a>
+    <a href="/disclaimer.html" class="active">N° 03 Disclaimer</a>
   </div>
 </nav>
 
 <main>
-  <div class="marker">N° 01 — Mission · Est. 2026</div>
-  <h1 class="headline">
-    Eine Lernplattform,<br/>die sich an <em>dich</em><br/>anpasst — nicht umgekehrt.
-  </h1>
-  <div class="mission">
-    <div class="mission-meta">Manifest</div>
-    <div class="mission-text">
-      <p>Medizin lernen heißt: <strong>Berge von Stoff, zu wenig Zeit</strong> und das Gefühl, nie genug zu wissen.</p>
-      <p>Wir glauben, dass es nicht an der Motivation scheitert — sondern an den Werkzeugen. Deshalb bauen wir eine Lernplattform, die sich an deine spezifischen Unterlagen anpasst.</p>
-      <p><strong>Gebaut von Medizinstudenten. Für Medizinstudierende.</strong></p>
+  <div class="marker">N° 03 — Rechtlicher Hinweis</div>
+  <h1 class="headline">Disclaimer.</h1>
+  <div class="disclaimer-grid">
+    <div class="disc-meta">Bedingungen<br/>Stand 2026</div>
+    <div class="disc-text">
+      <p>Das Physio-Orakel ist ein <strong>privates, nicht-kommerzielles Lernprojekt</strong> eines Studierenden. Es handelt sich nicht um ein offizielles Angebot der Semmelweis Universität Budapest und steht in keinerlei institutioneller Verbindung zur Universität, deren Instituten oder Lehrpersonal. Inhalte, Darstellungen und Ergebnisse spiegeln nicht die Positionen der Universität wider.</p>
+      <p>Sämtliche Antworten und Erklärungen werden von einer <strong>künstlichen Intelligenz (Claude, Anthropic)</strong> generiert und sind nicht von Fachpersonal geprüft. Trotz sorgfältiger Gestaltung der Abfragen können die Antworten inhaltliche Fehler, Ungenauigkeiten oder veraltete Informationen enthalten. Das Physio-Orakel ersetzt weder Vorlesungen, Lehrbücher noch sonstige geprüfte Lehrmaterialien und stellt keine akademische Beratung dar.</p>
+      <p>Die Inhalte orientieren sich an Vorlesungsstoff und Altfragen, es wird jedoch keine Gewähr für Aktualität, Vollständigkeit, Richtigkeit oder Prüfungsrelevanz übernommen. Änderungen im Curriculum oder in der Prüfungsgestaltung werden nicht automatisch abgebildet.</p>
+      <p>Die bereitgestellten Inhalte dienen <strong>ausschließlich Lernzwecken</strong> und stellen keinen medizinischen Rat dar. Informationen aus dem Physio-Orakel dürfen nicht zur Diagnostik, Therapie oder Beratung von Patientinnen und Patienten herangezogen werden.</p>
+      <p>Die Nutzung erfolgt <strong>auf eigene Verantwortung</strong>. Der Betreiber übernimmt keine Haftung für Schäden jeglicher Art, die aus der Nutzung oder dem Vertrauen auf die bereitgestellten Inhalte entstehen — einschließlich, aber nicht beschränkt auf, Prüfungsergebnisse oder akademische Konsequenzen.</p>
     </div>
   </div>
 </main>
 
 <footer>
-  <div>◢ Nephron.at — Budapest · Wien</div>
-  <div>Weitere Projekte in Arbeit</div>
+  <div>◢ Nephron.at — Disclaimer</div>
+  <div>Est. 2026</div>
 </footer>
 
 </body>
