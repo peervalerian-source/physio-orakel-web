@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nephron.at — Physio-Orakel</title>
+<meta name="description" content="Physiologie lernen für Semmelweis Budapest. KI-generierte Multiple-Choice-Übungen, Altfragenpool, Wochentest, Rigorosum-Simulation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #F5F4F1;
+  --pure: #FFFFFF;
+  --ink: #0A0A0A;
+  --mid: #7A7A78;
+  --red: #DA291C;
+  --rule: #D8D6D1;
+  --rule-soft: #E8E6E1;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: "Helvetica Neue", "Inter", Arial, sans-serif;
+  font-feature-settings: "tnum" 1;
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  line-height: 1.4;
+}
+a { color: inherit; text-decoration: none; }
+em { font-style: italic; }
+strong { font-weight: 600; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.18); }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* ─── Layout ───────────────────────────────────── */
+.wrap { max-width: 1440px; margin: 0 auto; padding: 0 60px; }
+.section { padding: 120px 0; border-top: 1px solid var(--rule); position: relative; }
+.section:first-of-type { border-top: none; }
+.grid12 { display: grid; grid-template-columns: 200px repeat(11, 1fr); gap: 24px; }
+
+/* ─── Marker ───────────────────────────────────── */
+.marker {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--red);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.marker::before { content: "◢ "; }
+.meta {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mid);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.6;
+}
+
+/* ─── Nav ──────────────────────────────────────── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  padding: 16px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-brand {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.nav-brand span { color: var(--red); }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mid);
+  font-weight: 500;
+  transition: color 0.15s;
+  font-variant-numeric: tabular-nums;
+}
+.nav-links a:hover { color: var(--ink); }
+.nav-cta {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 10px 18px;
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--ink);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.nav-cta:hover { background: var(--red); border-color: var(--red); }
+
+/* ─── Hero ─────────────────────────────────────── */
+.hero { padding: 80px 0 120px; }
+.hero-headline {
+  font-weight: 500;
+  font-size: 72px;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  color: var(--ink);
+  margin: 24px 0 40px;
+  text-wrap: pretty;
+  max-width: 1100px;
+}
+.hero-headline em {
+  font-style: italic;
+  color: var(--red);
+  font-weight: 400;
+}
+.hero-sub {
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--mid);
+  max-width: 640px;
+  margin-bottom: 48px;
+}
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.btn-primary {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 16px 28px;
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--ink);
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: inherit;
+}
+.btn-primary:hover { background: var(--red); border-color: var(--red); }
+.btn-ghost {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 16px 28px;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s;
+}
+.btn-ghost:hover { border-color: var(--ink); }
+
+/* ─── Section heading ──────────────────────────── */
+.sec-head { margin-bottom: 64px; }
+.sec-num {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--red);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 24px;
+}
+.sec-title {
+  font-weight: 500;
+  font-size: 48px;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  text-wrap: pretty;
+  max-width: 900px;
+}
+.sec-sub {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--mid);
+  margin-top: 20px;
+  max-width: 600px;
+}
+
+/* ─── Feature grid ─────────────────────────────── */
+.features {
+  border-top: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.feature {
+  padding: 40px 32px;
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  background: var(--pure);
+}
+.feature:nth-child(3n) { border-right: none; }
+.feat-num {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--red);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 24px;
+}
+.feat-title {
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  margin-bottom: 12px;
+  color: var(--ink);
+}
+.feat-desc {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--mid);
+}
+
+/* ─── Steps ────────────────────────────────────── */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--rule);
+}
+.step {
+  padding: 48px 32px;
+  border-right: 1px solid var(--rule);
+}
+.step:last-child { border-right: none; }
+.step-num {
+  font-size: 64px;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  color: var(--red);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 16px;
+  line-height: 1;
+}
+.step-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.step-desc {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--mid);
+}
+
+/* ─── Team ─────────────────────────────────────── */
+.team-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 24px;
+  padding: 32px 0;
+  border-top: 1px solid var(--rule);
+}
+.team-row:last-child { border-bottom: 1px solid var(--rule); }
+.team-name {
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  margin-bottom: 4px;
+}
+.team-role {
+  font-size: 13px;
+  color: var(--mid);
+  margin-bottom: 16px;
+}
+.team-bio {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--mid);
+  max-width: 600px;
+}
+
+/* ─── Color tokens ─────────────────────────────── */
+.tokens {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  border: 1px solid var(--rule);
+  background: var(--pure);
+}
+.token {
+  padding: 24px 16px;
+  min-height: 120px;
+  border-left: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.token:first-child { border-left: none; }
+.token-name {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.token-hex {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Disclaimer ───────────────────────────────── */
+.disclaimer-box {
+  border: 1px solid var(--rule);
+  background: var(--pure);
+  padding: 40px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--mid);
+}
+.disclaimer-box p { margin-bottom: 12px; }
+.disclaimer-box p:last-child { margin-bottom: 0; }
+.disclaimer-box strong { color: var(--ink); display: block; margin-bottom: 8px; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; }
+
+/* ─── Footer ───────────────────────────────────── */
+footer {
+  border-top: 1px solid var(--rule);
+  padding: 32px 0;
+  background: var(--ink);
+  color: var(--mid);
+}
+footer .wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+footer .meta { color: var(--paper); opacity: 0.6; }
+footer a { color: var(--paper); opacity: 0.7; transition: opacity 0.15s; }
+footer a:hover { opacity: 1; }
+
+/* ─── EKG signature ─────────────────────────────── */
+.ekg {
+  display: inline-block;
+  vertical-align: middle;
+}
+.ekg path {
+  stroke: var(--red);
+  stroke-width: 1.5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ─── Mobile ───────────────────────────────────── */
+@media (max-width: 900px) {
+  .wrap { padding: 0 24px; }
+  .nav { padding: 14px 24px; }
+  .nav-links { display: none; }
+  .hero { padding: 60px 0 80px; }
+  .hero-headline { font-size: 44px; }
+  .sec-title { font-size: 32px; }
+  .section { padding: 80px 0; }
+  .sec-head { margin-bottom: 40px; }
+  .grid12 { grid-template-columns: 1fr; gap: 16px; }
+  .features { grid-template-columns: 1fr; }
+  .feature { border-right: none; }
+  .feature:last-child { border-bottom: none; }
+  .steps { grid-template-columns: 1fr; }
+  .step { border-right: none; border-bottom: 1px solid var(--rule); }
+  .step:last-child { border-bottom: none; }
+  .team-row { grid-template-columns: 1fr; }
+  .tokens { grid-template-columns: repeat(2, 1fr); }
+  .token { border-left: none; border-top: 1px solid var(--rule); }
+  .token:first-child, .token:nth-child(2) { border-top: none; }
+  .disclaimer-box { padding: 24px; }
+  footer .wrap { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- ─── NAV ──────────────────────────────────── -->
+<nav class="nav">
+  <div class="nav-brand">Nephron<span>.at</span></div>
+  <div class="nav-links">
+    <a href="#mission">N° 01 Mission</a>
+    <a href="#projekt">N° 02 Projekt</a>
+    <a href="#team">N° 03 Team</a>
+    <a href="#marke">N° 04 Marke</a>
+    <a href="#kontakt">N° 05 Kontakt</a>
+  </div>
+  <a href="/app" class="nav-cta">Anwendung starten</a>
+</nav>
+
+<!-- ─── MISSION (HERO) ───────────────────────── -->
+<section class="section" id="mission" style="padding-top: 60px;">
+  <div class="wrap">
+    <div class="marker">N° 01 — Mission · April 2026</div>
+    <h1 class="hero-headline" style="margin-top: 24px;">
+      Physiologie lernen<br/>für Semmelweis Budapest —<br/><em>präzise, sachlich, prüfungsnah.</em>
+    </h1>
+    <p class="hero-sub">
+      Nephron.at ist ein unabhängiges Lernsystem für Studierende der Humanmedizin.
+      Multiple-Choice-Übungen, generiert aus dem Vorlesungsmaterial der Woche,
+      kombiniert mit dem offiziellen Altfragenpool und einer Rigorosum-Simulation.
+      Eine Marke, ein System, eine Schrift.
+    </p>
+    <div class="hero-actions">
+      <a href="/app" class="btn-primary">Anwendung starten →</a>
+      <a href="#projekt" class="btn-ghost">Mehr erfahren</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PROJEKT — Features ────────────────────── -->
+<section class="section" id="projekt">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">N° 02 — Projekt</div>
+      <h2 class="sec-title">Sechs Werkzeuge. Ein Lernfluss.</h2>
+      <p class="sec-sub">Jedes Modul des Physio-Orakels deckt einen Aspekt der Prüfungsvorbereitung ab — vom täglichen Üben bis zur vollständigen Rigorosum-Simulation.</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="features">
+      <div class="feature">
+        <div class="feat-num">01</div>
+        <div class="feat-title">KI-Generierung</div>
+        <div class="feat-desc">Neue Fragen aus dem offiziellen Themenkatalog oder einem hochgeladenen Skript. Variierender Schwerpunkt für maximale Themenabdeckung.</div>
+      </div>
+      <div class="feature">
+        <div class="feat-num">02</div>
+        <div class="feat-title">Altfragenpool</div>
+        <div class="feat-desc">Originalfragen aus früheren Prüfungen, exakt oder als KI-Variation im gleichen Stil und Schwierigkeitsgrad.</div>
+      </div>
+      <div class="feature">
+        <div class="feat-num">03</div>
+        <div class="feat-title">Wochentest</div>
+        <div class="feat-desc">Übung für den kommenden Wochentest, basierend auf dem Vorlesungstranskript. Wöchentlich aktualisiert.</div>
+      </div>
+      <div class="feature">
+        <div class="feat-num">04</div>
+        <div class="feat-title">Rigorosum-Simulation</div>
+        <div class="feat-desc">40 Fragen, 60 Minuten Timer, kein Zurückblättern. Die volle Prüfungssituation als Vorbereitung.</div>
+      </div>
+      <div class="feature">
+        <div class="feat-num">05</div>
+        <div class="feat-title">Schwachstellen üben</div>
+        <div class="feat-desc">Heatmap aller Themen — gezieltes Quiz für Bereiche unter 75 % Trefferquote. Lernen mit Methode.</div>
+      </div>
+      <div class="feature">
+        <div class="feat-num">06</div>
+        <div class="feat-title">Verlauf &amp; Rang</div>
+        <div class="feat-desc">XP, Streaks, Achievements. Vom Erstsemestler zum Primarius — ein Karriereweg, abgebildet im System.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ANWENDUNG — How it works ─────────────── -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">N° 02.1 — Ablauf</div>
+      <h2 class="sec-title">In drei Schritten zur Sitzung.</h2>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-title">Anmelden</div>
+        <div class="step-desc">Konto erstellen mit Username, Email und Wochencode. Dein Fortschritt wird geräteübergreifend synchronisiert.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-title">Modus wählen</div>
+        <div class="step-desc">KI-Generierung, Altfragen oder Wochentest. Themen filtern, Schwierigkeit setzen, Fragenanzahl bestimmen.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-title">Üben</div>
+        <div class="step-desc">Multiple-Choice mit Erläuterung, Tiefenanalyse je Frage und detaillierter Auswertung. Verlauf bleibt erhalten.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TEAM ─────────────────────────────────── -->
+<section class="section" id="team">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">N° 03 — Team</div>
+      <h2 class="sec-title">Ein Studierender. Ein Werkzeug.</h2>
+      <p class="sec-sub">Nephron.at wird unabhängig von einem Studierenden der Semmelweis Universität Budapest entwickelt. Kein offizielles Universitätsangebot, keine institutionelle Verbindung.</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="team-row">
+      <div>
+        <div class="meta">Gründer · Entwicklung</div>
+      </div>
+      <div>
+        <div class="team-name">Peer Hechenberger</div>
+        <div class="team-role">Studierender · Semmelweis Universität Budapest</div>
+        <div class="team-bio">
+          Konzeption, Frontend-Entwicklung und Inhaltskuration. Das Projekt entsteht aus eigener Erfahrung mit der Prüfungsvorbereitung am Institut für Physiologie und wird kontinuierlich um die Anforderungen der Kohorte 2026 erweitert.
+        </div>
+      </div>
+    </div>
+    <div class="team-row">
+      <div>
+        <div class="meta">Frage-Engine · KI</div>
+      </div>
+      <div>
+        <div class="team-name">Claude (Anthropic)</div>
+        <div class="team-role">Sprachmodell für Fragengenerierung und Erläuterungen</div>
+        <div class="team-bio">
+          Sämtliche Multiple-Choice-Fragen, Distraktoren und Erklärungen werden zur Laufzeit generiert. Die Inhalte sind nicht von Fachpersonal geprüft — siehe Disclaimer.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── MARKE ────────────────────────────────── -->
+<section class="section" id="marke">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">N° 04 — Marke</div>
+      <h2 class="sec-title">Eine Schrift. Eine Akzentfarbe.<br/>Strikte 1-Pixel-Linien.</h2>
+      <p class="sec-sub">Swiss Clinic — internationaler typografischer Stil für ein medizinisches Lernsystem. Helvetica, 12-Spalten-Grid, Schweizer Rot als einziger Akzent.</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="tokens">
+      <div class="token" style="background: #F5F4F1; color: #0A0A0A;">
+        <div class="token-name">Paper</div>
+        <div class="token-hex">#F5F4F1</div>
+      </div>
+      <div class="token" style="background: #FFFFFF; color: #0A0A0A;">
+        <div class="token-name">Pure</div>
+        <div class="token-hex">#FFFFFF</div>
+      </div>
+      <div class="token" style="background: #0A0A0A; color: #F5F4F1;">
+        <div class="token-name">Ink</div>
+        <div class="token-hex">#0A0A0A</div>
+      </div>
+      <div class="token" style="background: #7A7A78; color: #F5F4F1;">
+        <div class="token-name">Mid</div>
+        <div class="token-hex">#7A7A78</div>
+      </div>
+      <div class="token" style="background: #DA291C; color: #FFFFFF;">
+        <div class="token-name">Swiss Red</div>
+        <div class="token-hex">#DA291C</div>
+      </div>
+      <div class="token" style="background: #D8D6D1; color: #0A0A0A;">
+        <div class="token-name">Rule Soft</div>
+        <div class="token-hex">#D8D6D1</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── KONTAKT — Disclaimer ─────────────────── -->
+<section class="section" id="kontakt">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">N° 05 — Kontakt &amp; Disclaimer</div>
+      <h2 class="sec-title">Sachlich. Privat. Auf eigene Verantwortung.</h2>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="disclaimer-box">
+      <p><strong>Disclaimer — Physio-Orakel</strong></p>
+      <p>Das Physio-Orakel ist ein privates, nicht-kommerzielles Lernprojekt eines Studierenden. Es handelt sich nicht um ein offizielles Angebot der Semmelweis Universität Budapest und steht in keinerlei institutioneller Verbindung zur Universität, deren Instituten oder Lehrpersonal. Inhalte, Darstellungen und Ergebnisse spiegeln nicht die Positionen der Universität wider.</p>
+      <p>Sämtliche Antworten und Erklärungen werden von einer künstlichen Intelligenz (Claude, Anthropic) generiert und sind nicht von Fachpersonal geprüft. Trotz sorgfältiger Gestaltung der Abfragen können die Antworten inhaltliche Fehler, Ungenauigkeiten oder veraltete Informationen enthalten. Das Physio-Orakel ersetzt weder Vorlesungen, Lehrbücher noch sonstige geprüfte Lehrmaterialien und stellt keine akademische Beratung dar.</p>
+      <p>Die Inhalte orientieren sich an Vorlesungsstoff und Altfragen, es wird jedoch keine Gewähr für Aktualität, Vollständigkeit, Richtigkeit oder Prüfungsrelevanz übernommen. Änderungen im Curriculum oder in der Prüfungsgestaltung werden nicht automatisch abgebildet.</p>
+      <p>Die bereitgestellten Inhalte dienen ausschließlich Lernzwecken und stellen keinen medizinischen Rat dar. Informationen aus dem Physio-Orakel dürfen nicht zur Diagnostik, Therapie oder Beratung von Patientinnen und Patienten herangezogen werden.</p>
+      <p>Die Nutzung erfolgt auf eigene Verantwortung. Der Betreiber übernimmt keine Haftung für Schäden jeglicher Art, die aus der Nutzung oder dem Vertrauen auf die bereitgestellten Inhalte entstehen — einschließlich, aber nicht beschränkt auf, Prüfungsergebnisse oder akademische Konsequenzen.</p>
+    </div>
+    <div style="margin-top: 48px;">
+      <a href="/app" class="btn-primary">Anwendung starten →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ───────────────────────────────── -->
+<footer>
+  <div class="wrap">
+    <div class="meta">◢ Nephron.at — Est. 2026 · Budapest · Wien</div>
+    <div class="meta">
+      <a href="/app">Anwendung</a>
+      &nbsp; · &nbsp;
+      <a href="#kontakt">Disclaimer</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
