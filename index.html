@@ -57,14 +57,16 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
 @media(max-width:600px){.back-home-label{display:none}.back-home{padding:0;width:32px;justify-content:center}}
 
 /* ── Top toolbar buttons ──────────────────────────────────────────────────── */
-.theme-toggle,.stats-toggle,.sound-toggle{position:fixed;top:14px;z-index:100;height:32px;border:1px solid var(--rule);background:var(--paper);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;color:var(--ink);border-radius:0;font-family:inherit}
-.theme-toggle,.sound-toggle{width:32px}
-.stats-toggle{padding:0 14px;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;color:var(--ink)}
-.theme-toggle{right:16px}.stats-toggle{right:54px}.sound-toggle{right:170px}
+.theme-toggle,.stats-toggle,.sound-toggle{position:fixed;z-index:100;height:32px;border:1px solid var(--rule);background:var(--paper);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;color:var(--ink);border-radius:0;font-family:inherit}
+/* Bottom row (icons only) */
+.theme-toggle,.sound-toggle{width:32px;top:54px}
+.theme-toggle{right:16px}.sound-toggle{right:54px}
+/* Top row (labeled) — Statistik next to Wochencode */
+.stats-toggle{top:14px;right:16px;padding:0 14px;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;color:var(--ink)}
 .theme-toggle:hover,.stats-toggle:hover,.sound-toggle:hover{border-color:var(--ink);background:var(--pure)}
 .stats-toggle:hover{background:var(--ink);color:var(--paper)}
 .sound-toggle.muted{opacity:.4}
-@media(max-width:600px){.stats-toggle{padding:0;width:32px}.stats-toggle .stats-label{display:none}.sound-toggle{right:130px}}
+@media(max-width:600px){.stats-toggle{padding:0;width:32px}.stats-toggle .stats-label{display:none}}
 
 /* ── Header ───────────────────────────────────────────────────────────────── */
 .header{text-align:left;padding:48px 60px 32px;border-bottom:1px solid var(--rule);position:relative;background:var(--paper)}
@@ -383,12 +385,12 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
 .key-input-wrap input:focus{border-color:var(--swiss-red)}
 .key-input-wrap input.code-valid{border-color:var(--success);background:var(--success-bg);color:var(--success);transition:all .25s ease}
 .key-status{font-size:10px;height:14px;margin-bottom:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:500}
-.key-btn{position:fixed;top:14px;right:210px;z-index:100;height:32px;padding:0 14px;border-radius:0;border:1px solid var(--swiss-red);background:var(--paper);cursor:pointer;display:flex;align-items:center;gap:8px;justify-content:center;font-size:11px;color:var(--swiss-red);-webkit-app-region:no-drag;transition:all .15s;font-family:inherit;letter-spacing:0.12em;text-transform:uppercase;font-weight:500}
+.key-btn{position:fixed;top:14px;right:130px;z-index:100;height:32px;padding:0 14px;border-radius:0;border:1px solid var(--swiss-red);background:var(--paper);cursor:pointer;display:flex;align-items:center;gap:8px;justify-content:center;font-size:11px;color:var(--swiss-red);-webkit-app-region:no-drag;transition:all .15s;font-family:inherit;letter-spacing:0.12em;text-transform:uppercase;font-weight:500}
 .key-btn:hover{background:var(--swiss-red);color:var(--paper);transform:none;border-color:var(--swiss-red)}
 .key-btn.has-key{color:var(--success);border-color:var(--success)}
 .key-btn.has-key:hover{background:var(--success);color:var(--paper);border-color:var(--success)}
 .key-btn-label{font-size:10px;letter-spacing:0.14em;font-weight:500}
-@media(max-width:600px){.key-btn-label{display:none}.key-btn{right:170px;padding:0;width:32px}}
+@media(max-width:600px){.key-btn-label{display:none}.key-btn{right:90px;padding:0;width:32px}}
 
 /* Inputs (used in admin modals etc.) */
 .key-panel input[type="text"],.key-panel input[type="email"],.key-panel input[type="password"]{
@@ -410,7 +412,7 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
 .challenge-done::before{content:"◢ "}
 
 /* ── User badge ───────────────────────────────────────────────────────────── */
-#userBadge{position:fixed!important;top:14px!important;right:360px!important;background:var(--paper)!important;color:var(--ink)!important;padding:8px 14px!important;border-radius:0!important;border:1px solid var(--rule)!important;font-size:11px!important;letter-spacing:0.04em!important;font-weight:500!important;z-index:100!important;display:flex!important;align-items:center!important;gap:8px!important;cursor:pointer!important;height:32px!important;box-sizing:border-box!important}
+#userBadge{position:fixed!important;top:54px!important;right:90px!important;background:var(--paper)!important;color:var(--ink)!important;padding:8px 14px!important;border-radius:0!important;border:1px solid var(--rule)!important;font-size:11px!important;letter-spacing:0.04em!important;font-weight:500!important;z-index:100!important;display:flex!important;align-items:center!important;gap:8px!important;cursor:pointer!important;height:32px!important;box-sizing:border-box!important}
 #userBadge:hover{border-color:var(--ink)!important}
 
 @media(max-width:600px){
