@@ -992,6 +992,36 @@ function setAuthTab(tab){
   document.getElementById('authStatus').textContent='';
 }
 function showAuthStatus(msg,color){const el=document.getElementById('authStatus');el.textContent=msg;el.style.color=color}
+
+// Live verification of weekly access code
+let _codeCheckTimer=null;
+async function liveCheckCode(input){
+  clearTimeout(_codeCheckTimer);
+  input.classList.remove('code-valid');
+  const val=input.value.trim();
+  if(val.length<3)return;
+  _codeCheckTimer=setTimeout(async()=>{
+    try{
+      const res=await fetch(WORKER_URL+'/auth/verify-code',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:val})});
+      const data=await res.json();
+      if(data.ok&&input.value.trim()===val){input.classList.add('code-valid')}
+      else{input.classList.remove('code-valid')}
+    }catch{}
+  },400);
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  ['loginCode','regCode'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.addEventListener('input',()=>liveCheckCode(el));
+  });
+});
+// Also bind immediately in case DOMContentLoaded already fired
+setTimeout(()=>{
+  ['loginCode','regCode'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&!el._liveBound){el._liveBound=true;el.addEventListener('input',()=>liveCheckCode(el))}
+  });
+},100);
 async function doLogin(){
   const username=document.getElementById('loginUser').value.trim();
   const password=document.getElementById('loginPass').value;
