@@ -79,16 +79,36 @@ main {
   margin-bottom: 32px;
 }
 .marker::before { content: "◢ "; }
-.headline {
+.wordmark {
   font-weight: 500;
-  font-size: 88px;
-  line-height: 0.92;
-  letter-spacing: -0.045em;
-  margin-bottom: 56px;
-  text-wrap: pretty;
-  max-width: 1100px;
+  font-size: 220px;
+  line-height: 0.85;
+  letter-spacing: -0.06em;
+  margin-bottom: 64px;
+  display: inline-flex;
+  align-items: baseline;
 }
-.headline em { color: var(--red); font-style: italic; font-weight: 400; }
+.wordmark .dot {
+  color: var(--red);
+  font-weight: 500;
+}
+.wordmark .tld {
+  font-size: 0.42em;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  color: var(--mid);
+  margin-left: 0.05em;
+  align-self: baseline;
+}
+.tagline {
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mid);
+  font-weight: 500;
+  margin-bottom: 16px;
+  font-variant-numeric: tabular-nums;
+}
 
 .mission {
   display: grid;
@@ -115,6 +135,40 @@ main {
 .mission-text p:last-child { margin-bottom: 0; }
 .mission-text strong { font-weight: 600; }
 
+.quick-cta {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 32px;
+  max-width: 900px;
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--rule);
+  align-items: center;
+}
+.quick-cta-meta {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mid);
+  font-weight: 500;
+}
+.quick-cta-btn {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 12px 22px;
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--ink);
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: inherit;
+  display: inline-block;
+}
+.quick-cta-btn:hover { background: var(--red); border-color: var(--red); }
+.quick-cta-btn::after { content: " →"; }
+
 /* ─── Footer ───────────────────────────────────── */
 footer {
   border-top: 1px solid var(--rule);
@@ -136,8 +190,8 @@ footer {
   .nav-links { gap: 18px; }
   .nav-links a { font-size: 10px; letter-spacing: 0.1em; }
   main { padding: 48px 24px; }
-  .headline { font-size: 48px; }
-  .mission { grid-template-columns: 1fr; gap: 12px; }
+  .wordmark { font-size: 96px; margin-bottom: 40px; }
+  .mission, .quick-cta { grid-template-columns: 1fr; gap: 12px; }
   .mission-text { font-size: 16px; }
   footer { padding: 14px 24px; flex-direction: column; gap: 8px; align-items: flex-start; }
 }
@@ -148,16 +202,16 @@ footer {
 <nav class="nav">
   <div class="nav-brand">Nephron<span>.at</span></div>
   <div class="nav-links">
-    <a href="/" class="active">N° 01 Mission</a>
-    <a href="/projekt.html">N° 02 Physio-Orakel</a>
-    <a href="/disclaimer.html">N° 03 Disclaimer</a>
+    <a href="landing.html" class="active">N° 01 Mission</a>
+    <a href="projekt.html">N° 02 Physio-Orakel</a>
+    <a href="disclaimer.html">N° 03 Disclaimer</a>
   </div>
 </nav>
 
 <main>
   <div class="marker">N° 01 — Mission · Est. 2026</div>
-  <h1 class="headline">
-    Eine Lernplattform,<br/>die sich an <em>dich</em><br/>anpasst — nicht umgekehrt.
+  <h1 class="wordmark">
+    Nephron<span class="dot">.</span><span class="tld">at</span>
   </h1>
   <div class="mission">
     <div class="mission-meta">Manifest</div>
@@ -165,6 +219,13 @@ footer {
       <p>Medizin lernen heißt: <strong>Berge von Stoff, zu wenig Zeit</strong> und das Gefühl, nie genug zu wissen.</p>
       <p>Wir glauben, dass es nicht an der Motivation scheitert — sondern an den Werkzeugen. Deshalb bauen wir eine Lernplattform, die sich an deine spezifischen Unterlagen anpasst.</p>
       <p><strong>Gebaut von Medizinstudenten. Für Medizinstudierende.</strong></p>
+    </div>
+  </div>
+
+  <div class="quick-cta">
+    <div class="quick-cta-meta">Direkt zum Tool</div>
+    <div>
+      <a href="index.html" class="quick-cta-btn">Physio-Orakel öffnen</a>
     </div>
   </div>
 </main>
