@@ -1130,15 +1130,44 @@ function updateLoginHintVisibility(){
 }
 function updateUserBadge(){
   let badge=document.getElementById('userBadge');
-  if(!currentUser){if(badge)badge.remove();return}
+  let menu=document.getElementById('userMenu');
+  if(!currentUser){if(badge)badge.remove();if(menu)menu.remove();return}
   if(!badge){
     badge=document.createElement('div');badge.id='userBadge';
-    badge.style.cssText='position:fixed;top:.8rem;right:.8rem;background:var(--bg2);color:var(--cream);padding:.4rem .7rem;border-radius:20px;border:1px solid var(--border);font-size:.78rem;z-index:100;display:flex;align-items:center;gap:.5rem;cursor:pointer';
-    badge.title='Klicken zum Abmelden';
-    badge.onclick=()=>{if(confirm('Wirklich abmelden?'))logout()};
+    badge.title='Konto-Menü';
+    badge.onclick=(e)=>{e.stopPropagation();toggleUserMenu()};
     document.body.appendChild(badge);
   }
-  badge.innerHTML=`<span style="font-size:.9rem">👤</span><span>${currentUser.username}</span>`;
+  if(!menu){
+    menu=document.createElement('div');menu.id='userMenu';
+    menu.style.cssText='position:fixed;top:90px;right:90px;background:var(--paper);border:1px solid var(--ink);min-width:200px;z-index:101;display:none;font-family:inherit';
+    menu.innerHTML=`
+      <div style="padding:14px 16px;border-bottom:1px solid var(--rule);background:var(--pure)">
+        <div style="font-size:9px;color:var(--mid);letter-spacing:0.18em;text-transform:uppercase;font-weight:500;margin-bottom:4px">◢ Angemeldet als</div>
+        <div id="umUsername" style="font-size:13px;color:var(--ink);font-weight:600;letter-spacing:0.01em"></div>
+        <div id="umEmail" style="font-size:11px;color:var(--mid);margin-top:2px;letter-spacing:0.01em"></div>
+      </div>
+      <button id="umLogout" onclick="confirmLogout()" style="width:100%;padding:14px 16px;background:transparent;border:none;color:var(--ink);text-align:left;font-family:inherit;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:all .15s;border-bottom:1px solid var(--rule)" onmouseover="this.style.background='var(--swiss-red)';this.style.color='var(--paper)'" onmouseout="this.style.background='transparent';this.style.color='var(--ink)'">→ Abmelden</button>
+      <button onclick="toggleUserMenu()" style="width:100%;padding:10px 16px;background:transparent;border:none;color:var(--mid);text-align:left;font-family:inherit;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;cursor:pointer">Schließen</button>
+    `;
+    document.body.appendChild(menu);
+    document.addEventListener('click',(e)=>{
+      const m=document.getElementById('userMenu');
+      if(m&&m.style.display==='block'&&!m.contains(e.target)&&e.target.id!=='userBadge')m.style.display='none';
+    });
+  }
+  badge.innerHTML=`<span style="font-size:12px">👤</span><span>${currentUser.username}</span><span style="font-size:8px;color:var(--mid);margin-left:4px">▾</span>`;
+  document.getElementById('umUsername').textContent=currentUser.username;
+  document.getElementById('umEmail').textContent=currentUser.email||'';
+}
+function toggleUserMenu(){
+  const m=document.getElementById('userMenu');
+  if(!m)return;
+  m.style.display=m.style.display==='block'?'none':'block';
+}
+function confirmLogout(){
+  toggleUserMenu();
+  if(confirm('Wirklich abmelden?'))logout();
 }
 loadSession();
 
