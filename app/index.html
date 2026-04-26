@@ -57,12 +57,13 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
 @media(max-width:600px){.back-home-label{display:none}.back-home{padding:0;width:32px;justify-content:center}}
 
 /* ── Top toolbar buttons ──────────────────────────────────────────────────── */
-.theme-toggle,.stats-toggle,.sound-toggle{position:fixed;z-index:100;height:32px;border:1px solid var(--rule);background:var(--paper);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;color:var(--ink);border-radius:0;font-family:inherit}
+/* ── Unified toolbar buttons ─────────────────────────────────────────────── */
+.theme-toggle,.stats-toggle,.sound-toggle{position:fixed;z-index:100;height:32px;border:1px solid var(--rule);background:var(--paper);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;color:var(--ink);border-radius:0;font-family:inherit;box-sizing:border-box}
 /* Bottom row (icons only) */
 .theme-toggle,.sound-toggle{width:32px;top:54px}
 .theme-toggle{right:16px}.sound-toggle{right:54px}
 /* Top row (labeled) — Statistik next to Wochencode */
-.stats-toggle{top:14px;right:16px;padding:0 14px;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;color:var(--ink)}
+.stats-toggle{top:14px;right:16px;padding:0 14px;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:var(--ink)}
 .theme-toggle:hover,.stats-toggle:hover,.sound-toggle:hover{border-color:var(--ink);background:var(--pure)}
 .stats-toggle:hover{background:var(--ink);color:var(--paper)}
 .sound-toggle.muted{opacity:.4}
@@ -412,8 +413,12 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
 .challenge-done::before{content:"◢ "}
 
 /* ── User badge ───────────────────────────────────────────────────────────── */
-#userBadge{position:fixed!important;top:54px!important;right:90px!important;background:var(--paper)!important;color:var(--ink)!important;padding:8px 14px!important;border-radius:0!important;border:1px solid var(--rule)!important;font-size:11px!important;letter-spacing:0.04em!important;font-weight:500!important;z-index:100!important;display:flex!important;align-items:center!important;gap:8px!important;cursor:pointer!important;height:32px!important;box-sizing:border-box!important}
-#userBadge:hover{border-color:var(--ink)!important}
+#userBadge{position:fixed!important;top:54px!important;right:90px!important;background:var(--paper)!important;color:var(--ink)!important;padding:0 14px!important;border-radius:0!important;border:1px solid var(--rule)!important;font-size:11px!important;letter-spacing:0.14em!important;font-weight:500!important;text-transform:uppercase!important;z-index:100!important;display:flex!important;align-items:center!important;gap:10px!important;cursor:pointer!important;height:32px!important;box-sizing:border-box!important;font-family:inherit!important}
+#userBadge:hover{border-color:var(--ink)!important;background:var(--pure)!important}
+#userBadge .ub-dot{width:6px;height:6px;border-radius:50%;background:var(--success);flex-shrink:0;display:inline-block}
+#userBadge .ub-name{font-size:11px;letter-spacing:0.06em;text-transform:none;font-weight:500;color:var(--ink)}
+#userBadge .ub-arrow{font-size:8px;color:var(--mid);margin-left:2px}
+#userMenu{font-family:inherit}
 
 @media(max-width:600px){
   .header{padding:32px 24px 24px}
@@ -446,7 +451,7 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
 </button>
 <!-- Stats toggle -->
 <button class="stats-toggle" id="statsBtn" onclick="toggleStats()" title="Statistik & Verlauf">
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="14" width="4" height="7" rx="0"/><rect x="10" y="9" width="4" height="12" rx="0"/><rect x="16" y="4" width="4" height="17" rx="0"/></svg>
+  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="20" x2="4" y2="14"/><line x1="12" y1="20" x2="12" y2="10"/><line x1="20" y1="20" x2="20" y2="4"/></svg>
   <span class="stats-label">Statistik</span>
 </button>
 <button class="sound-toggle" id="soundBtn" onclick="toggleSound()" title="Sound an/aus">
@@ -488,7 +493,7 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
 
 <!-- API Key corner button -->
 <button class="key-btn" id="keyCornerBtn" onclick="openKeyModal()" title="Wochencode eingeben — Anmelden oder Registrieren">
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="8" cy="15" r="4"/><path d="M10.85 12.15 19 4"/><path d="m18 5 2 2"/><path d="m15 8 2 2"/></svg>
   <span class="key-btn-label">Wochencode</span>
 </button>
 
@@ -1253,7 +1258,7 @@ function updateUserBadge(){
   }
   if(!menu){
     menu=document.createElement('div');menu.id='userMenu';
-    menu.style.cssText='position:fixed;top:90px;right:90px;background:var(--paper);border:1px solid var(--ink);min-width:200px;z-index:101;display:none;font-family:inherit';
+    menu.style.cssText='position:fixed;top:94px;right:90px;background:var(--paper);border:1px solid var(--ink);min-width:220px;z-index:101;display:none;font-family:inherit';
     menu.innerHTML=`
       <div style="padding:14px 16px;border-bottom:1px solid var(--rule);background:var(--pure)">
         <div style="font-size:9px;color:var(--mid);letter-spacing:0.18em;text-transform:uppercase;font-weight:500;margin-bottom:4px">◢ Angemeldet als</div>
@@ -1269,7 +1274,7 @@ function updateUserBadge(){
       if(m&&m.style.display==='block'&&!m.contains(e.target)&&e.target.id!=='userBadge')m.style.display='none';
     });
   }
-  badge.innerHTML=`<span style="font-size:12px">👤</span><span>${currentUser.username}</span><span style="font-size:8px;color:var(--mid);margin-left:4px">▾</span>`;
+  badge.innerHTML=`<span class="ub-dot"></span><span class="ub-name">${currentUser.username}</span><span class="ub-arrow">▾</span>`;
   document.getElementById('umUsername').textContent=currentUser.username;
   document.getElementById('umEmail').textContent=currentUser.email||'';
 }
