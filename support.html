@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Physio-Orakel — Nephron.at</title>
-<meta name="description" content="App zur Übung der Physiologie-Wochentests an der Semmelweis Universität Budapest.">
+<title>Unterstützung — Nephron.at</title>
+<meta name="description" content="Nephron.at unterstützen — ein privates Lernprojekt eines Studierenden.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -18,7 +18,7 @@
   --rule: #D8D6D1;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; }
+html, body { min-height: 100%; }
 body {
   font-family: "Helvetica Neue", "Inter", Arial, sans-serif;
   font-feature-settings: "tnum" 1;
@@ -30,10 +30,11 @@ body {
   line-height: 1.4;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 a { color: inherit; text-decoration: none; }
+strong { font-weight: 600; }
 
-/* ─── Nav ──────────────────────────────────────── */
 .nav {
   border-bottom: 1px solid var(--rule);
   padding: 18px 60px;
@@ -44,7 +45,7 @@ a { color: inherit; text-decoration: none; }
 }
 .nav-brand { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
 .nav-brand span { color: var(--red); }
-.nav-links { display: flex; gap: 32px; }
+.nav-links { display: flex; gap: 32px; flex-wrap: wrap; }
 .nav-links a {
   font-size: 11px;
   letter-spacing: 0.15em;
@@ -57,12 +58,8 @@ a { color: inherit; text-decoration: none; }
 .nav-links a:hover, .nav-links a.active { color: var(--ink); }
 .nav-links a.active::before { content: "◢ "; color: var(--red); }
 
-/* ─── Main ─────────────────────────────────────── */
 main {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   padding: 80px 60px;
   max-width: 1200px;
   width: 100%;
@@ -80,55 +77,77 @@ main {
 .marker::before { content: "◢ "; }
 .headline {
   font-weight: 500;
-  font-size: 88px;
-  line-height: 0.92;
-  letter-spacing: -0.045em;
-  margin-bottom: 48px;
-  text-wrap: pretty;
-}
-
-.body-row {
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 32px;
-  max-width: 900px;
+  font-size: 64px;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
   margin-bottom: 56px;
-}
-.body-meta {
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--mid);
-  font-weight: 500;
-  padding-top: 6px;
-}
-.body-text {
-  font-size: 18px;
-  line-height: 1.55;
-  color: var(--ink);
   text-wrap: pretty;
 }
 
-.cta-row {
+.support-grid {
   display: grid;
   grid-template-columns: 200px 1fr;
   gap: 32px;
   max-width: 900px;
 }
-.cta-meta {
+.support-meta {
   font-size: 10px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--mid);
   font-weight: 500;
-  padding-top: 18px;
+  padding-top: 4px;
 }
-.btn-primary {
+.support-text {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--ink);
+}
+.support-text p { margin-bottom: 16px; }
+.support-text p:last-child { margin-bottom: 0; }
+
+.cta-block {
+  margin-top: 48px;
+  padding: 32px;
+  border: 1px solid var(--ink);
+  background: var(--pure);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.cta-text {
+  flex: 1;
+  min-width: 240px;
+}
+.cta-amount {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mid);
+  font-weight: 500;
+  margin-bottom: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.cta-amount::before { content: "◢ "; color: var(--red); }
+.cta-headline {
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+.cta-sub {
   font-size: 12px;
-  letter-spacing: 0.12em;
+  color: var(--mid);
+  letter-spacing: 0.02em;
+}
+.btn-paypal {
+  font-size: 12px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   font-weight: 500;
-  padding: 18px 32px;
+  padding: 16px 28px;
   background: var(--ink);
   color: var(--paper);
   border: 1px solid var(--ink);
@@ -136,10 +155,20 @@ main {
   transition: background 0.15s;
   font-family: inherit;
   display: inline-block;
+  white-space: nowrap;
 }
-.btn-primary:hover { background: var(--red); border-color: var(--red); }
+.btn-paypal:hover { background: var(--red); border-color: var(--red); }
+.btn-paypal::after { content: " →"; }
 
-/* ─── Footer ───────────────────────────────────── */
+.note {
+  margin-top: 32px;
+  font-size: 11px;
+  color: var(--mid);
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  max-width: 700px;
+}
+
 footer {
   border-top: 1px solid var(--rule);
   padding: 16px 60px;
@@ -154,15 +183,15 @@ footer {
   font-variant-numeric: tabular-nums;
 }
 
-/* ─── Mobile ───────────────────────────────────── */
 @media (max-width: 800px) {
   .nav { padding: 14px 24px; }
-  .nav-links { gap: 18px; }
+  .nav-links { gap: 14px; }
   .nav-links a { font-size: 10px; letter-spacing: 0.1em; }
   main { padding: 48px 24px; }
-  .headline { font-size: 48px; }
-  .body-row, .cta-row { grid-template-columns: 1fr; gap: 12px; }
-  .body-text { font-size: 16px; }
+  .headline { font-size: 40px; }
+  .support-grid { grid-template-columns: 1fr; gap: 12px; }
+  .cta-block { flex-direction: column; align-items: flex-start; padding: 24px; }
+  .btn-paypal { width: 100%; text-align: center; }
   footer { padding: 14px 24px; flex-direction: column; gap: 8px; align-items: flex-start; }
 }
 </style>
@@ -173,32 +202,41 @@ footer {
   <div class="nav-brand">Nephron<span>.at</span></div>
   <div class="nav-links">
     <a href="/">N° 01 Mission</a>
-    <a href="/projekt.html" class="active">N° 02 Physio-Orakel</a>
+    <a href="/projekt.html">N° 02 Physio-Orakel</a>
     <a href="/disclaimer.html">N° 03 Disclaimer</a>
-    <a href="/support.html">N° 04 Unterstützung</a>
+    <a href="/support.html" class="active">N° 04 Unterstützung</a>
   </div>
 </nav>
 
 <main>
-  <div class="marker">N° 02 — Projekt</div>
-  <h1 class="headline">Physio-Orakel.</h1>
-  <div class="body-row">
-    <div class="body-meta">Beschreibung</div>
-    <div class="body-text">
-      Eine Anwendung zur Übung der Physiologie-Wochentests an der <strong>Semmelweis Universität Budapest</strong>. KI-generierte Multiple-Choice-Fragen aus deinen Vorlesungstranskripten und dem Altfragenpool, kombiniert mit einer vollständigen Rigorosum-Simulation.
+  <div class="marker">N° 04 — Unterstützung</div>
+  <h1 class="headline">Danke,<br/>dass du das Projekt<br/>unterstützen willst.</h1>
+
+  <div class="support-grid">
+    <div class="support-meta">Hintergrund</div>
+    <div class="support-text">
+      <p>Nephron.at ist ein <strong>privates, nicht-kommerzielles Lernprojekt</strong> — gebaut von einem Medizinstudenten, ohne Werbung, ohne Tracking, ohne Bezahlschranke.</p>
+      <p>Wenn dir das Tool hilft und du die laufenden Kosten (Server, KI-API, Domain) mittragen möchtest, freue ich mich über jede freiwillige Unterstützung.</p>
     </div>
   </div>
-  <div class="cta-row">
-    <div class="cta-meta">Anwendung</div>
-    <div>
-      <a href="/app/" class="btn-primary">Anwendung starten →</a>
+
+  <div class="cta-block">
+    <div class="cta-text">
+      <div class="cta-amount">PayPal · Beliebiger Betrag</div>
+      <div class="cta-headline">Peer Hechenberger</div>
+      <div class="cta-sub">paypal.me/PeerHechenberger</div>
     </div>
+    <a href="https://paypal.me/PeerHechenberger" target="_blank" rel="noopener" class="btn-paypal">Jetzt unterstützen</a>
   </div>
+
+  <p class="note">
+    Jeder Beitrag fließt direkt in den Betrieb von Nephron.at — Anthropic-API-Kosten, Cloudflare-Hosting, Domain. Kein Ziel, kein Druck. Wenn nichts geht, ist das Projekt trotzdem für dich da.
+  </p>
 </main>
 
 <footer>
-  <div>◢ Nephron.at — Physio-Orakel</div>
-  <div>Est. 2026 · Budapest</div>
+  <div>◢ Nephron.at — Unterstützung</div>
+  <div>Est. 2026 · Budapest · Wien</div>
 </footer>
 
 </body>
