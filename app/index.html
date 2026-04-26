@@ -783,8 +783,10 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
       </div>
     </div>
 
+    <div id="s2TopicSection">
     <div class="section-label" id="topicSectionLabel">Themenbereiche</div>
     <div id="topicArea"></div>
+    </div>
 
     <div id="diffSection">
     <div class="section-label">Schwierigkeitsgrad</div>
@@ -1097,16 +1099,19 @@ function goToConfigWith(mode){
   const altSubMode=document.getElementById('altSubMode');
   const diffSec=document.getElementById('diffSection');
   const rigoSec=document.getElementById('s2RigorosumSection');
+  const topicSec=document.getElementById('s2TopicSection');
   if(modusSec)modusSec.style.display='';
   if(diffSec)diffSec.style.display='';
   if(rigoSec)rigoSec.style.display='';
+  if(topicSec)topicSec.style.display='';
 
   if(mode==='skript'){
-    // Übungstest aus eigenen Unterlagen — KI mode, hide source toggle, hide altSub, hide rigorosum
+    // Übungstest aus eigenen Unterlagen — KI mode, hide source toggle, hide altSub, hide rigorosum, hide topics
     setSourceMode('ki');
     if(modusSec)modusSec.style.display='none';
     if(altSubMode)altSubMode.style.display='none';
     if(rigoSec)rigoSec.style.display='none';
+    if(topicSec)topicSec.style.display='none';
   }else if(mode==='altfragen'){
     // Altfragen — hide source toggle (already in alt mode), hide rigorosum
     if(state.poolText)setSourceMode('alt');
