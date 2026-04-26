@@ -643,8 +643,8 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
         </div>
         <div class="mode-card" onclick="chooseMode('rigorosum')">
           <div class="mc-badge">N° 04</div>
-          <div class="mc-title">Rigorosum-Simulation</div>
-          <div class="mc-desc">40 Fragen, 60 Minuten Timer, kein Zurückblättern.</div>
+          <div class="mc-title">KI-Übung &amp; Rigorosum</div>
+          <div class="mc-desc">Themenkatalog der Universität — einzelne Themen üben oder volle Rigorosum-Simulation.</div>
         </div>
       </div>
       <div style="margin-top:1.5rem;text-align:right;display:flex;gap:.5rem;justify-content:flex-end">
@@ -710,8 +710,8 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
     <!-- Rigorosum (shown when N° 04 chosen) -->
     <div id="modeRigorosum" style="display:none">
       <button onclick="backToMenu()" style="font-size:10px;padding:6px 12px;background:transparent;border:1px solid var(--rule);color:var(--mid);cursor:pointer;font-family:inherit;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;margin-bottom:24px;transition:all .15s" onmouseover="this.style.borderColor='var(--ink)';this.style.color='var(--ink)'" onmouseout="this.style.borderColor='var(--rule)';this.style.color='var(--mid)'">← Zurück</button>
-      <div class="section-label">Rigorosum-Simulation</div>
-      <p style="font-size:13px;color:var(--ink);line-height:1.6;margin:8px 0 16px;max-width:600px">40 Multiple-Choice-Fragen, 60 Minuten Timer, kein Zurückblättern. Eine vollständige Prüfungssimulation aus dem Semmelweis-Rigorosum-Katalog.</p>
+      <div class="section-label">KI-Übung &amp; Rigorosum</div>
+      <p style="font-size:14px;color:var(--ink);line-height:1.6;margin:8px 0 24px;max-width:640px">Kein Material nötig — die KI generiert Fragen aus dem <strong>offiziellen Semmelweis-Themenkatalog</strong>. Du kannst einzelne Themenbereiche filtern und üben oder die volle <strong>Rigorosum-Simulation</strong> starten (40 Fragen, 60 Minuten Timer, kein Zurückblättern).</p>
       <div style="text-align:center;margin-top:2rem">
         <button class="btn btn-primary btn-large" onclick="goToConfigWith('rigorosum')">Weiter zur Konfiguration</button>
       </div>
@@ -745,6 +745,7 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
   </div>
   <div class="container">
 
+    <div id="s2ModusSection">
     <div class="section-label">Modus</div>
     <div class="source-switch">
       <button class="ssw active" id="swKI" onclick="setSourceMode('ki')">KI-Generierung</button>
@@ -752,6 +753,7 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
     </div>
     <div id="noPoolWarning" style="display:none;font-size:.8rem;color:var(--red2);margin-top:.5rem;padding:.5rem .8rem;background:rgba(90,16,32,.3);border-radius:5px;border:1px solid var(--red)">
       Kein Altfragenpool hinterlegt. Bitte zuerst auf Screen 1 einen Pool hochladen.
+    </div>
     </div>
 
     <div id="altSubMode" style="display:none">
@@ -804,6 +806,7 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
     </div>
 
     <!-- Exam mode -->
+    <div id="s2RigorosumSection">
     <div class="section-label">Rigorosum-Simulation</div>
     <div class="mode-grid">
       <div class="mode-card" id="examModeCard" onclick="toggleExamMode()" style="grid-column:1/-1">
@@ -811,6 +814,7 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
         <div class="mc-title">Rigorosum-Simulation</div>
         <div class="mc-desc">40 Fragen, 60 Minuten Timer, kein Zurückblättern</div>
       </div>
+    </div>
     </div>
 
     <div class="section-label">Zusammenfassung</div>
@@ -1009,7 +1013,7 @@ const MAX_CONTEXT_CHARS=120000;
 // ── State ─────────────────────────────────────────────────────────────────────
 const state={
   fileText:'',fileName:'',
-  wtText:'',isWochentest:false,
+  wtText:'',isWochentest:false,flowMode:'',
   poolText:'',poolName:'',
   sourceMode:'ki',
   altMode:'exact',
@@ -1074,19 +1078,38 @@ function chooseMode(mode){
   window.scrollTo(0,0);
 }
 function goToConfigWith(mode){
-  // Pre-configure state based on chosen mode
+  // Pre-configure state and adjust S2 visibility based on chosen mode
   state.examMode=false;
-  if(mode==='altfragen'){
+  state.flowMode=mode;
+
+  // Reset to all visible first
+  const modusSec=document.getElementById('s2ModusSection');
+  const altSubMode=document.getElementById('altSubMode');
+  const diffSec=document.getElementById('diffSection');
+  const rigoSec=document.getElementById('s2RigorosumSection');
+  if(modusSec)modusSec.style.display='';
+  if(diffSec)diffSec.style.display='';
+  if(rigoSec)rigoSec.style.display='';
+
+  if(mode==='skript'){
+    // Übungstest aus eigenen Unterlagen — KI mode, hide source toggle, hide altSub, hide rigorosum
+    setSourceMode('ki');
+    if(modusSec)modusSec.style.display='none';
+    if(altSubMode)altSubMode.style.display='none';
+    if(rigoSec)rigoSec.style.display='none';
+  }else if(mode==='altfragen'){
+    // Altfragen — hide source toggle (already in alt mode), hide rigorosum
     if(state.poolText)setSourceMode('alt');
     else setSourceMode('ki');
+    if(modusSec)modusSec.style.display='none';
+    if(rigoSec)rigoSec.style.display='none';
   }else if(mode==='rigorosum'){
+    // KI-Übung & Rigorosum — KI mode without script, hide source toggle, hide altSub, KEEP rigorosum option
     setSourceMode('ki');
-    state.examMode=true;
-    // Trigger UI updates for exam mode
-    setTimeout(()=>{
-      const card=document.getElementById('examModeCard');
-      if(card&&!card.classList.contains('selected')){toggleExamMode();}
-    },50);
+    if(modusSec)modusSec.style.display='none';
+    if(altSubMode)altSubMode.style.display='none';
+    // Optionally clear loaded script so questions come from catalog
+    state.fileText='';state.fileName='';
   }else{
     setSourceMode('ki');
   }
