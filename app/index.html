@@ -57,17 +57,21 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
 @media(max-width:600px){.back-home-label{display:none}.back-home{padding:0;width:32px;justify-content:center}}
 
 /* ── Top toolbar buttons ──────────────────────────────────────────────────── */
-/* ── Unified toolbar buttons ─────────────────────────────────────────────── */
-.theme-toggle,.stats-toggle,.sound-toggle{position:fixed;z-index:100;height:32px;border:1px solid var(--rule);background:var(--paper);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;color:var(--ink);border-radius:0;font-family:inherit;box-sizing:border-box}
-/* Bottom row (icons only) */
-.theme-toggle,.sound-toggle{width:32px;top:54px}
-.theme-toggle{right:16px}.sound-toggle{right:54px}
-/* Top row (labeled) — Statistik next to Wochencode */
-.stats-toggle{top:14px;right:16px;padding:0 14px;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:var(--ink)}
-.theme-toggle:hover,.stats-toggle:hover,.sound-toggle:hover{border-color:var(--ink);background:var(--pure)}
-.stats-toggle:hover{background:var(--ink);color:var(--paper)}
+/* ── Unified toolbar (all action buttons in one row with shared borders) ── */
+.toolbar{position:fixed;top:14px;right:16px;z-index:100;display:flex;align-items:stretch;height:32px;border:1px solid var(--ink);background:var(--paper);font-family:inherit}
+.toolbar > *{
+  border:none;border-left:1px solid var(--rule);border-radius:0;background:var(--paper);
+  height:100%;display:flex;align-items:center;justify-content:center;cursor:pointer;
+  padding:0 14px;color:var(--ink);transition:all .15s;font-family:inherit;box-sizing:border-box;
+  position:static!important;top:auto!important;right:auto!important;left:auto!important;width:auto!important;
+}
+.toolbar > *:first-child{border-left:none}
+.toolbar > *:hover{background:var(--pure)}
+.theme-toggle,.sound-toggle{padding:0!important;width:32px!important}
+.stats-toggle{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;gap:8px}
+.stats-toggle:hover{background:var(--ink)!important;color:var(--paper)}
 .sound-toggle.muted{opacity:.4}
-@media(max-width:600px){.stats-toggle{padding:0;width:32px}.stats-toggle .stats-label{display:none}}
+@media(max-width:600px){.stats-toggle{padding:0!important;width:32px!important}.stats-toggle .stats-label{display:none}}
 
 /* ── Header ───────────────────────────────────────────────────────────────── */
 .header{text-align:left;padding:48px 60px 32px;border-bottom:1px solid var(--rule);position:relative;background:var(--paper)}
@@ -386,12 +390,12 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
 .key-input-wrap input:focus{border-color:var(--swiss-red)}
 .key-input-wrap input.code-valid{border-color:var(--success);background:var(--success-bg);color:var(--success);transition:all .25s ease}
 .key-status{font-size:10px;height:14px;margin-bottom:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:500}
-.key-btn{position:fixed;top:14px;right:130px;z-index:100;height:32px;padding:0 14px;border-radius:0;border:1px solid var(--swiss-red);background:var(--paper);cursor:pointer;display:flex;align-items:center;gap:8px;justify-content:center;font-size:11px;color:var(--swiss-red);-webkit-app-region:no-drag;transition:all .15s;font-family:inherit;letter-spacing:0.12em;text-transform:uppercase;font-weight:500}
-.key-btn:hover{background:var(--swiss-red);color:var(--paper);transform:none;border-color:var(--swiss-red)}
-.key-btn.has-key{color:var(--success);border-color:var(--success)}
-.key-btn.has-key:hover{background:var(--success);color:var(--paper);border-color:var(--success)}
-.key-btn-label{font-size:10px;letter-spacing:0.14em;font-weight:500}
-@media(max-width:600px){.key-btn-label{display:none}.key-btn{right:90px;padding:0;width:32px}}
+.toolbar .key-btn{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;gap:8px;color:var(--swiss-red)}
+.toolbar .key-btn:hover{background:var(--swiss-red)!important;color:var(--paper)!important}
+.toolbar .key-btn.has-key{color:var(--success)}
+.toolbar .key-btn.has-key:hover{background:var(--success)!important;color:var(--paper)!important}
+.key-btn-label{font-size:11px;letter-spacing:0.14em;font-weight:500}
+@media(max-width:600px){.key-btn-label{display:none}.toolbar .key-btn{padding:0!important;width:32px!important}}
 
 /* Inputs (used in admin modals etc.) */
 .key-panel input[type="text"],.key-panel input[type="email"],.key-panel input[type="password"]{
@@ -413,10 +417,10 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
 .challenge-done::before{content:"◢ "}
 
 /* ── User badge ───────────────────────────────────────────────────────────── */
-#userBadge{position:fixed!important;top:54px!important;right:90px!important;background:var(--paper)!important;color:var(--ink)!important;padding:0 14px!important;border-radius:0!important;border:1px solid var(--rule)!important;font-size:11px!important;letter-spacing:0.14em!important;font-weight:500!important;text-transform:uppercase!important;z-index:100!important;display:flex!important;align-items:center!important;gap:10px!important;cursor:pointer!important;height:32px!important;box-sizing:border-box!important;font-family:inherit!important}
-#userBadge:hover{border-color:var(--ink)!important;background:var(--pure)!important}
+.toolbar #userBadge{font-size:11px;letter-spacing:0.06em;font-weight:500;color:var(--ink);gap:10px;text-transform:none}
+.toolbar #userBadge:hover{background:var(--pure)}
 #userBadge .ub-dot{width:6px;height:6px;border-radius:50%;background:var(--success);flex-shrink:0;display:inline-block}
-#userBadge .ub-name{font-size:11px;letter-spacing:0.06em;text-transform:none;font-weight:500;color:var(--ink)}
+#userBadge .ub-name{font-size:11px;letter-spacing:0.04em;font-weight:500;color:var(--ink)}
 #userBadge .ub-arrow{font-size:8px;color:var(--mid);margin-left:2px}
 #userMenu{font-family:inherit}
 
@@ -444,20 +448,25 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
   <span style="font-size:13px;line-height:1">←</span>
   <span class="back-home-label">Nephron<span style="color:var(--swiss-red)">.at</span></span>
 </a>
-<!-- Theme toggle -->
-<button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" title="Hell/Dunkel">
-  <svg id="sunIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-  <svg id="moonIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-</button>
-<!-- Stats toggle -->
-<button class="stats-toggle" id="statsBtn" onclick="toggleStats()" title="Statistik & Verlauf">
-  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="20" x2="4" y2="14"/><line x1="12" y1="20" x2="12" y2="10"/><line x1="20" y1="20" x2="20" y2="4"/></svg>
-  <span class="stats-label">Statistik</span>
-</button>
-<button class="sound-toggle" id="soundBtn" onclick="toggleSound()" title="Sound an/aus">
-  <svg id="soundOn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-  <svg id="soundOff" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" style="display:none"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-</button>
+<!-- Unified toolbar -->
+<div class="toolbar" id="topToolbar">
+  <button class="key-btn" id="keyCornerBtn" onclick="openKeyModal()" title="Wochencode eingeben — Anmelden oder Registrieren">
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="8" cy="15" r="4"/><path d="M10.85 12.15 19 4"/><path d="m18 5 2 2"/><path d="m15 8 2 2"/></svg>
+    <span class="key-btn-label">Wochencode</span>
+  </button>
+  <button class="stats-toggle" id="statsBtn" onclick="toggleStats()" title="Statistik & Verlauf">
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="20" x2="4" y2="14"/><line x1="12" y1="20" x2="12" y2="10"/><line x1="20" y1="20" x2="20" y2="4"/></svg>
+    <span class="stats-label">Statistik</span>
+  </button>
+  <button class="sound-toggle" id="soundBtn" onclick="toggleSound()" title="Sound an/aus">
+    <svg id="soundOn" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+    <svg id="soundOff" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" style="display:none"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+  </button>
+  <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" title="Hell/Dunkel">
+    <svg id="sunIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    <svg id="moonIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+</div>
 <div class="toast-container" id="toastContainer"></div>
 
 <!-- Auth modal (Login + Register) -->
@@ -491,11 +500,7 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
   </div>
 </div>
 
-<!-- API Key corner button -->
-<button class="key-btn" id="keyCornerBtn" onclick="openKeyModal()" title="Wochencode eingeben — Anmelden oder Registrieren">
-  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="8" cy="15" r="4"/><path d="M10.85 12.15 19 4"/><path d="m18 5 2 2"/><path d="m15 8 2 2"/></svg>
-  <span class="key-btn-label">Wochencode</span>
-</button>
+<!-- (Wochencode button now lives inside #topToolbar above) -->
 
 <!-- Altfragenpool Admin modal -->
 <div class="key-overlay" id="poolAdminOverlay" style="display:none">
@@ -1251,14 +1256,22 @@ function updateUserBadge(){
   let menu=document.getElementById('userMenu');
   if(!currentUser){if(badge)badge.remove();if(menu)menu.remove();return}
   if(!badge){
-    badge=document.createElement('div');badge.id='userBadge';
+    badge=document.createElement('button');badge.id='userBadge';
     badge.title='Konto-Menü';
     badge.onclick=(e)=>{e.stopPropagation();toggleUserMenu()};
-    document.body.appendChild(badge);
+    // Insert into toolbar AFTER Wochencode (between key + statistik) — kept first means leftmost
+    const tb=document.getElementById('topToolbar');
+    if(tb){
+      const keyBtn=document.getElementById('keyCornerBtn');
+      if(keyBtn&&keyBtn.nextSibling)tb.insertBefore(badge,keyBtn.nextSibling);
+      else tb.insertBefore(badge,tb.firstChild);
+    }else{
+      document.body.appendChild(badge);
+    }
   }
   if(!menu){
     menu=document.createElement('div');menu.id='userMenu';
-    menu.style.cssText='position:fixed;top:94px;right:90px;background:var(--paper);border:1px solid var(--ink);min-width:220px;z-index:101;display:none;font-family:inherit';
+    menu.style.cssText='position:fixed;top:54px;right:16px;background:var(--paper);border:1px solid var(--ink);min-width:240px;z-index:101;display:none;font-family:inherit';
     menu.innerHTML=`
       <div style="padding:14px 16px;border-bottom:1px solid var(--rule);background:var(--pure)">
         <div style="font-size:9px;color:var(--mid);letter-spacing:0.18em;text-transform:uppercase;font-weight:500;margin-bottom:4px">◢ Angemeldet als</div>
