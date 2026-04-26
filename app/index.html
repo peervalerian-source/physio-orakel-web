@@ -163,9 +163,10 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
 .stc-id{font-weight:600;color:var(--swiss-red);margin-right:6px;font-size:11px;font-variant-numeric:tabular-nums;letter-spacing:0.04em}
 
 /* ── Mode cards ───────────────────────────────────────────────────────────── */
-.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule)}
-.mode-card{padding:24px 22px;border-radius:0;border:none;background:var(--pure);cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;border:none}
+.mode-card{padding:24px 22px;border-radius:0;border:1px solid var(--rule);background:var(--pure);cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
 .mode-card+.mode-card{border-left:1px solid var(--rule)}
+.mode-card:hover{border-color:var(--ink)}
 .mode-card::before{display:none}
 .mode-card:hover{background:var(--paper)}
 .mode-card.selected{background:var(--ink);color:var(--paper)}
@@ -429,7 +430,7 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
   .logo{font-size:48px}
   .container{padding:32px 24px}
   .mode-grid,.altmode-grid{grid-template-columns:1fr}
-  .mode-card+.mode-card,.altmode-card+.altmode-card{border-left:none;border-top:1px solid var(--rule)}
+  .mode-card+.mode-card,.altmode-card+.altmode-card{border-left:1px solid var(--rule)}
   .bi-label{width:130px;font-size:11px}
   .heatmap-label{width:120px}
   .achievement-grid{grid-template-columns:1fr 1fr}
@@ -852,7 +853,6 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
     <div class="logo" style="font-size:1.7rem;font-family:'DM Serif Display',serif"><span class="logo-phys">Physio</span><span class="logo-dot">·</span><span class="logo-ora">Orakel</span></div>
     <div style="position:relative;width:320px;height:160px;margin:0 auto">
       <canvas id="ekgCanvas" width="320" height="160" style="width:100%;height:100%;display:block"></canvas>
-      <div id="ekgBpm" style="position:absolute;bottom:8px;right:12px;font-family:'DM Serif Display',serif;font-size:1.1rem;color:rgba(212,43,43,.8)">72 <span style="font-size:.65rem;font-family:'Inter',sans-serif;letter-spacing:.05em;color:rgba(212,43,43,.5)">BPM</span></div>
     </div>
     <div class="spinner"></div>
     <div class="loading-text serif" id="loadingText"></div>
