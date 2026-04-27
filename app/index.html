@@ -1283,6 +1283,13 @@ function updateUserBadge(){
         <div id="umUsername" style="font-size:13px;color:var(--ink);font-weight:600;letter-spacing:0.01em"></div>
         <div id="umEmail" style="font-size:11px;color:var(--mid);margin-top:2px;letter-spacing:0.01em"></div>
       </div>
+      <div style="padding:14px 16px;border-bottom:1px solid var(--rule)">
+        <div style="font-size:9px;color:var(--mid);letter-spacing:0.18em;text-transform:uppercase;font-weight:500;margin-bottom:8px">◢ Anrede</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule)">
+          <button id="genderM" onclick="setUserGender('m')" style="padding:8px 10px;background:transparent;border:none;border-right:1px solid var(--rule);color:var(--ink);font-family:inherit;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:all .15s">Männlich</button>
+          <button id="genderF" onclick="setUserGender('f')" style="padding:8px 10px;background:transparent;border:none;color:var(--ink);font-family:inherit;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:all .15s">Weiblich</button>
+        </div>
+      </div>
       <button id="umLogout" onclick="confirmLogout()" style="width:100%;padding:14px 16px;background:transparent;border:none;color:var(--ink);text-align:left;font-family:inherit;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:all .15s;border-bottom:1px solid var(--rule)" onmouseover="this.style.background='var(--swiss-red)';this.style.color='var(--paper)'" onmouseout="this.style.background='transparent';this.style.color='var(--ink)'">→ Abmelden</button>
       <button onclick="toggleUserMenu()" style="width:100%;padding:10px 16px;background:transparent;border:none;color:var(--mid);text-align:left;font-family:inherit;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;cursor:pointer">Schließen</button>
     `;
@@ -1295,6 +1302,15 @@ function updateUserBadge(){
   badge.innerHTML=`<span class="ub-dot"></span><span class="ub-name">${currentUser.username}</span><span class="ub-arrow">▾</span>`;
   document.getElementById('umUsername').textContent=currentUser.username;
   document.getElementById('umEmail').textContent=currentUser.email||'';
+  // Sync gender toggle visual state
+  const g=getUserGender();
+  const mBtn=document.getElementById('genderM'),fBtn=document.getElementById('genderF');
+  if(mBtn&&fBtn){
+    mBtn.style.background=g==='m'?'var(--ink)':'transparent';
+    mBtn.style.color=g==='m'?'var(--paper)':'var(--ink)';
+    fBtn.style.background=g==='f'?'var(--ink)':'transparent';
+    fBtn.style.color=g==='f'?'var(--paper)':'var(--ink)';
+  }
 }
 function toggleUserMenu(){
   const m=document.getElementById('userMenu');
@@ -2303,19 +2319,19 @@ function getLevel(xp){return Math.floor((xp||0)/XP_PER_LEVEL)+1}
 
 // Medical career ranks
 const RANKS=[
-  {min:1, max:2,  title:'Erstsemestler',          icon:'🎓', color:'#94a3b8'},
-  {min:3, max:4,  title:'Medizinstudent',          icon:'📚', color:'#94a3b8'},
-  {min:5, max:6,  title:'Pflegepraktikant',        icon:'🩹', color:'#7dd3fc'},
-  {min:7, max:9,  title:'Famulant',                icon:'🩺', color:'#38bdf8'},
-  {min:10,max:12, title:'KPJ-Student',             icon:'📋', color:'#0ea5e9'},
-  {min:13,max:15, title:'Turnusarzt',              icon:'⚕️', color:'#0284c7'},
-  {min:16,max:19, title:'Assistenzarzt',           icon:'💉', color:'#3b82f6'},
-  {min:20,max:24, title:'Facharzt',                icon:'🔬', color:'#6366f1'},
-  {min:25,max:29, title:'Oberarzt',                icon:'🏥', color:'#8b5cf6'},
-  {min:30,max:39, title:'Leitender Oberarzt',      icon:'⭐', color:'#a855f7'},
-  {min:40,max:49, title:'Chefarzt',                icon:'👑', color:'#c026d3'},
-  {min:50,max:74, title:'Primarius',               icon:'🏆', color:'#e11d48'},
-  {min:75,max:Infinity, title:'Professor emeritus',icon:'📜', color:'#f59e0b'},
+  {min:1, max:2,  m:'Erstsemestler',         f:'Erstsemestlerin',     icon:'🎓', color:'#94a3b8'},
+  {min:3, max:4,  m:'Medizinstudent',        f:'Medizinstudentin',    icon:'📚', color:'#94a3b8'},
+  {min:5, max:6,  m:'Pflegepraktikant',      f:'Pflegepraktikantin',  icon:'🩹', color:'#7dd3fc'},
+  {min:7, max:9,  m:'Famulant',              f:'Famulantin',          icon:'🩺', color:'#38bdf8'},
+  {min:10,max:12, m:'KPJ-Student',           f:'KPJ-Studentin',       icon:'📋', color:'#0ea5e9'},
+  {min:13,max:15, m:'Turnusarzt',            f:'Turnusärztin',        icon:'⚕️', color:'#0284c7'},
+  {min:16,max:19, m:'Assistenzarzt',         f:'Assistenzärztin',     icon:'💉', color:'#3b82f6'},
+  {min:20,max:24, m:'Facharzt',              f:'Fachärztin',          icon:'🔬', color:'#6366f1'},
+  {min:25,max:29, m:'Oberarzt',              f:'Oberärztin',          icon:'🏥', color:'#8b5cf6'},
+  {min:30,max:39, m:'Leitender Oberarzt',    f:'Leitende Oberärztin', icon:'⭐', color:'#a855f7'},
+  {min:40,max:49, m:'Chefarzt',              f:'Chefärztin',          icon:'👑', color:'#c026d3'},
+  {min:50,max:74, m:'Primarius',             f:'Primaria',            icon:'🏆', color:'#e11d48'},
+  {min:75,max:Infinity, m:'Professor emeritus', f:'Professorin emerita', icon:'📜', color:'#f59e0b'},
 ];
 // Special VIP badges (shown in parentheses alongside normal rank)
 const VIP_BADGES={
@@ -2325,11 +2341,49 @@ function getVipBadge(username){
   if(!username)return null;
   return VIP_BADGES[username.toLowerCase()]||null;
 }
-function getRank(level,username){
-  return RANKS.find(r=>level>=r.min&&level<=r.max)||RANKS[0];
+
+// Gender detection + storage
+const FEMALE_HINTS=['rose','anna','lisa','marie','lena','sara','sarah','jana','lara','hanna','hannah','sophie','emilia','mia','leah','lia','charlotte','amelie','julia','clara','klara','laura','nina','tanja','emma','isabella','sophia','olivia','mila','luna','elena','viktoria','maja','frida','greta','helena','lucia','marlene','antonia','francesca','maria','ines','elina','noa','fiona','lina','elif','aisha','fatima','katja','nora','paula','romy','melanie','jasmin','vanessa','natalie','alexandra','sandra','stefanie','simone','christina','barbara','susanne','katharina','anna-lena','anna-maria','marlies','ursula','heike'];
+function detectGender(username){
+  if(!username)return 'm';
+  const u=username.toLowerCase();
+  for(const hint of FEMALE_HINTS){if(u.includes(hint))return 'f'}
+  // Common female endings
+  if(/(ina|ette|ica|ella|enka|escha)$/.test(u))return 'f';
+  return 'm';
 }
-function getNextRank(level){
-  return RANKS.find(r=>r.min>level)||null;
+function getUserGender(username){
+  const u=username||(currentUser&&currentUser.username)||'';
+  if(!u)return 'm';
+  const stored=localStorage.getItem('user_gender_'+u.toLowerCase());
+  if(stored==='m'||stored==='f')return stored;
+  return detectGender(u);
+}
+function setUserGender(g){
+  if(!currentUser)return;
+  localStorage.setItem('user_gender_'+currentUser.username.toLowerCase(),g);
+  // Refresh visible UI
+  updateUserBadge();
+  if(document.getElementById('statsOverlay').classList.contains('active'))renderStats();
+  // Update menu radio state
+  const mBtn=document.getElementById('genderM'),fBtn=document.getElementById('genderF');
+  if(mBtn&&fBtn){
+    mBtn.style.background=g==='m'?'var(--ink)':'transparent';
+    mBtn.style.color=g==='m'?'var(--paper)':'var(--ink)';
+    fBtn.style.background=g==='f'?'var(--ink)':'transparent';
+    fBtn.style.color=g==='f'?'var(--paper)':'var(--ink)';
+  }
+}
+
+function getRank(level,username){
+  const r=RANKS.find(x=>level>=x.min&&level<=x.max)||RANKS[0];
+  const g=getUserGender(username);
+  return{...r,title:g==='f'?r.f:r.m};
+}
+function getNextRank(level,username){
+  const r=RANKS.find(x=>x.min>level);if(!r)return null;
+  const g=getUserGender(username);
+  return{...r,title:g==='f'?r.f:r.m};
 }
 function addXP(amount){
   const stats=loadStats();const oldXP=stats.xp||0;const oldLevel=getLevel(oldXP);
@@ -2444,7 +2498,7 @@ function renderGamification(stats){
   // XP section
   const xp=stats.xp||0,level=getLevel(xp),xpInLevel=xp%XP_PER_LEVEL,pctXP=Math.round(xpInLevel/XP_PER_LEVEL*100);
   const uname=currentUser?currentUser.username:null;
-  const rank=getRank(level,uname),nextRank=getNextRank(level);
+  const rank=getRank(level,uname),nextRank=getNextRank(level,uname);
   const xpEl=document.getElementById('xpSection');
   const vip=getVipBadge(uname);
   const vipBadge=vip?` <span style="color:${vip.color};font-size:.7rem;letter-spacing:0.14em;font-weight:600;margin-left:.4rem">(${vip.label})</span>`:'';
