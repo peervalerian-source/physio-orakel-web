@@ -2083,19 +2083,41 @@ function launchBloodRain(){
 function loadStats(){try{return JSON.parse(localStorage.getItem(STATS_KEY)||'{"sessions":[]}')}catch{return{sessions:[]}}}
 function saveStats(data){try{localStorage.setItem(STATS_KEY,JSON.stringify(data))}catch{}scheduleStatsSync()}
 
-// Server stats sync
+// Server stats sync — always preserve highest values (defensive merge)
 let _statsSyncTimer=null;
 function scheduleStatsSync(){
   if(!currentUser)return;
   clearTimeout(_statsSyncTimer);
   _statsSyncTimer=setTimeout(syncStatsToServer,1500);
 }
+function mergeStats(local,remote){
+  const localSessions=(local&&local.sessions)||[];
+  const remoteSessions=(remote&&remote.sessions)||[];
+  // Use whichever sessions array is longer (more history = newer)
+  const sessions=localSessions.length>=remoteSessions.length?localSessions:remoteSessions;
+  return{
+    xp:Math.max((local&&local.xp)||0,(remote&&remote.xp)||0),
+    bestStreak:Math.max((local&&local.bestStreak)||0,(remote&&remote.bestStreak)||0),
+    sessions,
+    achievements:[...new Set([...((remote&&remote.achievements)||[]),...((local&&local.achievements)||[])])],
+    dailyChallengeDone:(local&&local.dailyChallengeDone)||(remote&&remote.dailyChallengeDone)||''
+  };
+}
 async function syncStatsToServer(){
   if(!currentUser)return;
   const tok=getSessionToken();if(!tok)return;
-  const s=loadStats();
   try{
-    await fetch(WORKER_URL+'/stats',{method:'PUT',headers:{'Content-Type':'application/json','X-Session-Token':tok},body:JSON.stringify({xp:s.xp||0,bestStreak:s.bestStreak||0,sessions:s.sessions||[],achievements:s.achievements||[],dailyChallengeDone:s.dailyChallengeDone||''})});
+    // GET first to know server state, then merge with local, then PUT the merged
+    let remote={};
+    try{
+      const r=await fetch(WORKER_URL+'/stats',{headers:{'X-Session-Token':tok}});
+      if(r.ok)remote=await r.json();
+    }catch{}
+    const local=loadStats();
+    const merged=mergeStats(local,remote);
+    // Save merged locally (so local doesn't lose any progress that came from server)
+    try{localStorage.setItem(STATS_KEY,JSON.stringify(merged))}catch{}
+    await fetch(WORKER_URL+'/stats',{method:'PUT',headers:{'Content-Type':'application/json','X-Session-Token':tok},body:JSON.stringify({xp:merged.xp,bestStreak:merged.bestStreak,sessions:merged.sessions,achievements:merged.achievements,dailyChallengeDone:merged.dailyChallengeDone})});
   }catch{}
 }
 async function syncStatsFromServer(){
@@ -2106,21 +2128,30 @@ async function syncStatsFromServer(){
     if(!res.ok)return;
     const remote=await res.json();
     const local=loadStats();
-    // Merge: take server data as authoritative for cross-device sync
-    const merged={
-      xp:Math.max(remote.xp||0,local.xp||0),
-      bestStreak:Math.max(remote.bestStreak||0,local.bestStreak||0),
-      sessions:remote.sessions&&remote.sessions.length?remote.sessions:(local.sessions||[]),
-      achievements:[...new Set([...(remote.achievements||[]),...(local.achievements||[])])],
-      dailyChallengeDone:remote.dailyChallengeDone||local.dailyChallengeDone||''
-    };
+    const merged=mergeStats(local,remote);
     try{localStorage.setItem(STATS_KEY,JSON.stringify(merged))}catch{}
-    // Push merged back if local had newer data
-    if((local.xp||0)>(remote.xp||0)||(local.sessions||[]).length>(remote.sessions||[]).length){
-      syncStatsToServer();
-    }
+    // Push merged back to server so both sides agree
+    syncStatsToServer();
   }catch{}
 }
+
+// Periodic sync every 60s while user is logged in
+setInterval(()=>{if(currentUser)syncStatsToServer()},60000);
+// Sync on page leave (best-effort with sendBeacon-like behavior)
+window.addEventListener('beforeunload',()=>{
+  if(!currentUser)return;
+  const tok=getSessionToken();if(!tok)return;
+  const s=loadStats();
+  try{
+    const blob=new Blob([JSON.stringify({xp:s.xp||0,bestStreak:s.bestStreak||0,sessions:s.sessions||[],achievements:s.achievements||[],dailyChallengeDone:s.dailyChallengeDone||''})],{type:'application/json'});
+    // sendBeacon doesn't support custom headers, so fall back to keepalive fetch
+    fetch(WORKER_URL+'/stats',{method:'PUT',headers:{'Content-Type':'application/json','X-Session-Token':tok},body:blob,keepalive:true});
+  }catch{}
+});
+// Sync when tab becomes visible (in case of stale data on returning)
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible'&&currentUser)syncStatsFromServer();
+});
 
 function saveSessionStats(pct,pts,max,topicScores){
   const stats=loadStats();
@@ -2152,7 +2183,7 @@ async function renderLeaderboard(){
     if(!rows.length){el.innerHTML='<div style="font-size:11px;color:var(--mid);padding:14px;text-align:center;border:1px solid var(--rule);background:var(--pure)">Noch keine Daten</div>';return}
     const myUsername=currentUser?currentUser.username:'';
     const html='<div style="border:1px solid var(--rule);background:var(--pure)">'+rows.map((r,i)=>{
-      const lvl=Math.floor((r.xp||0)/200)+1;
+      const lvl=Math.floor((r.xp||0)/XP_PER_LEVEL)+1;
       const rank=getRank(lvl,r.username);
       const isMe=r.username===myUsername;
       const rankIdx=i+1;
@@ -2251,7 +2282,8 @@ function showToast(icon,title,text,cls=''){
 
 // ── XP & Level system ────────────────────────────────────────────────────────
 function getXP(){const s=loadStats();return s.xp||0}
-function getLevel(xp){return Math.floor((xp||0)/200)+1}
+const XP_PER_LEVEL=800; // raised from 200 — levels now 4× harder to reach
+function getLevel(xp){return Math.floor((xp||0)/XP_PER_LEVEL)+1}
 
 // Medical career ranks
 const RANKS=[
@@ -2394,13 +2426,13 @@ function markDailyChallengeCompleted(){
 // ── Render gamification in Stats overlay ─────────────────────────────────────
 function renderGamification(stats){
   // XP section
-  const xp=stats.xp||0,level=getLevel(xp),xpInLevel=xp%200,pctXP=Math.round(xpInLevel/200*100);
+  const xp=stats.xp||0,level=getLevel(xp),xpInLevel=xp%XP_PER_LEVEL,pctXP=Math.round(xpInLevel/XP_PER_LEVEL*100);
   const uname=currentUser?currentUser.username:null;
   const rank=getRank(level,uname),nextRank=getNextRank(level);
   const xpEl=document.getElementById('xpSection');
   const vip=getVipBadge(uname);
   const vipBadge=vip?` <span style="color:${vip.color};font-size:.7rem;letter-spacing:0.14em;font-weight:600;margin-left:.4rem">(${vip.label})</span>`:'';
-  if(xpEl)xpEl.innerHTML=`<div class="xp-header"><div class="xp-level" style="display:flex;align-items:center;gap:.4rem"><span style="font-size:1.4rem">${rank.icon}</span><div><div style="color:${rank.color};font-weight:600;font-size:1rem;line-height:1.1">${rank.title}${vipBadge}</div><div style="font-size:.7rem;color:var(--text3);font-weight:400">Level ${level}</div></div></div><div class="xp-label">${xp} XP · ${200-xpInLevel} XP bis Level ${level+1}</div></div><div class="xp-track"><div class="xp-fill" style="width:${pctXP}%;background:${rank.color}"></div></div>${nextRank?`<div style="font-size:.72rem;color:var(--text3);margin-top:.4rem;text-align:right">Nächste Beförderung: ${nextRank.icon} ${nextRank.title} (Level ${nextRank.min})</div>`:''}`;
+  if(xpEl)xpEl.innerHTML=`<div class="xp-header"><div class="xp-level" style="display:flex;align-items:center;gap:.4rem"><span style="font-size:1.4rem">${rank.icon}</span><div><div style="color:${rank.color};font-weight:600;font-size:1rem;line-height:1.1">${rank.title}${vipBadge}</div><div style="font-size:.7rem;color:var(--text3);font-weight:400">Level ${level}</div></div></div><div class="xp-label">${xp} XP · ${XP_PER_LEVEL-xpInLevel} XP bis Level ${level+1}</div></div><div class="xp-track"><div class="xp-fill" style="width:${pctXP}%;background:${rank.color}"></div></div>${nextRank?`<div style="font-size:.72rem;color:var(--text3);margin-top:.4rem;text-align:right">Nächste Beförderung: ${nextRank.icon} ${nextRank.title} (Level ${nextRank.min})</div>`:''}`;
 
   // Daily challenge
   const dc=getDailyChallenge();const done=isDailyChallengeCompleted();
