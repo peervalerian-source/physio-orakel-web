@@ -2093,14 +2093,30 @@ function scheduleStatsSync(){
 function mergeStats(local,remote){
   const localSessions=(local&&local.sessions)||[];
   const remoteSessions=(remote&&remote.sessions)||[];
-  // Use whichever sessions array is longer (more history = newer)
-  const sessions=localSessions.length>=remoteSessions.length?localSessions:remoteSessions;
+  // Merge sessions: union by signature (date+time+pct+mode), keep last 100
+  const sigOf=s=>`${s.date||''}|${s.time||''}|${s.pct||0}|${s.mode||''}|${s.max||0}`;
+  const seen=new Set();const all=[];
+  [...localSessions,...remoteSessions].forEach(s=>{
+    const k=sigOf(s);
+    if(!seen.has(k)){seen.add(k);all.push(s)}
+  });
+  // Sort by date+time ascending (oldest first), then cap to last 100
+  all.sort((a,b)=>{
+    const A=(a.date||'')+'|'+(a.time||'');
+    const B=(b.date||'')+'|'+(b.time||'');
+    return A<B?-1:A>B?1:0;
+  });
+  const sessions=all.slice(-100);
+  // Daily challenge: use the lexicographically larger (most recent) date string
+  const localDC=(local&&local.dailyChallengeDone)||'';
+  const remoteDC=(remote&&remote.dailyChallengeDone)||'';
+  const dailyChallengeDone=localDC>remoteDC?localDC:remoteDC;
   return{
     xp:Math.max((local&&local.xp)||0,(remote&&remote.xp)||0),
     bestStreak:Math.max((local&&local.bestStreak)||0,(remote&&remote.bestStreak)||0),
     sessions,
     achievements:[...new Set([...((remote&&remote.achievements)||[]),...((local&&local.achievements)||[])])],
-    dailyChallengeDone:(local&&local.dailyChallengeDone)||(remote&&remote.dailyChallengeDone)||''
+    dailyChallengeDone
   };
 }
 async function syncStatsToServer(){
