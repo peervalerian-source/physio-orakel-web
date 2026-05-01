@@ -1,0 +1,2 @@
+function o(e,n){if(e===n)return 0;if(!e.length)return n.length;if(!n.length)return e.length;e.length>n.length&&([e,n]=[n,e]);let l=new Array(e.length+1),h=new Array(e.length+1);for(let t=0;t<=e.length;t++)l[t]=t;for(let t=1;t<=n.length;t++){h[0]=t;for(let r=1;r<=e.length;r++){const g=e[r-1]===n[t-1]?0:1;h[r]=Math.min(h[r-1]+1,l[r]+1,l[r-1]+g)}[l,h]=[h,l]}return l[e.length]}function i(e){return e.toLowerCase().trim().replace(/\s+/g," ")}export{o as l,i as n};
+//# sourceMappingURL=levenshtein-BoB1cAZJ.js.map
