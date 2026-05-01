@@ -1,0 +1,20 @@
+# Files die NICHT als public static assets hochgeladen werden sollen.
+# Syntax wie .gitignore.
+
+# Worker-Code (sonst public exposed)
+_worker.js
+
+# Wrangler-Config
+wrangler.jsonc
+wrangler.toml
+
+# Git-Internals (waren bisher fälschlicherweise als Asset hochgeladen)
+.git/
+.gitignore
+.gitattributes
+
+# Wrangler-Cache
+.wrangler/
+
+# macOS
+.DS_Store
