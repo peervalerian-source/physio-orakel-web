@@ -1908,18 +1908,35 @@ function runEvaluate(){
     const sc=calcScore(correct,chosen);
     setTimeout(()=>{if(sc>=0.99)playCorrect();else if(sc===0)playWrong()},i*200);
   });
-  // Streak
+  // Streak (correct answers in this round)
   const streak=calcStreak(state.questions,state.userAnswers);
   updateStreakDisplay(streak);
-  // XP
-  const xpGain=calcXPGain(state.questions,state.userAnswers,pct,streak);
+  // Round streak (consecutive completed rounds, ≤60 min apart)
+  const stats0=loadStats();
+  const now=Date.now();
+  const lastEnd=stats0.lastQuizEnd||0;
+  let runStreak=stats0.runStreak||0;
+  if(now-lastEnd<60*60*1000)runStreak+=1;
+  else runStreak=1;
+  // XP (with run-streak boost)
+  let xpGain=calcXPGain(state.questions,state.userAnswers,pct,streak);
+  let runBoost=0;
+  if(runStreak>=3){
+    // 3rd round in a row: +25%, 4th: +50%, 5th+: +75% (capped)
+    const boostPct=Math.min(0.25*(runStreak-2),0.75);
+    runBoost=Math.round(xpGain*boostPct);
+    xpGain+=runBoost;
+  }
   const xpResult=addXP(xpGain);
   // Save session
   buildResult(pct,totalPts,state.questions.length,topicScores);
   saveSessionStats(pct,totalPts,state.questions.length,topicScores);
-  // Update best streak in stats
+  // Update streaks in stats
   const stats=loadStats();
   if(!stats.bestStreak||streak>stats.bestStreak)stats.bestStreak=streak;
+  stats.lastQuizEnd=now;
+  stats.runStreak=runStreak;
+  if(!stats.bestRunStreak||runStreak>stats.bestRunStreak)stats.bestRunStreak=runStreak;
   // Daily challenge check
   if(state.isDailyChallenge&&pct>=80){markDailyChallengeCompleted();state.isDailyChallenge=false}
   // Achievements
@@ -1927,6 +1944,8 @@ function runEvaluate(){
   saveStats(updatedStats);
   // XP toast
   if(xpGain>0)setTimeout(()=>showToast('✨',`+${xpGain} XP`,`Level ${xpResult.level}`),state.questions.length*200+300);
+  // Run-streak boost toast
+  if(runBoost>0)setTimeout(()=>showToast('🔥',`${runStreak}× in Folge!`,`+${runBoost} XP Bonus`,'toast-levelup'),state.questions.length*200+700);
 
   const eb=document.getElementById('evalBtn');eb.textContent='Ausgewertet';eb.disabled=true;
   // Particles
