@@ -1,0 +1,2 @@
+import{e as a}from"./index-BtXLLRQG.js";const r=a(t=>({category:"all",wordClass:"all",difficulty:"all",mastery:"all",direction:"hu_to_de",setCategory:l=>t({category:l}),setWordClass:l=>t({wordClass:l}),setDifficulty:l=>t({difficulty:l}),setMastery:l=>t({mastery:l}),setDirection:l=>t({direction:l}),reset:()=>t({category:"all",wordClass:"all",difficulty:"all",mastery:"all",direction:"hu_to_de"})}));export{r as u};
+//# sourceMappingURL=useFilterStore-CyBjmMAC.js.map
