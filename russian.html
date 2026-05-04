@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Physio-Orakel — Nephron.at</title>
-<meta name="description" content="App zur Übung der Physiologie-Wochentests an der Semmelweis Universität Budapest.">
+<title>Soviet Transformer — Nephron.at</title>
+<meta name="description" content="Interaktiv Russisch lernen: 2000+ Vokabeln, Spaced Repetition, 10 Spielmodi, Verbentrainer und Karteikarten im Soviet-Design.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -92,7 +92,7 @@ main {
   grid-template-columns: 200px 1fr;
   gap: 32px;
   max-width: 900px;
-  margin-bottom: 56px;
+  margin-bottom: 32px;
 }
 .body-meta {
   font-size: 10px;
@@ -107,6 +107,64 @@ main {
   line-height: 1.55;
   color: var(--ink);
   text-wrap: pretty;
+}
+.body-text p { margin-bottom: 14px; }
+.body-text p:last-child { margin-bottom: 0; }
+.body-text strong { font-weight: 600; }
+
+.modes-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 32px;
+  max-width: 900px;
+  margin-bottom: 32px;
+}
+.modes-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 24px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.modes-list .mode-num {
+  color: var(--mid);
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  margin-right: 6px;
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 32px;
+  max-width: 900px;
+  margin-bottom: 56px;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.stat-card {
+  padding: 16px;
+  border: 1px solid var(--rule);
+  background: var(--pure);
+}
+.stat-num {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-label {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mid);
+  font-weight: 500;
 }
 
 .cta-row {
@@ -138,6 +196,21 @@ main {
   display: inline-block;
 }
 .btn-primary:hover { background: var(--red); border-color: var(--red); }
+.btn-secondary {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 18px 32px;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+  display: inline-block;
+}
+.btn-secondary:hover { border-color: var(--ink); }
 
 /* ─── Footer ───────────────────────────────────── */
 footer {
@@ -161,8 +234,10 @@ footer {
   .nav-links a { font-size: 10px; letter-spacing: 0.1em; }
   main { padding: 48px 24px; }
   .headline { font-size: 48px; }
-  .body-row, .cta-row { grid-template-columns: 1fr; gap: 12px; }
+  .body-row, .modes-row, .stats-row, .cta-row { grid-template-columns: 1fr; gap: 12px; }
   .body-text { font-size: 16px; }
+  .modes-list { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
   footer { padding: 14px 24px; flex-direction: column; gap: 8px; align-items: flex-start; }
 }
 </style>
@@ -173,34 +248,77 @@ footer {
   <div class="nav-brand">Nephron<span>.at</span></div>
   <div class="nav-links">
     <a href="/">N° 01 Mission</a>
-    <a href="/projekt.html" class="active">N° 02 Physio-Orakel</a>
+    <a href="/projekt.html">N° 02 Physio-Orakel</a>
     <a href="/virag.html">N° 03 Virág</a>
-    <a href="/russian.html">N° 04 Soviet Transformer</a>
+    <a href="/russian.html" class="active">N° 04 Soviet Transformer</a>
     <a href="/disclaimer.html">N° 05 Disclaimer</a>
     <a href="/support.html">N° 06 Unterstützung</a>
   </div>
 </nav>
 
 <main>
-  <div class="marker">N° 02 — Projekt</div>
-  <h1 class="headline">Physio-Orakel.</h1>
+  <div class="marker">N° 04 — Projekt</div>
+  <h1 class="headline">Soviet Transformer ★</h1>
+
   <div class="body-row">
     <div class="body-meta">Beschreibung</div>
     <div class="body-text">
-      Eine Anwendung zur Übung der Physiologie-Wochentests an der <strong>Semmelweis Universität Budapest</strong>. KI-generierte Multiple-Choice-Fragen aus deinen Vorlesungstranskripten und dem Altfragenpool, kombiniert mit einer vollständigen Rigorosum-Simulation.
+      <p>Eine interaktive Lern-App für <strong>Russisch als Fremdsprache</strong> — als Alternative zum stumpfen Anki-Grinding. Sie verwandelt dein Vokabeldeck in abwechslungsreiche Spielmodi mit sofortigem Feedback.</p>
+      <p>Datenbasis: <strong>1.834 Vokabeln</strong> aus einem kuratierten Anki-Deck, ergänzt um einen <strong>246-Phrasen Survival-Wortschatz</strong> (Fast Pace) und <strong>188 Verbformen</strong> mit voller Konjugation, Aspekt und Beispielsätzen.</p>
+      <p>Lernlogik: <strong>SM-2-Spaced-Repetition</strong> für Karteikarten, duale Wortschatz-Filter (Fast Pace + Verben, auch gleichzeitig aktivierbar), bidirektionale Abfrage (RU ↔ DE), XP-System mit <strong>sowjetischen Militärrängen</strong> von Rekrut bis Held der Sprache.</p>
     </div>
   </div>
+
+  <div class="modes-row">
+    <div class="body-meta">Spielmodi</div>
+    <div class="modes-list">
+      <div><span class="mode-num">01</span>Wort-Match · Paare finden</div>
+      <div><span class="mode-num">02</span>Buchstaben-Salat · Wörter zusammensetzen</div>
+      <div><span class="mode-num">03</span>Speed-Round · 60 Sekunden</div>
+      <div><span class="mode-num">04</span>Satz-Puzzle · Reihenfolge</div>
+      <div><span class="mode-num">05</span>Aktive Wiederholung · bidirektional</div>
+      <div><span class="mode-num">06</span>Karteikarten · Spaced Repetition</div>
+      <div><span class="mode-num">07</span>Verben Trainer · Konjugation</div>
+      <div><span class="mode-num">08</span>Fast Pace · Survival-Wortschatz</div>
+      <div><span class="mode-num">09</span>Mini-Geschichten · KI-generiert</div>
+      <div><span class="mode-num">10</span>Chat-Simulation · KI-Dialog</div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="body-meta">Zahlen</div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-num">2.268</div>
+        <div class="stat-label">Vokabeln</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">188</div>
+        <div class="stat-label">Verbformen</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">10</div>
+        <div class="stat-label">Spielmodi</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">12</div>
+        <div class="stat-label">Ränge</div>
+      </div>
+    </div>
+  </div>
+
   <div class="cta-row">
     <div class="cta-meta">Anwendung</div>
-    <div>
-      <a href="/app/" class="btn-primary">Anwendung starten →</a>
+    <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+      <a href="/russian/" class="btn-primary">Soviet Transformer starten →</a>
+      <a href="https://github.com/peervalerian-source/soviet-transformer" class="btn-secondary">GitHub →</a>
     </div>
   </div>
 </main>
 
 <footer>
-  <div>◢ Nephron.at — Physio-Orakel</div>
-  <div>Est. 2026 · Budapest</div>
+  <div>◢ Nephron.at — Soviet Transformer ★</div>
+  <div>Est. 2026 · Budapest · Wien</div>
 </footer>
 
 </body>
