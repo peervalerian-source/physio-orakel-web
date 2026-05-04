@@ -695,9 +695,9 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--cream)" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
         </div>
         <div class="drop-title">PDF, TXT oder MD hier ablegen</div>
-        <div class="drop-sub">oder klicken zum Auswählen</div>
+        <div class="drop-sub">eine oder mehrere Dateien — klicken oder Drag &amp; Drop</div>
         <div class="file-name fn-blue" id="fileName"></div>
-        <input type="file" id="fileInput" accept=".pdf,.txt,.md">
+        <input type="file" id="fileInput" accept=".pdf,.txt,.md" multiple>
       </div>
       <p class="skip-hint">Kein Skript? Die KI generiert Fragen aus dem <strong>offiziellen Semmelweis-Themenkatalog</strong>.</p>
       <div style="text-align:center;margin-top:2rem">
@@ -1420,23 +1420,62 @@ async function uploadPool(){
 const dz=document.getElementById('dropZone'),fi=document.getElementById('fileInput');
 dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag')});
 dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
-dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag');handleScriptFile(e.dataTransfer.files[0])});
-fi.addEventListener('change',e=>handleScriptFile(e.target.files[0]));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag');handleScriptFiles(e.dataTransfer.files)});
+fi.addEventListener('change',e=>handleScriptFiles(e.target.files));
 
-function handleScriptFile(file){
-  if(!file)return;
-  state.fileName=file.name;
-  document.getElementById('fileName').textContent='Wird geladen…';
-  dz.classList.add('has-file');
+async function readOneFile(file){
   const ext=file.name.split('.').pop().toLowerCase();
   if(ext==='txt'||ext==='md'){
-    const r=new FileReader();
-    r.onload=e=>{state.fileText=e.target.result;const kb=Math.round(state.fileText.length/1024);document.getElementById('fileName').textContent=`Geladen: ${file.name} (${kb} KB, ${state.fileText.length} Zeichen)`;buildTopicArea()};
-    r.readAsText(file);
-  } else if(ext==='pdf'){
-    document.getElementById('fileName').textContent='PDF wird extrahiert…';
-    extractPdfText(file).then(text=>{state.fileText=text;const kb=Math.round(text.length/1024);document.getElementById('fileName').textContent=`Geladen: ${file.name} (${kb} KB, ${text.length} Zeichen)`;buildTopicArea()}).catch(err=>{document.getElementById('fileName').textContent='PDF-Fehler: '+err.message;dz.classList.remove('has-file')});
-  } else {document.getElementById('fileName').textContent='Nur .txt, .md oder .pdf erlaubt';dz.classList.remove('has-file')}
+    return new Promise((res,rej)=>{
+      const r=new FileReader();
+      r.onload=e=>res(e.target.result||'');
+      r.onerror=()=>rej(new Error('Lesefehler: '+file.name));
+      r.readAsText(file);
+    });
+  }
+  if(ext==='pdf')return await extractPdfText(file);
+  throw new Error('Format nicht unterstützt: '+file.name);
+}
+
+async function handleScriptFiles(filesIn){
+  if(!filesIn||!filesIn.length)return;
+  const files=Array.from(filesIn);
+  // Filter to allowed extensions
+  const allowed=files.filter(f=>/\.(pdf|txt|md)$/i.test(f.name));
+  const skipped=files.length-allowed.length;
+  if(!allowed.length){
+    document.getElementById('fileName').textContent='Nur .txt, .md oder .pdf erlaubt';
+    dz.classList.remove('has-file');
+    return;
+  }
+  dz.classList.add('has-file');
+  document.getElementById('fileName').textContent=`${allowed.length} Datei${allowed.length>1?'en':''} werden geladen…`;
+  const parts=[];const names=[];const errors=[];
+  for(let i=0;i<allowed.length;i++){
+    const f=allowed[i];
+    document.getElementById('fileName').textContent=`Lade ${i+1}/${allowed.length}: ${f.name}…`;
+    try{
+      const text=await readOneFile(f);
+      if(text&&text.trim()){
+        // Add a clear separator + filename header so the AI knows where each file starts
+        parts.push(`\n\n=== DATEI: ${f.name} ===\n\n`+text);
+        names.push(f.name);
+      }
+    }catch(err){errors.push(`${f.name}: ${err.message}`)}
+  }
+  if(!parts.length){
+    document.getElementById('fileName').textContent='Fehler: '+(errors[0]||'keine Dateien lesbar');
+    dz.classList.remove('has-file');
+    return;
+  }
+  state.fileText=parts.join('\n');
+  state.fileName=names.length===1?names[0]:`${names.length} Dateien`;
+  const kb=Math.round(state.fileText.length/1024);
+  let msg=`Geladen: ${names.length} Datei${names.length>1?'en':''} (${kb} KB, ${state.fileText.length} Zeichen)`;
+  if(skipped>0)msg+=` · ${skipped} ignoriert (Format)`;
+  if(errors.length)msg+=` · ${errors.length} Fehler`;
+  document.getElementById('fileName').textContent=msg;
+  if(typeof buildTopicArea==='function')buildTopicArea();
 }
 
 async function extractPdfText(file){
