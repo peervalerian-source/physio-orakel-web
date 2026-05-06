@@ -423,6 +423,11 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
 #userBadge .ub-dot{width:6px;height:6px;border-radius:50%;background:var(--success);flex-shrink:0;display:inline-block}
 #userBadge .ub-name{font-size:11px;letter-spacing:0.04em;font-weight:500;color:var(--ink)}
 #userBadge .ub-arrow{font-size:8px;color:var(--mid);margin-left:2px}
+#userBadge .ub-rank{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;margin-left:4px;border:1px solid var(--rule);font-size:10px;letter-spacing:0.04em;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1.4;cursor:pointer;transition:all .15s}
+#userBadge .ub-rank:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+#userBadge .ub-rank:hover strong{color:var(--paper)}
+#userBadge .ub-rank strong{font-weight:600;font-size:11px}
+@media(max-width:600px){#userBadge .ub-rank{padding:2px 6px;font-size:9px}}
 #userMenu{font-family:inherit}
 
 @media(max-width:600px){
@@ -1417,6 +1422,7 @@ function updateUserBadge(){
           <button id="genderF" onclick="setUserGender('f')" style="padding:8px 10px;background:transparent;border:none;color:var(--ink);font-family:inherit;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:all .15s">Weiblich</button>
         </div>
       </div>
+      <button onclick="openLadderFromMenu()" style="width:100%;padding:14px 16px;background:transparent;border:none;color:var(--ink);text-align:left;font-family:inherit;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:all .15s;border-bottom:1px solid var(--rule)" onmouseover="this.style.background='var(--ink)';this.style.color='var(--paper)'" onmouseout="this.style.background='transparent';this.style.color='var(--ink)'">→ Karriereleiter &amp; Fortschritt</button>
       <button id="umLogout" onclick="confirmLogout()" style="width:100%;padding:14px 16px;background:transparent;border:none;color:var(--ink);text-align:left;font-family:inherit;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:all .15s;border-bottom:1px solid var(--rule)" onmouseover="this.style.background='var(--swiss-red)';this.style.color='var(--paper)'" onmouseout="this.style.background='transparent';this.style.color='var(--ink)'">→ Abmelden</button>
       <button onclick="toggleUserMenu()" style="width:100%;padding:10px 16px;background:transparent;border:none;color:var(--mid);text-align:left;font-family:inherit;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;cursor:pointer">Schließen</button>
     `;
@@ -1426,7 +1432,11 @@ function updateUserBadge(){
       if(m&&m.style.display==='block'&&!m.contains(e.target)&&e.target.id!=='userBadge')m.style.display='none';
     });
   }
-  badge.innerHTML=`<span class="ub-dot"></span><span class="ub-name">${currentUser.username}</span><span class="ub-arrow">▾</span>`;
+  // Compact rank/level indicator inside the badge
+  const _xp=(loadStats().xp)||0;
+  const _lvl=getLevel(_xp);
+  const _rank=getRank(_lvl,currentUser.username);
+  badge.innerHTML=`<span class="ub-dot"></span><span class="ub-name">${currentUser.username}</span><span class="ub-rank" title="Karriereleiter ansehen — ${_rank.title} · Level ${_lvl}" onclick="event.stopPropagation();openLadderFromMenu()">${_rank.icon} <strong>${_lvl}</strong></span><span class="ub-arrow">▾</span>`;
   document.getElementById('umUsername').textContent=currentUser.username;
   document.getElementById('umEmail').textContent=currentUser.email||'';
   // Sync gender toggle visual state
@@ -1443,6 +1453,17 @@ function toggleUserMenu(){
   const m=document.getElementById('userMenu');
   if(!m)return;
   m.style.display=m.style.display==='block'?'none':'block';
+}
+function openLadderFromMenu(){
+  toggleUserMenu();
+  // Open stats overlay (which contains the rank ladder)
+  const ov=document.getElementById('statsOverlay');
+  if(!ov.classList.contains('active'))toggleStats();
+  // Scroll to ladder section
+  setTimeout(()=>{
+    const el=document.getElementById('rankLadder');
+    if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+  },150);
 }
 function confirmLogout(){
   toggleUserMenu();
