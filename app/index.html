@@ -1111,6 +1111,23 @@ const GRADE_QUOTES={
   1:['Lernen Sie oder erwägen Sie eine Exmatrikulation.']
 };
 
+// ╔═══ IMMUNOLOGIE LOADING + GRADES (TEMPORÄR — Demo II 2025/26) ═══════
+const IMMUNO_LOADING_MSGS=[
+  'In Amerika…',
+  'NET-Gebäude wird durchstöbert…',
+  'Dr. Papps Keller wird nach Fragen abgesucht…',
+  'Altdorfer wird für ehrenlose Fragenstellung konsultiert…',
+  'Nimm dir eine Minute und gedenke den gefallenen Schwestern und Brüdern, bis die Fragen geladen sind…'
+];
+const IMMUNO_GRADE_QUOTES={
+  5:['Gratulation, wir veranlassen das Aufstellen einer Büste Ihres Antlitz im NET-Gebäude.'],
+  4:['Sie haben das NET-Gebäude zu 80% eingenommen.'],
+  3:['Befriedigend ist das „sehr gut" des kleinen Mannes.'],
+  2:['Dr. Papp hasst Sie nicht, aber Sie stören sie!'],
+  1:['Dr. Papp hasst Sie wirklich.']
+};
+// ╚═══════════════════════════════════════════════════════════════════
+
 const ACHIEVEMENTS=[
   {id:'first_quiz',name:'Erster Schritt',desc:'Erstes Quiz abgeschlossen',icon:'🎓'},
   {id:'perfect_round',name:'Perfektionist',desc:'100% in einer Runde',icon:'💎'},
@@ -1575,7 +1592,7 @@ async function startImmunologie(){
   document.getElementById('immunoStartBtn').disabled=true;
   goTo('s3');startEKG();
   const lt=document.getElementById('loadingText');
-  lt.textContent=LOADING_MSGS[Math.floor(Math.random()*LOADING_MSGS.length)];lt.style.color='';
+  lt.textContent=IMMUNO_LOADING_MSGS[Math.floor(Math.random()*IMMUNO_LOADING_MSGS.length)];lt.style.color='';
   try{
     const hasTranscript=!!(immunoTranscript&&immunoTranscript.trim());
     const sys=buildImmunoSystemPrompt(n,topicKey,hasTranscript);
@@ -2299,7 +2316,8 @@ function buildResult(pct,pts,max,topicScores){
   else if(pct>=63){grade=3;gname='Befriedigend'}else if(pct>=51){grade=2;gname='Genügend'}
   else{grade=1;gname='Nicht genügend'}
   const col=grade>=4?'var(--success)':grade===3?'var(--warn)':'var(--red2)';
-  const q=GRADE_QUOTES[grade],quote=q[Math.floor(Math.random()*q.length)];
+  const quotePool=(state.flowMode==='immunologie'?IMMUNO_GRADE_QUOTES:GRADE_QUOTES);
+  const q=quotePool[grade]||GRADE_QUOTES[grade],quote=q[Math.floor(Math.random()*q.length)];
   document.getElementById('resPct').textContent=pct+'%';
   document.getElementById('resPct').style.color=col;
   document.getElementById('resGrade').textContent=grade;
