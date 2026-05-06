@@ -1366,12 +1366,27 @@ async function logout(){
 function getSessionToken(){try{return localStorage.getItem(SESSION_TOKEN_KEY)||''}catch{return ''}}
 function getAccessCode(){try{return localStorage.getItem(ACCESS_CODE_KEY)||''}catch{return ''}}
 function loadSession(){
+  let tok,userStr;
   try{
-    const tok=localStorage.getItem(SESSION_TOKEN_KEY);
-    const userStr=localStorage.getItem(USER_KEY);
-    if(tok&&userStr){currentUser=JSON.parse(userStr);hasApiKey=true;document.getElementById('keyCornerBtn').classList.add('has-key');updateUserBadge();updateLoginHintVisibility();return true}
+    tok=localStorage.getItem(SESSION_TOKEN_KEY);
+    userStr=localStorage.getItem(USER_KEY);
   }catch{}
-  hasApiKey=false;openKeyModal();updateLoginHintVisibility();return false;
+  if(tok&&userStr){
+    try{currentUser=JSON.parse(userStr)}catch{currentUser=null}
+    if(currentUser){
+      hasApiKey=true;
+      try{document.getElementById('keyCornerBtn').classList.add('has-key')}catch{}
+      try{updateUserBadge()}catch(e){console.warn('updateUserBadge:',e)}
+      try{updateLoginHintVisibility()}catch{}
+      // Re-render the badge once the rank functions are definitely loaded
+      setTimeout(()=>{try{updateUserBadge()}catch{}},0);
+      return true;
+    }
+  }
+  hasApiKey=false;
+  try{openKeyModal()}catch{}
+  try{updateLoginHintVisibility()}catch{}
+  return false;
 }
 function updateLoginHintVisibility(){
   const hint=document.getElementById('loginHint');
@@ -1435,10 +1450,13 @@ function updateUserBadge(){
       if(m&&m.style.display==='block'&&!m.contains(e.target)&&e.target.id!=='userBadge')m.style.display='none';
     });
   }
-  // Compact rank/level indicator inside the badge
-  const _xp=(loadStats().xp)||0;
-  const _lvl=getLevel(_xp);
-  const _rank=getRank(_lvl,currentUser.username);
+  // Compact rank/level indicator inside the badge — guarded against init-order errors
+  let _lvl=1,_rank={icon:'🎓',title:'Erstsemestler'};
+  try{
+    const _xp=(loadStats().xp)||0;
+    if(typeof getLevel==='function')_lvl=getLevel(_xp);
+    if(typeof getRank==='function'&&typeof RANKS!=='undefined')_rank=getRank(_lvl,currentUser.username);
+  }catch{}
   badge.innerHTML=`<span class="ub-dot"></span><span class="ub-text"><span class="ub-name">${currentUser.username}</span><span class="ub-rank-line" title="Karriereleiter ansehen" onclick="event.stopPropagation();openLadderFromMenu()"><span class="ub-rank-icon">${_rank.icon}</span><span>${_rank.title}</span><span>·</span><span class="ub-rank-lvl">Lv. ${_lvl}</span></span></span><span class="ub-arrow">▾</span>`;
   document.getElementById('umUsername').textContent=currentUser.username;
   document.getElementById('umEmail').textContent=currentUser.email||'';
