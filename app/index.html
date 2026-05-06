@@ -51,14 +51,14 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 
 /* ── Back to landing ──────────────────────────────────────────────────────── */
-.back-home{position:fixed;top:14px;left:14px;z-index:100;height:32px;padding:0 14px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.04em;font-weight:500;font-family:inherit;transition:all .15s}
+.back-home{position:fixed;top:14px;left:14px;z-index:100;height:48px;padding:0 16px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.04em;font-weight:500;font-family:inherit;transition:all .15s}
 .back-home:hover{border-color:var(--ink);background:var(--pure)}
 .back-home-label{font-weight:600;letter-spacing:-0.01em;font-size:13px}
 @media(max-width:600px){.back-home-label{display:none}.back-home{padding:0;width:32px;justify-content:center}}
 
 /* ── Top toolbar buttons ──────────────────────────────────────────────────── */
 /* ── Unified toolbar (all action buttons in one row with shared borders) ── */
-.toolbar{position:fixed;top:14px;right:16px;z-index:100;display:flex;align-items:stretch;height:32px;border:1px solid var(--ink);background:var(--paper);font-family:inherit}
+.toolbar{position:fixed;top:14px;right:16px;z-index:100;display:flex;align-items:stretch;height:48px;border:1px solid var(--ink);background:var(--paper);font-family:inherit}
 .toolbar > *{
   border:none;border-left:1px solid var(--rule);border-radius:0;background:var(--paper);
   height:100%;display:flex;align-items:center;justify-content:center;cursor:pointer;
@@ -418,14 +418,17 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
 .challenge-done::before{content:"◢ "}
 
 /* ── User badge ───────────────────────────────────────────────────────────── */
-.toolbar #userBadge{font-size:11px;letter-spacing:0.06em;font-weight:500;color:var(--ink);gap:10px;text-transform:none}
+.toolbar #userBadge{font-size:11px;letter-spacing:0.06em;font-weight:500;color:var(--ink);gap:10px;text-transform:none;padding:0 14px}
 .toolbar #userBadge:hover{background:var(--pure)}
-#userBadge .ub-dot{width:6px;height:6px;border-radius:50%;background:var(--success);flex-shrink:0;display:inline-block}
-#userBadge .ub-name{font-size:11px;letter-spacing:0.04em;font-weight:500;color:var(--ink)}
-#userBadge .ub-arrow{font-size:8px;color:var(--mid);margin-left:2px}
-#userBadge .ub-rank{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;margin-left:4px;border:1px solid var(--rule);font-size:10px;letter-spacing:0.04em;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1.4;cursor:pointer;transition:all .15s}
-#userBadge .ub-rank:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-#userBadge .ub-rank:hover strong{color:var(--paper)}
+#userBadge .ub-dot{width:6px;height:6px;border-radius:50%;background:var(--success);flex-shrink:0;display:inline-block;margin-top:2px;align-self:flex-start}
+#userBadge .ub-text{display:flex;flex-direction:column;justify-content:center;gap:2px;line-height:1.1;align-items:flex-start;text-align:left}
+#userBadge .ub-name{font-size:12px;letter-spacing:0.01em;font-weight:600;color:var(--ink)}
+#userBadge .ub-rank-line{display:flex;align-items:center;gap:5px;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);font-weight:500;font-variant-numeric:tabular-nums;cursor:pointer;transition:color .15s}
+#userBadge .ub-rank-line:hover{color:var(--swiss-red)}
+#userBadge .ub-rank-icon{font-size:11px;letter-spacing:0}
+#userBadge .ub-rank-lvl{color:var(--ink);font-weight:600}
+#userBadge .ub-arrow{font-size:9px;color:var(--mid);margin-left:2px;align-self:center}
+@media(max-width:600px){#userBadge .ub-name{font-size:11px}#userBadge .ub-rank-line{font-size:8px;letter-spacing:0.1em}}
 #userBadge .ub-rank strong{font-weight:600;font-size:11px}
 @media(max-width:600px){#userBadge .ub-rank{padding:2px 6px;font-size:9px}}
 #userMenu{font-family:inherit}
@@ -1408,7 +1411,7 @@ function updateUserBadge(){
   }
   if(!menu){
     menu=document.createElement('div');menu.id='userMenu';
-    menu.style.cssText='position:fixed;top:54px;right:16px;background:var(--paper);border:1px solid var(--ink);min-width:240px;z-index:101;display:none;font-family:inherit';
+    menu.style.cssText='position:fixed;top:70px;right:16px;background:var(--paper);border:1px solid var(--ink);min-width:240px;z-index:101;display:none;font-family:inherit';
     menu.innerHTML=`
       <div style="padding:14px 16px;border-bottom:1px solid var(--rule);background:var(--pure)">
         <div style="font-size:9px;color:var(--mid);letter-spacing:0.18em;text-transform:uppercase;font-weight:500;margin-bottom:4px">◢ Angemeldet als</div>
@@ -1436,7 +1439,7 @@ function updateUserBadge(){
   const _xp=(loadStats().xp)||0;
   const _lvl=getLevel(_xp);
   const _rank=getRank(_lvl,currentUser.username);
-  badge.innerHTML=`<span class="ub-dot"></span><span class="ub-name">${currentUser.username}</span><span class="ub-rank" title="Karriereleiter ansehen — ${_rank.title} · Level ${_lvl}" onclick="event.stopPropagation();openLadderFromMenu()">${_rank.icon} <strong>${_lvl}</strong></span><span class="ub-arrow">▾</span>`;
+  badge.innerHTML=`<span class="ub-dot"></span><span class="ub-text"><span class="ub-name">${currentUser.username}</span><span class="ub-rank-line" title="Karriereleiter ansehen" onclick="event.stopPropagation();openLadderFromMenu()"><span class="ub-rank-icon">${_rank.icon}</span><span>${_rank.title}</span><span>·</span><span class="ub-rank-lvl">Lv. ${_lvl}</span></span></span><span class="ub-arrow">▾</span>`;
   document.getElementById('umUsername').textContent=currentUser.username;
   document.getElementById('umEmail').textContent=currentUser.email||'';
   // Sync gender toggle visual state
