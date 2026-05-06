@@ -613,6 +613,8 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
     <div class="stats-subtitle">Dein Fortschritt über alle Sitzungen</div>
     <div class="stat-cards" id="statCards"></div>
     <div class="xp-section" id="xpSection"></div>
+    <div class="section-label">Karriereleiter</div>
+    <div id="rankLadder"></div>
     <div class="section-label">Tages-Challenge</div>
     <div id="challengeArea"></div>
     <div class="section-label">Globales Ranking</div>
@@ -2858,6 +2860,30 @@ function renderGamification(stats){
   const vip=getVipBadge(uname);
   const vipBadge=vip?` <span style="color:${vip.color};font-size:.7rem;letter-spacing:0.14em;font-weight:600;margin-left:.4rem">(${vip.label})</span>`:'';
   if(xpEl)xpEl.innerHTML=`<div class="xp-header"><div class="xp-level" style="display:flex;align-items:center;gap:.4rem"><span style="font-size:1.4rem">${rank.icon}</span><div><div style="color:${rank.color};font-weight:600;font-size:1rem;line-height:1.1">${rank.title}${vipBadge}</div><div style="font-size:.7rem;color:var(--text3);font-weight:400">Level ${level}</div></div></div><div class="xp-label">${xp} XP · ${XP_PER_LEVEL-xpInLevel} XP bis Level ${level+1}</div></div><div class="xp-track"><div class="xp-fill" style="width:${pctXP}%;background:${rank.color}"></div></div>${nextRank?`<div style="font-size:.72rem;color:var(--text3);margin-top:.4rem;text-align:right">Nächste Beförderung: ${nextRank.icon} ${nextRank.title} (Level ${nextRank.min})</div>`:''}`;
+
+  // Career ladder — overview of all ranks
+  const ladderEl=document.getElementById('rankLadder');
+  if(ladderEl){
+    const g=getUserGender(uname);
+    ladderEl.innerHTML='<div style="border:1px solid var(--rule);background:var(--pure)">'+RANKS.map(r=>{
+      const isCurrent=level>=r.min&&level<=r.max;
+      const isPassed=level>r.max;
+      const title=g==='f'?r.f:r.m;
+      const range=r.max===Infinity?`Level ${r.min}+`:`Level ${r.min}–${r.max}`;
+      const xpRange=r.max===Infinity?`ab ${r.min*XP_PER_LEVEL-XP_PER_LEVEL} XP`:`${r.min*XP_PER_LEVEL-XP_PER_LEVEL}–${r.max*XP_PER_LEVEL-1} XP`;
+      const status=isCurrent?'<span style="color:var(--swiss-red);font-size:9px;letter-spacing:0.18em;font-weight:600">◢ AKTUELL</span>':isPassed?'<span style="color:var(--success);font-size:9px;letter-spacing:0.18em;font-weight:600">✓ ERREICHT</span>':'';
+      const op=isPassed?0.55:1;
+      const bg=isCurrent?'background:var(--paper);':'';
+      return `<div style="display:grid;grid-template-columns:32px 1fr auto auto;gap:14px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--rule);opacity:${op};${bg}">
+        <div style="font-size:18px;text-align:center">${r.icon}</div>
+        <div>
+          <div style="font-size:13px;color:${r.color};font-weight:${isCurrent?'600':'500'};letter-spacing:0.01em">${title}</div>
+          <div style="font-size:10px;color:var(--mid);margin-top:1px;letter-spacing:0.04em;font-variant-numeric:tabular-nums">${range} · ${xpRange}</div>
+        </div>
+        <div style="text-align:right">${status}</div>
+      </div>`;
+    }).join('').replace(/border-bottom:1px solid var\(--rule\);(?=[^"]*<\/div>$)/, '')+'</div>';
+  }
 
   // Daily challenge
   const dc=getDailyChallenge();const done=isDailyChallengeCompleted();
