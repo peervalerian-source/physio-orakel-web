@@ -553,6 +553,33 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
   </div>
 </div>
 
+<!-- ╔═══ IMMUNOLOGIE-ADMIN-MODAL (TEMPORÄR — Demo II 2025/26) ═══════════ -->
+<div class="key-overlay" id="immunoAdminOverlay" style="display:none">
+  <div class="key-backdrop" onclick="closeImmunoAdmin()"></div>
+  <div class="key-panel" style="max-width:540px;max-height:85vh;overflow-y:auto">
+    <div class="key-panel-title serif">Immunologie-Material verwalten</div>
+    <div class="key-panel-sub">VO-Transkripte für die Demo II 2025/26</div>
+    <div style="margin:.8rem 0 .4rem"><label style="font-size:.78rem;color:var(--text3)">Admin-Key</label></div>
+    <input type="password" id="immunoAdminKeyInput" placeholder="Admin-Key eingeben..." autocomplete="off" style="width:100%;box-sizing:border-box;padding:.5rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.85rem;margin-bottom:.6rem">
+    <div style="margin:.4rem 0"><label style="font-size:.78rem;color:var(--text3)">Titel (optional)</label></div>
+    <input type="text" id="immunoTitleInput" placeholder="z.B. Demo II 2025/26 — Alle Vorlesungen" style="width:100%;box-sizing:border-box;padding:.5rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.85rem;margin-bottom:.6rem">
+    <div style="margin:.4rem 0;display:flex;justify-content:space-between;align-items:center">
+      <label style="font-size:.78rem;color:var(--text3)">Transkripte einfügen oder hochladen</label>
+      <label class="btn" style="font-size:.72rem;padding:.3rem .6rem;cursor:pointer">
+        Datei(en) wählen
+        <input type="file" id="immunoAdminFileInput" accept=".pdf,.txt,.md" multiple style="display:none">
+      </label>
+    </div>
+    <textarea id="immunoTranscriptInput" placeholder="Alle VO-Transkripte hier einfügen oder hochladen (mehrere Dateien werden zusammengeführt)..." style="width:100%;box-sizing:border-box;min-height:240px;padding:.6rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.82rem;font-family:inherit;resize:vertical;line-height:1.5"></textarea>
+    <div id="immunoAdminStatus" style="font-size:.78rem;color:var(--text3);margin:.4rem 0"></div>
+    <div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:.6rem">
+      <button class="btn" onclick="closeImmunoAdmin()">Abbrechen</button>
+      <button class="btn btn-primary" onclick="uploadImmunoTranscript()" id="immunoUploadBtn">Hochladen</button>
+    </div>
+  </div>
+</div>
+<!-- ╚═══════════════════════════════════════════════════════════════════ -->
+
 <!-- ╔═══ IMMUNOLOGIE POPUP (TEMPORÄR — Demo II 2025/26) ═══════════════ -->
 <div class="key-overlay" id="immunoPopup" style="display:none">
   <div class="key-backdrop" onclick="closeImmunoPopup()"></div>
@@ -764,7 +791,11 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
       <button onclick="backToMenu()" style="font-size:10px;padding:6px 12px;background:transparent;border:1px solid var(--rule);color:var(--mid);cursor:pointer;font-family:inherit;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;margin-bottom:24px;transition:all .15s" onmouseover="this.style.borderColor='var(--ink)';this.style.color='var(--ink)'" onmouseout="this.style.borderColor='var(--rule)';this.style.color='var(--mid)'">← Zurück</button>
       <div class="section-label" style="color:var(--swiss-red)">Sonderfunktion · Immunologie · Demo II</div>
       <h2 style="font-size:32px;font-weight:500;letter-spacing:-0.025em;margin:8px 0 16px;color:var(--ink)">Immunologie-Zwischenprüfung üben</h2>
-      <p style="font-size:14px;color:var(--ink);line-height:1.6;margin:0 0 24px;max-width:680px">KI-generierte MCQ-Fragen exakt im Stil des offiziellen Testpools — kalibriert an 394 echten Fragen. 8 Themenbereiche der Demo II 2025/26 abgedeckt.</p>
+      <p style="font-size:14px;color:var(--ink);line-height:1.6;margin:0 0 16px;max-width:680px">KI-generierte MCQ-Fragen exakt im Stil des offiziellen Testpools — kalibriert an 394 echten Fragen. 8 Themenbereiche der Demo II 2025/26 abgedeckt.</p>
+      <div id="immunoMaterialStatus" style="font-size:12px;color:var(--mid);margin:0 0 16px;line-height:1.5"></div>
+      <div id="immunoAdminWrap" style="margin:0 0 16px;text-align:right">
+        <button onclick="openImmunoAdmin()" style="font-size:9px;padding:4px 8px;background:transparent;border:none;color:var(--mid);cursor:pointer;font-family:inherit;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;border-bottom:1px solid var(--rule)" onmouseover="this.style.color='var(--ink)';this.style.borderColor='var(--ink)'" onmouseout="this.style.color='var(--mid)';this.style.borderColor='var(--rule)'">admin · immuno-material</button>
+      </div>
 
       <div class="section-label" style="margin-top:32px">Themenbereich (optional)</div>
       <select id="immunoTopic" style="width:100%;max-width:640px;padding:12px 14px;background:var(--pure);color:var(--ink);border:1px solid var(--ink);border-radius:0;font-family:inherit;font-size:13px;outline:none">
@@ -1163,6 +1194,7 @@ function chooseMode(mode){
   const map={wochentest:'modeWochentest',skript:'modeSkript',altfragen:'modeAltfragen',rigorosum:'modeRigorosum',immunologie:'modeImmunologie'};
   const target=document.getElementById(map[mode]);
   if(target)target.style.display='block';
+  if(mode==='immunologie')loadImmunoMaterial();
   window.scrollTo(0,0);
 }
 function goToConfigWith(mode){
@@ -1293,7 +1325,7 @@ function onAuthSuccess(data,accessCode){
   showAuthStatus('Erfolgreich!','var(--success)');
   document.getElementById('keyCornerBtn').classList.add('has-key');
   updateUserBadge();updateLoginHintVisibility();
-  setTimeout(()=>{closeKeyModal();syncStatsFromServer().then(()=>{loadPoolFromServer();loadWochentest()});setTimeout(maybeShowImmunoPopup,1200)},600);
+  setTimeout(()=>{closeKeyModal();syncStatsFromServer().then(()=>{loadPoolFromServer();loadWochentest();loadImmunoMaterial()});setTimeout(maybeShowImmunoPopup,1200)},600);
 }
 async function logout(){
   const tok=getSessionToken();
@@ -1402,6 +1434,81 @@ loadSession();
 // ╔═══ IMMUNOLOGIE FEATURE (TEMPORÄR — Demo II 2025/26) ═══════════════════════
 // Nach Prüfung: dieser ganze Block + alle 'immunologie'/'immuno'-Referenzen entfernen.
 let immunoCount='5';
+let immunoTranscript='';
+let immunoMeta=null;
+
+async function loadImmunoMaterial(){
+  if(!hasApiKey)return;
+  try{
+    const res=await fetch(WORKER_URL+'/immunology',{headers:{'X-Access-Code':getAccessCode()}});
+    if(!res.ok)return;
+    const data=await res.json();
+    immunoTranscript=data.transcript||'';
+    immunoMeta=data.meta||null;
+    const el=document.getElementById('immunoMaterialStatus');
+    if(el){
+      if(immunoTranscript){
+        const date=immunoMeta&&immunoMeta.date?new Date(immunoMeta.date).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'}):'';
+        el.innerHTML=`<span style="color:var(--success)">●</span> ${(immunoMeta&&immunoMeta.title)||'Immunologie-Material'}${date?' — aktualisiert am '+date:''} (${(immunoMeta&&immunoMeta.size)||'?'} KB)`;
+      }else{
+        el.innerHTML='<span style="color:var(--mid)">○</span> Kein VO-Material hinterlegt — Fragen werden nur aus dem Stil-Spec generiert.';
+      }
+    }
+  }catch{}
+}
+
+// Admin upload modal
+function openImmunoAdmin(){
+  document.getElementById('immunoAdminOverlay').style.display='flex';
+  document.getElementById('immunoAdminKeyInput').value=localStorage.getItem(ADMIN_KEY_STORE)||'';
+  document.getElementById('immunoAdminStatus').textContent='';
+}
+function closeImmunoAdmin(){document.getElementById('immunoAdminOverlay').style.display='none'}
+document.getElementById('immunoAdminFileInput').addEventListener('change',async e=>{
+  const files=Array.from(e.target.files||[]);
+  if(!files.length)return;
+  const ta=document.getElementById('immunoTranscriptInput');
+  const status=document.getElementById('immunoAdminStatus');
+  status.textContent=`Lese ${files.length} Datei(en)…`;
+  const parts=[];const errs=[];
+  for(const f of files){
+    const ext=f.name.split('.').pop().toLowerCase();
+    try{
+      let text='';
+      if(ext==='txt'||ext==='md'){
+        text=await new Promise((res,rej)=>{const r=new FileReader();r.onload=ev=>res(ev.target.result);r.onerror=()=>rej(new Error('read'));r.readAsText(f)});
+      }else if(ext==='pdf'){
+        text=await extractPdfText(f);
+      }else continue;
+      if(text&&text.trim())parts.push(`\n\n=== VORLESUNG: ${f.name} ===\n\n`+text);
+    }catch(err){errs.push(f.name+': '+err.message)}
+  }
+  if(parts.length){
+    const existing=ta.value.trim();
+    ta.value=existing?existing+'\n\n'+parts.join('\n'):parts.join('\n').trim();
+    status.textContent=`${parts.length} Datei(en) hinzugefügt (${Math.round(ta.value.length/1024)} KB gesamt)${errs.length?' · '+errs.length+' Fehler':''}`;
+  }else{
+    status.textContent='Keine Dateien gelesen'+(errs.length?': '+errs.join(', '):'');
+  }
+});
+async function uploadImmunoTranscript(){
+  const adminKey=document.getElementById('immunoAdminKeyInput').value.trim();
+  const transcript=document.getElementById('immunoTranscriptInput').value.trim();
+  const title=document.getElementById('immunoTitleInput').value.trim();
+  if(!adminKey){document.getElementById('immunoAdminStatus').textContent='Admin-Key fehlt.';return}
+  if(!transcript){document.getElementById('immunoAdminStatus').textContent='Kein Transkript eingegeben.';return}
+  document.getElementById('immunoUploadBtn').disabled=true;
+  document.getElementById('immunoAdminStatus').textContent='Wird hochgeladen…';
+  try{
+    const res=await fetch(WORKER_URL+'/immunology',{method:'PUT',headers:{'Content-Type':'application/json','X-Admin-Key':adminKey},body:JSON.stringify({transcript,title:title||'Immunologie-Transkripte'})});
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.error||'Fehler '+res.status);
+    localStorage.setItem(ADMIN_KEY_STORE,adminKey);
+    document.getElementById('immunoAdminStatus').textContent='Erfolgreich hochgeladen!';
+    setTimeout(()=>{closeImmunoAdmin();loadImmunoMaterial()},800);
+  }catch(e){document.getElementById('immunoAdminStatus').textContent='Fehler: '+e.message}
+  document.getElementById('immunoUploadBtn').disabled=false;
+}
 function selectImmunoCount(el,val){
   document.querySelectorAll('[data-icnt]').forEach(c=>c.classList.remove('selected'));
   el.classList.add('selected');
@@ -1417,9 +1524,14 @@ const IMMUNO_TOPICS={
   immuntherapie:'Immuntherapien (mAb-Nomenklatur -omab/-ximab/-zumab/-umab, Trastuzumab, Checkpoint-Blockade, ADCC/ADCP, PEGylierung, IVIG, CAR-T, Insulin/Banting)',
   impfung:'Impfung (aktiv/passiv/simultan, Lebend/Tot/Untereinheit/mRNA/Konjugat, Adjuvantien, Herdenimmunität, HBV, Tollwut, Schwangerenimpfung, Kontraindikationen)'
 };
-function buildImmunoSystemPrompt(n,topicKey){
+function buildImmunoSystemPrompt(n,topicKey,hasTranscript){
   const topicScope=topicKey?IMMUNO_TOPICS[topicKey]:'Alle 8 Themen der Demo II 2025/26 gleichmäßig durchmischt';
+  const sourceLine=hasTranscript
+    ? 'INHALTSQUELLE: Generiere die Fragen AUSSCHLIESSLICH aus dem unten als Kontext gegebenen Vorlesungs-Transkript. Jede Frage muss inhaltlich aus diesem Text ableitbar sein. Decke den GESAMTEN Text gleichmäßig ab — verteile Fragen über alle Vorlesungen/Abschnitte (Anfang, Mitte, Ende), nicht nur prominente Stellen. Nutze nur Wissen, das im Transkript vorkommt.'
+    : 'INHALTSQUELLE: Standard-Curriculum Immunologie der Semmelweis Demo II 2025/26.';
   return `Du bist Experte für die Immunologie-Zwischenprüfung (Demo II 2025/26) an der Semmelweis Universität Budapest. Generiere exakt ${n} MCQ-Fragen, die EXAKT den Stil des offiziellen Testpools treffen.
+
+${sourceLine}
 
 THEMENSCOPE: ${topicScope}
 
@@ -1463,8 +1575,13 @@ async function startImmunologie(){
   const lt=document.getElementById('loadingText');
   lt.textContent=LOADING_MSGS[Math.floor(Math.random()*LOADING_MSGS.length)];lt.style.color='';
   try{
-    const sys=buildImmunoSystemPrompt(n,topicKey);
-    const usr=`Erstelle ${n} Immunologie-MCQ-Fragen ${topicKey?'aus dem Themenbereich: '+IMMUNO_TOPICS[topicKey]:'gemischt aus allen 8 Demo-II-Themen'}. Halte den Pool-Stil exakt ein.`;
+    const hasTranscript=!!(immunoTranscript&&immunoTranscript.trim());
+    const sys=buildImmunoSystemPrompt(n,topicKey,hasTranscript);
+    let usr=`Erstelle ${n} Immunologie-MCQ-Fragen ${topicKey?'aus dem Themenbereich: '+IMMUNO_TOPICS[topicKey]:'gemischt aus allen 8 Demo-II-Themen'}. Halte den Pool-Stil exakt ein.`;
+    if(hasTranscript){
+      const{text:ctx,warning}=prepareTextForPrompt(immunoTranscript);
+      usr+=`\n\nVorlesungstranskript der Immunologie-VOs:\n---\n${ctx}\n---${warning?'\n'+warning:''}\nGeneriere die Fragen AUSSCHLIESSLICH aus diesem Transkript.`;
+    }
     const maxTokens=n<=5?4096:n<=10?8192:16384;
     state.questions=await callAnthropicWithRetry(sys,usr,maxTokens);
     savePrevQuestionTopics(state.questions);
@@ -1821,6 +1938,7 @@ buildTopicArea();
 loadTheme();
 loadPoolFromServer();
 loadWochentest();
+loadImmunoMaterial();
 // Show admin button if admin key previously stored
 if(localStorage.getItem(ADMIN_KEY_STORE))document.getElementById('wtAdminWrap').style.display='block';
 
