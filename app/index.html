@@ -732,7 +732,7 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
     <div id="modeRigorosum" style="display:none">
       <button onclick="backToMenu()" style="font-size:10px;padding:6px 12px;background:transparent;border:1px solid var(--rule);color:var(--mid);cursor:pointer;font-family:inherit;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;margin-bottom:24px;transition:all .15s" onmouseover="this.style.borderColor='var(--ink)';this.style.color='var(--ink)'" onmouseout="this.style.borderColor='var(--rule)';this.style.color='var(--mid)'">← Zurück</button>
       <div class="section-label">KI-Übung &amp; Rigorosum</div>
-      <p style="font-size:14px;color:var(--ink);line-height:1.6;margin:8px 0 24px;max-width:640px">Kein Material nötig — die KI generiert Fragen aus dem <strong>offiziellen Semmelweis-Themenkatalog</strong>. Du kannst einzelne Themenbereiche filtern und üben oder die volle <strong>Rigorosum-Simulation</strong> starten (20 Fragen, 60 Minuten Timer, kein Zurückblättern).</p>
+      <p style="font-size:14px;color:var(--ink);line-height:1.6;margin:8px 0 24px;max-width:640px">Kein Material nötig — die KI generiert Fragen aus dem <strong>offiziellen Semmelweis-Themenkatalog</strong>. Du kannst einzelne Themenbereiche filtern und üben oder die volle <strong>Rigorosum-Simulation</strong> starten (20 Fragen, 40 Minuten Timer, kein Zurückblättern).</p>
       <div style="text-align:center;margin-top:2rem">
         <button class="btn btn-primary btn-large" onclick="goToConfigWith('rigorosum')">Weiter zur Konfiguration</button>
       </div>
@@ -835,7 +835,7 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
       <div class="mode-card" id="examModeCard" onclick="toggleExamMode()" style="grid-column:1/-1">
         <div class="mc-badge" style="color:var(--red2);border-color:var(--red2)">Rigorosum</div>
         <div class="mc-title">Rigorosum-Simulation</div>
-        <div class="mc-desc">20 Fragen, 60 Minuten Timer, kein Zurückblättern</div>
+        <div class="mc-desc">20 Fragen, 40 Minuten Timer, kein Zurückblättern</div>
       </div>
     </div>
     </div>
@@ -1046,7 +1046,7 @@ const state={
   questions:[],userAnswers:{},evaluated:false,
   examMode:false,
   examTimerInterval:null,
-  examTimeLeft:3600,
+  examTimeLeft:2400,
   currentQuestionIndex:0,
   quizStartTime:0,
   isDailyChallenge:false
@@ -1726,7 +1726,7 @@ function updateSummary(){
   document.getElementById('sumSource').textContent=src;
   const sel=state.selectedSubs.size;
   document.getElementById('sumTopics').textContent=sel===0?'Alle':sel+' Subthema'+(sel===1?'':'s');
-  document.getElementById('sumCount').textContent=state.examMode?'20 Fragen (60 Min.)':state.count+' Fragen';
+  document.getElementById('sumCount').textContent=state.examMode?'20 Fragen (40 Min.)':state.count+' Fragen';
   // Context size
   const ctxRow=document.getElementById('sumCtxRow'),ctxEl=document.getElementById('sumCtx');
   const textLen=isAlt?state.poolText.length:state.fileText.length;
@@ -1843,7 +1843,7 @@ function updateLoadingMsg(msg){const el=document.getElementById('loadingText');i
 
 // ── Exam Timer ────────────────────────────────────────────────────────────────
 function startExamTimer(){
-  state.examTimeLeft=3600;
+  state.examTimeLeft=2400;
   const timerEl=document.getElementById('examTimer');
   timerEl.style.display='block';
   timerEl.classList.remove('urgent');
