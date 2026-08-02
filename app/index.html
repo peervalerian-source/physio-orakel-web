@@ -1823,7 +1823,7 @@ async function callAnthropicWithRetry(sys,usr,maxTokens,retries=2){
   let lastErr;
   for(let attempt=0;attempt<=retries;attempt++){
     try{
-      const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json','X-Access-Code':getAccessCode()},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:maxTokens,system:sys,messages:[{role:'user',content:usr}]})});
+      const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json','X-Access-Code':getAccessCode()},body:JSON.stringify({model:'claude-sonnet-5',max_tokens:maxTokens,system:sys,messages:[{role:'user',content:usr}]})});
       if(!res.ok){let m='API '+res.status;try{const j=await res.json();m=j.error?.message||m}catch{}
         if((res.status===429||res.status===529)&&attempt<retries){const wait=Math.pow(2,attempt+1)*1000;updateLoadingMsg(`Rate-Limit — Retry in ${wait/1000}s…`);await new Promise(r=>setTimeout(r,wait));continue}
         throw new Error(m)}
@@ -2049,7 +2049,7 @@ Kurzerklärung: ${q.explanation||''}
 Thema: ${q.topic||''}`;
 
   try{
-    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json','X-Access-Code':getAccessCode()},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2048,system:'Du bist ein Physiologie-Dozent an der Semmelweis Universität. Erkläre verständlich, präzise und klinisch relevant auf Deutsch.',messages:[{role:'user',content:prompt}]})});
+    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json','X-Access-Code':getAccessCode()},body:JSON.stringify({model:'claude-sonnet-5',max_tokens:2048,system:'Du bist ein Physiologie-Dozent an der Semmelweis Universität. Erkläre verständlich, präzise und klinisch relevant auf Deutsch.',messages:[{role:'user',content:prompt}]})});
     if(!res.ok)throw new Error('API-Fehler');
     const data=await res.json();
     const text=data.content.map(b=>b.text||'').join('');
