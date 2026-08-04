@@ -2481,7 +2481,8 @@ async function renderLeaderboard(){
     }).join('')+'</div>';
     el.innerHTML=html;
   }catch(e){
-    el.innerHTML='<div style="font-size:11px;color:var(--mid);padding:14px;text-align:center;border:1px solid var(--rule);background:var(--pure)">Ranking nicht verfügbar</div>';
+    console.error('renderLeaderboard error:',e,e&&e.stack);
+    el.innerHTML='<div style="font-size:11px;color:var(--mid);padding:14px;text-align:center;border:1px solid var(--rule);background:var(--pure)">Ranking nicht verfügbar<br><span style="font-size:9px;color:var(--red2);letter-spacing:.02em">'+(e&&e.message?e.message:String(e))+'</span></div>';
   }
 }
 
