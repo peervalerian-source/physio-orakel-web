@@ -1877,6 +1877,8 @@ async function startQuiz(){
       const n=parseInt(state.count);
       const filtered=filterPoolByTopics(state.parsedPool,state.selectedSubs);
       if(!filtered.length)throw new Error('Keine Fragen im Pool passen zum Themenfilter.');
+      // Enforce 5-second minimum for the loading screen so the EKG animation runs
+      await new Promise(r=>setTimeout(r,5000));
       state.questions=drawFromPool(filtered,n,state.examMode).map((q,i)=>({
         id:i+1,topic:q.topic||'',question:q.question,
         options:q.options,correct:q.correct,explanation:q.explanation||''
