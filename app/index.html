@@ -1038,7 +1038,7 @@ const MAX_CONTEXT_CHARS=120000;
 const state={
   fileText:'',fileName:'',
   wtText:'',isWochentest:false,flowMode:'',
-  poolText:'',poolName:'',
+  poolText:'',poolName:'',parsedPool:[],
   sourceMode:'ki',
   altMode:'exact',
   selectedSubs:new Set(),
@@ -1424,9 +1424,110 @@ async function loadPoolFromServer(){
     const res=await fetch(WORKER_URL+'/pool',{headers:{'X-Access-Code':getAccessCode()}});
     if(!res.ok)return;
     const data=await res.json();
-    if(data.pool){state.poolText=data.pool;state.poolName=(data.meta&&data.meta.name)||'Altfragenpool';renderPoolStatus(data.meta)}
-    else{state.poolText='';renderPoolStatus(null)}
+    if(data.pool){
+      state.poolText=data.pool;
+      state.poolName=(data.meta&&data.meta.name)||'Altfragenpool';
+      state.parsedPool=parseStructuredPool(data.pool);
+      renderPoolStatus(data.meta);
+    }else{state.poolText='';state.parsedPool=[];renderPoolStatus(null)}
   }catch{}
+}
+
+// ── Structured Pool Parser (offline mode, no AI) ──────────────────────────
+function parseStructuredPool(text){
+  if(!text)return[];
+  const questions=[];
+  // Split on lines that are exactly '---' (with optional whitespace)
+  const blocks=text.split(/\n\s*---\s*\n/).map(b=>b.trim()).filter(Boolean);
+  for(const block of blocks){
+    try{
+      const q=parseOneBlock(block);
+      if(q)questions.push(q);
+    }catch{}
+  }
+  return questions;
+}
+function parseOneBlock(block){
+  const lines=block.split('\n');
+  const q={topic:'',group:'',difficulty:'normal',id:'',options:[],correct:[],question:'',explanation:''};
+  // Parse metadata + collect body lines
+  const bodyLines=[];
+  let inBody=false;
+  for(const line of lines){
+    const trimmed=line.trim();
+    const meta=trimmed.match(/^(ID|Thema|Themengruppe|Schwierigkeit|Richtig|Erklärung):\s*(.*)$/i);
+    if(meta&&!inBody){
+      const key=meta[1].toLowerCase();
+      const val=meta[2].trim();
+      if(key==='id')q.id=val;
+      else if(key==='thema')q.topic=val;
+      else if(key==='themengruppe')q.group=val.toLowerCase();
+      else if(key==='schwierigkeit')q.difficulty=val.toLowerCase();
+    }else if(/^(Richtig|Erklärung):/i.test(trimmed)){
+      const m=trimmed.match(/^(Richtig|Erklärung):\s*(.*)$/i);
+      if(m[1].toLowerCase()==='richtig'){
+        q.correct=m[2].split(/[,\s]+/).map(s=>s.toLowerCase().replace(/[^a-e]/g,'')).filter(Boolean);
+      }else{
+        q.explanation=m[2].trim();
+      }
+      inBody=false;
+    }else if(/^[a-eA-E]\)/.test(trimmed)){
+      const opt=trimmed.match(/^([a-eA-E])\)\s*(.*)$/);
+      if(opt)q.options.push({key:opt[1].toLowerCase(),text:opt[2].trim()});
+      inBody=false;
+    }else if(trimmed){
+      // Continuation of explanation if we're already in it, or question body
+      if(q.explanation&&!q.options.length===false){
+        // Skip — belongs to explanation continuation
+        q.explanation+=' '+trimmed;
+      }else{
+        bodyLines.push(trimmed);
+        inBody=true;
+      }
+    }
+  }
+  q.question=bodyLines.join(' ').trim();
+  if(!q.question||!q.options.length||!q.correct.length)return null;
+  return q;
+}
+// Filter parsed pool by selected topics
+function filterPoolByTopics(pool,selectedSubs){
+  if(!selectedSubs||!selectedSubs.size)return pool;
+  // Build a set of active groups + specific subs
+  const activeSubs=new Set(selectedSubs);
+  const activeGroups=new Set();
+  TOPIC_GROUPS.forEach(g=>{
+    const allSelected=g.subs.every(s=>activeSubs.has(s.id));
+    if(allSelected)activeGroups.add(g.id);
+  });
+  return pool.filter(q=>{
+    if(activeSubs.has(q.topic))return true;
+    if(activeGroups.has(q.group))return true;
+    // Also check group prefix (topic "2.3" belongs to group "g2")
+    const groupNum=q.topic.split('.')[0];
+    return activeSubs.has(q.topic)||activeGroups.has('g'+groupNum);
+  });
+}
+// Draw N random questions with even topic-group distribution
+function drawFromPool(pool,n,evenDistribution){
+  if(pool.length===0)return[];
+  const shuffled=[...pool].sort(()=>Math.random()-0.5);
+  if(!evenDistribution||pool.length<=n)return shuffled.slice(0,n);
+  // Group by 'group' field, pick round-robin
+  const byGroup={};
+  pool.forEach(q=>{const g=q.group||'other';if(!byGroup[g])byGroup[g]=[];byGroup[g].push(q)});
+  Object.values(byGroup).forEach(arr=>arr.sort(()=>Math.random()-0.5));
+  const groupKeys=Object.keys(byGroup).sort(()=>Math.random()-0.5);
+  const result=[];const idx={};groupKeys.forEach(k=>idx[k]=0);
+  while(result.length<n){
+    let added=0;
+    for(const k of groupKeys){
+      if(result.length>=n)break;
+      if(idx[k]<byGroup[k].length){result.push(byGroup[k][idx[k]++]);added++}
+    }
+    if(!added)break;
+  }
+  return result.sort(()=>Math.random()-0.5);
 }
 function openPoolAdmin(){
   document.getElementById('poolAdminOverlay').style.display='flex';
@@ -1756,7 +1857,19 @@ async function startQuiz(){
   lt.textContent=LOADING_MSGS[Math.floor(Math.random()*LOADING_MSGS.length)];
   lt.style.color='';
   try{
-    state.questions=await generateQuestions();
+    // Offline pool draw (no API) — when Altfragen-Exakt is selected AND we have a parsed pool
+    const canUsePool=state.sourceMode==='alt'&&state.altMode==='exact'&&state.parsedPool&&state.parsedPool.length>0;
+    if(canUsePool){
+      const n=parseInt(state.count);
+      const filtered=filterPoolByTopics(state.parsedPool,state.selectedSubs);
+      if(!filtered.length)throw new Error('Keine Fragen im Pool passen zum Themenfilter.');
+      state.questions=drawFromPool(filtered,n,state.examMode).map((q,i)=>({
+        id:i+1,topic:q.topic||'',question:q.question,
+        options:q.options,correct:q.correct,explanation:q.explanation||''
+      }));
+    }else{
+      state.questions=await generateQuestions();
+    }
     savePrevQuestionTopics(state.questions);
     stopEKG();state.userAnswers={};state.evaluated=false;state.currentQuestionIndex=0;state.quizStartTime=Date.now();
     document.getElementById('evalBtn').textContent='Auswerten';document.getElementById('evalBtn').disabled=false;
