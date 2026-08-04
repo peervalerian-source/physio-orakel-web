@@ -2461,6 +2461,12 @@ async function renderLeaderboard(){
   el.innerHTML='<div style="font-size:10px;color:var(--mid);padding:12px;text-align:center;letter-spacing:0.1em;text-transform:uppercase">Lädt…</div>';
   try{
     const res=await fetch(WORKER_URL+'/leaderboard',{headers:{'X-Session-Token':tok}});
+    if(res.status===401){
+      // Session expired — clear and prompt re-login
+      try{localStorage.removeItem(SESSION_TOKEN_KEY);localStorage.removeItem(USER_KEY)}catch{}
+      el.innerHTML='<div style="font-size:11px;color:var(--mid);padding:14px;text-align:center;border:1px solid var(--rule);background:var(--pure)">Session abgelaufen — bitte neu einloggen<br><button onclick="logout();openKeyModal()" style="margin-top:8px;padding:6px 12px;background:var(--ink);color:var(--paper);border:none;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;font-family:inherit">Anmelden</button></div>';
+      return;
+    }
     if(!res.ok){
       let bodyText='';try{bodyText=await res.text()}catch{}
       throw new Error('HTTP '+res.status+(bodyText?' — '+bodyText.slice(0,140):''));
