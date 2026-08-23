@@ -1,0 +1,869 @@
+====================================================================
+RIGOROSUM ALTFRAGEN 2024 – FRAGENDATENBANK
+====================================================================
+Quelle: Rigorosum_Altfragen_2024.zip (Foto-Screenshots)
+Transkription 1:1 (Text unverändert, inkl. Original-Tippfehler)
+"Richtig:" = die im Lösungsbild blau angekreuzten Optionen
+Format pro Frage: Termin/Nr | Frage | Antwortmöglichkeiten | Richtig
+====================================================================
+
+
+####################################################################
+# TERMIN 1 – 21.05.2024
+####################################################################
+
+--------------------------------------------------------------------
+[1-01] Welche der folgenden Behauptungen sind korrekt?
+a. Azetylcholin wird in Synapsen, die mACh-Rezeptoren enthalten, durch ACh-Esterase gespalten
+b. Azetylcholin wird in Synapsen die nACh-Rezeptoren enthalten, durch ACh-Esterase gespalten
+c. Bindung von Azetylcholin an muskarinischen Rezeptoren kann Kationkanäle schließen
+d. Die Wirkung von Azetylcholin an muskarinischen Rezeptoren kann durch Atropin gehemmt werden
+Richtig: a, b, c, d
+
+--------------------------------------------------------------------
+[1-02] Welche der folgenden Faktoren/Prozesse wirken fettmobilisierend?
+a. Überproduktion von alpha-MSH im Hypothalamus.
+b. Überproduktion von NPY im Hypothalamus
+c. Verabreichung von T3
+d. Fasten
+e. Verabreichung von hohen Dosen von GH
+Richtig: a, c, d, e
+
+--------------------------------------------------------------------
+[1-03] Wählen Sie die richtigen Behauptungen über die Durchblutung der Haut!
+a. Die AVDO2 der Haut ist wesentlich kleiner als der Durchschnittswert des Körperkreislaufs
+b. Die Gefäße der akralen Hautgebiete haben einen hohen myogenen Basaltonus
+c. Ein starker Blutverlust führt zur sympatischen Vasokonstriktion der Hautgefäße
+d. Die Hautdurchblutung nimmt bei Wärmebelastung stark ab
+Richtig: a, c
+
+--------------------------------------------------------------------
+[1-04] Welche der folgenden Aussagen über die Hypermetropie trifft/treffen zu?
+a. Der Bulbus kann zu kurz sein
+b. Die nicht akkommodierte Brechkraft des Auges ist zu klein
+c. Kann mit einer Sammellinse korrigiert werden
+d. Das scharfe Bild entsteht hinter der Netzhaut
+Richtig: a, b, c, d
+
+--------------------------------------------------------------------
+[1-05] Welche der folgenden Prozesse erfolgen bei Adrenalin-erzeugter Bronchodilatation?
+a. Gesteigerte Phosphorylierung der Myosinleichtekette
+b. Erhöhung der intrazellulären cAMP-Konzentration
+c. Erhöhung der intrazellulären Ca2+-Konzentration
+d. Adrenalinbindung an beta2-Rezeptoren
+e. Hemmung der Myosinleichtkettenkinase
+Richtig: b, d, e
+
+--------------------------------------------------------------------
+[1-06] Welche Aussagen über den Insulinmangel treffen zu?
+a. Insulinmangel führt zur erhöhten Glukagonsekretion
+b. Glukose wird im Urin ausgeschieden erst wenn der Blutglukosespiegel 11 mmol/l überschreitet
+c. Unbehandelter Insulinmangel führt häufig zu hypoglikämisches Koma
+d. Die Ketonkörperbildung führt zu einer nicht-respiratorischen (dh. metabolische) Azidose
+Richtig: a, b, d
+
+--------------------------------------------------------------------
+[1-07] Welche der folgenden Behauptungen ist/sind wahr?
+a. Kortisol erniedrigt die GFR
+b. Kortisol ist das wirksamste Mineralokortikoidhormon
+c. Kortisol fördert die Wasserausscheidung durch die Nieren
+d. Kortisol stimuliert die H+ Resorption im proximalen Tubulus
+Richtig: c
+
+--------------------------------------------------------------------
+[1-08] Das Renin-Angiotensin-System wird aktiviert durch:
+a. beta Rezeptoren in der afferenten Arteriole
+b. Erniedrigung des kolloidosmotischen Druckes des Blutplasmas
+c. vermehrte Aldosteron-Sekretion
+d. erhöhte NaCl-Menge im distalen konvoluten Tubulus
+Richtig: a
+
+--------------------------------------------------------------------
+[1-09] Welche der folgenden Behauptungen sind über die Verdauung der Kohlenhydrate richtig?
+a. Amylase wird in der Pankreas als Proamylase sezerniert.
+b. Nur Mono- und Disacchariden werden absorbiert.
+c. Die Disaccharidasen werden in der Pankreas in aktiver Form sezerniert.
+d. Lactose wird durch Enzyme, die an der Bürstensaumoberfläche der Dünndarm-epithelzellen gebunden sind, gespaltet.
+e. Stärke wird durch Pankreas-alpha-Amylase in Monosaccharide vollkommen abgebaut.
+Richtig: d
+
+--------------------------------------------------------------------
+[1-10] Welche der folgenden Behauptungen sind für die Thrombozyten wahr?
+a. TXA2 bewirkt eine Erhöhung der ic. Ca2+ Konzentration
+b. NO bewirkt eine Erhöhung der ic. cGMP Konzentration
+c. Adrenalin bewirkt eine Erhöhung der ic. cAMP Konzentration
+d. NO bewirkt eine Erhöhung der ic. cAMP Konzentration
+Richtig: a, b
+
+--------------------------------------------------------------------
+[1-11] Welche der folgenden Behauptungen sind über die Magenfunktion wahr?
+a. Pylorusöffnung wird über alpha1-Rezeptoren ausgelöst.
+b. Die Aufgabe des distalen Magens ist die Durchmischung und Förderung des Inhalts.
+c. CCK steigert die Kraft der Kontraktionswellen im distalen Magen.
+d. N. Vagus steigert die Kraft der Kontraktionswellen im distalen Magen durch cholinerge Übertragung.
+e. Die Muskulatur ist in dem distalen Magen kontinuierlich kontrahiert.
+Richtig: b, d
+
+--------------------------------------------------------------------
+[1-12] Richtige Behauptung/en über den Flexorreflex ist/sind:
+a. Er ist polysynaptisch.
+b. Die Afferenzen sind typischerweise B-Typ polymodale Fasern.
+c. Der Rezeptor ist die Muskelspindel.
+d. Die Reflexantwort kann durch Botulinumtoxin gehemmt werden.
+e. Der Rezeptor ist das Golgi-Sehnenorgan.
+Richtig: a, d
+
+--------------------------------------------------------------------
+[1-13] Welche der folgenden Parameter werden bei einer nicht-kompensierten respiratorischen Alkalose im normalen Bereich bleiben?
+a. PaCO2
+b. Gesamtpufferbasenkonzentration (BB)
+c. aktuelle HCO3--Konzentration
+d. pH
+e. Basenüberschuß (BE)
+f. standarde HCO3--Konzentration
+Richtig: b, e, f
+
+--------------------------------------------------------------------
+[1-14] Welche der folgenden Behauptungen ist/sind wahr?
+a. Cortisol hemmt die CRH-Produktion des Hypothalamus
+b. Cortisol hemmt die ACTH-Produktion der Hypophyse
+c. CRH stimuliert die Synthese von POMC
+d. CRH hemmt die Synthese von ACTH
+e. ACTH ist ein glandotropes Hormon
+Richtig: a, b, c, e
+
+--------------------------------------------------------------------
+[1-15] Welche der folgenden Prozesse führen zur erhöhten Resorption in der Mikrozirkulation?
+a. Erniedrigter hydrostaticher Druck in den Kapillaren
+b. Erhöhte Kapillarpermeabilität
+c. Erhöhung des zentralen Venendrucks
+d. Zunahme der Eiweißkonzentration im Blutplasma
+Richtig: a, d
+
+--------------------------------------------------------------------
+[1-16] Bei physiologischen intra- und extrazellularen Ionkonzentrationen und +90 mV Membranpotential, zeigt die Triebkraft in einer Nervenzelle für
+a. Ca2+ Ione aus der Zelle
+b. Cl- Ione aus der Zelle
+c. Na+ Ione aus der Zelle
+d. K+ Ione aus der Zelle
+Richtig: b, d
+
+--------------------------------------------------------------------
+[1-17] Die alveoläre Ventilation ist
+a. derjenige Teil der gesamten Ventilation, der mit der Austauschfläche in Verbindung kommt.
+b. das Volumen der Alveolen.
+c. derjenige Teil der gesamten Ventilation, der während einer Hyperkapnie gesteigert werden soll (um sie zu korrigieren).
+d. etwa zwei Drittel der gesamten Ventilation (bei Ruheatmung).
+Richtig: a, c, d
+
+--------------------------------------------------------------------
+[1-18] Welche der folgenden Behauptungen sind wahr für pseudounipolare (Goldberger) Exträmitätenableitungen?
+a. Beim Indifferenztyp ist in aVR die grösste Auslenkung der QRS-Gruppe negativ
+b. Beim Steiltyp ist in aVR die grösste Auslenkung der QRS-Gruppe negativ
+c. Nur eine Elektrode wird verwendet
+d. Beim Indifferenztyp ist in aVF die grösste Auslenkung der QRS-Gruppe negativ
+e. Beim Steiltyp ist in aVF die grösste Auslenkung der QRS-Gruppe negativ
+Richtig: a, b, e
+
+
+####################################################################
+# TERMIN 2 – 22.05.2024 & 18.06.2024 & 21.06.2024
+####################################################################
+
+--------------------------------------------------------------------
+[2-01] Welche Aussagen sind über die synaptische Signalübertragung in chemischen Synapsen richtig?
+a. Bestimmte presynaptische Zellen besitzen Gi-gekoppelte 7TM Kannabinoid-Rezeptoren
+b. Opiaten hemmen die Entstehung von Ca2+-Signalen in presynaptischen Zellen
+c. Presynaptische Rezeptoren können sowohl hemmende als auch aktivierende Wirkungen erzeugen
+d. Astrozyten beeinflussen die Wirksamkeit von Synapsen
+Richtig: a, b, c, d
+
+--------------------------------------------------------------------
+[2-02] Die Wärmebilanz des Organismus ist bedingt durch:
+a. Wärmeabgabe durch Verdunstung in den Luftwegen
+b. Wärmeproduktion in der Muskulatur
+c. Wärmeaufnahme durch Strahlung
+d. Wärmeabgabe durch Verdunstung in der Haut
+e. Wärmeabgabe durch Strahlung
+Richtig: a, b, c, d, e
+
+--------------------------------------------------------------------
+[2-03] Welche der folgenden Substanzen hemmen die Thrombozyten?
+a. ADP
+b. Thrombin
+c. TXA2
+d. NO
+e. PGI2
+Richtig: d, e
+
+--------------------------------------------------------------------
+[2-04] Welche der folgenden Behauptungen sind während eines Herzzyklus wahr?
+a. Der T-Welle des EKG folgt die Schließung der Mitralklappe
+b. Die Aortenklappe ist in der Austreibungsphase geöffnet
+c. In der Anspannungsphase befindet sich etwa 70 ml Blut in der linken Ventrikel
+d. Der Q-Welle des EKG folgt die Schließung der Mitralklappe
+e. In der Entspannungsphase befindet sich das Restvolumen in den Ventrikeln
+Richtig: b, d, e
+
+--------------------------------------------------------------------
+[2-05] Welche der folgenden Behauptungen sind korrekt?
+a. Bindung von Adrenalin an beta-1-Rezeptoren aktiviert Gq-Proteine
+b. Bindung von Noradrenalin an beta-1-Rezeptoren aktiviert Gq-Proteine
+c. Bindung von Adrenalin an beta-2-Rezeptoren aktiviert Gs-Proteine
+d. Bindung von Noradrenalin an beta-2-Rezeptoren aktiviert Gs-Proteine
+Richtig: c, d
+
+--------------------------------------------------------------------
+[2-06] Wählen Sie die richtigen Behauptungen über den Lungenkreislauf!
+a. Die Regulation des Lungenkreislaufs ist vor allem unter neurale Kontrolle
+b. Die Lungendurchblutung ist gleich dem Herzzeitvolumen
+c. Der die Lungendurchblutung treibende Druckgradient ist (in Ruhe) weniger als 10 mm Hg
+d. Die Lungengefäße sind dehnbar
+Richtig: b, c, d
+
+--------------------------------------------------------------------
+[2-07] Welche Aussagen über die Insulinsekretion treffen zu?
+a. Glukose fördert sowohl die Exozytose als auch die Neubildung von Insulin
+b. Die Neubildung von Insulin hängt vor allem vom Membranpotential der B-Zellen ab
+c. Insulin wird aus exozytotischen Vesikeln ausgeschüttet
+d. Wird durch GIP gehemmt
+e. Wird durch Glukagon gehemmt
+Richtig: a, c
+
+--------------------------------------------------------------------
+[2-08] Welche der folgenden Behauptungen sind über den Valsalva-Versuch richtig?
+a. Der Valsalva-Versuch ist eine intensive exspiratorische Anstrengung gegen die verschlossenen Atemwege
+b. Beim Valsalva-Versuch wird der Alveolardruck kleiner als der Barometerdruck
+c. Beim Valsalva-Versuch wird der Pleuradruck größer als der Barometerdruck
+d. Das ist eine Methode zur Bestimmung des Strömungswiederstands
+Richtig: a, c
+
+--------------------------------------------------------------------
+[2-09] Die Synthese von welchen der folgenden Proteine wird durch Glukokortikoide gehemmt?
+a. Surfactant der Pneumozyten
+b. Immunglobuline
+c. Alpha-1-Catecholamin Rezeptoren
+d. Kollagen in Fibroblasten
+e. Glukoneogenetische Enzyme
+Richtig: b, d
+
+--------------------------------------------------------------------
+[2-10] Welche Aussagen über die Bildung der Spermien treffen zu?
+a. Testosteron und Östradiol sind für die normalen Prozesse im Hoden unentbehrlich
+b. Die Entwicklung der Spermien dauert etwa 30 Tage
+c. Die endgültige Reifung der Spermien kommt in den Hodenkanälchen zustande
+d. Die Spermatogonien differenzieren sich aus Sertoli-Zellen
+e. Die Spermatiden entstehen durch mitotische Teilung der Spermatogonien
+Richtig: a
+
+--------------------------------------------------------------------
+[2-11] Welche der folgenden Parameter der Herztätigkeit werden durch Hemmung der L-Typ Ca2+-Kanäle beeinflusst?
+a. PQ-Intervall
+b. Dauer der Plateau-phase im Arbeitsmyokard
+c. Wert des maximalen diastolischen Potentials im Sinusknoten
+d. Dauer der Refraktärzeit im Arbeitsmyokard
+e. Ruhemembranpotential im Arbeitsmyokard
+Richtig: a, b, d
+
+--------------------------------------------------------------------
+[2-12] Welche der folgenden Behauptungen sind richtig?
+a. Die Aufnahme der Aminosäuren in die Dünndarmepithelzellen ist ein passiver Transportvorgang.
+b. Die Pepsinogene werden durch Salzsäure aktiviert.
+c. Einige Dipeptidasen sind in der Bürstensaummembran lokalisiert.
+d. Nur Aminosäuren werden in die Dünndarmepithelzellen aufgenommen.
+e. Pepsin wird bei pH=2 inaktiviert.
+Richtig: b, c
+
+--------------------------------------------------------------------
+[2-13] Welche der folgenden Sinnesmodalitäten in den Dermatomen fallen bei halbseitiger Durchtrennung des Rückenmarks unterhalb der Läsion kontralateral aus?
+a. Tastsinn
+b. Nozizeption
+c. Kälteempfindung
+d. Propriozeption
+Richtig: b, c
+
+--------------------------------------------------------------------
+[2-14] Wählen Sie die richtigen Behauptungen über die Mikrozirkulation!
+a. Die Kapillarwand ist durch das sympathischen Nervensystem reguliert
+b. Die präkapillare Sphinkter bestimmen die Durchblutung der einzelnen Kapillaren
+c. Viele Kapillaren des Körpers sind im Ruhezustand geschlossen
+d. Die Dilatation eines Gefäßes kann eine Dilatation des zuführenden Gefäßes auslösen
+Richtig: b, c, d
+
+--------------------------------------------------------------------
+[2-15] Welche der folgenden Behauptungen sind über das Cholezystokinin (CCK) richtig?
+a. Es wirkt ausschließlich auf parakrinem Weg.
+b. Es erhöht die Enzymsekretion der Pankreasazinuszellen.
+c. Es wird aus den D-Zellen, die sich in der Duodenalmukosa befinden, ausgeschüttet.
+d. Es stimuliert die Magenentleerung.
+Richtig: b
+
+--------------------------------------------------------------------
+[2-16] Welche der folgenden Behauptungen sind über die Sehnenorgane richtig?
+a. Ihre Signale werden über das lemniskale System in den primären somatosensorischen Cortex weitergeleitet
+b. Sie sind zu den Skelettmuskelfasern seriell geschaltet.
+c. Sie sind mit einer Bindegewebskapsel umhüllt.
+d. Ein Sehnenorgan ist mit mehreren motorischen Einheiten funktionell verbunden.
+Richtig: a, b, c, d
+
+--------------------------------------------------------------------
+[2-17] Bei physiologischen intra-und extrazellulären Ionenkonzentrationen und -120 mV Membranpotential, zeigt die Triebkraft in einer Nervenzelle für
+a. Na+ Ionen in die Zelle
+b. K+ Ionen aus der Zelle
+c. Ca2+ Ionen in die Zelle
+d. Cl- Ionen aus der Zelle
+Richtig: a, c, d
+
+--------------------------------------------------------------------
+[2-18] Welche Behauptungen über die Kontraktion der Skelettmuskeln sind wahr?
+a. Bei hoher Reizfrequenz entsteht eine Dauererschlaffung
+b. Extrem hohe extrazelluläre K+ Konzentration verursacht eine Dauerkontraktion
+c. Die Kontraktion kann auch in Ca2+-freier Lösung ausgelöst werden
+d. Die Dauer des Aktionspotentials ist wesentlich länger als die Dauer der Muskelkontraktion
+e. ATP-Mangel verursacht einen dauerhaften kontrahierten Zustand
+Richtig: b, c, e
+
+--------------------------------------------------------------------
+[2-19] Welche der folgenden Behauptungen sind richtig?
+a. Die alveolo-kapilläre Differenz des O2-Partialdrucks am Anfang der Kapillaren wird bei körperlicher Arbeit erhöht
+b. Der venöse CO2-Partialdruck wird bei körperlicher Arbeit erhöht
+c. Die alveolo-kapilläre Differenz des CO2-Partialdrucks am Anfang der Kapillaren wird bei körperlicher Arbeit erhöht
+d. Bei körperlicher Arbeit wird der CO2-Partialdruck in der Pulmonalvene erhöht.
+Richtig: a, b, c
+
+--------------------------------------------------------------------
+[2-20] Welche der folgenden Behauptungen sind wahr?
+a. Bei Harnverdünnung ist die ADH Konzentration im Blutplasma niedrig
+b. Bei maximaler Harnverdünnung ist das medulläre Segment des Sammelrohres für Harnstoff undurchlässig
+c. Bei Harnverdünnung erreicht die osmotische Konzentration im Interstitium des Nierenmarks 2000 mosmol/l
+d. Nur bei Harnverdünnung ist das aufsteigende Segment der Henle-Schleife wasserundurchlässig
+Richtig: a, b
+
+
+####################################################################
+# TERMIN 3 – 24.05.2024 & 28.05.2024
+####################################################################
+
+--------------------------------------------------------------------
+[3-01] Kontraktion in der Single-unit glatten Muskulatur:
+a. kann auch ohne erhöhte intrazelluläre [Ca2+] erfolgen
+b. wird durch Aktivierung des Gq-Proteins stimuliert
+c. kann durch passive Dehnung stimuliert werden
+d. kann durch Protein-Kinase-A stimuliert werden
+Richtig: a, b, c
+
+--------------------------------------------------------------------
+[3-02] Die Geschwindigkeit der Aktionspotentialfortleitung ist abhängig von:
+a. der K+-Permeabilität der Plasmamembran
+b. der Steilheit der aufsteigenden Phase des Aktionspotentials
+c. der Länge der Nervenfaser
+d. dem Radius des Axons
+e. der Membrankapazität
+Richtig: a, b, d, e
+
+--------------------------------------------------------------------
+[3-03] Welche der folgenden Behauptungen sind für pseudounipolare Extremitätenableitungen wahr?
+a. Beim Steiltyp ist in aVR die größte Auslenkung der QRS-Gruppe negativ
+b. Beim Indifferenztyp ist in aVR die größte Auslenkung der QRS-Gruppe negativ
+c. Beim Indifferenztyp ist in aVF die größte Auslenkung der QRS-Gruppe positiv
+d. Die Potentialdifferenz zwischen zwei Extremitätenelektroden wird gemessen
+Richtig: a, b, c
+
+--------------------------------------------------------------------
+[3-04] Wählen Sie die richtigen Behauptungen über die arteriellen Barorezeptoren aus!
+a. Sie sind vor allem für das gesamte Blutvolumen empfindlich
+b. Zunahme ihrer Aktivität führt zur Abnahme des sympatischen Gefäßtonus
+c. Sie sind vor allem im Glomus caroticum zu finden
+d. Sie sind vor allem an der kurzfristigen Blutdruckregulation beteiligt
+Richtig: b, d
+
+--------------------------------------------------------------------
+[3-05] Welche der folgenden Behauptungen ist/sind richtig?
+a. Rezeptoren im Mund können die ADH-Sekretion hemmen
+b. Erhöhung des Blutvolumens hemmt die ADH-Sekretion
+c. Bei Blutverlust wird die ADH-Sekretion gehemmt
+d. Erhöhung der osmotischen Konzentration des Blutplasmas hemmt die ADH-Sekretion
+e. Bei physiologischer osmotischer Konzentration erfolgt keine ADH-Sekretion
+Richtig: a, b
+
+--------------------------------------------------------------------
+[3-06] Welche folgenden Aussagen über die Stäbchen trifft/treffen zu?
+a. Sie befinden sich größtenteils in der Fovea centralis
+b. Bei Lichteinfall wird die Transmitterfreisetzung erniedrigt
+c. Intrazelluläres cGMP schliesst die Na+-Kanäle in der Plasmamembran des Außensegmentes
+d. Bei Lichteinfall nimmt die cGMP Konzentration im Außensegment ab
+e. Bei Lichteinfall erfolgt eine Depolarisation im Aussensegment
+Richtig: b, d
+
+--------------------------------------------------------------------
+[3-07] Welche der folgenden Behauptungen ist/sind wahr?
+a. POMC wird in der Adenohypophyse synthetisiert
+b. POMC wird von der Adenohypophyse freigesetzt
+c. Oxytozin wird von der Neurohypophyse freigesetzt
+d. Somatostatin wird von der Adenohypophyse freigesetzt
+e. Oxytozin wird in der Neurohypophyse synthetisiert
+Richtig: a, c
+
+--------------------------------------------------------------------
+[3-08] Welche der folgenden Änderungen lösen eine Linksverschiebung der O2-Bindungskurve aus?
+a. Die Erhöhung des pH-Werts in dem Blut
+b. Die Erhöhung der Affinität des Hämoglobins zu O2
+c. Die Erhöhung des PCO2 in dem Blut
+d. Die Erhöhung der 2,3-Bisphosphoglycerat-Konzentration
+e. Die Erhöhung der K+-Konzentration in dem Blut
+Richtig: a, b
+
+--------------------------------------------------------------------
+[3-09] Welche der folgenden Behauptungen sind wahr?
+a. Bei der primären Adhäsion bindet sich eine Schicht von Thrombozyten an die Gefäßwand
+b. Die primäre Adhäsion der Thrombozyten wird durch Kollagen vermittelt
+c. Die primäre Adhäsion der Thrombozyten wird durch vWF vermittelt
+d. Die primäre Adhäsion der Thrombozyten wird durch Fibrinogen vermittelt
+Richtig: a, b, c
+
+--------------------------------------------------------------------
+[3-10] GFR nimmt zu, wenn:
+a. die Ladung der Basalmembran im Glomerulus neutralisiert wird
+b. die Plasmakonzentration von Albumin erhöht ist
+c. der Hämatokrit-Wert zunimmt
+d. weniger ANP freigesetzt wird
+e. die Volumenreceptoren im Niederdrucksystem gedehnt werden
+Richtig: a, e
+
+--------------------------------------------------------------------
+[3-11] Welche der folgenden Aussagen sind richtig?
+a. Die Kontraktion der Gallenblase wird auch durch cholinerge Vagusfasern ausgelöst.
+b. Rund 30% der Gallensäuren wird in der Gallenblase resorbiert.
+c. Die Kontraktion der Gallenblase wird auch durch CCK ausgelöst.
+d. Die Galle kann in der Gallenblase bis auf 10% ihres ursprünglichen Volumens eingedickt werden.
+e. Die Erschlaffung des Sphincters Oddi wird auch durch adrenerge Nervenfasern ausgelöst.
+Richtig: a, c, d
+
+--------------------------------------------------------------------
+[3-12] Welche Prozesse werden durch Insulin im Fettgewebe gefördert?
+a. Triglyzeridsynthese
+b. Aktivität der Lipoproteinlipase
+c. Abgabe von freien Fettsäuren ins Blut
+d. Aufnahme von Glukose in die Fettzellen
+Richtig: a, b, d
+
+--------------------------------------------------------------------
+[3-13] Welche der folgenden Aussagen sind richtig?
+a. Ein kontinuierlich hoher GnRH-Spiegel führt zu hohen Sexualsteroid-Spiegeln
+b. Die Verabreichung von Androgenen kann die Spermatogenese zerstören
+c. Granulosa Zellen haben praktisch keine 17-Hydroxylase Aktivität
+d. Männer produzieren kein Prolactin
+e. Von DHT wird kein Östrogen gebildet
+Richtig: b, c, e
+
+--------------------------------------------------------------------
+[3-14] Welche der folgenden Prozesse führen zu einer Vasokonstriktion?
+a. alpha1-adrenerge Stimulierung der Gefäße des Magen-Darm Traktes
+b. Zunahme des Blutdrucks in Nierenarteriolen
+c. Hypoxie im Lungenkreislauf
+d. Hyperkapnie und Hypoxie in der Skelettmuskulatur
+Richtig: a, b, c
+
+--------------------------------------------------------------------
+[3-15] Beim Einatmen von hypobarer Luft (z. B. in großer Höhe über dem Meeresspiegel)
+a. ist die arterielle [H+] erniedrigt
+b. entsteht respiratorische Azidose
+c. sinkt der alveoläre O2-Partialdruck
+d. steigt der alveoläre CO2-Partialdruck
+e. entsteht Hypoventilation
+Richtig: a, c
+
+--------------------------------------------------------------------
+[3-16] Welche der folgenden Behauptungen über Parathormon sind wahr?
+a. Es stimuliert die Kalzitriolsynthese
+b. Es hemmt die Phosphatausscheidung durch die Niere
+c. Es stimuliert den Knochenaufbau
+d. Es wird in der Nebenschilddrüse gebildet
+Richtig: a, d
+
+--------------------------------------------------------------------
+[3-17] Welche der folgenden Eigenschaften sind typisch für den unspezifischen Kationkanal im Sinusknoten ("funny Strom")
+a. Bestimmt die Amplitude des Aktionspotentials
+b. Bestimmt die Steilheit der langsamen diastolischen Depolarisation
+c. Bestimmt die Steilheit der Repolarisationsphase
+d. Bestimmt die Dauer der Refraktärzeit
+Richtig: b
+
+--------------------------------------------------------------------
+[3-18] Welche der folgenden Proteine bzw. Vorgänge können an der Entfernung der Ca2+-Ionen aus dem Zytoplasma beteiligt sein?
+a. Ca2+-Aufnahme in die Mitochondrien
+b. Ca2+-ATPase im sarko/endoplasmatischen Retikulum
+c. N-Typ Ca2+-Kanal
+d. Na+/Ca2+-Austauscher in der Plasmamembran
+e. DHP-Rezeptor
+Richtig: a, b, d
+
+--------------------------------------------------------------------
+[3-19] Welche der folgenden Aussagen sind über die Muskelspindel richtig?
+a. Sie sind parallel zur Arbeitsmuskulatur geschaltet.
+b. Sie befinden sich in den Sehnen.
+c. Je feiner der Muskel reguliert wird, desto mehr Muskelspindel befinden sich in ihm.
+d. Sie hat A-gamma-Efferenzen
+Richtig: a, c, d
+
+--------------------------------------------------------------------
+[3-20] Welche der folgenden Aussagen sind über die Absorption der Kohlenhydrate richtig?
+a. Glucose wird in die Dünndarmepithelzelle sekundär-aktiv aufgenommen.
+b. Die Absorption der Kohlenhydrate wird durch eine gleichzeitige NaCl-Absorption verhindert.
+c. Galactose wird in die Dünndarmepithelzelle über einen Na+-gekoppelten Symporter aufgenommen.
+d. GLUT2 ist ein Na+-unabhängiger passiver Carrier.
+e. Die Monosaccharide werden die Epithelzelle über einen basolateral gelegenen Na+-gekoppelten Symporter verlassen.
+Richtig: a, c, d
+
+
+####################################################################
+# TERMIN 4 – 31.05.2024
+####################################################################
+
+--------------------------------------------------------------------
+[4-01] Welche der folgenden Behauptungen ist/sind wahr?
+a. Bei Erwachsenen verursacht GH-Hypersekretion Hyperglykämie
+b. Die Intensität der GH-Freisetzung zeigt zirkadiane Schwankungen
+c. IGF-1 hemmt die GH-Sekretion
+d. Bei Erwachsenen verursacht GH-Hypersekretion Gigantismus
+e. Hypoglykämie hemmt die GH-Sekretion
+Richtig: a, b, c
+
+--------------------------------------------------------------------
+[4-02] Beim kurzfristigen Einatmen von hypobarer Luft (z. B. in großer Höhe über dem Meeresspiegel)
+a. der venöse O2-Partialdruck sinkt
+b. der arterielle O2-Partialdruck sinkt
+c. die arteriovenöse O2-Differenz kann gleich bleiben
+d. der alveoläre O2-Partialdruck sinkt
+e. der O2-Gehalt des venösen Bluts sinkt
+Richtig: a, b, c, d, e
+
+--------------------------------------------------------------------
+[4-03] Wählen Sie die richtigen Behauptungen über die Rolle von NO im Kreislauf!
+a. NO hat eine entspannende Wirkung an Gefäßmuskulatur
+b. Lokale Hemmung der NO-Synthase kann zur Verminderung der Durchblutung des gegebenen Organs führen
+c. NO wird vor allem durch die Blutbahn seinen Angriffspunkt erreichen
+d. Die basale NO-Freisetzung ist an der Einstellung der Gewebedurchblutung im Ruhezustand sehr intensiv beteiligt
+Richtig: a, b
+
+--------------------------------------------------------------------
+[4-04] Welche der folgenden Aussagen ist/sind richtig?
+a. Erhöhte RANKL-Expression an den Osteoblasten aktiviert die Differenzierung der Osteoclasten
+b. Östrogene stimulieren die RANKL-Synthese.
+c. OPG bindet an RANKL und hemmt die Osteoclasten
+d. Glukokortikoide fördern die Synthese von OPG
+Richtig: a, c
+
+--------------------------------------------------------------------
+[4-05] Welche Aussagen über die Langerhansschen Inseln treffen zu?
+a. Die B-Zellen sind vor allem im Zentrum der Langerhansschen Inseln zu finden
+b. Sie bestehen vor allem aus A-, B- und D-Zellen
+c. Ihre Tätigkeit wird auch durch nicht-pankreatische Hormone beeinflusst
+d. Sie sind endokrine Organe
+e. Arterielles Blut strömt in Richtung Inselzentrum
+Richtig: a, b, c, d
+
+--------------------------------------------------------------------
+[4-06] Wählen Sie die richtigen Behauptungen über den Lungenkreislauf!
+a. Die Lungengefäße sind besonders stark autoregulierend
+b. Im Ruhezustand der die Lungendurchblutung treibende Druckgradient ist weniger als 15 mmHg
+c. Die Verteilung der Lungendurchblutung ist durch die lokalen Unterschiede der Gaszusammensetzung im Alveolarraum stark beeinflusst
+d. Die Lungendurchblutung ist gleich dem Herzzeitvolumen
+Richtig: b, c, d
+
+--------------------------------------------------------------------
+[4-07] Welche der folgenden Behauptungen sind wahr?
+a. Thrombin aktiviert Plasminogen direkt
+b. Thrombin führt direkt zur Fibrinolyse
+c. Thrombin hat prokoagulierende Wirkungen
+d. Thrombin aktiviert die Thrombozyten
+Richtig: c, d
+
+--------------------------------------------------------------------
+[4-08] Welche Proteine sind in den Schilddrüsenzellen zu finden?
+a. Apikaler Na-Iodid-Austauscher
+b. Apikale Schilddrüsenperoxidase (Thyreoperoxidase/DUOX2)
+c. Apikales Pendrin
+d. Basolaterale Na-K-Pumpe
+Richtig: b, c, d
+
+--------------------------------------------------------------------
+[4-09] Welche der folgenden Prozesse sind typische Folgen der Bindung von Azetylcholin an nikotinische Rezeptoren?
+a. Öffnung nichtspezifischer Kationkanäle
+b. Aktivierung von Phospholipase C
+c. Aktivierung von Gq heterotrimerem G-Protein
+d. Na+-Einströmung in die Zelle
+Richtig: a, d
+
+--------------------------------------------------------------------
+[4-10] Welche der folgenden Behauptungen sind über das Gastrin richtig?
+a. Seine Sekretion wird durch D-Zellen gesteigert.
+b. Seine Sekretion wird durch Protonen gesteigert.
+c. Es ist ein Produkt der G-Zellen des Pylorus und Duodenum.
+d. Es erhöht die Salzsäuresekretion der Belegzellen im Magen.
+e. Es löst Histaminausschüttung aus den ECL-Zellen der Magenwand aus.
+Richtig: c, d, e
+
+--------------------------------------------------------------------
+[4-11] Bei physiologischen intra-und extrazellulären Ionenkonzentrationen und -10 mV Membranpotential, zeigt die Triebkraft in einer Nervenzelle für
+a. Ca2+ Ionen in die Zelle
+b. Cl- Ionen in die Zelle
+c. Na+ Ionen in die Zelle
+d. K+ Ionen in die Zelle
+Richtig: a, b, c
+
+--------------------------------------------------------------------
+[4-12] Welche der folgenden Behauptungen sind richtig?
+a. Der O2 Partialdruck ist in den peritubulären Kapillaren höher als in den Glomerularkapillaren
+b. Der kolloidosmotische Druck ist in den peritubulären Kapillaren höher als in den Glomerularkapillaren
+c. Der hydrostatische Druck ist in den Glomerularkapillaren niedriger als in den peritubulären Kapillaren
+d. Die Sympathikusaktivität beeinflusst den hydrostatischen Druck weder in den peritubulären Kapillaren noch in den Glomerularkapillaren
+e. ANP beeinflusst den hydrostatischen Druck sowohl in den peritubulären Kapillaren als auch in den Glomerularkapillaren
+Richtig: b, e
+
+--------------------------------------------------------------------
+[4-13] Welche der folgenden Behauptungen sind typischerweise für das Sensorium richtig?
+a. Je stärker der Reiz ist, desto größer wird die Amplitude des Sensorpotentials.
+b. Sensorpotential löst immer ein Aktionspotential aus.
+c. Die Amplitude des afferenten Aktionspotentials ist von dem Sensorpotential abhängig.
+d. Je größer das Sensorpotential ist, desto größer wird die Frequenz des Aktionspotentials an den sensorischen Nervenfasern.
+Richtig: a, d
+
+--------------------------------------------------------------------
+[4-14] Welche der Folgenden fördern das Fieber?
+a. LPS (Lipopolysaccharide)
+b. COX-2-Hemmern
+c. IL-6
+d. PGE2
+e. Cortisol
+Richtig: a, c, d
+
+--------------------------------------------------------------------
+[4-15] Welche der folgenden Parameter werden bei einer respiratorisch kompensierten metabolischen Azidose niedriger (bzw. positiver) als die physiologischen Werte?
+a. Basenüberschuß (BE)
+b. (standard) stHCO3--Konzentration
+c. PaCO2
+d. (aktuelle) aHCO3--Konzentration
+e. pH
+Richtig: a, b, c, d, e
+
+--------------------------------------------------------------------
+[4-16] Welche der folgenden Geschehen steigern die Aktivierung der afferenten Fasern der Muskelspindel?
+a. Kontraktion der Extrafusalfasern des gegebenen Muskels
+b. Gamma-Motorfaser Impulse des gegebenen Muskels
+c. Kontraktion der polaren Zonen der Intrafusalfasern des gegebenen Muskels
+d. Passive Muskeldehnung des gegebenen Muskels
+Richtig: b, c, d
+
+--------------------------------------------------------------------
+[4-17] Welche der folgenden Behauptungen sind wahr für pseudounipolare (nach Goldberger) Extremitätenableitungen (EKG)?
+a. Die Potentialdifferenz zwischen zwei Extremitätenelektroden wird gemessen
+b. Beim Indifferenztyp ist in aVF die größte Auslenkung der QRS-Gruppe positiv
+c. Beim Indifferenztyp ist in aVR die größte Auslenkung der QRS-Gruppe negativ
+d. Beim Steiltyp ist in aVR die größte Auslenkung der QRS-Gruppe negativ
+Richtig: b, c, d
+
+--------------------------------------------------------------------
+[4-18] Welche der folgenden Prozesse spielen sich beim Schluckakt ab?
+a. Der pharingeale Zugang zum Nasenraum wird verschlossen.
+b. Der Kehlkopfdeckel verschließt den Eingang der Luftröhre.
+c. Die Atmung ist vorübergehend gehemmt.
+d. Der Kehlkopf wird erhoben.
+e. Der weiche Gaumen hebt sich.
+Richtig: a, b, c, d, e
+
+--------------------------------------------------------------------
+[4-19] Beim kompletten Tetanus in den quergestreiften Muskeln
+a. Ist die intrazelluläre [Ca2+] wesentlich höher als bei Einzelreizung
+b. Ist die Amplitude der Kontraktion wesentlich höher als bei Einzelreizung
+c. Ist die Amplitude des Aktionspotentials wesentlich höher als bei Einzelreizung
+d. Ist die Dauer eines einzelnen Aktionspotentials wesentlich länger als bei Einzelreizung
+Richtig: a, b
+
+--------------------------------------------------------------------
+[4-20] Welche der folgenden Behauptungen sind wahr während eines Herzzyklus?
+a. In der Entspannungsphase befindet sich das Restvolumen in den Ventrikeln
+b. Die P Welle des EKG folgt der "a" Welle der Jugularispulskurve
+c. Die Mitralklappe ist in der Austreibungsphase geöffnet
+d. Die Schließung der Aortenklappe folgt der T-Welle des EKG
+e. Die Schließung der Mitralklappe folgt der Q-Welle des EKG
+Richtig: a, d, e
+
+
+####################################################################
+# TERMIN 5 – 04.06.2024
+####################################################################
+
+--------------------------------------------------------------------
+[5-01] In welchen der folgenden Zellen wird die Glutamatfreisetzung durch Lichteinfall im Zentrum des rezeptiven Feldes erhöht?
+a. Horizontalzellen
+b. "Off-Zentrum"- Ganglionzellen
+c. "On-Zentrum"-Ganglionzellen
+d. Stäbchen
+e. Zapfen
+Richtig: a
+
+--------------------------------------------------------------------
+[5-02] Die Synthese welcher der folgenden Proteine wird durch Glukokortikoide gehemmt?
+a. Glukoneogenetische Enzyme
+b. Surfactant der Pneumozyten
+c. Immunglobuline
+d. Alpha1-Catecholamin Rezeptoren
+e. Kollagen in Fibroblasten
+Richtig: c, e
+
+--------------------------------------------------------------------
+[5-03] Welche der folgenden Behauptungen ist/sind richtig?
+a. PTH hemmt den Na+-Phosphat-Transport im proximalen Tubulus.
+b. PTH aktiviert 25-Hydroxylase in der Niere.
+c. PTH kann Ca2+ aus dem Knochen mobilisieren.
+d. Cholesterinarme Nahrung löst Rachitis aus
+Richtig: a, c
+
+--------------------------------------------------------------------
+[5-04] Welche der folgenden Behauptungen sind richtig?
+a. CCK potenziert den Effekt von Sekretin an die Gangepithelzellen der Pankreas
+b. Der Pankreassaft ist hyperosmotisch.
+c. Der Pankreassaft ist alkalisch.
+d. Sekretin potenziert den Effekt von CCK an die Azinuszellen der Pankreas.
+e. Der Pankreassaft enthält normalerweise nur Proenzyme.
+Richtig: c, d, e
+
+--------------------------------------------------------------------
+[5-05] Wählen Sie die richtigen Behauptungen über den Lungenkreislauf!
+a. Die Lungendurchblutung kann nicht mehr als dreifach erhöht werden
+b. Die Durchblutung der Lunge zeigt atmungsabhängige Schwankungen
+c. Die Lungenvenen transportieren arterielles Blut in den linken Vorhof
+d. Schlechter belüftete Lungengebiete werden durch lokale Vasokonstriktion weniger durchblutet
+Richtig: b, c, d
+
+--------------------------------------------------------------------
+[5-06] Welche der folgenden Behauptungen sind richtig?
+a. Der alveoläre O2-Partialdruck ist größer als der alveoläre CO2-Partialdruck
+b. Der alveoläre O2-Partialdruck gleicht dem O2-Partialdruck in der Aorta
+c. Der alveoläre O2-Partialdruck ist kleiner als der O2-Partialdruck in der atmosphärischen Luft
+d. Der CO2-Partialdruck ist kleiner in der Pulmonalarterie als in der Pulmonalvene
+e. Der alveoläre O2-Partialdruck ist größer als der O2-Partialdruck in der Pulmonalarterie
+Richtig: a, b, c
+
+--------------------------------------------------------------------
+[5-07] Welche der folgenden Behauptungen sind über die Sehnenorgane richtig?
+a. Ein Sehnenorgan ist mit mehreren motorischen Einheiten funktionell verbunden.
+b. Sie sind zu den Skelettmuskelfasern parallel geschaltet.
+c. Ihre Aktivität kann die Atmung beeinflussen
+d. Sie sind mit einer efferenten A-gamma -Nervenfaser innerviert.
+e. Sie enthalten Kernsackfasern.
+Richtig: a
+
+--------------------------------------------------------------------
+[5-08] Welche der folgenden Behauptungen sind korrekt?
+a. Durch den aktivierten ACh-Rezeptor der Skelettmuskeln fließt kein Ionenstrom
+b. Durch den aktivierten ACh-Rezeptor der Skelettmuskeln fließt K+-Strom nach außen
+c. Durch den aktivierten ACh-Rezeptor der Skelettmuskeln fließt Na+-Strom nach außen und K+-Strom nach innen
+d. Durch den aktivierten ACh-Rezeptor der Skelettmuskeln fließt Ca2+-Strom nach außen
+e. Durch den aktivierten ACh-Rezeptor der Skelettmuskeln fließt Na+-Strom nach innen
+Richtig: b, e
+
+--------------------------------------------------------------------
+[5-09] Welche der folgenden Behauptungen sind über die G-Zellen richtig?
+a. Ihre Funktion kann durch sympathische Reizung aktiviert werden.
+b. Sie befinden sich in der Magenschleimhaut des Pylorus, Antrum und Duodenum.
+c. Ihre Funktion wird durch luminale Aminosäuren und Peptide stimuliert
+d. Ihre Funktion wird durch Nervenfasern über GRP stimuliert.
+e. Ihre Funktion wird durch Somatostatin gehemmt.
+Richtig: a, b, c, d, e
+
+--------------------------------------------------------------------
+[5-10] Welche der folgenden Behauptungen ist/sind richtig:
+a. Die Durchströmung der Glomerularkapillaren ist etwa 20% größer als in den Aa. efferentes.
+b. Der hydrostatische Druck ist etwa 20% höher am Anfang als am Ende der Glomerularkapillaren
+c. Der kolloidosmotische Druck ist etwa 20% niedriger am Anfang der Glomerularkapillaren als an ihrem Ende
+d. Die glomeruläre Filtrationsrate entspricht etwa 20% des renalen Blutflusses
+e. Der osmotische Druck ist etwa 20% niedriger am Anfang der Glomerularkapillaren als an ihrem Ende
+Richtig: c
+
+--------------------------------------------------------------------
+[5-11] Welche der folgenden Prozesse sind typische Folgen der Bindung von Noradrenalin an beta-Rezeptoren?
+a. Aktivierung der Adenylatzyklase
+b. Aktivierung der Proteinkinase C
+c. Aktivierung der Proteinkinase A
+d. Aktivierung von Gs heterotrimerem G-Protein
+Richtig: a, c, d
+
+--------------------------------------------------------------------
+[5-12] Welche der folgenden Änderungen sind an der lokalen metabolischen Vasodilatation im Körperkreislauf beteiligt?
+a. Erhöhung der extrazellulären K+-Konzentration
+b. Zunahme des lokalen pH-Wertes
+c. Hyperkapnie
+d. Hypoxie
+e. Adenosin
+Richtig: a, c, d, e
+
+--------------------------------------------------------------------
+[5-13] An welchen der folgenden glatten Muskeln befinden sich alpha1-Rezeptoren?
+a. Bronchialmuskulatur
+b. Vas deferens
+c. Musculus sphincter pupillae
+d. Arteriolenwand in den Skelettmuskeln
+e. Musculus dilatator pupillae
+Richtig: b, d, e
+
+--------------------------------------------------------------------
+[5-14] Welche Aussagen über die Geburt treffen zu?
+a. Die E/P4-Verhältnis des Blutplasmas nimmt vor der Geburt zu
+b. PGE2 und Oxytozin sind im Geburtsprozess intensiv beteiligt
+c. PGF2alpha fördert die Kontraktion der Uterusmuskulatur
+d. Es geschieht typischerweise 40 Wochen nach der Befruchtung
+Richtig: a, c, d
+
+--------------------------------------------------------------------
+[5-15] Welche der folgenden Aussagen treffen zu?
+a. Bei Eisenmangel entsteht makrozytäre Anämie
+b. Retikulozyten haben keinen Zellkern
+c. Bei Hypoxie entsteht mehr EPO
+d. Bei Vitamin B6 Mangel entsteht makrozytäre Anämie
+Richtig: b, c
+
+--------------------------------------------------------------------
+[5-16] Welche der folgenden Behauptungen ist/sind richtig?
+a. Bei physiologischer osmotischen Konzentration erfolgt keine ADH-Sekretion
+b. Erhöhung der osmotischen Konzentration des Blutplasmas stimuliert die ADH-Sekretion
+c. Bei Blutverlust wird die ADH-Sekretion gehemmt
+d. Gurgeln mit Wasser kann die ADH-Sekretion hemmen
+Richtig: b, d
+
+--------------------------------------------------------------------
+[5-17] Welche der folgenden Behauptungen sind wahr für eine Volumenbelastung des Herzens?
+a. Der diastolische Aortendruck sinkt
+b. Das enddiastolische Volumen steigt
+c. Das endsystolische Volumen sinkt
+d. Das Schlagvolumen steigt
+e. Der systolische Aortendruck steigt
+Richtig: b, d, e
+
+--------------------------------------------------------------------
+[5-18] Welche Plasmaparameter werden bei einem unbehandelten Patienten mit Gigantismus vermutlich erhöht?
+a. [IGF-1]
+b. [freie Fettsäuren]
+c. [Aminosäuren]
+d. [Glukose]
+e. [K+]
+Richtig: a, b, d
+
+--------------------------------------------------------------------
+[5-19] In welchen der folgenden EKG-Ableitungen ist beim Indifferenztyp die größte Auslenkung der QRS-Gruppe negativ?
+a. aVR
+b. Ableitung II
+c. Ableitung I
+d. Ableitung III
+e. aVF
+Richtig: a
+
+--------------------------------------------------------------------
+[5-20] In dem Blut wird O2 transportiert
+a. an die freien Aminogruppen des Hämoglobins gebunden
+b. an den Fe2+-Atomen im Häm reversibel angelagert
+c. zur Histidinseitenketten des Hämoglobins gebunden
+d. an den Fe3+-Atomen im Häm reversibel angelagert
+e. physikalisch gelöst
+Richtig: b, e

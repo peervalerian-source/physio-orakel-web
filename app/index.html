@@ -668,6 +668,14 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
           <div class="mc-desc">Themenkatalog der Universität — einzelne Themen üben oder volle Rigorosum-Simulation.</div>
         </div>
       </div>
+
+      <!-- Sonderfunktion: RIGO-Altfragen Original -->
+      <div class="mode-card" onclick="chooseMode('rigoorig')" style="margin-top:14px;border:1px solid var(--swiss-red);background:var(--paper);position:relative">
+        <div class="mc-badge" style="color:var(--swiss-red);border-color:var(--swiss-red)">Original</div>
+        <div class="mc-title" style="color:var(--swiss-red)">RIGO-Altfragen Original</div>
+        <div class="mc-desc">98 Originalfragen aus den Rigorosum-Terminen 2024 — eine Session enthält alle Fragen des gewählten Termins.</div>
+      </div>
+
       <div style="margin-top:1.5rem;text-align:right;display:flex;gap:.5rem;justify-content:flex-end">
         <button onclick="openWtAdmin()" style="font-size:9px;padding:4px 8px;background:transparent;border:none;color:var(--mid);cursor:pointer;font-family:inherit;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;border-bottom:1px solid var(--rule)" onmouseover="this.style.color='var(--ink)';this.style.borderColor='var(--ink)'" onmouseout="this.style.color='var(--mid)';this.style.borderColor='var(--rule)'">admin · material</button>
         <button onclick="openPoolAdmin()" style="font-size:9px;padding:4px 8px;background:transparent;border:none;color:var(--mid);cursor:pointer;font-family:inherit;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;border-bottom:1px solid var(--rule)" onmouseover="this.style.color='var(--ink)';this.style.borderColor='var(--ink)'" onmouseout="this.style.color='var(--mid)';this.style.borderColor='var(--rule)'">admin · altfragenpool</button>
@@ -736,6 +744,14 @@ body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inte
       <div style="text-align:center;margin-top:2rem">
         <button class="btn btn-primary btn-large" onclick="goToConfigWith('rigorosum')">Weiter zur Konfiguration</button>
       </div>
+    </div>
+
+    <!-- RIGO-Altfragen Original (Sonderfunktion) -->
+    <div id="modeRigoOrig" style="display:none">
+      <button onclick="backToMenu()" style="font-size:10px;padding:6px 12px;background:transparent;border:1px solid var(--rule);color:var(--mid);cursor:pointer;font-family:inherit;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;margin-bottom:24px;transition:all .15s" onmouseover="this.style.borderColor='var(--ink)';this.style.color='var(--ink)'" onmouseout="this.style.borderColor='var(--rule)';this.style.color='var(--mid)'">← Zurück</button>
+      <div class="section-label" style="color:var(--swiss-red)">RIGO-Altfragen Original</div>
+      <p style="font-size:14px;color:var(--ink);line-height:1.6;margin:8px 0 24px;max-width:640px">Originalfragen aus den Rigorosum-Terminen 2024 — 1:1 transkribiert. Wähle einen Termin — die Session enthält <strong>alle Fragen</strong> dieses Termins in Originalreihenfolge, kein Timer.</p>
+      <div id="rigoOrigTerminList" style="display:grid;gap:10px"></div>
     </div>
 
     <div class="divider" style="margin:2.5rem 0 1.5rem"></div>
@@ -1038,7 +1054,7 @@ const MAX_CONTEXT_CHARS=120000;
 const state={
   fileText:'',fileName:'',
   wtText:'',isWochentest:false,flowMode:'',
-  poolText:'',poolName:'',parsedPool:[],
+  poolText:'',poolName:'',parsedPool:[],rigoOriginal:[],isRigoOrig:false,rigoOrigTermin:null,
   sourceMode:'ki',
   altMode:'exact',
   selectedSubs:new Set(),
@@ -1087,16 +1103,17 @@ function goTo(id){
 
 function backToMenu(){
   document.getElementById('mainMenu').style.display='block';
-  ['modeWochentest','modeSkript','modeAltfragen','modeRigorosum'].forEach(m=>{
+  ['modeWochentest','modeSkript','modeAltfragen','modeRigorosum','modeRigoOrig'].forEach(m=>{
     const el=document.getElementById(m);if(el)el.style.display='none';
   });
 }
 function chooseMode(mode){
   document.getElementById('mainMenu').style.display='none';
-  ['modeWochentest','modeSkript','modeAltfragen','modeRigorosum'].forEach(m=>{
+  ['modeWochentest','modeSkript','modeAltfragen','modeRigorosum','modeRigoOrig'].forEach(m=>{
     const el=document.getElementById(m);if(el)el.style.display='none';
   });
-  const map={wochentest:'modeWochentest',skript:'modeSkript',altfragen:'modeAltfragen',rigorosum:'modeRigorosum'};
+  const map={wochentest:'modeWochentest',skript:'modeSkript',altfragen:'modeAltfragen',rigorosum:'modeRigorosum',rigoorig:'modeRigoOrig'};
+  if(mode==='rigoorig')renderRigoOrigDetail();
   const target=document.getElementById(map[mode]);
   if(target)target.style.display='block';
   window.scrollTo(0,0);
@@ -1229,7 +1246,7 @@ function onAuthSuccess(data,accessCode){
   showAuthStatus('Erfolgreich!','var(--success)');
   document.getElementById('keyCornerBtn').classList.add('has-key');
   updateUserBadge();updateLoginHintVisibility();
-  setTimeout(()=>{closeKeyModal();syncStatsFromServer().then(()=>{loadPoolFromServer();loadWochentest()})},600);
+  setTimeout(()=>{closeKeyModal();syncStatsFromServer().then(()=>{loadPoolFromServer();loadWochentest();loadRigoOriginal()})},600);
 }
 async function logout(){
   const tok=getSessionToken();
@@ -1504,6 +1521,75 @@ function parseOneBlock(block){
   if(!q.question||!q.options.length||!q.correct.length)return null;
   return q;
 }
+
+// ── RIGO-Altfragen Original — separate parser for Termin-based format ──────
+async function loadRigoOriginal(){
+  try{
+    const res=await fetch('rigo-original.txt',{cache:'default'});
+    if(!res.ok)return;
+    const text=await res.text();
+    state.rigoOriginal=parseRigoOriginal(text);
+  }catch{}
+}
+function parseRigoOriginal(text){
+  if(!text)return[];
+  const termins=[];
+  let currentTermin=null;
+  const lines=text.split('\n');
+  let current=null;let phase='none';let bodyLines=[];
+  const commit=()=>{
+    if(current&&current.question&&current.options.length&&current.correct.length){
+      if(currentTermin)currentTermin.questions.push(current);
+    }
+    current=null;phase='none';bodyLines=[];
+  };
+  for(const rawLine of lines){
+    const line=rawLine.trim();
+    // Termin header
+    const tm=line.match(/^#\s*TERMIN\s*(\d+)\s*[–\-]\s*(.+)$/i);
+    if(tm){
+      commit();
+      currentTermin={number:parseInt(tm[1]),date:tm[2].trim(),questions:[]};
+      termins.push(currentTermin);
+      continue;
+    }
+    // Question start: [N-NN]
+    const qm=line.match(/^\[(\d+)-(\d+)\]\s*(.*)$/);
+    if(qm){
+      commit();
+      current={id:qm[1]+'-'+qm[2],question:qm[3].trim(),options:[],correct:[],explanation:''};
+      bodyLines=qm[3].trim()?[qm[3].trim()]:[];
+      phase='body';
+      continue;
+    }
+    if(!current)continue;
+    if(!line)continue;
+    if(/^-{3,}$/.test(line))continue;
+    // Option: "a." or "a)"
+    const optM=line.match(/^([a-eA-E])[\.\)]\s+(.*)$/);
+    if(optM){
+      if(bodyLines.length&&phase==='body'){current.question=bodyLines.join(' ').trim()}
+      current.options.push({key:optM[1].toLowerCase(),text:optM[2].trim()});
+      phase='options';
+      continue;
+    }
+    // Richtig:
+    const rM=line.match(/^Richtig:\s*(.*)$/i);
+    if(rM){
+      current.correct=rM[1].split(/[,\s]+/).map(s=>s.toLowerCase().replace(/[^a-e]/g,'')).filter(Boolean);
+      phase='correct';
+      continue;
+    }
+    // Continuation
+    if(phase==='body')bodyLines.push(line);
+    else if(phase==='options'&&current.options.length)current.options[current.options.length-1].text+=' '+line;
+  }
+  commit();
+  // Finalize question text
+  termins.forEach(t=>t.questions.forEach(q=>{if(!q.question&&q._body)q.question=q._body}));
+  return termins.filter(t=>t.questions.length>0);
+}
+
 // Filter parsed pool by selected topics
 function filterPoolByTopics(pool,selectedSubs){
   if(!selectedSubs||!selectedSubs.size)return pool;
@@ -1727,10 +1813,46 @@ async function uploadWtTranscript(){
   document.getElementById('wtUploadBtn').disabled=false;
 }
 
+// ── RIGO-Altfragen Original — termin picker + session ─────────────────────
+function renderRigoOrigDetail(){
+  const el=document.getElementById('rigoOrigTerminList');if(!el)return;
+  const termins=state.rigoOriginal||[];
+  if(!termins.length){
+    el.innerHTML='<div style="font-size:12px;color:var(--mid);padding:20px;text-align:center;border:1px solid var(--rule);background:var(--pure)">Originalfragen werden geladen…</div>';
+    setTimeout(renderRigoOrigDetail,800);
+    return;
+  }
+  el.innerHTML=termins.map(t=>`<button onclick="startRigoOrig(${t.number})" style="text-align:left;padding:18px 22px;border:1px solid var(--rule);background:var(--pure);cursor:pointer;font-family:inherit;transition:all .15s;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center" onmouseover="this.style.borderColor='var(--ink)';this.style.background='var(--paper)'" onmouseout="this.style.borderColor='var(--rule)';this.style.background='var(--pure)'">
+    <div style="font-size:9px;letter-spacing:.2em;color:var(--swiss-red);font-weight:600;font-variant-numeric:tabular-nums">◢ TERMIN ${String(t.number).padStart(2,'0')}</div>
+    <div style="font-size:14px;color:var(--ink);font-weight:500">${t.date}</div>
+    <div style="font-size:11px;color:var(--mid);letter-spacing:.06em;font-variant-numeric:tabular-nums">${t.questions.length} FRAGEN →</div>
+  </button>`).join('');
+}
+async function startRigoOrig(terminNumber){
+  if(!hasApiKey){openKeyModal();return}
+  const termin=(state.rigoOriginal||[]).find(t=>t.number===terminNumber);
+  if(!termin||!termin.questions.length)return;
+  state.isRigoOrig=true;state.isWochentest=false;state.rigoOrigTermin=terminNumber;
+  state.flowMode='rigoorig';state.examMode=false;state.sourceMode='alt';state.altMode='exact';
+  state.count=String(termin.questions.length);state.difficulty='normal';
+  saveQuizConfig();
+  goTo('s3');startEKG();
+  const lt=document.getElementById('loadingText');
+  lt.textContent=LOADING_MSGS[Math.floor(Math.random()*LOADING_MSGS.length)];lt.style.color='';
+  await new Promise(r=>setTimeout(r,3000));
+  state.questions=termin.questions.map((q,i)=>({
+    id:i+1,topic:'Termin '+terminNumber,question:q.question,
+    options:q.options,correct:q.correct,explanation:q.explanation||''
+  }));
+  stopEKG();state.userAnswers={};state.evaluated=false;state.currentQuestionIndex=0;state.quizStartTime=Date.now();
+  document.getElementById('evalBtn').textContent='Auswerten';document.getElementById('evalBtn').disabled=false;
+  renderQuiz();goTo('s4');startStopwatch();
+}
+
 async function startWochentest(){
   if(!hasApiKey){openKeyModal();return}
   if(!state.wtText){alert('Kein Wochentest-Material vorhanden.');return}
-  state.isWochentest=true;
+  state.isWochentest=true;state.isRigoOrig=false;
   saveQuizConfig();
   const n=10;
   const hard=wtDifficulty==='hard';
@@ -1806,6 +1928,7 @@ buildTopicArea();
 loadTheme();
 loadPoolFromServer();
 loadWochentest();
+loadRigoOriginal();
 // Show admin button if admin key previously stored
 if(localStorage.getItem(ADMIN_KEY_STORE))document.getElementById('wtAdminWrap').style.display='block';
 
@@ -1863,7 +1986,7 @@ function prepareTextForPrompt(text,maxChars=MAX_CONTEXT_CHARS){
 // ── Generate ──────────────────────────────────────────────────────────────────
 async function startQuiz(){
   if(!hasApiKey){openKeyModal();return}
-  state.isWochentest=false;
+  state.isWochentest=false;state.isRigoOrig=false;
   saveQuizConfig();
   document.getElementById('startBtn').disabled=true;
   goTo('s3');startEKG();
@@ -2278,7 +2401,9 @@ function newRound(){
   const ring=document.getElementById('ringCircle');ring.style.transition='none';ring.setAttribute('stroke-dashoffset','415');
   document.getElementById('evalBtn').textContent='Auswerten';document.getElementById('evalBtn').disabled=false;
   document.getElementById('startBtn').disabled=false;
-  if(state.isWochentest)startWochentest();else startQuiz();
+  if(state.isRigoOrig&&state.rigoOrigTermin){startRigoOrig(state.rigoOrigTermin)}
+  else if(state.isWochentest){startWochentest()}
+  else{startQuiz()}
 }
 
 // ── Particle system ───────────────────────────────────────────────────────────
