@@ -79,6 +79,13 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
 .cta-pulse { animation: ctaBreathe 3.6s ease-in-out infinite; will-change: transform; }
 @media (prefers-reduced-motion: reduce) { .cta-pulse { animation: none; } }
 
+/* ── Aktionspotential-Canvas ───────────────────────────────────────────── */
+.hero-canvas { display: block; width: 100%; height: clamp(250px, 34vw, 390px); }
+/* Im Hochformat ist der Canvas nur ~350px breit — mit 250px Höhe bliebe für
+   den Membranstreifen nichts übrig. Also mehr Höhe, damit Oszilloskop und
+   Ionenkanäle beide Platz haben. */
+@media (max-width: 700px) { .hero-canvas { height: 340px; } }
+
 /* ── Zweispalter ───────────────────────────────────────────────────────── */
 .split { display: grid; align-items: start; }
 .split-4-8 { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 20px clamp(24px, 5vw, 72px); }
@@ -171,7 +178,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
 
   <section aria-label="Aktionspotential" style="max-width: 1240px; margin: 0 auto; padding: clamp(22px, 3.5vw, 40px) clamp(20px, 5vw, 72px) 0">
     <div style="position: relative; border-top: 2px solid var(--color-divider); border-bottom: 2px solid var(--color-divider)">
-      <canvas id="heroCanvas" style="display: block; width: 100%; height: clamp(250px, 34vw, 390px)"></canvas>
+      <canvas id="heroCanvas" class="hero-canvas"></canvas>
       <div style="position: absolute; right: 0; top: 8px; display: flex; gap: 16px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 72%, transparent); font-feature-settings: 'tnum' 1; pointer-events: none">
         <span>Membranpotential</span>
         <span id="vmValue" style="color: var(--color-accent-700); text-transform: none; letter-spacing: 0.04em">−70 mV</span>
@@ -436,7 +443,9 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     var cv = el.hero; if (!cv) return;
     var d = dims.hero || (dims.hero = fit(cv)); if (!d) return;
     var ctx = d.ctx, w = d.w, h = d.h;
-    var showCh = SHOW_CHANNELS && w > 420;
+    // Auch das kleinste Telefon (iPhone SE, 280px Canvas) bekommt den Streifen;
+    // erst darunter wird er zur Briefmarke.
+    var showCh = SHOW_CHANNELS && w > 260;
     var traceH = showCh ? h * 0.6 : h - 34;
     var windowS = 3.0;
 
@@ -494,7 +503,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     ctx.fillRect(0, Math.round(memTop), w, 1.5);
     ctx.fillRect(0, Math.round(memBot), w, 1.5);
 
-    var n = Math.max(4, Math.floor(w / 108));
+    var n = Math.max(4, Math.floor(w / (w < 520 ? 84 : 108)));
     var gap = w / n;
     for (var i = 0; i < n; i++) {
       var cx = gap * (i + 0.5);
