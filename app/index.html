@@ -1,955 +1,829 @@
 <!DOCTYPE html>
-<html lang="de" data-theme="light">
+<html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self' https://*.workers.dev https://api.nephron.at;">
-<title>Physio-Orakel</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Physio-Orakel — Nephron.at</title>
+<meta name="description" content="Physio-Orakel: Altfragen nach Themenkatalogpunkt üben oder Übungstests aus eigenen Unterlagen generieren. Privates Lernprojekt, Semmelweis Budapest.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
+/* ══════════════════════════════════════════════════════════════════════════
+   Design-System „Modernist" — Tokens. Radius 0, 2px-Regeln, Rot sparsam.
+   ══════════════════════════════════════════════════════════════════════════ */
+:root {
+  --color-bg: #f3f2f2;
+  --color-text: #201e1d;
+  --color-accent: #ec3013;
+  --color-divider: color-mix(in srgb, #201e1d 40%, transparent);
+  --color-neutral-100: #f8f4f4;
+  --color-accent-100: #fff2ef;
+  --color-accent-600: #dd2b0f;
+  --color-accent-700: #ae1800;
+  --font-heading: "Archivo", system-ui, sans-serif;
+  --font-body: "Archivo", system-ui, sans-serif;
 
-/* ── Swiss Clinic Design System ─────────────────────────────────────────── */
-[data-theme="light"]{
---paper:#F5F4F1;--pure:#FFFFFF;--ink:#0A0A0A;--mid:#7A7A78;
---rule:#D8D6D1;--rule-soft:#E8E6E1;--swiss-red:#DA291C;
---success:#2D7A3E;--success-bg:#E5F2E8;--warn:#B8860B;--warn-bg:#FAF3E0;
---miss:#A85C00;--miss-bg:#FAEFDC;
-/* Compatibility aliases */
---bg:#F5F4F1;--bg2:#FFFFFF;--bg3:#F5F4F1;--bg4:#EEEDE8;--bg5:#E8E6E1;
---blue:#DA291C;--blue2:#DA291C;--blue3:#A01E1E;--blue4:#0A0A0A;
---cream:#0A0A0A;--cream2:#0A0A0A;--cream3:#7A7A78;
---accent:#DA291C;--accent2:#DA291C;--accent3:#FAE2DF;
---border:#E8E6E1;--border2:#D8D6D1;--border3:#0A0A0A;
---text:#0A0A0A;--text2:#7A7A78;--text3:#7A7A78;
---red:#FAE2DF;--red2:#DA291C;--red3:#A01E1E;
---purple:#0A0A0A;--purple2:#0A0A0A;--purple3:#EEEDE8;
---glass-bg:#F5F4F1;--glass-border:#D8D6D1;--glass-shadow:transparent;
---glass-hover:#FFFFFF;
+  /* App-Tokens — nur diese werden von Elementen benutzt. Der Theme-Wechsel
+     setzt ausschließlich data-orakel-theme am <html>. */
+  --app-bg: var(--color-bg);
+  --app-panel: var(--color-neutral-100);
+  --app-ink: var(--color-text);
+  --app-mute: color-mix(in srgb, var(--color-text) 72%, transparent);
+  --app-rule: var(--color-divider);
+  --app-accent: var(--color-accent);
+  --app-accent-ink: var(--color-bg);
+  --app-accent-soft: var(--color-accent-100);
+  --app-ok: #1c7a43;
+  --app-warn: #a06000;
 }
-[data-theme="dark"]{
---paper:#0A0A0A;--pure:#161616;--ink:#F5F4F1;--mid:#9A9A98;
---rule:#2A2A28;--rule-soft:#1F1F1D;--swiss-red:#DA291C;
---success:#4FB36A;--success-bg:#0F2614;--warn:#D4A52E;--warn-bg:#231D0E;
---miss:#D4862E;--miss-bg:#231910;
---bg:#0A0A0A;--bg2:#161616;--bg3:#0A0A0A;--bg4:#1F1F1D;--bg5:#2A2A28;
---blue:#DA291C;--blue2:#E84545;--blue3:#A01E1E;--blue4:#F5F4F1;
---cream:#F5F4F1;--cream2:#F5F4F1;--cream3:#9A9A98;
---accent:#DA291C;--accent2:#DA291C;--accent3:#3A1010;
---border:#1F1F1D;--border2:#2A2A28;--border3:#F5F4F1;
---text:#F5F4F1;--text2:#9A9A98;--text3:#9A9A98;
---red:#3A1010;--red2:#E84545;--red3:#FF7A6F;
---purple:#F5F4F1;--purple2:#F5F4F1;--purple3:#1F1F1D;
---glass-bg:#0A0A0A;--glass-border:#2A2A28;--glass-shadow:transparent;
---glass-hover:#161616;
+:root[data-orakel-theme="dark"] {
+  --app-bg: #1b1a19;
+  --app-panel: #232120;
+  --app-ink: #f8f4f4;
+  --app-mute: color-mix(in srgb, #f8f4f4 70%, transparent);
+  --app-rule: #3b3838;
+  --app-accent: #ff563c;
+  --app-accent-ink: #1b1a19;
+  --app-accent-soft: #2b2220;
+  --app-ok: #5ecf8b;
+  --app-warn: #e0a23a;
 }
-
-body{background:var(--paper);color:var(--ink);font-family:"Helvetica Neue","Inter",Arial,sans-serif;font-feature-settings:"tnum" 1;min-height:100vh;line-height:1.5;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;transition:background .3s,color .3s}
-.serif{font-family:"Helvetica Neue","Inter",Arial,sans-serif;font-weight:500;letter-spacing:-0.02em}
-.screen{display:none;min-height:100vh}
-.screen.active{display:block;animation:fadeIn .25s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
-
-/* ── Back to landing ──────────────────────────────────────────────────────── */
-.back-home{position:fixed;top:14px;left:14px;z-index:100;height:48px;padding:0 16px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.04em;font-weight:500;font-family:inherit;transition:all .15s}
-.back-home:hover{border-color:var(--ink);background:var(--pure)}
-.back-home-label{font-weight:600;letter-spacing:-0.01em;font-size:13px}
-@media(max-width:600px){.back-home-label{display:none}.back-home{padding:0;width:32px;justify-content:center}}
-
-/* ── Top toolbar buttons ──────────────────────────────────────────────────── */
-/* ── Unified toolbar (all action buttons in one row with shared borders) ── */
-.toolbar{position:fixed;top:14px;right:16px;z-index:100;display:flex;align-items:stretch;height:48px;border:1px solid var(--ink);background:var(--paper);font-family:inherit}
-.toolbar > *{
-  border:none;border-left:1px solid var(--rule);border-radius:0;background:var(--paper);
-  height:100%;display:flex;align-items:center;justify-content:center;cursor:pointer;
-  padding:0 14px;color:var(--ink);transition:all .15s;font-family:inherit;box-sizing:border-box;
-  position:static!important;top:auto!important;right:auto!important;left:auto!important;width:auto!important;
-}
-.toolbar > *:first-child{border-left:none}
-.toolbar > *:hover{background:var(--pure)}
-.theme-toggle,.sound-toggle{padding:0!important;width:32px!important}
-.stats-toggle{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;gap:8px}
-.stats-toggle:hover{background:var(--ink)!important;color:var(--paper)}
-.sound-toggle.muted{opacity:.4}
-@media(max-width:600px){.stats-toggle{padding:0!important;width:32px!important}.stats-toggle .stats-label{display:none}}
-
-/* ── Header ───────────────────────────────────────────────────────────────── */
-.header{text-align:left;padding:48px 60px 32px;border-bottom:1px solid var(--rule);position:relative;background:var(--paper)}
-.header::before{display:none}
-.logo{font-size:64px;letter-spacing:-0.045em;margin-bottom:8px;font-weight:500;line-height:0.95}
-.logo-phys{color:var(--ink)}
-.logo-dot{color:var(--swiss-red);font-weight:500}
-.logo-ora{color:var(--ink);font-weight:500}
-.logo-line{display:none}
-.subtitle{font-size:10px;color:var(--mid);letter-spacing:0.18em;text-transform:uppercase;font-weight:500}
-.tagline{font-size:10px;color:var(--swiss-red);margin-top:8px;letter-spacing:0.22em;text-transform:uppercase;font-style:normal;font-weight:500;font-variant-numeric:tabular-nums}
-.tagline::before{content:"◢ "}
-
-.container{max-width:1100px;margin:0 auto;padding:48px 60px}
-
-/* ── Buttons ──────────────────────────────────────────────────────────────── */
-.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:0;border:1px solid var(--ink);background:transparent;color:var(--ink);font-family:inherit;font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:all .15s;font-variant-numeric:tabular-nums}
-.btn:hover{background:var(--ink);color:var(--paper)}
-.btn-primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.btn-primary:hover{background:var(--swiss-red);border-color:var(--swiss-red);color:var(--paper)}
-.btn-large{padding:16px 28px;font-size:12px}
-.btn-block{width:100%;justify-content:center}
-.btn:disabled{opacity:.3;cursor:not-allowed}
-.btn:active:not(:disabled){transform:none}
-.btn-alt{background:var(--paper);color:var(--ink);border:1px dashed var(--ink)}
-.btn-alt:hover{background:var(--ink);color:var(--paper);border-style:solid}
-.btn-sm{padding:8px 14px;font-size:10px}
-.btn-ghost{border-color:var(--rule);color:var(--mid)}
-.btn-ghost:hover{border-color:var(--ink);color:var(--ink);background:transparent}
-
-/* ── Section labels (markers) ─────────────────────────────────────────────── */
-.section-label{font-size:14px;letter-spacing:0.16em;color:var(--swiss-red);text-transform:uppercase;margin-bottom:20px;margin-top:48px;font-weight:600;display:block;font-variant-numeric:tabular-nums}
-.section-label::before{content:"◢ "}
-.section-label::after{display:none}
-
-/* ── Source switcher (tabs) ───────────────────────────────────────────────── */
-.source-switch{display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:0;overflow:visible;border:1px solid var(--rule);margin-bottom:8px;background:var(--pure)}
-.ssw{padding:14px 16px;text-align:center;cursor:pointer;font-size:11px;font-weight:500;color:var(--mid);background:transparent;transition:all .15s;border:none;font-family:inherit;letter-spacing:0.12em;text-transform:uppercase}
-.ssw:first-child{border-right:1px solid var(--rule)}
-.ssw.active{background:var(--ink);color:var(--paper);box-shadow:none}
-.ssw.active-alt{background:var(--swiss-red);color:var(--paper);box-shadow:none}
-
-/* ── Drop zones ───────────────────────────────────────────────────────────── */
-.drop-zone{border:1px dashed var(--rule);border-radius:0;padding:20px;text-align:center;cursor:pointer;transition:all .15s;background:var(--pure);position:relative}
-.drop-zone:hover,.drop-zone.drag{border-color:var(--ink);background:var(--pure)}
-.drop-zone.has-file{border-color:var(--ink);border-style:solid;background:var(--pure)}
-.drop-zone.has-pool{border-color:var(--ink);border-style:solid;background:var(--pure)}
-.drop-icon{width:24px;height:24px;margin:0 auto 8px;border:none;border-radius:0;display:flex;align-items:center;justify-content:center;opacity:.5}
-.drop-title{font-size:12px;color:var(--ink);margin-bottom:4px;font-weight:500;letter-spacing:0.04em}
-.drop-sub{font-size:10px;color:var(--mid);letter-spacing:0.05em}
-.drop-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.file-name{font-size:11px;margin-top:10px;font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:0.02em}
-.fn-blue{color:var(--ink)}
-.fn-purple{color:var(--ink)}
-.skip-hint{margin-top:10px;color:var(--mid);font-size:11px;font-style:normal;text-align:left;line-height:1.55}
-.skip-hint strong{color:var(--ink);font-style:normal;font-weight:600}
-
-/* ── Pool / status badges ─────────────────────────────────────────────────── */
-.pool-status{background:var(--pure);border:1px solid var(--rule);border-radius:0;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:12px}
-.pool-status-left{display:flex;align-items:center;gap:12px}
-.pool-dot{width:8px;height:8px;border-radius:50%;background:var(--swiss-red);flex-shrink:0}
-.pool-name{font-size:12px;color:var(--ink);font-weight:500;letter-spacing:0.02em}
-.pool-meta{font-size:10px;color:var(--mid);letter-spacing:0.04em;font-variant-numeric:tabular-nums;margin-top:2px}
-.pool-clear{font-size:10px;color:var(--mid);cursor:pointer;border:1px solid var(--rule);background:transparent;border-radius:0;padding:6px 10px;font-family:inherit;letter-spacing:0.1em;text-transform:uppercase;transition:all .15s}
-.pool-clear:hover{border-color:var(--swiss-red);color:var(--swiss-red)}
-
-/* ── Topic tree ───────────────────────────────────────────────────────────── */
-.topic-tree{display:flex;flex-direction:column;gap:0;border:1px solid var(--rule);background:var(--pure)}
-.topic-group{background:var(--pure);border:none;border-bottom:1px solid var(--rule);border-radius:0;overflow:hidden;transition:none}
-.topic-group:last-child{border-bottom:none}
-.topic-group.open{border-color:var(--rule)}
-.topic-group-header{display:flex;align-items:center;gap:14px;padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s}
-.topic-group-header:hover{background:var(--paper)}
-.tgh-check{width:14px;height:14px;border:1px solid var(--ink);border-radius:0;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;font-size:9px;cursor:pointer;font-weight:600}
-.tgh-check.partial{border-color:var(--ink);background:var(--paper);color:var(--ink)}
-.tgh-check.full{border-color:var(--ink);background:var(--ink);color:var(--paper)}
-.tgh-title{font-size:13px;color:var(--ink);font-weight:500;flex:1;letter-spacing:0.01em}
-.tgh-count{font-size:10px;color:var(--mid);letter-spacing:0.06em;font-variant-numeric:tabular-nums}
-.tgh-arrow{font-size:9px;color:var(--mid);transition:transform .15s}
-.topic-group.open .tgh-arrow{transform:rotate(90deg)}
-.subtopics{display:none;border-top:1px solid var(--rule);padding:8px 18px 12px;background:var(--paper)}
-.topic-group.open .subtopics{display:block;animation:fadeIn .15s ease}
-.subtopic-row{display:flex;align-items:flex-start;gap:10px;padding:6px 0;border-radius:0;cursor:pointer;transition:none;user-select:none}
-.subtopic-row:hover .stc-label{color:var(--ink)}
-.subtopic-row:active{transform:none}
-.stc{width:12px;height:12px;border:1px solid var(--ink);border-radius:0;flex-shrink:0;margin-top:3px;display:flex;align-items:center;justify-content:center;transition:all .15s;font-size:8px;font-weight:600}
-.stc.checked{border-color:var(--ink);background:var(--ink);color:var(--paper)}
-.stc-label{font-size:12px;color:var(--mid);line-height:1.5;letter-spacing:0.01em}
-.stc-id{font-weight:600;color:var(--swiss-red);margin-right:6px;font-size:11px;font-variant-numeric:tabular-nums;letter-spacing:0.04em}
-
-/* ── Mode cards ───────────────────────────────────────────────────────────── */
-.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;border:none}
-.mode-card{padding:24px 22px;border-radius:0;border:1px solid var(--rule);background:var(--pure);cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
-.mode-card+.mode-card{border-left:1px solid var(--rule)}
-.mode-card:hover{border-color:var(--ink)}
-.mode-card::before{display:none}
-.mode-card:hover{background:var(--paper)}
-.mode-card.selected{background:var(--ink);color:var(--paper)}
-.mode-card.selected .mc-title,.mode-card.selected .mc-desc{color:var(--paper)}
-.mode-card.selected-alt{background:var(--swiss-red) !important;color:var(--paper) !important}
-.mode-card.selected-alt::before{display:none}
-.mode-card.selected-alt .mc-title,.mode-card.selected-alt .mc-desc{color:var(--paper)}
-.mc-title{font-size:16px;color:var(--ink);font-weight:500;margin-bottom:6px;letter-spacing:-0.01em}
-.mc-desc{font-size:11px;color:var(--mid);line-height:1.5;letter-spacing:0.01em}
-.mc-badge{position:absolute;top:14px;right:16px;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--swiss-red);border:1px solid var(--swiss-red);border-radius:0;padding:3px 8px;font-weight:500;font-variant-numeric:tabular-nums}
-.mode-card.selected .mc-badge{color:var(--paper);border-color:var(--paper)}
-.mc-badge-alt{color:var(--swiss-red) !important;border-color:var(--swiss-red) !important}
-.mode-card.selected-alt .mc-badge-alt{color:var(--paper) !important;border-color:var(--paper) !important}
-
-/* ── Altfragen sub-mode ───────────────────────────────────────────────────── */
-.altmode-box{background:var(--pure);border:1px solid var(--rule);border-radius:0;padding:18px 20px;margin-top:8px;animation:fadeIn .2s ease}
-.altmode-label{font-size:10px;letter-spacing:0.18em;color:var(--swiss-red);text-transform:uppercase;font-weight:500;margin-bottom:12px;font-variant-numeric:tabular-nums}
-.altmode-label::before{content:"◢ "}
-.altmode-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule)}
-.altmode-card{padding:18px 16px;border-radius:0;border:none;background:var(--pure);cursor:pointer;transition:all .15s}
-.altmode-card+.altmode-card{border-left:1px solid var(--rule)}
-.altmode-card:hover{background:var(--paper)}
-.altmode-card.selected{background:var(--ink);color:var(--paper)}
-.altmode-card.selected .amc-title,.altmode-card.selected .amc-desc{color:var(--paper)}
-.altmode-card .amc-title{font-size:13px;color:var(--ink);font-weight:500;margin-bottom:4px;letter-spacing:0.01em}
-.altmode-card .amc-desc{font-size:10px;color:var(--mid);line-height:1.45}
-
-/* ── Summary ──────────────────────────────────────────────────────────────── */
-.summary-box{background:var(--pure);border:1px solid var(--rule);border-radius:0;padding:0;margin:24px 0}
-.summary-row{display:flex;justify-content:space-between;align-items:flex-start;padding:12px 18px;border-bottom:1px solid var(--rule);font-size:12px;gap:16px}
-.summary-row:last-child{border-bottom:none}
-.summary-key{color:var(--mid);flex-shrink:0;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500}
-.summary-val{color:var(--ink);font-weight:500;text-align:right;font-variant-numeric:tabular-nums}
-.summary-val.sv-alt{color:var(--swiss-red)}
-
-/* ── Loading ──────────────────────────────────────────────────────────────── */
-.loading-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:32px;background:var(--paper)}
-.spinner{width:32px;height:32px;border:1px solid var(--rule);border-top-color:var(--swiss-red);border-radius:50%;animation:spin 1s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.loading-text{font-family:inherit;font-size:13px;color:var(--mid);text-align:center;font-style:normal;max-width:360px;letter-spacing:0.08em;text-transform:uppercase;font-weight:500;font-variant-numeric:tabular-nums}
-
-/* ── Quiz layout & sidebar ────────────────────────────────────────────────── */
-.quiz-layout{display:grid;grid-template-columns:1fr 240px;gap:32px;align-items:start}
-@media(max-width:780px){.quiz-layout{grid-template-columns:1fr}}
-.sidebar{position:sticky;top:24px;background:var(--pure);backdrop-filter:none;-webkit-backdrop-filter:none;border:1px solid var(--rule);border-radius:0;padding:24px;box-shadow:none}
-.sidebar-title{font-size:10px;letter-spacing:0.18em;color:var(--swiss-red);text-transform:uppercase;margin-bottom:12px;font-weight:500;font-variant-numeric:tabular-nums}
-.sidebar-title::before{content:"◢ "}
-.nav-dots{display:flex;flex-wrap:wrap;gap:4px}
-.nav-dot{width:24px;height:24px;border-radius:0;border:1px solid var(--rule);background:var(--paper);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--mid);cursor:pointer;transition:all .15s;font-weight:500;font-variant-numeric:tabular-nums}
-.nav-dot:hover{border-color:var(--ink);color:var(--ink)}
-.nav-dot.answered{background:var(--ink);border-color:var(--ink);color:var(--paper)}
-.nav-dot.locked{opacity:.3;cursor:not-allowed}
-.progress-bar{height:1px;background:var(--rule);border-radius:0;overflow:hidden;margin-top:14px}
-.progress-fill{height:100%;background:var(--swiss-red);border-radius:0;transition:width .3s}
-.prog-text{font-size:10px;color:var(--mid);margin-top:8px;letter-spacing:0.08em;font-variant-numeric:tabular-nums;text-transform:uppercase}
-
-/* ── Exam timer ───────────────────────────────────────────────────────────── */
-.exam-timer{font-family:inherit;font-size:32px;color:var(--ink);text-align:center;margin-bottom:8px;letter-spacing:-0.02em;font-weight:500;font-variant-numeric:tabular-nums}
-.exam-timer.urgent{color:var(--swiss-red);animation:pulse 1s ease infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-
-/* ── Question blocks ──────────────────────────────────────────────────────── */
-@keyframes questionAppear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.question-block{
-  background:var(--pure);
-  backdrop-filter:none;-webkit-backdrop-filter:none;
-  border:1px solid var(--rule);
-  border-radius:0;
-  padding:32px;
-  margin-bottom:16px;
-  scroll-margin-top:24px;
-  opacity:0;animation:questionAppear .35s cubic-bezier(.22,1,.36,1) forwards;
-  box-shadow:none;
-  transition:border-color .15s;
-}
-.question-block:hover{border-color:var(--ink);box-shadow:none}
-.q-number{font-size:10px;color:var(--swiss-red);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:12px;font-weight:500;font-variant-numeric:tabular-nums}
-.q-number::before{content:"◢ "}
-.q-text{font-family:inherit;font-size:18px;color:var(--ink);line-height:1.4;margin-bottom:24px;font-weight:500;letter-spacing:-0.01em}
-.options{display:flex;flex-direction:column;gap:0;border:1px solid var(--rule)}
-.option-row{display:flex;align-items:flex-start;gap:14px;padding:14px 18px;border-radius:0;border:none;border-bottom:1px solid var(--rule);background:var(--pure);cursor:pointer;transition:all .15s;user-select:none}
-.option-row:last-child{border-bottom:none}
-.option-row:hover{border-color:var(--rule);background:var(--paper)}
-.option-row.checked{background:var(--ink);color:var(--paper)}
-.option-row.checked .opt-label{color:var(--paper)}
-.option-row.checked .opt-letter{color:var(--paper)}
-.option-row:active{transform:none}
-.opt-cb{width:12px;height:12px;border:1px solid var(--ink);border-radius:0;flex-shrink:0;margin-top:4px;display:flex;align-items:center;justify-content:center;font-size:8px;transition:all .15s;font-weight:600}
-.option-row.checked .opt-cb{background:var(--paper);border-color:var(--paper);color:var(--ink)}
-.opt-label{font-size:13px;color:var(--ink);line-height:1.5;letter-spacing:0.005em}
-.opt-letter{font-weight:600;color:var(--swiss-red);margin-right:6px;font-size:12px;font-variant-numeric:tabular-nums;letter-spacing:0.04em;text-transform:uppercase}
-
-.option-row.rv-correct{border-color:var(--success)!important;background:var(--success-bg)!important;cursor:default}
-.option-row.rv-wrong{border-color:var(--swiss-red)!important;background:#FAE2DF!important;cursor:default;color:var(--ink)}
-.option-row.rv-missed{border-color:var(--miss)!important;background:var(--miss-bg)!important;cursor:default}
-.option-row.rv-correct .opt-label{color:var(--success)}
-.option-row.rv-correct .opt-letter{color:var(--success)}
-.option-row.rv-wrong .opt-label{color:var(--ink)}
-.option-row.rv-wrong .opt-letter{color:var(--swiss-red)}
-.option-row.rv-missed .opt-label{color:var(--miss)}
-.option-row.rv-missed .opt-letter{color:var(--miss)}
-
-/* ── Feedback ─────────────────────────────────────────────────────────────── */
-.feedback-block{margin-top:20px;padding:18px 20px;border-radius:0;border:1px solid var(--rule);background:var(--paper)}
-.fb-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.fb-status{font-size:10px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;font-variant-numeric:tabular-nums}
-.fb-status::before{content:"◢ "}
-.fb-status.full{color:var(--success)}
-.fb-status.partial{color:var(--warn)}
-.fb-status.wrong{color:var(--swiss-red)}
-.fb-score{font-family:inherit;font-size:14px;color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:0.02em}
-.fb-explain{font-size:13px;color:var(--ink);line-height:1.6;margin-top:8px}
-
-/* ── Deep-dive button ─────────────────────────────────────────────────────── */
-.btn-explain{margin-top:14px;font-size:10px;padding:8px 14px;border:1px solid var(--rule);color:var(--mid);gap:6px;border-radius:0;background:transparent;font-family:inherit;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:all .15s}
-.btn-explain:hover{border-color:var(--ink);color:var(--ink);background:var(--ink);color:var(--paper)}
-.btn-explain.loading{pointer-events:none;opacity:.6}
-.deep-dive{margin-top:14px;padding:20px 22px;border-radius:0;background:var(--pure);border:1px solid var(--rule);font-size:13px;color:var(--ink);line-height:1.7;animation:fadeIn .25s ease}
-.deep-dive h4{font-size:10px;color:var(--swiss-red);text-transform:uppercase;letter-spacing:0.18em;margin-bottom:10px;font-weight:500;font-variant-numeric:tabular-nums}
-.deep-dive h4::before{content:"◢ "}
-
-/* ── Result ───────────────────────────────────────────────────────────────── */
-.result-center{text-align:left;padding:48px 0 24px;border-bottom:1px solid var(--rule);margin-bottom:32px;display:grid;grid-template-columns:200px 1fr;gap:32px;align-items:start}
-@media(max-width:680px){.result-center{grid-template-columns:1fr;text-align:left}}
-.score-ring-wrap{margin:0;width:156px;height:156px;position:relative;flex-shrink:0}
-.score-ring-wrap svg{transform:rotate(-90deg)}
-.score-ring-wrap circle{stroke:var(--rule)}
-.score-ring-wrap circle:nth-child(2){stroke:var(--swiss-red)}
-.score-number{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.score-pct{font-family:inherit;font-size:36px;color:var(--ink);font-weight:500;letter-spacing:-0.04em;font-variant-numeric:tabular-nums}
-.score-sublabel{font-size:9px;color:var(--mid);letter-spacing:0.2em;text-transform:uppercase;font-weight:500}
-.grade-display{font-family:inherit;font-size:96px;color:var(--swiss-red);font-weight:500;letter-spacing:-0.06em;line-height:0.9;font-variant-numeric:tabular-nums}
-.grade-name{font-size:13px;color:var(--mid);font-style:normal;margin-bottom:16px;letter-spacing:0.08em;text-transform:uppercase;font-weight:500}
-.quote{font-style:normal;color:var(--ink);font-size:14px;margin:24px 0;padding:0;border-left:none;border-top:1px solid var(--rule);background:transparent;border-radius:0;text-align:left;padding-top:16px;line-height:1.55;font-weight:400}
-.total-pts{color:var(--mid);font-size:11px;margin-bottom:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:500;font-variant-numeric:tabular-nums}
-
-.breakdown{margin-top:32px;border:1px solid var(--rule);background:var(--pure);padding:20px}
-.bi-item{display:flex;align-items:center;gap:14px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--rule)}
-.bi-item:last-child{border-bottom:none;padding-bottom:0;margin-bottom:0}
-.bi-label{font-size:11px;color:var(--ink);width:200px;flex-shrink:0;text-align:left;letter-spacing:0.02em;font-weight:500}
-.bi-bar{flex:1;height:2px;background:var(--rule);border-radius:0;overflow:hidden}
-.bi-fill{height:100%;background:var(--ink);border-radius:0;transition:width .9s ease}
-.bi-pct{font-size:11px;color:var(--ink);min-width:36px;font-variant-numeric:tabular-nums;font-weight:600;text-align:right}
-
-.btn-row{display:flex;gap:8px;justify-content:flex-start;flex-wrap:wrap;margin-top:32px}
-.divider{height:1px;background:var(--rule);margin:48px 0;border:none}
-
-/* ── Particle canvas ──────────────────────────────────────────────────────── */
-#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:50}
-
-/* ── Stats overlay ────────────────────────────────────────────────────────── */
-.stats-overlay{position:fixed;inset:0;z-index:200;display:none;animation:fadeIn .25s ease}
-.stats-overlay.active{display:flex}
-.stats-backdrop{position:absolute;inset:0;background:rgba(10,10,10,.4);backdrop-filter:none;-webkit-backdrop-filter:none}
-.stats-panel{position:relative;margin:auto;width:min(720px,92vw);max-height:85vh;overflow-y:auto;background:var(--paper);border:1px solid var(--ink);border-radius:0;padding:48px;box-shadow:none}
-.stats-close{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:0;border:1px solid var(--rule);background:transparent;color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .15s}
-.stats-close:hover{border-color:var(--swiss-red);color:var(--swiss-red);background:transparent}
-.stats-title{font-family:inherit;font-size:32px;color:var(--ink);margin-bottom:8px;font-weight:500;letter-spacing:-0.025em}
-.stats-subtitle{font-size:11px;color:var(--mid);margin-bottom:32px;letter-spacing:0.1em;text-transform:uppercase}
-.stat-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-bottom:32px;border:1px solid var(--rule)}
-@media(max-width:600px){.stat-cards{grid-template-columns:repeat(2,1fr)}}
-.stat-card{background:var(--pure);border:none;border-radius:0;padding:20px 16px;text-align:left}
-.stat-card+.stat-card{border-left:1px solid var(--rule)}
-.stat-card-num{font-family:inherit;font-size:32px;color:var(--ink);font-weight:500;letter-spacing:-0.03em;font-variant-numeric:tabular-nums;margin-bottom:4px}
-.stat-card-label{font-size:9px;color:var(--mid);letter-spacing:0.18em;text-transform:uppercase;font-weight:500;font-variant-numeric:tabular-nums}
-.heatmap{margin-top:14px}
-.heatmap-row{display:flex;align-items:center;gap:14px;margin-bottom:8px}
-.heatmap-label{font-size:11px;color:var(--ink);width:200px;flex-shrink:0;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:0.01em}
-.heatmap-bar{flex:1;height:16px;border-radius:0;background:var(--rule);position:relative;overflow:hidden;border:1px solid var(--rule)}
-.heatmap-fill{height:100%;border-radius:0;transition:width .6s ease}
-.heatmap-val{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
-.stats-history{margin-top:24px;border:1px solid var(--rule);background:var(--pure)}
-.hist-row{display:flex;align-items:center;gap:14px;padding:12px 16px;border-bottom:1px solid var(--rule);font-size:11px;font-variant-numeric:tabular-nums}
-.hist-row:last-child{border-bottom:none}
-.hist-date{color:var(--mid);width:90px;flex-shrink:0;letter-spacing:0.04em}
-.hist-mode{color:var(--ink);flex:1;font-weight:500}
-.hist-score{font-weight:600;min-width:48px;text-align:right;color:var(--ink)}
-.stats-reset{margin-top:32px;text-align:left}
-
-/* ── Toasts ───────────────────────────────────────────────────────────────── */
-.toast-container{position:fixed;top:64px;right:16px;z-index:300;display:flex;flex-direction:column;gap:8px;pointer-events:none}
-.toast{background:var(--pure);border:1px solid var(--ink);border-radius:0;padding:12px 16px;display:flex;align-items:center;gap:10px;font-size:11px;color:var(--ink);box-shadow:none;animation:toastIn .3s ease,toastOut .3s ease 3s forwards;pointer-events:auto;max-width:300px;letter-spacing:0.02em}
-.toast-icon{font-size:14px;flex-shrink:0}
-.toast-text{line-height:1.45}
-.toast-text strong{color:var(--ink);display:block;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;font-weight:500;margin-bottom:2px}
-.toast.toast-achievement{border-color:var(--swiss-red)}
-.toast.toast-levelup{border-color:var(--swiss-red);background:var(--paper)}
-@keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
-@keyframes toastOut{from{opacity:1}to{opacity:0;transform:translateY(-6px)}}
-
-/* ── XP bar ───────────────────────────────────────────────────────────────── */
-.xp-section{margin-top:24px;margin-bottom:24px;padding:20px;border:1px solid var(--rule);background:var(--pure)}
-.xp-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
-.xp-level{font-family:inherit;font-size:14px;color:var(--ink);font-weight:500;letter-spacing:0.02em}
-.xp-label{font-size:10px;color:var(--mid);letter-spacing:0.06em;font-variant-numeric:tabular-nums}
-.xp-track{height:2px;background:var(--rule);border-radius:0;overflow:hidden}
-.xp-fill{height:100%;background:var(--ink);border-radius:0;transition:width .8s cubic-bezier(.4,0,.2,1)}
-
-/* ── Streak counter ───────────────────────────────────────────────────────── */
-.streak-counter{display:flex;align-items:center;gap:6px;margin-top:14px;padding:8px 12px;border-radius:0;background:var(--paper);border:1px solid var(--swiss-red);font-size:11px;color:var(--swiss-red);font-weight:500;letter-spacing:0.06em;text-transform:uppercase;animation:fadeIn .25s ease}
-.streak-counter.hidden{display:none}
-
-/* ── Achievements ─────────────────────────────────────────────────────────── */
-.achievement-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:0;margin-top:8px;border:1px solid var(--rule);background:var(--pure)}
-.achievement{display:flex;align-items:center;gap:10px;padding:14px 16px;border-radius:0;border:none;background:transparent;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);transition:all .15s}
-.achievement.locked{opacity:.3;filter:grayscale(1)}
-.achievement.unlocked{background:var(--pure)}
-.achievement-icon{font-size:18px;flex-shrink:0;width:28px;text-align:center}
-.achievement-info{min-width:0}
-.achievement-name{font-size:11px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:0.02em}
-.achievement-desc{font-size:9px;color:var(--mid);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:0.04em;text-transform:uppercase;margin-top:2px}
-
-/* ── Auth / Modal ─────────────────────────────────────────────────────────── */
-.key-overlay{position:fixed;inset:0;z-index:500;display:none;align-items:center;justify-content:center}
-.key-overlay.active{display:flex}
-.key-backdrop{position:absolute;inset:0;background:rgba(10,10,10,.4);backdrop-filter:none;-webkit-backdrop-filter:none}
-.key-panel{position:relative;width:min(440px,92vw);background:var(--paper);border:1px solid var(--ink);border-radius:0;padding:32px;box-shadow:none;animation:fadeIn .25s ease;text-align:left}
-.key-panel-title{font-family:inherit;font-size:24px;color:var(--ink);margin-bottom:6px;font-weight:500;letter-spacing:-0.02em}
-.key-panel-sub{font-size:11px;color:var(--mid);margin-bottom:20px;letter-spacing:0.1em;text-transform:uppercase;font-weight:500}
-.key-input-wrap{display:flex;gap:8px;align-items:stretch;margin-bottom:8px}
-.key-input-wrap input{flex:1;background:var(--pure);border:1px solid var(--ink);border-radius:0;padding:12px 14px;color:var(--ink);font-family:inherit;font-size:13px;outline:none;transition:border-color .15s}
-.key-input-wrap input:focus{border-color:var(--swiss-red)}
-.key-input-wrap input.code-valid{border-color:var(--success);background:var(--success-bg);color:var(--success);transition:all .25s ease}
-.key-status{font-size:10px;height:14px;margin-bottom:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:500}
-.toolbar .key-btn{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;gap:8px;color:var(--swiss-red)}
-.toolbar .key-btn:hover{background:var(--swiss-red)!important;color:var(--paper)!important}
-.toolbar .key-btn.has-key{color:var(--success)}
-.toolbar .key-btn.has-key:hover{background:var(--success)!important;color:var(--paper)!important}
-.key-btn-label{font-size:11px;letter-spacing:0.14em;font-weight:500}
-@media(max-width:600px){.key-btn-label{display:none}.toolbar .key-btn{padding:0!important;width:32px!important}}
-
-/* Inputs (used in admin modals etc.) */
-.key-panel input[type="text"],.key-panel input[type="email"],.key-panel input[type="password"]{
-  background:var(--pure)!important;border:1px solid var(--ink)!important;border-radius:0!important;
-  padding:12px 14px!important;color:var(--ink)!important;font-family:inherit!important;font-size:13px!important;
-}
-.key-panel textarea{
-  background:var(--pure)!important;border:1px solid var(--ink)!important;border-radius:0!important;
-  color:var(--ink)!important;font-family:inherit!important;
+/* Alt-Aliase: die dynamisch erzeugten Markup-Strings (Rangleiter, Ranking,
+   Heatmap, Verlauf) benutzen diese Namen. Sie zeigen jetzt auf die App-Tokens,
+   damit sie in beiden Themes stimmen. */
+:root {
+  --paper: var(--app-panel);
+  --pure: var(--app-bg);
+  --ink: var(--app-ink);
+  --cream: var(--app-ink);
+  --cream2: var(--app-ink);
+  --cream3: var(--app-mute);
+  --mid: var(--app-mute);
+  --text3: var(--app-mute);
+  --rule: var(--app-rule);
+  --border: var(--app-rule);
+  --border2: var(--app-rule);
+  --border3: var(--app-rule);
+  --bg2: var(--app-panel);
+  --swiss-red: var(--app-accent);
+  --red: var(--app-accent);
+  --red2: var(--app-accent);
+  --red3: var(--app-accent);
+  --blue: var(--app-accent);
+  --blue2: var(--app-accent);
+  --blue3: var(--app-accent);
+  --miss: var(--app-warn);
+  --warn: var(--app-warn);
+  --success: var(--app-ok);
+  --green2: var(--app-ok);
 }
 
-/* ── Daily challenge ──────────────────────────────────────────────────────── */
-.challenge-card{background:var(--pure);border:1px solid var(--rule);border-radius:0;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:14px}
-.challenge-left{display:flex;align-items:center;gap:12px}
-.challenge-icon{font-size:18px}
-.challenge-topic{font-size:12px;color:var(--ink);font-weight:500;letter-spacing:0.02em}
-.challenge-sub{font-size:9px;color:var(--mid);letter-spacing:0.12em;text-transform:uppercase;margin-top:2px}
-.challenge-done{font-size:10px;color:var(--success);font-weight:500;letter-spacing:0.14em;text-transform:uppercase}
-.challenge-done::before{content:"◢ "}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--app-bg); color: var(--app-ink);
+  font-family: var(--font-body); font-size: 15px; line-height: 1.55; font-weight: 400;
+  text-wrap: pretty; -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: 800; line-height: 1.12; letter-spacing: -0.015em; margin: 0; }
+a { color: var(--app-accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+:focus { outline: none; }
+*:focus-visible { outline: 2px solid var(--app-accent); outline-offset: 2px; }
+::selection { background: color-mix(in srgb, var(--app-accent) 30%, transparent); }
+img { display: block; max-width: 100%; }
 
-/* ── User badge ───────────────────────────────────────────────────────────── */
-.toolbar #userBadge{font-size:11px;letter-spacing:0.06em;font-weight:500;color:var(--ink);gap:10px;text-transform:none;padding:0 14px}
-.toolbar #userBadge:hover{background:var(--pure)}
-#userBadge .ub-dot{width:6px;height:6px;border-radius:50%;background:var(--success);flex-shrink:0;display:inline-block;margin-top:2px;align-self:flex-start}
-#userBadge .ub-text{display:flex;flex-direction:column;justify-content:center;gap:2px;line-height:1.1;align-items:flex-start;text-align:left}
-#userBadge .ub-name{font-size:12px;letter-spacing:0.01em;font-weight:600;color:var(--ink)}
-#userBadge .ub-rank-line{display:flex;align-items:center;gap:5px;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);font-weight:500;font-variant-numeric:tabular-nums;cursor:pointer;transition:color .15s}
-#userBadge .ub-rank-line:hover{color:var(--swiss-red)}
-#userBadge .ub-rank-icon{font-size:11px;letter-spacing:0}
-#userBadge .ub-rank-lvl{color:var(--ink);font-weight:600}
-#userBadge .ub-arrow{font-size:9px;color:var(--mid);margin-left:2px;align-self:center}
-@media(max-width:600px){#userBadge .ub-name{font-size:11px}#userBadge .ub-rank-line{font-size:8px;letter-spacing:0.1em}}
-#userBadge .ub-rank strong{font-weight:600;font-size:11px}
-@media(max-width:600px){#userBadge .ub-rank{padding:2px 6px;font-size:9px}}
-#userMenu{font-family:inherit}
+@keyframes marchDash { to { background-position: 18px 0, 100% -18px, -18px 100%, 0 18px; } }
+@keyframes softPulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .dropzone { animation: none !important; }
+  .pulse-dot { animation: none !important; }
+  .question-block { animation: none !important; }
+}
 
-@media(max-width:600px){
-  .header{padding:32px 24px 24px}
-  .logo{font-size:48px}
-  .container{padding:32px 24px}
-  .mode-grid,.altmode-grid{grid-template-columns:1fr}
-  .mode-card+.mode-card,.altmode-card+.altmode-card{border-left:1px solid var(--rule)}
-  .bi-label{width:130px;font-size:11px}
-  .heatmap-label{width:120px}
-  .achievement-grid{grid-template-columns:1fr 1fr}
-  .toast{max-width:240px;font-size:11px}
-  .stats-panel{padding:24px}
-  .stats-title{font-size:24px}
-  .key-panel{padding:24px}
-  .grade-display{font-size:64px}
-  #userBadge{right:130px!important}
+/* ── Buttons / Inputs ──────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  cursor: pointer; text-decoration: none;
+  font-family: var(--font-heading); font-weight: 800; font-size: 14px; line-height: 1.2;
+  color: var(--app-ink); background: transparent;
+  border: 2px solid transparent; padding: 9px 14px; border-radius: 0;
+}
+.btn:hover { text-decoration: none; }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-primary { background: var(--app-accent); color: var(--app-accent-ink); border-color: var(--app-accent); }
+.btn-primary:hover { background: var(--color-accent-600); border-color: var(--color-accent-600); color: var(--app-accent-ink); }
+:root[data-orakel-theme="dark"] .btn-primary:hover { background: #ff7359; border-color: #ff7359; }
+.btn-secondary { border-color: var(--app-rule); color: var(--app-ink); }
+.btn-secondary:hover { background: color-mix(in srgb, var(--app-ink) 8%, transparent); }
+.btn-ghost { color: var(--app-accent); border-color: transparent; padding-inline: 6px; }
+.btn-ghost:hover { background: color-mix(in srgb, var(--app-accent) 12%, transparent); }
+.btn-large { font-size: 15px; padding: 13px 22px; }
+.btn-sm { font-size: 12px; padding: 6px 10px; }
+.btn-block { width: 100%; justify-content: center; }
+.btn-link {
+  background: none; border: none; padding: 0; cursor: pointer;
+  font-family: var(--font-body); font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--app-mute);
+  border-bottom: 2px solid var(--app-rule);
+}
+.btn-link:hover { color: var(--app-accent); border-color: var(--app-accent); }
+
+.input {
+  width: 100%; min-height: 40px; padding: 9px 12px; font: inherit; font-size: 14px;
+  color: var(--app-ink); caret-color: var(--app-accent);
+  background: var(--app-panel); border: 2px solid var(--app-rule); border-radius: 0;
+}
+.input:hover { border-color: color-mix(in srgb, var(--app-ink) 45%, transparent); }
+.input:focus-visible { border-color: var(--app-accent); outline-offset: 0; }
+.input.code-valid { border-color: var(--app-ok); }
+textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-size: 13px; }
+
+.kicker {
+  display: block; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--app-accent); margin-bottom: 12px;
+}
+.section-label {
+  font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--app-mute); margin: 30px 0 12px;
+}
+.screen-h1 {
+  font-size: clamp(26px, 3.6vw, 42px); line-height: 1.06; letter-spacing: -0.02em;
+  margin: 0 0 0 -0.04em;
+}
+.wrap { max-width: 1100px; margin: 0 auto; padding: clamp(24px, 4vw, 44px) clamp(16px, 4vw, 56px) 56px; }
+
+/* ── Kopfzeile ─────────────────────────────────────────────────────────── */
+.topbar {
+  display: flex; align-items: center; gap: 12px 18px; flex-wrap: wrap;
+  padding: 14px clamp(16px, 4vw, 56px);
+  border-bottom: 2px solid var(--app-rule);
+  background: var(--app-bg); position: sticky; top: 0; z-index: 30;
+}
+.brand-btn { all: unset; cursor: pointer; display: block; }
+.brand-name { display: block; font-family: var(--font-heading); font-weight: 800; font-size: 18px; line-height: 22px; color: var(--app-ink); }
+.brand-sub { display: block; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--app-mute); margin-top: 2px; }
+.toolbar { margin-left: auto; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.toolbar .btn { font-size: 12.5px; padding: 7px 11px; }
+.back-link { font-size: 12.5px; color: var(--app-mute); margin-right: 6px; }
+.back-link:hover { color: var(--app-accent); }
+#keyCornerBtn.has-key { border-color: var(--app-accent); color: var(--app-accent); }
+
+/* Konto-Badge (wird per JS in die Toolbar gehängt) */
+#userBadge {
+  display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+  background: transparent; border: 2px solid var(--app-rule); border-radius: 0;
+  padding: 5px 10px; font-family: var(--font-body); color: var(--app-ink);
+}
+#userBadge:hover { border-color: var(--app-accent); }
+.ub-dot { width: 8px; height: 8px; background: var(--app-accent); flex: none; }
+.ub-text { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.15; }
+.ub-name { font-family: var(--font-heading); font-weight: 800; font-size: 12.5px; }
+.ub-rank-line { display: flex; gap: 4px; align-items: center; font-size: 10px; color: var(--app-mute); letter-spacing: 0.04em; }
+.ub-rank-icon { font-size: 10px; }
+.ub-arrow { font-size: 10px; color: var(--app-mute); }
+
+/* ── Screens ───────────────────────────────────────────────────────────── */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ── Home ──────────────────────────────────────────────────────────────── */
+.home-hero { position: relative; overflow: hidden; border-bottom: 2px solid var(--app-rule); }
+#waveCanvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.home-inner { position: relative; max-width: 1100px; margin: 0 auto; padding: clamp(32px, 6vw, 72px) clamp(16px, 4vw, 56px) clamp(36px, 6vw, 76px); }
+.home-h1 { font-size: clamp(30px, 4.6vw, 56px); line-height: 1.04; letter-spacing: -0.03em; margin: 0 0 0 -0.058em; max-width: 22ch; }
+.mode-grid { margin-top: clamp(28px, 4vw, 44px); display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; }
+.mode-card {
+  all: unset; cursor: pointer; display: block; background: var(--app-panel);
+  border: 2px solid var(--app-rule); padding: 26px 24px 24px;
+  transition: border-color 140ms, transform 140ms;
+}
+.mode-card:hover { border-color: var(--app-accent); transform: translateY(-2px); }
+.mode-card:focus-visible { outline: 2px solid var(--app-accent); outline-offset: 2px; }
+.mc-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+.mc-nr { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--app-accent); }
+.mc-arrow { font-family: var(--font-heading); font-weight: 800; font-size: 20px; color: var(--app-accent); }
+.mc-title { display: block; font-family: var(--font-heading); font-weight: 800; font-size: clamp(24px, 2.8vw, 32px); line-height: 1.1; letter-spacing: -0.02em; color: var(--app-ink); margin-top: 22px; }
+.mc-desc { display: block; font-size: 15px; line-height: 25px; color: var(--app-mute); margin-top: 12px; max-width: 34ch; }
+.home-foot { max-width: 1100px; margin: 0 auto; padding: 20px clamp(16px, 4vw, 56px) 56px; display: flex; gap: 12px 28px; flex-wrap: wrap; justify-content: space-between; }
+.home-foot p { font-size: 13px; line-height: 22px; color: var(--app-mute); margin: 0; }
+
+.login-hint { border: 2px solid var(--app-accent); background: var(--app-panel); padding: 22px 24px; margin-bottom: 28px; }
+.locked-cards { opacity: 0.4; pointer-events: none; }
+
+/* ── Themenkatalog-Schalter ────────────────────────────────────────────── */
+.blk { border-bottom: 2px solid var(--app-rule); }
+.blk-row { display: flex; gap: 12px 18px; align-items: center; padding: 14px 0; }
+.sw {
+  all: unset; cursor: pointer; flex: none; display: block; position: relative;
+  width: 44px; height: 24px; border: 2px solid var(--app-rule); background: transparent;
+}
+.sw > span { position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; background: var(--app-rule); transition: left 140ms ease; }
+.sw.on { border-color: var(--app-accent); background: var(--app-accent); }
+.sw.on > span { left: 22px; background: var(--app-accent-ink); }
+.blk-btn { all: unset; cursor: pointer; flex: 1 1 auto; display: flex; gap: 12px; align-items: baseline; justify-content: space-between; min-width: 0; }
+.blk-title { font-family: var(--font-heading); font-weight: 800; font-size: 17px; line-height: 24px; color: var(--app-ink); }
+.blk-meta { display: flex; gap: 12px; align-items: baseline; flex: none; }
+.blk-tally { font-size: 12px; letter-spacing: 0.06em; color: var(--app-mute); font-feature-settings: 'tnum' 1; }
+.blk-caret { font-family: var(--font-heading); font-weight: 800; font-size: 13px; color: var(--app-accent); }
+.blk-points { padding: 0 0 16px 58px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 6px 24px; }
+.pt {
+  all: unset; cursor: pointer; display: flex; gap: 12px; align-items: flex-start;
+  padding: 7px 10px 7px 2px; transition: background 120ms;
+}
+.pt:hover { background: var(--app-panel); }
+.pt:focus-visible { outline: 2px solid var(--app-accent); outline-offset: -2px; }
+.pt-sw { display: block; width: 34px; height: 18px; flex: none; margin-top: 3px; border: 2px solid var(--app-rule); position: relative; }
+.pt-sw > span { position: absolute; top: 1px; left: 1px; width: 12px; height: 12px; background: var(--app-rule); transition: left 130ms ease; }
+.pt-sw.on { border-color: var(--app-accent); background: var(--app-accent); }
+.pt-sw.on > span { left: 17px; background: var(--app-accent-ink); }
+.pt-nr { display: block; font-size: 12px; letter-spacing: 0.06em; color: var(--app-accent); font-feature-settings: 'tnum' 1; }
+.pt-title { display: block; font-size: 14.5px; line-height: 22px; color: var(--app-ink); margin-top: 2px; }
+
+/* ── Segmentierte Auswahl (Fragenzahl, Schwierigkeit, Methode) ─────────── */
+.seg { display: inline-flex; gap: 0; border: 2px solid var(--app-rule); flex-wrap: wrap; }
+.seg > button {
+  all: unset; cursor: pointer; padding: 12px 24px;
+  font-family: var(--font-heading); font-weight: 800; font-size: 16px;
+  color: var(--app-ink); border-right: 2px solid var(--app-rule);
+}
+.seg > button:last-child { border-right: none; }
+.seg > button:focus-visible { outline: 2px solid var(--app-accent); outline-offset: -2px; }
+.seg > button.on { background: var(--app-accent); color: var(--app-accent-ink); }
+.seg.seg-text > button { font-size: 13.5px; padding: 10px 18px; }
+.seg-label { display: block; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--app-mute); margin-bottom: 10px; }
+
+/* ── Upload ────────────────────────────────────────────────────────────── */
+.dropzone {
+  display: block; margin-top: 28px; cursor: pointer; padding: clamp(28px, 5vw, 52px) 28px;
+  background:
+    linear-gradient(90deg, var(--app-accent) 55%, transparent 0) top/18px 2px repeat-x,
+    linear-gradient(0deg, var(--app-accent) 55%, transparent 0) right/2px 18px repeat-y,
+    linear-gradient(90deg, var(--app-accent) 55%, transparent 0) bottom/18px 2px repeat-x,
+    linear-gradient(0deg, var(--app-accent) 55%, transparent 0) left/2px 18px repeat-y;
+  animation: marchDash 900ms linear infinite;
+}
+.dropzone.drag { background-color: var(--app-accent-soft); }
+.dz-title { display: block; font-family: var(--font-heading); font-weight: 800; font-size: clamp(20px, 2.4vw, 26px); line-height: 1.15; color: var(--app-ink); }
+.dz-sub { display: block; font-size: 14px; line-height: 22px; color: var(--app-mute); margin-top: 10px; }
+.dz-file { display: block; font-size: 13px; line-height: 21px; color: var(--app-accent); margin-top: 12px; }
+#fileInput, #dzInput { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.file-row { display: flex; gap: 12px; align-items: center; justify-content: space-between; border: 2px solid var(--app-rule); padding: 12px 14px; background: var(--app-panel); }
+.file-row .fr-name { font-size: 14.5px; line-height: 22px; color: var(--app-ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.file-row .fr-size { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--app-accent); flex: none; }
+
+/* ── Ladescreen ────────────────────────────────────────────────────────── */
+.pulse-dot { display: block; width: 12px; height: 12px; background: var(--app-accent); animation: softPulse 1.1s ease-in-out infinite; flex: none; }
+.load-bar { height: 8px; background: var(--app-panel); border: 2px solid var(--app-rule); margin-top: 4px; }
+.load-bar > span { display: block; height: 100%; background: var(--app-accent); width: 0; transition: width 200ms linear; }
+
+/* ── Quiz ──────────────────────────────────────────────────────────────── */
+.quiz-layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: clamp(24px, 4vw, 48px); align-items: start; }
+.sidebar { position: sticky; top: 96px; border: 2px solid var(--app-rule); background: var(--app-panel); padding: 18px 16px; }
+.sidebar-title { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--app-mute); margin-bottom: 10px; }
+.nav-dots { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.nav-dot {
+  width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+  border: 2px solid var(--app-rule); font-size: 12px; font-family: var(--font-heading);
+  font-weight: 800; color: var(--app-mute); cursor: pointer; font-feature-settings: 'tnum' 1;
+}
+.nav-dot.answered { border-color: var(--app-accent); color: var(--app-accent); }
+.nav-dot.locked { opacity: 0.35; cursor: not-allowed; }
+.progress-bar { height: 8px; background: var(--app-bg); border: 2px solid var(--app-rule); }
+.progress-fill { height: 100%; background: var(--app-accent); transition: width 220ms; }
+.prog-text { font-size: 12px; color: var(--app-mute); margin-top: 8px; font-feature-settings: 'tnum' 1; }
+.exam-timer { font-family: var(--font-heading); font-weight: 800; font-size: 20px; text-align: center; margin-bottom: 8px; font-feature-settings: 'tnum' 1; }
+.exam-timer.urgent { color: var(--app-accent); }
+.stopwatch { font-family: var(--font-heading); font-weight: 800; font-size: 15px; color: var(--app-mute); text-align: center; margin-bottom: 10px; font-feature-settings: 'tnum' 1; }
+.streak-counter { font-size: 12px; color: var(--app-accent); text-align: center; margin-top: 10px; }
+.streak-counter.hidden { display: none; }
+
+.question-block { border-top: 2px solid var(--app-rule); padding: 22px 0 26px; animation: fadeUp 320ms ease both; }
+.q-number { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--app-accent); margin-bottom: 10px; }
+.q-text { font-family: var(--font-heading); font-weight: 800; font-size: clamp(19px, 2.2vw, 25px); line-height: 1.24; letter-spacing: -0.015em; color: var(--app-ink); max-width: 46ch; }
+.options { margin-top: 20px; display: grid; gap: 10px; }
+.option-row {
+  display: flex; gap: 14px; align-items: flex-start; cursor: pointer;
+  border: 2px solid var(--app-rule); background: transparent; padding: 13px 15px;
+  transition: border-color 120ms, background 120ms;
+}
+.option-row:hover { border-color: var(--app-accent); }
+.opt-cb {
+  width: 18px; height: 18px; flex: none; border: 2px solid var(--app-rule);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--app-accent); margin-top: 3px;
+}
+.option-row.checked { border-color: var(--app-accent); background: var(--app-accent-soft); }
+.option-row.checked .opt-cb { border-color: var(--app-accent); }
+.opt-label { font-size: 15.5px; line-height: 24px; color: var(--app-ink); }
+.opt-letter { font-family: var(--font-heading); font-weight: 800; font-size: 13px; color: var(--app-accent); margin-right: 8px; }
+.option-row.rv-correct { border-color: var(--app-ok); background: color-mix(in srgb, var(--app-ok) 12%, transparent); }
+.option-row.rv-wrong { border-color: var(--app-accent); background: var(--app-accent-soft); }
+.option-row.rv-missed { border-color: var(--app-warn); border-style: dashed; }
+
+.feedback-block { border-left: 2px solid var(--app-accent); padding: 12px 0 2px 14px; margin-top: 18px; }
+.fb-row { display: flex; gap: 12px; align-items: baseline; justify-content: space-between; flex-wrap: wrap; }
+.fb-status { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-family: var(--font-heading); font-weight: 800; }
+.fb-status.full { color: var(--app-ok); }
+.fb-status.partial { color: var(--app-warn); }
+.fb-status.wrong { color: var(--app-accent); }
+.fb-score { font-size: 12px; color: var(--app-mute); font-feature-settings: 'tnum' 1; }
+.fb-explain { font-size: 14.5px; line-height: 24px; color: var(--app-mute); margin-top: 8px; max-width: 62ch; }
+.btn-explain {
+  margin-top: 12px; font-size: 12px; padding: 6px 10px;
+  border: 2px solid var(--app-rule); background: transparent; color: var(--app-ink);
+  font-family: var(--font-heading); font-weight: 800; cursor: pointer;
+}
+.btn-explain:hover { border-color: var(--app-accent); color: var(--app-accent); }
+.deep-dive { border: 2px solid var(--app-rule); background: var(--app-panel); padding: 16px 18px; margin-top: 12px; font-size: 14px; line-height: 24px; color: var(--app-ink); }
+.deep-dive h4 { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--app-accent); margin-bottom: 8px; }
+
+/* ── Ergebnis ──────────────────────────────────────────────────────────── */
+.result-center { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.score-ring-wrap { position: relative; width: 156px; height: 156px; margin-bottom: 12px; }
+.score-number { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.score-pct { font-family: var(--font-heading); font-weight: 800; font-size: 34px; line-height: 1; font-feature-settings: 'tnum' 1; }
+.score-sublabel { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--app-mute); margin-top: 4px; }
+.grade-display { font-family: var(--font-heading); font-weight: 800; font-size: clamp(38px, 6vw, 64px); line-height: 1; }
+.grade-name { font-family: var(--font-heading); font-weight: 800; font-size: 20px; color: var(--app-ink); }
+.quote { font-size: 15px; line-height: 25px; color: var(--app-mute); margin-top: 10px; max-width: 52ch; }
+.total-pts { font-size: 13px; color: var(--app-mute); margin-top: 6px; font-feature-settings: 'tnum' 1; }
+.bi-item { display: grid; grid-template-columns: minmax(0, 200px) 1fr auto; gap: 14px; align-items: center; padding: 10px 0; border-bottom: 2px solid var(--app-rule); }
+.bi-label { font-size: 13.5px; color: var(--app-ink); overflow: hidden; text-overflow: ellipsis; }
+.bi-bar { height: 8px; background: var(--app-panel); border: 2px solid var(--app-rule); }
+.bi-fill { height: 100%; background: var(--app-accent); transition: width 700ms ease; }
+.bi-pct { font-size: 12px; color: var(--app-mute); font-feature-settings: 'tnum' 1; min-width: 42px; text-align: right; }
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+.divider { height: 2px; background: var(--app-rule); margin: 32px 0; }
+
+/* ── Modale ────────────────────────────────────────────────────────────── */
+.key-overlay { position: fixed; inset: 0; z-index: 60; display: none; align-items: center; justify-content: center; padding: 20px; }
+.key-overlay.active { display: flex; }
+.key-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.55); }
+.key-panel {
+  position: relative; width: 100%; max-width: 440px; max-height: 88vh; overflow: auto;
+  background: var(--app-bg); border: 2px solid var(--app-rule); padding: 26px 24px 24px;
+}
+.key-panel-title { font-family: var(--font-heading); font-weight: 800; font-size: 24px; line-height: 1.1; color: var(--app-ink); }
+.key-panel-sub { font-size: 14px; line-height: 23px; color: var(--app-mute); margin: 10px 0 4px; }
+.key-status { font-size: 13px; line-height: 20px; min-height: 20px; }
+.ssw {
+  flex: 1; cursor: pointer; padding: 9px 12px; background: transparent;
+  border: 2px solid var(--app-rule); color: var(--app-ink);
+  font-family: var(--font-heading); font-weight: 800; font-size: 13px; border-radius: 0;
+}
+.ssw.active, .ssw.active-alt { background: var(--app-accent); border-color: var(--app-accent); color: var(--app-accent-ink); }
+.modal-close {
+  position: absolute; top: 14px; right: 14px; width: 30px; height: 30px;
+  border: 2px solid var(--app-rule); background: transparent; color: var(--app-ink);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-family: inherit;
+}
+.modal-close:hover { border-color: var(--app-accent); color: var(--app-accent); }
+#userMenu { position: fixed; top: 74px; right: 16px; background: var(--app-bg); border: 2px solid var(--app-rule); min-width: 250px; z-index: 70; display: none; font-family: var(--font-body); }
+
+/* ── Statistik-Overlay ─────────────────────────────────────────────────── */
+.stats-overlay { position: fixed; inset: 0; z-index: 50; display: none; }
+.stats-overlay.active { display: block; }
+.stats-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.55); }
+.stats-panel {
+  position: relative; margin: 0 auto; max-width: 1100px; height: 100%; overflow-y: auto;
+  background: var(--app-bg); border-left: 2px solid var(--app-rule); border-right: 2px solid var(--app-rule);
+  padding: 28px clamp(16px, 4vw, 44px) 64px;
+}
+.stats-close {
+  position: absolute; top: 20px; right: clamp(16px, 4vw, 44px); width: 32px; height: 32px;
+  border: 2px solid var(--app-rule); background: transparent; color: var(--app-ink);
+  cursor: pointer; font-size: 15px; font-family: inherit;
+}
+.stats-close:hover { border-color: var(--app-accent); color: var(--app-accent); }
+.stats-title { font-family: var(--font-heading); font-weight: 800; font-size: clamp(26px, 3.4vw, 38px); line-height: 1.06; letter-spacing: -0.02em; }
+.stats-subtitle { font-size: 14px; color: var(--app-mute); margin-top: 8px; }
+.stat-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-top: 24px; }
+.stat-card { border: 2px solid var(--app-rule); background: var(--app-panel); padding: 16px 18px; }
+.stat-card-num { font-family: var(--font-heading); font-weight: 800; font-size: 26px; line-height: 1.1; color: var(--app-ink); font-feature-settings: 'tnum' 1; }
+.stat-card-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--app-mute); margin-top: 6px; }
+.xp-section { border: 2px solid var(--app-rule); background: var(--app-panel); padding: 20px; margin-top: 20px; }
+.xp-header { display: flex; gap: 14px 20px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+.xp-label { font-size: 12px; color: var(--app-mute); font-feature-settings: 'tnum' 1; }
+.xp-track { height: 12px; background: var(--app-bg); border: 2px solid var(--app-rule); margin-top: 16px; }
+.xp-fill { height: 100%; background: var(--app-accent); }
+.challenge-card { display: flex; gap: 14px 20px; flex-wrap: wrap; align-items: center; justify-content: space-between; border: 2px solid var(--app-rule); background: var(--app-panel); padding: 16px 18px; }
+.challenge-left { display: flex; gap: 14px; align-items: center; }
+.challenge-icon { font-size: 24px; }
+.challenge-topic { font-family: var(--font-heading); font-weight: 800; font-size: 15px; color: var(--app-ink); }
+.challenge-sub { font-size: 12px; color: var(--app-mute); margin-top: 2px; }
+.challenge-done { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--app-ok); }
+.achievement-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.achievement { display: flex; gap: 12px; align-items: center; border: 2px solid var(--app-rule); background: var(--app-panel); padding: 12px 14px; }
+.achievement.locked { opacity: 0.42; }
+.achievement.unlocked { border-color: var(--app-accent); }
+.achievement-icon { font-size: 20px; }
+.achievement-name { font-family: var(--font-heading); font-weight: 800; font-size: 13.5px; color: var(--app-ink); }
+.achievement-desc { font-size: 11.5px; color: var(--app-mute); margin-top: 2px; }
+.heatmap-row { display: grid; grid-template-columns: minmax(0, 190px) 1fr; gap: 14px; align-items: center; padding: 8px 0; border-bottom: 2px solid var(--app-rule); }
+.heatmap-label { font-size: 13px; color: var(--app-ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.heatmap-bar { position: relative; height: 10px; background: var(--app-panel); border: 2px solid var(--app-rule); }
+.heatmap-fill { height: 100%; }
+.heatmap-val { position: absolute; right: -44px; top: -6px; font-size: 11px; color: var(--app-mute); font-feature-settings: 'tnum' 1; }
+.hist-row { display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center; padding: 10px 0; border-bottom: 2px solid var(--app-rule); }
+.hist-date { font-size: 12px; color: var(--app-mute); font-feature-settings: 'tnum' 1; }
+.hist-mode { font-size: 12.5px; color: var(--app-ink); }
+.hist-score { font-family: var(--font-heading); font-weight: 800; font-size: 14px; font-feature-settings: 'tnum' 1; }
+.stats-reset { margin-top: 28px; }
+
+/* ── Toasts ────────────────────────────────────────────────────────────── */
+.toast-container { position: fixed; right: 16px; bottom: 16px; z-index: 80; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+.toast { display: flex; gap: 12px; align-items: center; border: 2px solid var(--app-rule); background: var(--app-bg); padding: 12px 16px; max-width: 320px; animation: fadeUp 220ms ease both; }
+.toast-icon { font-size: 20px; }
+.toast-text { font-size: 13px; line-height: 19px; color: var(--app-mute); }
+.toast-text strong { display: block; font-family: var(--font-heading); font-weight: 800; font-size: 14px; color: var(--app-ink); }
+.toast-levelup, .toast-achievement { border-color: var(--app-accent); }
+#particleCanvas { position: fixed; inset: 0; pointer-events: none; z-index: 90; }
+
+/* ── Responsiv ─────────────────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .quiz-layout { grid-template-columns: minmax(0, 1fr); }
+  .sidebar { position: static; }
+  .blk-points { padding-left: 0; }
+}
+@media (max-width: 620px) {
+  .brand-sub { display: none; }
+  .back-link { display: none; }
+  .toolbar .btn { font-size: 12px; padding: 6px 9px; }
+  .bi-item { grid-template-columns: minmax(0, 1fr) auto; }
+  .bi-bar { grid-column: 1 / -1; }
 }
 </style>
 </head>
 <body>
-<!-- Back to Nephron.at -->
-<a href="/" class="back-home" title="Zurück zur Hauptseite Nephron.at">
-  <span style="font-size:13px;line-height:1">←</span>
-  <span class="back-home-label">Nephron<span style="color:var(--swiss-red)">.at</span></span>
-</a>
-<!-- Unified toolbar -->
-<div class="toolbar" id="topToolbar">
-  <button class="key-btn" id="keyCornerBtn" onclick="openKeyModal()" title="Wochencode eingeben — Anmelden oder Registrieren">
-    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="8" cy="15" r="4"/><path d="M10.85 12.15 19 4"/><path d="m18 5 2 2"/><path d="m15 8 2 2"/></svg>
-    <span class="key-btn-label">Wochencode</span>
+
+<!-- ── Kopfzeile ───────────────────────────────────────────────────────── -->
+<nav class="topbar">
+  <button type="button" class="brand-btn" onclick="goTo('s1')" title="Zur Startseite des Orakels">
+    <span class="brand-name">Physio-Orakel</span>
+    <span class="brand-sub">Nephron.at</span>
   </button>
-  <button class="stats-toggle" id="statsBtn" onclick="toggleStats()" title="Statistik & Verlauf">
-    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="20" x2="4" y2="14"/><line x1="12" y1="20" x2="12" y2="10"/><line x1="20" y1="20" x2="20" y2="4"/></svg>
-    <span class="stats-label">Statistik</span>
-  </button>
-  <button class="sound-toggle" id="soundBtn" onclick="toggleSound()" title="Sound an/aus">
-    <svg id="soundOn" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-    <svg id="soundOff" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" style="display:none"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-  </button>
-  <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" title="Hell/Dunkel">
-    <svg id="sunIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-    <svg id="moonIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-  </button>
-</div>
+  <span class="toolbar" id="topToolbar">
+    <a href="/" class="back-link">← Nephron.at</a>
+    <button type="button" class="btn btn-secondary" id="keyCornerBtn" onclick="openKeyModal()" title="Anmelden oder registrieren">Anmelden</button>
+    <button type="button" class="btn btn-secondary" id="soundBtn" onclick="toggleSound()" title="Ton an/aus"><span id="soundLabel">Ton an</span></button>
+    <button type="button" class="btn btn-secondary" id="themeBtn" onclick="toggleTheme()" title="Hell/Dunkel"><span id="themeLabel">Dunkel</span></button>
+    <button type="button" class="btn btn-primary" id="statsBtn" onclick="toggleStats()" title="Statistik &amp; Verlauf">Statistik</button>
+  </span>
+</nav>
+
 <div class="toast-container" id="toastContainer"></div>
-
-<!-- Auth modal (Login + Register) -->
-<div class="key-overlay" id="authOverlay">
-  <div class="key-backdrop" onclick="closeKeyModal()"></div>
-  <div class="key-panel" style="max-width:420px;position:relative">
-    <button onclick="closeKeyModal()" style="position:absolute;top:14px;right:14px;width:28px;height:28px;border:1px solid var(--rule);background:transparent;color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;border-radius:0;font-family:inherit;transition:all .15s" onmouseover="this.style.borderColor='var(--swiss-red)';this.style.color='var(--swiss-red)'" onmouseout="this.style.borderColor='var(--rule)';this.style.color='var(--ink)'" title="Schließen">✕</button>
-    <div style="display:flex;gap:.4rem;margin-bottom:.8rem;margin-top:8px;padding-right:36px">
-      <button class="ssw active" id="authTabLogin" onclick="setAuthTab('login')" style="flex:1">Anmelden</button>
-      <button class="ssw" id="authTabRegister" onclick="setAuthTab('register')" style="flex:1">Registrieren</button>
-    </div>
-    <div class="key-panel-title serif" id="authTitle">Anmelden</div>
-    <div class="key-panel-sub" id="authSub">Mit deinem Account-Login + Wochencode</div>
-
-    <div id="authFormLogin" style="margin-top:.6rem">
-      <input type="text" id="loginUser" placeholder="Username oder Email" autocomplete="username" style="width:100%;box-sizing:border-box;padding:.5rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.85rem;margin-bottom:.4rem">
-      <input type="password" id="loginPass" placeholder="Passwort" autocomplete="current-password" style="width:100%;box-sizing:border-box;padding:.5rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.85rem;margin-bottom:.4rem">
-      <input type="password" id="loginCode" placeholder="Wochencode" autocomplete="off" style="width:100%;box-sizing:border-box;padding:.5rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.85rem;margin-bottom:.6rem">
-      <button class="btn btn-primary" onclick="doLogin()" style="width:100%">Anmelden</button>
-    </div>
-
-    <div id="authFormRegister" style="display:none;margin-top:.6rem">
-      <input type="text" id="regUser" placeholder="Username (3-20 Zeichen)" autocomplete="username" style="width:100%;box-sizing:border-box;padding:.5rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.85rem;margin-bottom:.4rem">
-      <input type="email" id="regEmail" placeholder="Email" autocomplete="email" style="width:100%;box-sizing:border-box;padding:.5rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.85rem;margin-bottom:.4rem">
-      <input type="password" id="regPass" placeholder="Passwort (mind. 6 Zeichen)" autocomplete="new-password" style="width:100%;box-sizing:border-box;padding:.5rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.85rem;margin-bottom:.4rem">
-      <input type="password" id="regCode" placeholder="Wochencode" autocomplete="off" style="width:100%;box-sizing:border-box;padding:.5rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.85rem;margin-bottom:.6rem">
-      <button class="btn btn-primary" onclick="doRegister()" style="width:100%">Account erstellen</button>
-    </div>
-
-    <div class="key-status" id="authStatus" style="margin-top:.6rem"></div>
-  </div>
-</div>
-
-<!-- (Wochencode button now lives inside #topToolbar above) -->
-
-<!-- Altfragenpool Admin modal -->
-<div class="key-overlay" id="poolAdminOverlay" style="display:none">
-  <div class="key-backdrop" onclick="closePoolAdmin()"></div>
-  <div class="key-panel" style="max-width:540px;max-height:85vh;overflow-y:auto">
-    <div class="key-panel-title serif">Altfragenpool verwalten</div>
-    <div class="key-panel-sub">Altfragen zentral für alle Studenten hinterlegen</div>
-    <div style="margin:.8rem 0 .4rem"><label style="font-size:.78rem;color:var(--text3)">Admin-Key</label></div>
-    <input type="password" id="poolAdminKeyInput" placeholder="Admin-Key eingeben..." autocomplete="off" style="width:100%;box-sizing:border-box;padding:.5rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.85rem;margin-bottom:.6rem">
-    <div style="margin:.4rem 0;display:flex;justify-content:space-between;align-items:center">
-      <label style="font-size:.78rem;color:var(--text3)">Altfragen einfügen oder hochladen</label>
-      <label class="btn" style="font-size:.72rem;padding:.3rem .6rem;cursor:pointer">
-        Datei wählen
-        <input type="file" id="poolAdminFileInput" accept=".txt,.md,.pdf" style="display:none">
-      </label>
-    </div>
-    <textarea id="poolTextInput" placeholder="Altfragen hier einfügen..." style="width:100%;box-sizing:border-box;min-height:200px;padding:.6rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.82rem;font-family:inherit;resize:vertical;line-height:1.5"></textarea>
-    <div id="poolAdminStatus" style="font-size:.78rem;color:var(--text3);margin:.4rem 0"></div>
-    <div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:.6rem">
-      <button class="btn" onclick="closePoolAdmin()">Abbrechen</button>
-      <button class="btn btn-primary" onclick="uploadPool()" id="poolUploadBtn">Hochladen</button>
-    </div>
-  </div>
-</div>
-
-<!-- Wochentest Admin modal -->
-<div class="key-overlay" id="wtAdminOverlay" style="display:none">
-  <div class="key-backdrop" onclick="closeWtAdmin()"></div>
-  <div class="key-panel" style="max-width:540px;max-height:85vh;overflow-y:auto">
-    <div class="key-panel-title serif">Wochentest-Material verwalten</div>
-    <div class="key-panel-sub">VO-Transkript für den kommenden Wochentest</div>
-    <div style="margin:.8rem 0 .4rem"><label style="font-size:.78rem;color:var(--text3)">Admin-Key</label></div>
-    <input type="password" id="wtAdminKeyInput" placeholder="Admin-Key eingeben..." autocomplete="off" style="width:100%;box-sizing:border-box;padding:.5rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.85rem;margin-bottom:.6rem">
-    <div style="margin:.4rem 0"><label style="font-size:.78rem;color:var(--text3)">Titel (optional)</label></div>
-    <input type="text" id="wtTitleInput" placeholder="z.B. Woche 5 — Herz-Kreislauf" style="width:100%;box-sizing:border-box;padding:.5rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.85rem;margin-bottom:.6rem">
-    <div style="margin:.4rem 0;display:flex;justify-content:space-between;align-items:center">
-      <label style="font-size:.78rem;color:var(--text3)">Transkript einfügen oder hochladen</label>
-      <label class="btn" style="font-size:.72rem;padding:.3rem .6rem;cursor:pointer">
-        Datei wählen
-        <input type="file" id="wtAdminFileInput" accept=".pdf,.txt,.md" style="display:none">
-      </label>
-    </div>
-    <textarea id="wtTranscriptInput" placeholder="VO-Transkript hier einfügen..." style="width:100%;box-sizing:border-box;min-height:200px;padding:.6rem .7rem;background:var(--bg2);color:var(--cream);border:1px solid var(--border);border-radius:6px;font-size:.82rem;font-family:inherit;resize:vertical;line-height:1.5"></textarea>
-    <div id="wtAdminStatus" style="font-size:.78rem;color:var(--text3);margin:.4rem 0"></div>
-    <div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:.6rem">
-      <button class="btn" onclick="closeWtAdmin()">Abbrechen</button>
-      <button class="btn btn-primary" onclick="uploadWtTranscript()" id="wtUploadBtn">Hochladen</button>
-    </div>
-  </div>
-</div>
-
-<!-- Particle canvas -->
 <canvas id="particleCanvas"></canvas>
 
-<!-- Stats overlay -->
-<div class="stats-overlay" id="statsOverlay">
-  <div class="stats-backdrop" onclick="toggleStats()"></div>
-  <div class="stats-panel">
-    <button class="stats-close" onclick="toggleStats()">✕</button>
-    <div class="stats-title serif">Lernhistorie</div>
-    <div class="stats-subtitle">Dein Fortschritt über alle Sitzungen</div>
-    <div class="stat-cards" id="statCards"></div>
-    <div class="xp-section" id="xpSection"></div>
-    <div class="section-label">Karriereleiter</div>
-    <div id="rankLadder"></div>
-    <div class="section-label">Tages-Challenge</div>
-    <div id="challengeArea"></div>
-    <div class="section-label">Globales Ranking</div>
-    <div id="leaderboardArea" style="margin-top:8px"></div>
-    <div class="section-label">Achievements</div>
-    <div class="achievement-grid" id="achievementGrid"></div>
-
-    <div class="section-label">Schwachstellen-Heatmap</div>
-    <div class="heatmap" id="heatmap"></div>
-    <div id="weaknessBtn" style="display:none;text-align:center;margin:1rem 0">
-      <button class="btn btn-primary" onclick="startWeaknessQuiz()" style="gap:.4rem">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        Schwachstellen üben
-      </button>
-    </div>
-    <div class="section-label">Letzte Sitzungen</div>
-    <div class="stats-history" id="statsHistory"></div>
-    <div class="stats-reset"><button class="btn btn-sm btn-ghost" onclick="resetStats()" style="color:var(--red2)">Statistik zurücksetzen</button></div>
-  </div>
-</div>
-
-<!-- S1: Upload -->
+<!-- ══ S1: Home ═══════════════════════════════════════════════════════════ -->
 <div id="s1" class="screen active">
-  <div class="header">
-    <div style="margin-bottom:.6rem">
-      <svg viewBox="0 0 200 80" width="150" height="56" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="ekgFade" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#A01E1E" stop-opacity="0"/>
-            <stop offset="30%" stop-color="#A01E1E" stop-opacity="0.5"/>
-            <stop offset="60%" stop-color="#D42B2B" stop-opacity="1"/>
-            <stop offset="100%" stop-color="#D42B2B" stop-opacity="0"/>
-          </linearGradient>
-          <filter id="ekgGlow">
-            <feGaussianBlur stdDeviation="1.5" result="blur"/>
-            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
-          <mask id="scrollMask">
-            <rect id="maskRect" x="-200" y="0" width="200" height="80" fill="white">
-              <animate attributeName="x" from="-200" to="200" dur="5s" repeatCount="indefinite"/>
-            </rect>
-          </mask>
-        </defs>
-        <polyline points="0,40 20,40 30,40 36,32 40,56 45,20 48,60 52,40 60,40 70,40 76,32 80,56 85,20 88,60 92,40 100,40 110,40 116,32 120,56 125,20 128,60 132,40 140,40 150,40 156,32 160,56 165,20 168,60 172,40 180,40 200,40"
-          fill="none" stroke="rgba(212,43,43,.15)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-        <g mask="url(#scrollMask)" filter="url(#ekgGlow)">
-          <polyline points="0,40 20,40 30,40 36,32 40,56 45,20 48,60 52,40 60,40 70,40 76,32 80,56 85,20 88,60 92,40 100,40 110,40 116,32 120,56 125,20 128,60 132,40 140,40 150,40 156,32 160,56 165,20 168,60 172,40 180,40 200,40"
-            fill="none" stroke="url(#ekgFade)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </g>
-      </svg>
+  <section class="home-hero">
+    <canvas id="waveCanvas" aria-hidden="true"></canvas>
+    <div class="home-inner">
+
+      <div class="login-hint" id="loginHint" style="display:none">
+        <span class="kicker">Hinweis</span>
+        <div style="font-family:var(--font-heading);font-weight:800;font-size:19px;line-height:1.2;color:var(--app-ink)">Bitte zuerst anmelden.</div>
+        <p style="font-size:14px;line-height:23px;color:var(--app-mute);margin:10px 0 16px;max-width:52ch">Du brauchst einen Account und den aktuellen Wochencode. Wenn du noch keinen hast, kannst du dich kostenlos registrieren.</p>
+        <button type="button" class="btn btn-primary" onclick="openKeyModal()">Anmelden / Registrieren</button>
+      </div>
+
+      <h1 class="home-h1"><span style="display:block">Was üben wir heute?</span></h1>
+      <p style="font-size:16px;line-height:27px;color:var(--app-mute);margin:18px 0 0;max-width:46ch">Gratis Account erstellen und loslegen. Keine Werbung / Newsletter.</p>
+
+      <div class="mode-grid" id="modeGrid">
+        <button type="button" class="mode-card" onclick="chooseMode('altfragen')">
+          <span class="mc-head"><span class="mc-nr">01</span><span class="mc-arrow">→</span></span>
+          <span class="mc-title">Altfragen üben</span>
+          <span class="mc-desc">Themenkatalogpunkte wählen, Fragenzahl wählen, los. Fragen im Stil der Wochentests.</span>
+        </button>
+        <button type="button" class="mode-card" onclick="chooseMode('skript')">
+          <span class="mc-head"><span class="mc-nr">02</span><span class="mc-arrow">→</span></span>
+          <span class="mc-title">Übungstest aus eigenen Unterlagen</span>
+          <span class="mc-desc">PDF rein — Skript, Mitschrift, Folien. Das Orakel macht Fragen daraus.</span>
+        </button>
+      </div>
+
     </div>
-    <div class="logo"><span class="logo-phys">Physio</span><span class="logo-dot">·</span><span class="logo-ora">Orakel</span></div>
-    <div class="logo-line"></div>
-    <div style="display:flex;flex-direction:column;gap:.25rem;margin-top:.4rem">
-      <div class="subtitle" style="font-size:.75rem;color:var(--cream3);letter-spacing:.04em;font-style:normal">Developed independently at Semmelweis University Budapest</div>
-      <div class="subtitle" style="font-size:.7rem;color:var(--text3);letter-spacing:.06em">Est. 2026 &nbsp;&middot;&nbsp; Founder: Peer Hechenberger</div>
-    </div>
+  </section>
+
+  <div class="home-foot">
+    <p style="max-width:62ch">Teil von <a href="/">Nephron.at</a> — privates Lernprojekt, keine Uni-Seite, KI-generierte Fragen ohne fachliche Prüfung, ohne Gewähr. <a href="/#disclaimer">Ganzen Disclaimer lesen</a>.</p>
+    <p id="homeRankLine">Noch nicht angemeldet.</p>
   </div>
-  <div class="container">
-
-    <!-- Login hint when not logged in -->
-    <div id="loginHint" style="display:none;border:1px solid var(--swiss-red);background:var(--paper);padding:24px 28px;margin-bottom:32px">
-      <div style="font-size:10px;color:var(--swiss-red);letter-spacing:0.2em;text-transform:uppercase;font-weight:500;margin-bottom:10px">◢ Hinweis</div>
-      <div style="font-size:15px;color:var(--ink);font-weight:500;margin-bottom:8px;letter-spacing:-0.005em">Bitte zuerst anmelden, um das Physio-Orakel zu nutzen.</div>
-      <div style="font-size:12px;color:var(--mid);line-height:1.6;margin-bottom:16px">Du brauchst einen Account und den aktuellen Wochencode. Wenn du noch keinen hast, kannst du dich kostenlos registrieren.</div>
-      <button class="btn btn-primary" onclick="openKeyModal()" style="font-size:11px">Anmelden / Registrieren</button>
-    </div>
-
-    <!-- Main menu: 4 modes -->
-    <div id="mainMenu">
-      <div class="section-label">Was möchtest du üben?</div>
-      <div class="mode-grid" style="grid-template-columns:1fr 1fr">
-        <div class="mode-card" onclick="chooseMode('wochentest')">
-          <div class="mc-badge">N° 01</div>
-          <div class="mc-title">Wochentest üben</div>
-          <div class="mc-desc">Übung für den kommenden Wochentest aus aktuellem VO-Material.</div>
-        </div>
-        <div class="mode-card" onclick="chooseMode('skript')">
-          <div class="mc-badge">N° 02</div>
-          <div class="mc-title">Übungstest aus eigenen Unterlagen</div>
-          <div class="mc-desc">Lade dein Skript hoch — die KI generiert maßgeschneiderte Fragen.</div>
-        </div>
-        <div class="mode-card" onclick="chooseMode('altfragen')">
-          <div class="mc-badge">N° 03</div>
-          <div class="mc-title">Altfragen üben</div>
-          <div class="mc-desc">Originalfragen aus dem Pool, exakt oder als KI-Variation.</div>
-        </div>
-        <div class="mode-card" onclick="chooseMode('rigorosum')">
-          <div class="mc-badge">N° 04</div>
-          <div class="mc-title">KI-Übung &amp; Rigorosum</div>
-          <div class="mc-desc">Themenkatalog der Universität — einzelne Themen üben oder volle Rigorosum-Simulation.</div>
-        </div>
-      </div>
-
-      <!-- Sonderfunktion: RIGO-Altfragen Original -->
-      <div class="mode-card" onclick="chooseMode('rigoorig')" style="margin-top:14px;border:1px solid var(--swiss-red);background:var(--paper);position:relative">
-        <div class="mc-badge" style="color:var(--swiss-red);border-color:var(--swiss-red)">Original</div>
-        <div class="mc-title" style="color:var(--swiss-red)">RIGO-Altfragen Original</div>
-        <div class="mc-desc">98 Originalfragen aus den Rigorosum-Terminen 2024 — eine Session enthält alle Fragen des gewählten Termins.</div>
-      </div>
-
-      <div style="margin-top:1.5rem;text-align:right;display:flex;gap:.5rem;justify-content:flex-end">
-        <button onclick="openWtAdmin()" style="font-size:9px;padding:4px 8px;background:transparent;border:none;color:var(--mid);cursor:pointer;font-family:inherit;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;border-bottom:1px solid var(--rule)" onmouseover="this.style.color='var(--ink)';this.style.borderColor='var(--ink)'" onmouseout="this.style.color='var(--mid)';this.style.borderColor='var(--rule)'">admin · material</button>
-        <button onclick="openPoolAdmin()" style="font-size:9px;padding:4px 8px;background:transparent;border:none;color:var(--mid);cursor:pointer;font-family:inherit;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;border-bottom:1px solid var(--rule)" onmouseover="this.style.color='var(--ink)';this.style.borderColor='var(--ink)'" onmouseout="this.style.color='var(--mid)';this.style.borderColor='var(--rule)'">admin · altfragenpool</button>
-      </div>
-    </div>
-
-    <!-- Wochentest detail (shown when N° 01 chosen) -->
-    <div id="modeWochentest" style="display:none">
-      <button onclick="backToMenu()" style="font-size:10px;padding:6px 12px;background:transparent;border:1px solid var(--rule);color:var(--mid);cursor:pointer;font-family:inherit;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;margin-bottom:24px;transition:all .15s" onmouseover="this.style.borderColor='var(--ink)';this.style.color='var(--ink)'" onmouseout="this.style.borderColor='var(--rule)';this.style.color='var(--mid)'">← Zurück</button>
-      <div class="section-label">Wochentest üben</div>
-      <div id="wtStatus" style="font-size:.78rem;color:var(--text3);margin:0 0 .8rem;line-height:1.5"></div>
-      <div id="wtReady" style="display:none">
-        <div style="display:flex;gap:.5rem;justify-content:center;margin-bottom:.8rem">
-          <button class="ssw active" id="wtDiffNormal" onclick="setWtDiff('normal')">Normal</button>
-          <button class="ssw" id="wtDiffHard" onclick="setWtDiff('hard')">Hard</button>
-        </div>
-        <div style="text-align:center">
-          <button class="btn btn-primary btn-large" onclick="startWochentest()" id="wtStartBtn">Übung für den kommenden Wochentest starten</button>
-        </div>
-      </div>
-      <div id="wtEmpty" style="display:none;text-align:center;padding:.8rem;font-size:.82rem;color:var(--text3);background:var(--bg2);border-radius:8px">
-        Noch kein Wochentest-Material hinterlegt.
-      </div>
-      <div id="wtAdminWrap" style="margin-top:.8rem;text-align:right">
-        <button onclick="openWtAdmin()" style="font-size:9px;padding:4px 8px;background:transparent;border:none;color:var(--mid);cursor:pointer;font-family:inherit;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;border-bottom:1px solid var(--rule)" onmouseover="this.style.color='var(--ink)';this.style.borderColor='var(--ink)'" onmouseout="this.style.color='var(--mid)';this.style.borderColor='var(--rule)'">admin · material</button>
-      </div>
-    </div>
-
-    <!-- Skript detail (shown when N° 02 chosen) -->
-    <div id="modeSkript" style="display:none">
-      <button onclick="backToMenu()" style="font-size:10px;padding:6px 12px;background:transparent;border:1px solid var(--rule);color:var(--mid);cursor:pointer;font-family:inherit;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;margin-bottom:24px;transition:all .15s" onmouseover="this.style.borderColor='var(--ink)';this.style.color='var(--ink)'" onmouseout="this.style.borderColor='var(--rule)';this.style.color='var(--mid)'">← Zurück</button>
-      <div class="section-label">Skript hochladen</div>
-      <div class="drop-zone" id="dropZone">
-        <div class="drop-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--cream)" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-        </div>
-        <div class="drop-title">PDF, TXT oder MD hier ablegen</div>
-        <div class="drop-sub">eine oder mehrere Dateien — klicken oder Drag &amp; Drop</div>
-        <div class="file-name fn-blue" id="fileName"></div>
-        <input type="file" id="fileInput" accept=".pdf,.txt,.md" multiple>
-      </div>
-      <p class="skip-hint">Kein Skript? Die KI generiert Fragen aus dem <strong>offiziellen Semmelweis-Themenkatalog</strong>.</p>
-      <div style="text-align:center;margin-top:2rem">
-        <button class="btn btn-primary btn-large" onclick="goToConfigWith('skript')">Weiter zur Konfiguration</button>
-      </div>
-    </div>
-
-    <!-- Altfragen detail (shown when N° 03 chosen) -->
-    <div id="modeAltfragen" style="display:none">
-      <button onclick="backToMenu()" style="font-size:10px;padding:6px 12px;background:transparent;border:1px solid var(--rule);color:var(--mid);cursor:pointer;font-family:inherit;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;margin-bottom:24px;transition:all .15s" onmouseover="this.style.borderColor='var(--ink)';this.style.color='var(--ink)'" onmouseout="this.style.borderColor='var(--rule)';this.style.color='var(--mid)'">← Zurück</button>
-      <div class="section-label">Altfragenpool</div>
-      <div id="poolStatusWrap"></div>
-      <div id="poolAdminWrap" style="margin-top:.4rem;text-align:right">
-        <button onclick="openPoolAdmin()" style="font-size:9px;padding:4px 8px;background:transparent;border:none;color:var(--mid);cursor:pointer;font-family:inherit;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;border-bottom:1px solid var(--rule)" onmouseover="this.style.color='var(--ink)';this.style.borderColor='var(--ink)'" onmouseout="this.style.color='var(--mid)';this.style.borderColor='var(--rule)'">admin · altfragenpool</button>
-      </div>
-      <div style="text-align:center;margin-top:2rem">
-        <button class="btn btn-primary btn-large" onclick="goToConfigWith('altfragen')">Weiter zur Konfiguration</button>
-      </div>
-    </div>
-
-    <!-- Rigorosum (shown when N° 04 chosen) -->
-    <div id="modeRigorosum" style="display:none">
-      <button onclick="backToMenu()" style="font-size:10px;padding:6px 12px;background:transparent;border:1px solid var(--rule);color:var(--mid);cursor:pointer;font-family:inherit;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;margin-bottom:24px;transition:all .15s" onmouseover="this.style.borderColor='var(--ink)';this.style.color='var(--ink)'" onmouseout="this.style.borderColor='var(--rule)';this.style.color='var(--mid)'">← Zurück</button>
-      <div class="section-label">KI-Übung &amp; Rigorosum</div>
-      <p style="font-size:14px;color:var(--ink);line-height:1.6;margin:8px 0 24px;max-width:640px">Kein Material nötig — die KI generiert Fragen aus dem <strong>offiziellen Semmelweis-Themenkatalog</strong>. Du kannst einzelne Themenbereiche filtern und üben oder die volle <strong>Rigorosum-Simulation</strong> starten (20 Fragen, 40 Minuten Timer, kein Zurückblättern).</p>
-      <div style="text-align:center;margin-top:2rem">
-        <button class="btn btn-primary btn-large" onclick="goToConfigWith('rigorosum')">Weiter zur Konfiguration</button>
-      </div>
-    </div>
-
-    <!-- RIGO-Altfragen Original (Sonderfunktion) -->
-    <div id="modeRigoOrig" style="display:none">
-      <button onclick="backToMenu()" style="font-size:10px;padding:6px 12px;background:transparent;border:1px solid var(--rule);color:var(--mid);cursor:pointer;font-family:inherit;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;margin-bottom:24px;transition:all .15s" onmouseover="this.style.borderColor='var(--ink)';this.style.color='var(--ink)'" onmouseout="this.style.borderColor='var(--rule)';this.style.color='var(--mid)'">← Zurück</button>
-      <div class="section-label" style="color:var(--swiss-red)">RIGO-Altfragen Original</div>
-      <p style="font-size:14px;color:var(--ink);line-height:1.6;margin:8px 0 24px;max-width:640px">Originalfragen aus den Rigorosum-Terminen 2024 — 1:1 transkribiert. Wähle einen Termin — die Session enthält <strong>alle Fragen</strong> dieses Termins in Originalreihenfolge, kein Timer.</p>
-      <div id="rigoOrigTerminList" style="display:grid;gap:10px"></div>
-    </div>
-
-    <div class="divider" style="margin:2.5rem 0 1.5rem"></div>
-
-    <details style="margin-bottom:2rem">
-      <summary style="font-size:.72rem;color:var(--text3);cursor:pointer;letter-spacing:.03em;text-align:center;list-style:none;display:flex;align-items:center;justify-content:center;gap:.4rem">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-        Disclaimer
-      </summary>
-      <div style="margin-top:.8rem;font-size:.68rem;color:var(--text3);line-height:1.6;text-align:left">
-        <p style="margin:0 0 .6rem"><strong style="color:var(--cream3)">Disclaimer — Physio-Orakel</strong></p>
-        <p style="margin:0 0 .5rem">Das Physio-Orakel ist ein privates, nicht-kommerzielles Lernprojekt eines Studierenden. Es handelt sich nicht um ein offizielles Angebot der Semmelweis Universität Budapest und steht in keinerlei institutioneller Verbindung zur Universität, deren Instituten oder Lehrpersonal. Inhalte, Darstellungen und Ergebnisse spiegeln nicht die Positionen der Universität wider.</p>
-        <p style="margin:0 0 .5rem">Sämtliche Antworten und Erklärungen werden von einer künstlichen Intelligenz (Claude, Anthropic) generiert und sind nicht von Fachpersonal geprüft. Trotz sorgfältiger Gestaltung der Abfragen können die Antworten inhaltliche Fehler, Ungenauigkeiten oder veraltete Informationen enthalten. Das Physio-Orakel ersetzt weder Vorlesungen, Lehrbücher noch sonstige geprüfte Lehrmaterialien und stellt keine akademische Beratung dar.</p>
-        <p style="margin:0 0 .5rem">Die Inhalte orientieren sich an Vorlesungsstoff und Altfragen, es wird jedoch keine Gewähr für Aktualität, Vollständigkeit, Richtigkeit oder Prüfungsrelevanz übernommen. Änderungen im Curriculum oder in der Prüfungsgestaltung werden nicht automatisch abgebildet.</p>
-        <p style="margin:0 0 .5rem">Die bereitgestellten Inhalte dienen ausschließlich Lernzwecken und stellen keinen medizinischen Rat dar. Informationen aus dem Physio-Orakel dürfen nicht zur Diagnostik, Therapie oder Beratung von Patientinnen und Patienten herangezogen werden.</p>
-        <p style="margin:0">Die Nutzung erfolgt auf eigene Verantwortung. Der Betreiber übernimmt keine Haftung für Schäden jeglicher Art, die aus der Nutzung oder dem Vertrauen auf die bereitgestellten Inhalte entstehen — einschließlich, aber nicht beschränkt auf, Prüfungsergebnisse oder akademische Konsequenzen.</p>
-      </div>
-    </details>
+  <div style="max-width:1100px;margin:0 auto;padding:0 clamp(16px,4vw,56px) 40px;display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap">
+    <button type="button" class="btn-link" onclick="openWtAdmin()">admin · material</button>
+    <button type="button" class="btn-link" onclick="openPoolAdmin()">admin · altfragenpool</button>
   </div>
 </div>
 
-<!-- S2: Config -->
+<!-- ══ S2: Konfiguration (Altfragen) ══════════════════════════════════════ -->
 <div id="s2" class="screen">
-  <div class="header">
-    <div class="logo"><span class="logo-phys">Physio</span><span class="logo-dot">·</span><span class="logo-ora">Orakel</span></div>
-    <div class="logo-line"></div>
-    <div class="tagline">Quiz konfigurieren</div>
-  </div>
-  <div class="container">
+  <section class="wrap">
+    <button type="button" class="btn btn-ghost" onclick="goTo('s1')" style="color:var(--app-ink);font-size:12.5px;margin-bottom:22px">← Zurück</button>
+    <span class="kicker">Altfragen üben</span>
+    <h1 class="screen-h1">Welche Punkte?</h1>
 
-    <div id="s2ModusSection">
-    <div class="section-label">Modus</div>
-    <div class="source-switch">
-      <button class="ssw active" id="swKI" onclick="setSourceMode('ki')">KI-Generierung</button>
-      <button class="ssw" id="swAlt" onclick="setSourceMode('alt')">Altfragen</button>
-    </div>
-    <div id="noPoolWarning" style="display:none;font-size:.8rem;color:var(--red2);margin-top:.5rem;padding:.5rem .8rem;background:rgba(90,16,32,.3);border-radius:5px;border:1px solid var(--red)">
-      Kein Altfragenpool hinterlegt. Bitte zuerst auf Screen 1 einen Pool hochladen.
-    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;align-items:center">
+      <button type="button" class="btn btn-secondary" onclick="selectAllTopics()" style="font-size:12.5px">Alle wählen</button>
+      <button type="button" class="btn btn-ghost" onclick="selectNoTopics()" style="color:var(--app-ink);font-size:12.5px">Auswahl leeren</button>
+      <span style="font-size:13px;color:var(--app-mute)" id="selCountText">alle Punkte gewählt</span>
     </div>
 
-    <div id="altSubMode" style="display:none">
-      <div class="altmode-box">
-        <div class="altmode-label">Altfragen-Methode</div>
-        <div class="altmode-grid">
-          <div class="altmode-card selected" id="amExact" onclick="setAltMode('exact')">
-            <div class="amc-title">Exakt</div>
-            <div class="amc-desc">Originalfragen direkt aus dem Pool — keine Veränderungen</div>
+    <div id="poolStatusWrap" style="margin-top:20px"></div>
+
+    <div id="topicArea" style="margin-top:26px;border-top:2px solid var(--app-rule)"></div>
+
+    <div id="altSubMode" style="display:none;margin-top:30px">
+      <span class="seg-label">Altfragen-Methode</span>
+      <div class="seg seg-text">
+        <button type="button" id="amExact" onclick="setAltMode('exact')" class="on">Exakt</button>
+        <button type="button" id="amVaried" onclick="setAltMode('varied')">Variiert (KI)</button>
+      </div>
+      <p style="font-size:12.5px;line-height:20px;color:var(--app-mute);margin:8px 0 0;max-width:56ch" id="altModeHint">Originalfragen direkt aus dem Pool — kein Wort verändert.</p>
+    </div>
+
+    <div id="diffSection" style="margin-top:30px">
+      <span class="seg-label">Schwierigkeit</span>
+      <div class="seg seg-text">
+        <button type="button" data-diff="normal" class="on" onclick="selectDiff(this,'normal')">Normal</button>
+        <button type="button" data-diff="hard" onclick="selectDiff(this,'hard')">Hard</button>
+      </div>
+    </div>
+
+    <div style="margin-top:30px;display:flex;gap:24px 40px;flex-wrap:wrap;align-items:flex-end;justify-content:space-between">
+      <div>
+        <span class="seg-label">Wie viele Fragen?</span>
+        <div class="seg" id="countGrid">
+          <button type="button" data-cnt="5" class="on" onclick="selectCount(this,'5')">5</button>
+          <button type="button" data-cnt="10" onclick="selectCount(this,'10')">10</button>
+          <button type="button" data-cnt="20" onclick="selectCount(this,'20')">20</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <span style="font-size:13px;color:var(--app-mute)" id="startHint">5 Fragen aus allen Punkten</span>
+        <button type="button" class="btn btn-primary btn-large" id="startBtn" onclick="startQuiz()">Quiz starten</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ══ S-Upload: Eigene Unterlagen ════════════════════════════════════════ -->
+<div id="sUpload" class="screen">
+  <section class="wrap">
+    <button type="button" class="btn btn-ghost" onclick="goTo('s1')" style="color:var(--app-ink);font-size:12.5px;margin-bottom:22px">← Zurück</button>
+    <span class="kicker">Aus eigenen Unterlagen</span>
+    <h1 class="screen-h1">Wirf dein PDF rein.</h1>
+    <p style="font-size:15.5px;line-height:26px;color:var(--app-mute);margin:16px 0 0;max-width:52ch">Skript, Mitschrift, Folien deiner Lerngruppe — was du hast. Das Orakel liest es und baut Fragen daraus. Nichts davon wird veröffentlicht.</p>
+
+    <label class="dropzone" id="dropZone">
+      <input type="file" id="fileInput" accept=".pdf,.txt,.md" multiple>
+      <span class="dz-title">PDF hierher ziehen oder klicken</span>
+      <span class="dz-sub">Mehrere Dateien gehen auch (PDF, TXT, MD). Maximal ein Semester Leidensdruck pro Upload.</span>
+      <span class="dz-file" id="fileName"></span>
+    </label>
+
+    <canvas id="digestCanvas" aria-hidden="true" style="display:block;width:100%;height:clamp(160px,20vw,220px);margin-top:26px;border-top:2px solid var(--app-rule);border-bottom:2px solid var(--app-rule)"></canvas>
+
+    <div id="fileList" style="margin-top:18px;display:grid;gap:10px"></div>
+
+    <div style="margin-top:30px;display:flex;gap:24px 40px;flex-wrap:wrap;align-items:flex-end;justify-content:space-between">
+      <div style="display:flex;gap:28px;flex-wrap:wrap">
+        <div>
+          <span class="seg-label">Wie viele Fragen?</span>
+          <div class="seg" id="countGridUp">
+            <button type="button" data-cntu="5" class="on" onclick="selectCountUp(this,'5')">5</button>
+            <button type="button" data-cntu="10" onclick="selectCountUp(this,'10')">10</button>
+            <button type="button" data-cntu="20" onclick="selectCountUp(this,'20')">20</button>
           </div>
-          <div class="altmode-card" id="amVaried" onclick="setAltMode('varied')">
-            <div class="amc-title">Variiert</div>
-            <div class="amc-desc">KI nutzt Altfragen als Vorlage und erstellt ähnliche neue Fragen</div>
+        </div>
+        <div>
+          <span class="seg-label">Schwierigkeit</span>
+          <div class="seg seg-text" id="diffGridUp">
+            <button type="button" data-diffu="normal" class="on" onclick="selectDiffUp(this,'normal')">Normal</button>
+            <button type="button" data-diffu="hard" onclick="selectDiffUp(this,'hard')">Hard</button>
           </div>
         </div>
       </div>
-    </div>
-
-    <div id="s2TopicSection">
-    <div class="section-label" id="topicSectionLabel">Themenbereiche</div>
-    <div id="topicArea"></div>
-    </div>
-
-    <div id="diffSection">
-    <div class="section-label">Schwierigkeitsgrad</div>
-    <div class="mode-grid">
-      <div class="mode-card selected" data-diff="normal" onclick="selectDiff(this,'normal')">
-        <div class="mc-badge">Standard</div>
-        <div class="mc-title">Normal</div>
-        <div class="mc-desc">Kernkonzepte, typische Prüfungsthemen</div>
-      </div>
-      <div class="mode-card" data-diff="hard" onclick="selectDiff(this,'hard')">
-        <div class="mc-badge">Erweitert</div>
-        <div class="mc-title">Hard</div>
-        <div class="mc-desc">Ausnahmen, klinische Vignetten, Verwechslungen</div>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <span style="font-size:13px;color:var(--app-mute)" id="uploadHint">Noch keine Datei.</span>
+        <button type="button" class="btn btn-primary btn-large" id="uploadStartBtn" onclick="startUploadQuiz()">Fragen generieren</button>
       </div>
     </div>
-    </div>
-
-    <div class="section-label">Frageanzahl</div>
-    <div class="mode-grid" id="countGrid">
-      <div class="mode-card selected" data-cnt="5" onclick="selectCount(this,'5')">
-        <div class="mc-badge">Kurz</div>
-        <div class="mc-title">5 Fragen</div>
-        <div class="mc-desc">Schnelle Runde &mdash; ca. 10 Min.</div>
-      </div>
-      <div class="mode-card" data-cnt="10" onclick="selectCount(this,'10')">
-        <div class="mc-badge">Voll</div>
-        <div class="mc-title">10 Fragen</div>
-        <div class="mc-desc">Volle Runde &mdash; ca. 20 Min.</div>
-      </div>
-    </div>
-
-    <!-- Exam mode -->
-    <div id="s2RigorosumSection">
-    <div class="section-label">Rigorosum-Simulation</div>
-    <div class="mode-grid">
-      <div class="mode-card" id="examModeCard" onclick="toggleExamMode()" style="grid-column:1/-1">
-        <div class="mc-badge" style="color:var(--red2);border-color:var(--red2)">Rigorosum</div>
-        <div class="mc-title">Rigorosum-Simulation</div>
-        <div class="mc-desc">20 Fragen, 40 Minuten Timer, kein Zurückblättern</div>
-      </div>
-    </div>
-    </div>
-
-    <div class="section-label">Zusammenfassung</div>
-    <div class="summary-box">
-      <div class="summary-row"><span class="summary-key">Modus</span><span class="summary-val" id="sumModus">KI-Generierung</span></div>
-      <div class="summary-row"><span class="summary-key">Quelle</span><span class="summary-val" id="sumSource">Themenkatalog</span></div>
-      <div class="summary-row"><span class="summary-key">Themen</span><span class="summary-val" id="sumTopics">Alle</span></div>
-      <div class="summary-row" id="sumDiffRow"><span class="summary-key">Schwierigkeit</span><span class="summary-val" id="sumDiff">Normal</span></div>
-      <div class="summary-row"><span class="summary-key">Frageanzahl</span><span class="summary-val" id="sumCount">5 Fragen</span></div>
-      <div class="summary-row" id="sumCtxRow" style="display:none"><span class="summary-key">Kontextgröße</span><span class="summary-val" id="sumCtx" style="font-size:.78rem"></span></div>
-    </div>
-
-    <div style="text-align:center">
-      <button class="btn btn-primary btn-large" id="startBtn" onclick="startQuiz()">Quiz starten</button>
-    </div>
-    <div style="text-align:center;margin-top:.75rem">
-      <button class="btn" onclick="goTo('s1')" style="font-size:.82rem;padding:.5rem 1.1rem">Zurück</button>
-    </div>
-  </div>
+  </section>
 </div>
 
-<!-- S3: Loading -->
+<!-- ══ S3: Ladescreen ═════════════════════════════════════════════════════ -->
 <div id="s3" class="screen">
-  <div class="loading-screen">
-    <div class="logo" style="font-size:1.7rem;font-family:'DM Serif Display',serif"><span class="logo-phys">Physio</span><span class="logo-dot">·</span><span class="logo-ora">Orakel</span></div>
-    <div style="position:relative;width:320px;height:160px;margin:0 auto">
-      <canvas id="ekgCanvas" width="320" height="160" style="width:100%;height:100%;display:block"></canvas>
+  <section class="wrap" style="max-width:900px">
+    <button type="button" class="btn btn-ghost" onclick="goTo('s1')" style="color:var(--app-ink);font-size:12.5px;margin-bottom:22px">← Abbrechen</button>
+    <div style="border-top:2px solid var(--app-rule);border-bottom:2px solid var(--app-rule);padding:clamp(28px,4vw,44px) 0 clamp(24px,4vw,36px)">
+      <div style="display:flex;gap:14px;align-items:center">
+        <span class="pulse-dot"></span>
+        <h1 id="genText" style="font-size:clamp(22px,3vw,34px);line-height:1.08;letter-spacing:-0.02em;color:var(--app-ink)">Generiere Fragen…</h1>
+      </div>
+      <canvas id="loaderCanvas" aria-hidden="true" style="display:block;width:100%;height:clamp(120px,16vw,170px);margin-top:22px"></canvas>
+      <div class="load-bar"><span id="loadBarFill"></span></div>
+      <div id="loadingText" style="font-size:13px;line-height:20px;color:var(--app-mute);margin-top:12px"></div>
+      <figure style="margin:26px 0 0;border-top:2px solid var(--app-rule);padding-top:20px">
+        <blockquote id="loaderQuote" style="font-family:var(--font-heading);font-weight:800;font-size:clamp(17px,2.1vw,23px);line-height:1.3;letter-spacing:-0.015em;margin:0;max-width:44ch;color:var(--app-ink)"></blockquote>
+        <figcaption style="display:flex;align-items:center;gap:10px;margin-top:14px">
+          <span style="display:block;width:9px;height:9px;background:var(--app-accent);flex:none"></span>
+          <span id="loaderName" style="font-size:13px;letter-spacing:0.06em;text-transform:uppercase;color:var(--app-mute)"></span>
+        </figcaption>
+      </figure>
     </div>
-    <div class="spinner"></div>
-    <div class="loading-text serif" id="loadingText"></div>
-  </div>
+  </section>
 </div>
 
-<!-- S4: Quiz -->
+<!-- ══ S4: Quiz ═══════════════════════════════════════════════════════════ -->
 <div id="s4" class="screen">
-  <div class="header" style="padding:1.5rem 1rem">
-    <div class="logo" style="font-size:1.7rem;font-family:'DM Serif Display',serif"><span class="logo-phys">Physio</span><span class="logo-dot">·</span><span class="logo-ora">Orakel</span></div>
-  </div>
-  <div class="container">
+  <section class="wrap">
     <div class="quiz-layout">
       <div id="questionsArea"></div>
-      <div class="sidebar">
-        <div class="exam-timer" id="examTimer" style="display:none">60:00</div>
-        <div class="stopwatch" id="stopwatch" style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--cream3);text-align:center;margin-bottom:.4rem;letter-spacing:.04em">00:00</div>
+      <aside class="sidebar">
+        <div class="exam-timer" id="examTimer" style="display:none">40:00</div>
+        <div class="stopwatch" id="stopwatch">00:00</div>
         <div class="sidebar-title">Fortschritt</div>
         <div class="nav-dots" id="navDots"></div>
         <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
         <div class="prog-text" id="progressText">0 / 0</div>
         <div class="streak-counter hidden" id="streakCounter">🔥 <span id="streakNum">0</span>er Serie</div>
-        <div style="margin-top:1.1rem">
-          <button class="btn btn-primary btn-block" id="evalBtn" onclick="runEvaluate()">Auswerten</button>
+        <div style="margin-top:16px">
+          <button type="button" class="btn btn-primary btn-block" id="evalBtn" onclick="runEvaluate()">Auswerten</button>
         </div>
-      </div>
+      </aside>
     </div>
-  </div>
+  </section>
 </div>
 
-<!-- S5: Result -->
+<!-- ══ S5: Ergebnis ═══════════════════════════════════════════════════════ -->
 <div id="s5" class="screen">
-  <div class="header" style="padding:2rem 1rem 1.5rem">
-    <div class="logo" style="font-size:1.7rem;font-family:'DM Serif Display',serif"><span class="logo-phys">Physio</span><span class="logo-dot">·</span><span class="logo-ora">Orakel</span></div>
-    <div class="logo-line"></div>
-    <div class="tagline">Auswertung</div>
-  </div>
-  <div class="container">
+  <section class="wrap">
+    <span class="kicker">Auswertung</span>
     <div class="result-center">
       <div class="score-ring-wrap">
         <svg viewBox="0 0 156 156" width="156" height="156">
-          <circle cx="78" cy="78" r="66" fill="none" stroke="var(--border2)" stroke-width="9"/>
-          <circle cx="78" cy="78" r="66" fill="none" stroke="var(--blue)" stroke-width="9"
-            stroke-dasharray="415" stroke-dashoffset="415" stroke-linecap="round" id="ringCircle" style="transition:none"/>
+          <circle cx="78" cy="78" r="66" fill="none" stroke="var(--app-rule)" stroke-width="9"/>
+          <circle cx="78" cy="78" r="66" fill="none" stroke="var(--app-accent)" stroke-width="9"
+            stroke-dasharray="415" stroke-dashoffset="415" id="ringCircle" style="transition:none;transform:rotate(-90deg);transform-origin:78px 78px"/>
         </svg>
         <div class="score-number">
           <div class="score-pct" id="resPct">0%</div>
           <div class="score-sublabel">Score</div>
         </div>
       </div>
-      <div class="grade-display" style="font-family:'DM Serif Display',serif" id="resGrade">—</div>
+      <div class="grade-display" id="resGrade">—</div>
       <div class="grade-name" id="resGradeName">—</div>
       <div class="quote" id="resQuote"></div>
       <div class="total-pts" id="resTotalPts"></div>
     </div>
     <div class="breakdown" id="breakdown"></div>
     <div class="btn-row">
-      <button class="btn btn-primary" onclick="goTo('s1')">Zurück zur Hauptseite</button>
-      <button class="btn" onclick="goTo('s2')">Konfiguration anpassen</button>
-      <button class="btn btn-sm" onclick="newRound()" title="Neue Runde mit denselben Einstellungen">Neue Runde · gleiche Einstellungen</button>
+      <button type="button" class="btn btn-primary" onclick="goTo('s1')">Zurück zur Startseite</button>
+      <button type="button" class="btn btn-secondary" onclick="goTo(state.flowMode==='skript'?'sUpload':'s2')">Konfiguration anpassen</button>
+      <button type="button" class="btn btn-secondary" onclick="newRound()" title="Neue Runde mit denselben Einstellungen">Neue Runde · gleiche Einstellungen</button>
     </div>
     <div class="divider"></div>
     <div id="reviewSection"></div>
-    <div class="btn-row" style="padding-bottom:3rem">
-      <button class="btn btn-primary" onclick="goTo('s1')">Zurück zur Hauptseite</button>
-      <button class="btn" onclick="goTo('s2')">Konfiguration anpassen</button>
-      <button class="btn btn-sm" onclick="newRound()" title="Neue Runde mit denselben Einstellungen">Neue Runde · gleiche Einstellungen</button>
+    <div class="btn-row" style="padding-bottom:40px">
+      <button type="button" class="btn btn-primary" onclick="goTo('s1')">Zurück zur Startseite</button>
+      <button type="button" class="btn btn-secondary" onclick="goTo(state.flowMode==='skript'?'sUpload':'s2')">Konfiguration anpassen</button>
+      <button type="button" class="btn btn-secondary" onclick="newRound()">Neue Runde · gleiche Einstellungen</button>
+    </div>
+  </section>
+</div>
+
+<!-- ══ Anmelde-Modal ══════════════════════════════════════════════════════ -->
+<div class="key-overlay" id="authOverlay">
+  <div class="key-backdrop" onclick="closeKeyModal()"></div>
+  <div class="key-panel">
+    <button type="button" class="modal-close" onclick="closeKeyModal()" title="Schließen">✕</button>
+    <span class="kicker">Anmelden oder registrieren</span>
+    <div style="display:flex;gap:8px;margin-bottom:18px;padding-right:36px">
+      <button type="button" class="ssw active" id="authTabLogin" onclick="setAuthTab('login')">Anmelden</button>
+      <button type="button" class="ssw" id="authTabRegister" onclick="setAuthTab('register')">Registrieren</button>
+    </div>
+    <div class="key-panel-title" id="authTitle">Anmelden</div>
+    <div class="key-panel-sub" id="authSub">Mit deinem Account-Login + Wochencode</div>
+
+    <div id="authFormLogin" style="display:grid;gap:10px;margin-top:14px">
+      <input class="input" type="text" id="loginUser" placeholder="Username oder Email" autocomplete="username">
+      <input class="input" type="password" id="loginPass" placeholder="Passwort" autocomplete="current-password">
+      <input class="input" type="password" id="loginCode" placeholder="Wochencode" autocomplete="off">
+      <button type="button" class="btn btn-primary btn-block" onclick="doLogin()">Anmelden</button>
+    </div>
+
+    <div id="authFormRegister" style="display:none;gap:10px;margin-top:14px">
+      <input class="input" type="text" id="regUser" placeholder="Username (3–20 Zeichen)" autocomplete="username">
+      <input class="input" type="email" id="regEmail" placeholder="Email" autocomplete="email">
+      <input class="input" type="password" id="regPass" placeholder="Passwort (mind. 6 Zeichen)" autocomplete="new-password">
+      <input class="input" type="password" id="regCode" placeholder="Wochencode" autocomplete="off">
+      <button type="button" class="btn btn-primary btn-block" onclick="doRegister()">Account erstellen</button>
+    </div>
+
+    <div class="key-status" id="authStatus" style="margin-top:14px"></div>
+  </div>
+</div>
+
+<!-- ══ Admin: Altfragenpool ═══════════════════════════════════════════════ -->
+<div class="key-overlay" id="poolAdminOverlay">
+  <div class="key-backdrop" onclick="closePoolAdmin()"></div>
+  <div class="key-panel" style="max-width:560px">
+    <button type="button" class="modal-close" onclick="closePoolAdmin()" title="Schließen">✕</button>
+    <span class="kicker">Admin</span>
+    <div class="key-panel-title">Altfragenpool verwalten</div>
+    <div class="key-panel-sub">Altfragen zentral für alle Studierenden hinterlegen</div>
+    <div style="display:grid;gap:10px;margin-top:14px">
+      <input class="input" type="password" id="poolAdminKeyInput" placeholder="Admin-Key" autocomplete="off">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+        <label style="font-size:12px;color:var(--app-mute)">Altfragen einfügen oder Datei laden</label>
+        <label class="btn btn-secondary btn-sm" style="cursor:pointer">Datei wählen<input type="file" id="poolAdminFileInput" accept=".txt,.md,.pdf" style="display:none"></label>
+      </div>
+      <textarea class="input" id="poolTextInput" placeholder="Altfragen hier einfügen…"></textarea>
+    </div>
+    <div id="poolAdminStatus" style="font-size:13px;color:var(--app-mute);margin:12px 0"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button type="button" class="btn btn-secondary" onclick="closePoolAdmin()">Abbrechen</button>
+      <button type="button" class="btn btn-primary" onclick="uploadPool()" id="poolUploadBtn">Hochladen</button>
     </div>
   </div>
+</div>
+
+<!-- ══ Admin: Wochentest-Material ═════════════════════════════════════════ -->
+<div class="key-overlay" id="wtAdminOverlay">
+  <div class="key-backdrop" onclick="closeWtAdmin()"></div>
+  <div class="key-panel" style="max-width:560px">
+    <button type="button" class="modal-close" onclick="closeWtAdmin()" title="Schließen">✕</button>
+    <span class="kicker">Admin</span>
+    <div class="key-panel-title">Wochentest-Material verwalten</div>
+    <div class="key-panel-sub">VO-Transkript für den kommenden Wochentest</div>
+    <div style="display:grid;gap:10px;margin-top:14px">
+      <input class="input" type="password" id="wtAdminKeyInput" placeholder="Admin-Key" autocomplete="off">
+      <input class="input" type="text" id="wtTitleInput" placeholder="Titel (optional), z. B. Woche 5 — Herz-Kreislauf">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+        <label style="font-size:12px;color:var(--app-mute)">Transkript einfügen oder Datei laden</label>
+        <label class="btn btn-secondary btn-sm" style="cursor:pointer">Datei wählen<input type="file" id="wtAdminFileInput" accept=".pdf,.txt,.md" style="display:none"></label>
+      </div>
+      <textarea class="input" id="wtTranscriptInput" placeholder="VO-Transkript hier einfügen…"></textarea>
+    </div>
+    <div id="wtAdminStatus" style="font-size:13px;color:var(--app-mute);margin:12px 0"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button type="button" class="btn btn-secondary" onclick="closeWtAdmin()">Abbrechen</button>
+      <button type="button" class="btn btn-primary" onclick="uploadWtTranscript()" id="wtUploadBtn">Hochladen</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ Statistik ══════════════════════════════════════════════════════════ -->
+<div class="stats-overlay" id="statsOverlay">
+  <div class="stats-backdrop" onclick="toggleStats()"></div>
+  <div class="stats-panel">
+    <button type="button" class="stats-close" onclick="toggleStats()">✕</button>
+    <span class="kicker">Statistik</span>
+    <div class="stats-title">Dein Rang</div>
+    <div class="stats-subtitle">Fortschritt über alle Sitzungen</div>
+    <div class="stat-cards" id="statCards"></div>
+    <div class="xp-section" id="xpSection"></div>
+    <div class="section-label">Die Leiter</div>
+    <div id="rankLadder"></div>
+    <div class="section-label">Tages-Challenge</div>
+    <div id="challengeArea"></div>
+    <div class="section-label">Jahrgang</div>
+    <div id="leaderboardArea"></div>
+    <div class="section-label">Achievements</div>
+    <div class="achievement-grid" id="achievementGrid"></div>
+    <div class="section-label">Schwachstellen</div>
+    <div class="heatmap" id="heatmap"></div>
+    <div id="weaknessBtn" style="display:none;margin:18px 0">
+      <button type="button" class="btn btn-primary" onclick="startWeaknessQuiz()">Schwachstellen üben</button>
+    </div>
+    <div class="section-label">Letzte Sitzungen</div>
+    <div class="stats-history" id="statsHistory"></div>
+    <div class="stats-reset"><button type="button" class="btn btn-secondary btn-sm" onclick="resetStats()" style="color:var(--app-accent);border-color:var(--app-accent)">Statistik zurücksetzen</button></div>
+  </div>
+</div>
+
+<!-- ══ Stillgelegte Modi ══════════════════════════════════════════════════
+     Wochentest, Rigorosum-Simulation und RIGO-Altfragen-Original sind aus
+     dem Menü genommen (nur noch zwei Funktionen). Der Code bleibt intakt;
+     diese versteckten Anker halten die DOM-Referenzen am Leben, damit sich
+     die Modi durch Sichtbarmachen jederzeit reaktivieren lassen.
+     ══════════════════════════════════════════════════════════════════════ -->
+<div id="legacyModes" hidden>
+  <div id="wtStatus"></div>
+  <div id="wtReady" style="display:none">
+    <button type="button" class="ssw active" id="wtDiffNormal" onclick="setWtDiff('normal')">Normal</button>
+    <button type="button" class="ssw" id="wtDiffHard" onclick="setWtDiff('hard')">Hard</button>
+    <button type="button" class="btn btn-primary" id="wtStartBtn" onclick="startWochentest()">Wochentest starten</button>
+  </div>
+  <div id="wtEmpty" style="display:none"></div>
+  <div id="wtAdminWrap" style="display:none"></div>
+  <div id="rigoOrigTerminList"></div>
 </div>
 
 <script>
@@ -1052,7 +926,7 @@ const MAX_CONTEXT_CHARS=120000;
 
 // ── State ─────────────────────────────────────────────────────────────────────
 const state={
-  fileText:'',fileName:'',
+  fileText:'',fileName:'',uploadFiles:[],
   wtText:'',isWochentest:false,flowMode:'',
   poolText:'',poolName:'',parsedPool:[],rigoOriginal:[],isRigoOrig:false,rigoOrigTermin:null,
   sourceMode:'ki',
@@ -1069,94 +943,68 @@ const state={
 };
 
 // ── Theme ─────────────────────────────────────────────────────────────────────
+// Ein Attribut, zwei Token-Sets: data-orakel-theme am <html> schaltet alles.
 function toggleTheme(){
   const html=document.documentElement;
-  const next=html.dataset.theme==='dark'?'light':'dark';
-  html.dataset.theme=next;
-  updateThemeIcon(next);
+  const next=html.getAttribute('data-orakel-theme')==='dark'?'light':'dark';
+  applyTheme(next);
   try{localStorage.setItem(THEME_KEY,next)}catch{}
 }
-function loadTheme(){
-  try{
-    const t=localStorage.getItem(THEME_KEY);
-    if(t){document.documentElement.dataset.theme=t;updateThemeIcon(t)}
-  }catch{}
+function applyTheme(theme){
+  document.documentElement.setAttribute('data-orakel-theme',theme);
+  const lbl=document.getElementById('themeLabel');
+  if(lbl)lbl.textContent=theme==='dark'?'Hell':'Dunkel';
+  paletteCache=null;
 }
-function updateThemeIcon(theme){
-  const sun=document.getElementById('sunIcon'),moon=document.getElementById('moonIcon');
-  if(sun&&moon){sun.style.display=theme==='dark'?'block':'none';moon.style.display=theme==='light'?'block':'none'}
+function loadTheme(){
+  let t='light';
+  try{t=localStorage.getItem(THEME_KEY)||'light'}catch{}
+  applyTheme(t==='dark'?'dark':'light');
 }
 
 // ── Navigation ────────────────────────────────────────────────────────────────
+const SCREENS=['s1','s2','sUpload','s3','s4','s5'];
 function goTo(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  SCREENS.forEach(s=>{const el=document.getElementById(s);if(el)el.classList.remove('active')});
+  const target=document.getElementById(id);
+  if(target)target.classList.add('active');
   window.scrollTo(0,0);
-  if(id==='s1'||id==='s2'){
-    document.getElementById('startBtn').disabled=false;
-    document.getElementById('evalBtn').textContent='Auswerten';
-    document.getElementById('evalBtn').disabled=false;
-    stopExamTimer();stopStopwatch();stopParticles();
+  if(id==='s1'||id==='s2'||id==='sUpload'){
+    const sb=document.getElementById('startBtn');if(sb)sb.disabled=false;
+    const ub=document.getElementById('uploadStartBtn');if(ub)ub.disabled=false;
+    const eb=document.getElementById('evalBtn');if(eb){eb.textContent='Auswerten';eb.disabled=false}
+    stopExamTimer();stopStopwatch();stopParticles();stopEKG();
   }
-  if(id==='s1')backToMenu();
 }
 
-function backToMenu(){
-  document.getElementById('mainMenu').style.display='block';
-  ['modeWochentest','modeSkript','modeAltfragen','modeRigorosum','modeRigoOrig'].forEach(m=>{
-    const el=document.getElementById(m);if(el)el.style.display='none';
-  });
-}
+// Zwei Funktionen, mehr nicht: 01 Altfragen üben · 02 eigene Unterlagen.
 function chooseMode(mode){
-  document.getElementById('mainMenu').style.display='none';
-  ['modeWochentest','modeSkript','modeAltfragen','modeRigorosum','modeRigoOrig'].forEach(m=>{
-    const el=document.getElementById(m);if(el)el.style.display='none';
-  });
-  const map={wochentest:'modeWochentest',skript:'modeSkript',altfragen:'modeAltfragen',rigorosum:'modeRigorosum',rigoorig:'modeRigoOrig'};
-  if(mode==='rigoorig')renderRigoOrigDetail();
-  const target=document.getElementById(map[mode]);
-  if(target)target.style.display='block';
-  window.scrollTo(0,0);
+  if(!hasApiKey){openKeyModal();return}
+  playTick();
+  if(mode==='skript'){
+    state.flowMode='skript';
+    state.examMode=false;
+    state.fileText=state.fileText||'';
+    setSourceMode('ki');
+    goTo('sUpload');
+    updateSummary();
+    return;
+  }
+  goToConfigWith('altfragen');
 }
+// bleibt als Einsprungpunkt für die stillgelegten Modi erhalten
+function backToMenu(){goTo('s1')}
+
 function goToConfigWith(mode){
-  // Pre-configure state and adjust S2 visibility based on chosen mode
   state.examMode=false;
   state.flowMode=mode;
-
-  // Reset to all visible first
-  const modusSec=document.getElementById('s2ModusSection');
-  const altSubMode=document.getElementById('altSubMode');
-  const diffSec=document.getElementById('diffSection');
-  const rigoSec=document.getElementById('s2RigorosumSection');
-  const topicSec=document.getElementById('s2TopicSection');
-  if(modusSec)modusSec.style.display='';
-  if(diffSec)diffSec.style.display='';
-  if(rigoSec)rigoSec.style.display='';
-  if(topicSec)topicSec.style.display='';
-
-  if(mode==='skript'){
-    // Übungstest aus eigenen Unterlagen — KI mode, hide source toggle, hide altSub, hide rigorosum, hide topics
-    setSourceMode('ki');
-    if(modusSec)modusSec.style.display='none';
-    if(altSubMode)altSubMode.style.display='none';
-    if(rigoSec)rigoSec.style.display='none';
-    if(topicSec)topicSec.style.display='none';
-  }else if(mode==='altfragen'){
-    // Altfragen — hide source toggle (already in alt mode), hide rigorosum
-    if(state.poolText)setSourceMode('alt');
-    else setSourceMode('ki');
-    if(modusSec)modusSec.style.display='none';
-    if(rigoSec)rigoSec.style.display='none';
-  }else if(mode==='rigorosum'){
-    // KI-Übung & Rigorosum — KI mode without script, hide source toggle, hide altSub, KEEP rigorosum option
-    setSourceMode('ki');
-    if(modusSec)modusSec.style.display='none';
-    if(altSubMode)altSubMode.style.display='none';
-    // Optionally clear loaded script so questions come from catalog
-    state.fileText='';state.fileName='';
+  if(mode==='altfragen'){
+    // Altfragen aus dem Pool, wenn einer hinterlegt ist — sonst KI aus dem Katalog
+    setSourceMode(state.poolText?'alt':'ki');
   }else{
     setSourceMode('ki');
   }
+  updateSummary();
   goTo('s2');
 }
 
@@ -1283,23 +1131,27 @@ function loadSession(){
   return false;
 }
 function updateLoginHintVisibility(){
-  const hint=document.getElementById('loginHint');
-  if(!hint)return;
-  // S1 main content sections (Wochentest, Skript, Pool, Weiter, Disclaimer)
   const isLoggedIn=!!currentUser;
-  hint.style.display=isLoggedIn?'none':'block';
-  // Hide function sections when logged out
-  const sectionsToHide=['wtStatus','wtReady','wtEmpty','wtAdminWrap'];
-  // Find all main content elements after loginHint and toggle
-  const container=hint.parentElement;
-  if(!container)return;
-  Array.from(container.children).forEach(child=>{
-    if(child===hint)return;
-    if(child.classList&&child.classList.contains('container'))return;
-    child.style.opacity=isLoggedIn?'':'0.35';
-    child.style.pointerEvents=isLoggedIn?'':'none';
-  });
+  const hint=document.getElementById('loginHint');
+  if(hint)hint.style.display=isLoggedIn?'none':'block';
+  const grid=document.getElementById('modeGrid');
+  if(grid)grid.classList.toggle('locked-cards',!isLoggedIn);
+  const keyBtn=document.getElementById('keyCornerBtn');
+  if(keyBtn)keyBtn.textContent=isLoggedIn?'Konto':'Anmelden';
+  updateHomeRank();
 }
+// Rangzeile im Home-Fuß — echte Werte aus den Statistiken
+function updateHomeRank(){
+  const el=document.getElementById('homeRankLine');
+  if(!el)return;
+  if(!currentUser){el.textContent='Noch nicht angemeldet.';return}
+  let xp=0;try{xp=loadStats().xp||0}catch{}
+  const lvl=getLevel(xp);
+  const rank=getRank(lvl,currentUser.username);
+  el.innerHTML='Rang: <span style="color:var(--app-accent);font-family:var(--font-heading);font-weight:800">'+
+    rank.icon+' '+rank.title+'</span> · Level '+lvl+' · '+xp.toLocaleString('de-DE')+' XP';
+}
+
 function updateUserBadge(){
   let badge=document.getElementById('userBadge');
   let menu=document.getElementById('userMenu');
@@ -1322,7 +1174,7 @@ function updateUserBadge(){
     menu=document.createElement('div');menu.id='userMenu';
     menu.style.cssText='position:fixed;top:70px;right:16px;background:var(--paper);border:1px solid var(--ink);min-width:240px;z-index:101;display:none;font-family:inherit';
     menu.innerHTML=`
-      <div style="padding:14px 16px;border-bottom:1px solid var(--rule);background:var(--pure)">
+      <div style="padding:14px 16px;border-bottom:2px solid var(--app-rule);background:var(--pure)">
         <div style="font-size:9px;color:var(--mid);letter-spacing:0.18em;text-transform:uppercase;font-weight:500;margin-bottom:4px">◢ Angemeldet als</div>
         <div id="umUsername" style="font-size:13px;color:var(--ink);font-weight:600;letter-spacing:0.01em"></div>
         <div id="umEmail" style="font-size:11px;color:var(--mid);margin-top:2px;letter-spacing:0.01em"></div>
@@ -1387,54 +1239,62 @@ function confirmLogout(){
 loadSession();
 
 
-// ── EKG Canvas ───────────────────────────────────────────────────────────────
-let ekgRaf=null;
-function startEKG(){
-  const canvas=document.getElementById('ekgCanvas');if(!canvas)return;
-  const ctx=canvas.getContext('2d');
-  const W=320,H=160,mid=H*0.48;
-  const bpmEl=document.getElementById('ekgBpm');
-  const beat=[[0,0],[18,0],[22,-4],[26,0],[30,0],[33,-28],[36,50],[39,-18],[43,8],[47,0],[52,6],[57,0],[65,0]];
-  const beatW=beat[beat.length-1][0],gap=120,cycleW=beatW+gap;
-  let offset=0;const speed=1.4,trailLen=W+cycleW,history=[];
-  for(let x=0;x<trailLen;x+=speed)history.push(sampleY(x));
-  function sampleY(x){
-    const xInCycle=((x%cycleW)+cycleW)%cycleW;
-    if(xInCycle>beatW)return mid;
-    for(let i=0;i<beat.length-1;i++){const[x0,y0]=beat[i],[x1,y1]=beat[i+1];if(xInCycle>=x0&&xInCycle<=x1){const t=(xInCycle-x0)/(x1-x0);return mid+(y0+(y1-y0)*t)}}
-    return mid;
-  }
-  let bpm=72,bpmTimer=0;
-  function updateBpm(){bpm=68+Math.floor(Math.random()*16);if(bpmEl)bpmEl.innerHTML=bpm+' <span>BPM</span>'}
-  updateBpm();
-  function draw(){
-    ctx.clearRect(0,0,W,H);offset+=speed;history.push(sampleY(offset+W));
-    if(history.length>trailLen/speed+10)history.shift();
-    bpmTimer+=speed;if(bpmTimer>cycleW){bpmTimer=0;updateBpm()}
-    const grad=ctx.createLinearGradient(0,0,W,0);
-    grad.addColorStop(0,'rgba(212,43,43,0)');grad.addColorStop(0.55,'rgba(212,43,43,.18)');
-    grad.addColorStop(0.85,'rgba(212,43,43,.9)');grad.addColorStop(1,'rgba(232,69,69,1)');
-    ctx.beginPath();ctx.strokeStyle=grad;ctx.lineWidth=1.8;ctx.lineJoin='round';ctx.lineCap='round';
-    ctx.shadowColor='rgba(212,43,43,.7)';ctx.shadowBlur=6;
-    const len=history.length;
-    history.forEach((y,i)=>{const x=W-(len-1-i)*speed;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)});
-    ctx.stroke();
-    const frontY=history[history.length-1];
-    ctx.beginPath();ctx.arc(W,frontY,2.8,0,Math.PI*2);ctx.fillStyle='rgba(232,69,69,1)';
-    ctx.shadowColor='rgba(232,69,69,.9)';ctx.shadowBlur=10;ctx.fill();ctx.shadowBlur=0;
-    ekgRaf=requestAnimationFrame(draw);
-  }
-  ekgRaf=requestAnimationFrame(draw);
+// ── Ladescreen ───────────────────────────────────────────────────────────────
+// Aktionspotential-Zug + Fortschrittsbalken + rotierende Zitate.
+// Namen startEKG/stopEKG bleiben, damit alle Aufrufstellen unverändert bleiben.
+const LOADER_QUOTES=[
+  ['„Hab um zwei Uhr nachts im Morrison\u2019s jemandem die Henle-Schleife erklärt. Sie ist gegangen. Aber ich lag richtig.“','Anonym, 2. Studienjahr'],
+  ['„Physio-Orakel geht sogar auf babyblaue Nokia 3310!“','Pashanim, Chefarzt'],
+  ['„Antes del Physio-Orakel: cero aura. Después: aura ilimitada.“','Bad Bunny, Grand Prix Monaco'],
+  ['„Selbst wenn die Zeit kurz war, kamen Fragen fast 1:1 wie im Orakel dran.“','Alina, 3. Studienjahr'],
+  ['„Mit dem Orakel ist gezieltes Lernen für den Wochentest weniger trocken.“','Hiwa, 3. Studienjahr']
+];
+let loaderActive=false,loaderPct=0,loaderQuoteIdx=0,loaderQuoteTimer=null,loaderPctTimer=null;
+function renderLoaderQuote(){
+  const q=LOADER_QUOTES[loaderQuoteIdx%LOADER_QUOTES.length];
+  const a=document.getElementById('loaderQuote'),b=document.getElementById('loaderName');
+  if(a)a.textContent=q[0];
+  if(b)b.textContent=q[1];
 }
-function stopEKG(){if(ekgRaf){cancelAnimationFrame(ekgRaf);ekgRaf=null}}
+function setLoadPct(p){
+  loaderPct=p;
+  const el=document.getElementById('loadBarFill');
+  if(el)el.style.width=p+'%';
+}
+function startEKG(){
+  loaderActive=true;
+  const n=state.examMode?20:parseInt(state.count||'5',10);
+  const gt=document.getElementById('genText');
+  if(gt)gt.textContent='Generiere '+n+' Frage'+(n===1?'':'n')+'…';
+  loaderQuoteIdx=Math.floor(Math.random()*LOADER_QUOTES.length);
+  renderLoaderQuote();
+  setLoadPct(4);
+  clearInterval(loaderQuoteTimer);clearInterval(loaderPctTimer);
+  loaderQuoteTimer=setInterval(()=>{loaderQuoteIdx++;renderLoaderQuote()},2600);
+  loaderPctTimer=setInterval(()=>setLoadPct(Math.min(98,loaderPct+4)),180);
+}
+function stopEKG(){
+  if(!loaderActive)return;
+  loaderActive=false;
+  clearInterval(loaderQuoteTimer);clearInterval(loaderPctTimer);
+  setLoadPct(100);
+}
 
 // ── Pool (centralized) ───────────────────────────────────────────────────────
 function renderPoolStatus(meta){
   const wrap=document.getElementById('poolStatusWrap');
-  if(!meta||!state.poolText){wrap.innerHTML='<div style="font-size:.78rem;color:var(--text3);text-align:center;padding:.4rem">Kein Altfragenpool hinterlegt.</div>';return}
+  if(!wrap)return;
+  if(!meta||!state.poolText){
+    wrap.innerHTML='<p style="font-size:13px;line-height:21px;color:var(--app-mute);margin:0">Kein Altfragenpool hinterlegt — die Fragen kommen so lange direkt aus dem Themenkatalog.</p>';
+    return;
+  }
   const date=meta.date?new Date(meta.date).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'}):'';
-  wrap.innerHTML=`<div class="pool-status"><div class="pool-status-left"><div class="pool-dot"></div><div><div class="pool-name">${meta.name||'Altfragenpool'}</div><div class="pool-meta">${date?'Aktualisiert am '+date+' · ':''} ${meta.size||'?'} KB</div></div></div></div>`;
+  wrap.innerHTML='<div style="display:flex;gap:12px;align-items:center;border-left:2px solid var(--app-accent);padding:6px 0 6px 14px">'+
+    '<div><div style="font-family:var(--font-heading);font-weight:800;font-size:14px;color:var(--app-ink)">'+(meta.name||'Altfragenpool')+'</div>'+
+    '<div style="font-size:12px;color:var(--app-mute)">'+(date?'Aktualisiert am '+date+' · ':'')+(meta.size||'?')+' KB · '+
+    (state.parsedPool?state.parsedPool.length:0)+' Fragen erkannt</div></div></div>';
 }
+
 async function loadPoolFromServer(){
   if(!hasApiKey)return;
   try{
@@ -1688,42 +1548,53 @@ async function readOneFile(file){
 async function handleScriptFiles(filesIn){
   if(!filesIn||!filesIn.length)return;
   const files=Array.from(filesIn);
-  // Filter to allowed extensions
   const allowed=files.filter(f=>/\.(pdf|txt|md)$/i.test(f.name));
   const skipped=files.length-allowed.length;
+  const nameEl=document.getElementById('fileName');
   if(!allowed.length){
-    document.getElementById('fileName').textContent='Nur .txt, .md oder .pdf erlaubt';
-    dz.classList.remove('has-file');
+    if(nameEl)nameEl.textContent='Nur .pdf, .txt oder .md — der Rest bleibt draußen.';
+    state.uploadFiles=[];renderFileList();updateSummary();
     return;
   }
-  dz.classList.add('has-file');
-  document.getElementById('fileName').textContent=`${allowed.length} Datei${allowed.length>1?'en':''} werden geladen…`;
-  const parts=[];const names=[];const errors=[];
+  playTick();
+  digestUntil=performance.now()+4200;
+  if(nameEl)nameEl.textContent=allowed.length+' Datei'+(allowed.length>1?'en':'')+' werden gelesen…';
+  const parts=[];const names=[];const errors=[];const metas=[];
   for(let i=0;i<allowed.length;i++){
     const f=allowed[i];
-    document.getElementById('fileName').textContent=`Lade ${i+1}/${allowed.length}: ${f.name}…`;
+    if(nameEl)nameEl.textContent='Lade '+(i+1)+'/'+allowed.length+': '+f.name+'…';
     try{
       const text=await readOneFile(f);
       if(text&&text.trim()){
-        // Add a clear separator + filename header so the AI knows where each file starts
-        parts.push(`\n\n=== DATEI: ${f.name} ===\n\n`+text);
+        // klarer Trenner + Dateiname, damit die KI weiß, wo eine Datei anfängt
+        parts.push('\n\n=== DATEI: '+f.name+' ===\n\n'+text);
         names.push(f.name);
+        metas.push({name:f.name,size:(f.size/1048576).toFixed(1)+' MB'});
       }
-    }catch(err){errors.push(`${f.name}: ${err.message}`)}
+    }catch(err){errors.push(f.name+': '+err.message)}
   }
   if(!parts.length){
-    document.getElementById('fileName').textContent='Fehler: '+(errors[0]||'keine Dateien lesbar');
-    dz.classList.remove('has-file');
+    if(nameEl)nameEl.textContent='Fehler: '+(errors[0]||'keine Datei lesbar');
+    state.uploadFiles=[];renderFileList();updateSummary();
     return;
   }
   state.fileText=parts.join('\n');
-  state.fileName=names.length===1?names[0]:`${names.length} Dateien`;
+  state.fileName=names.length===1?names[0]:names.length+' Dateien';
+  state.uploadFiles=metas;
   const kb=Math.round(state.fileText.length/1024);
-  let msg=`Geladen: ${names.length} Datei${names.length>1?'en':''} (${kb} KB, ${state.fileText.length} Zeichen)`;
-  if(skipped>0)msg+=` · ${skipped} ignoriert (Format)`;
-  if(errors.length)msg+=` · ${errors.length} Fehler`;
-  document.getElementById('fileName').textContent=msg;
-  if(typeof buildTopicArea==='function')buildTopicArea();
+  let msg=kb+' KB gelesen';
+  if(skipped>0)msg+=' · '+skipped+' ignoriert (Format)';
+  if(errors.length)msg+=' · '+errors.length+' Fehler';
+  if(state.fileText.length>MAX_CONTEXT_CHARS)msg+=' · wird für die Anfrage gekürzt';
+  if(nameEl)nameEl.textContent=msg;
+  digestUntil=performance.now()+4200;
+  renderFileList();updateSummary();
+}
+function renderFileList(){
+  const el=document.getElementById('fileList');
+  if(!el)return;
+  const list=state.uploadFiles||[];
+  el.innerHTML=list.map(f=>'<div class="file-row"><span class="fr-name">'+f.name+'</span><span class="fr-size">'+f.size+'</span></div>').join('');
 }
 
 async function extractPdfText(file){
@@ -1818,11 +1689,11 @@ function renderRigoOrigDetail(){
   const el=document.getElementById('rigoOrigTerminList');if(!el)return;
   const termins=state.rigoOriginal||[];
   if(!termins.length){
-    el.innerHTML='<div style="font-size:12px;color:var(--mid);padding:20px;text-align:center;border:1px solid var(--rule);background:var(--pure)">Originalfragen werden geladen…</div>';
+    el.innerHTML='<div style="font-size:12px;color:var(--mid);padding:20px;text-align:center;border:2px solid var(--app-rule);background:var(--pure)">Originalfragen werden geladen…</div>';
     setTimeout(renderRigoOrigDetail,800);
     return;
   }
-  el.innerHTML=termins.map(t=>`<button onclick="startRigoOrig(${t.number})" style="text-align:left;padding:18px 22px;border:1px solid var(--rule);background:var(--pure);cursor:pointer;font-family:inherit;transition:all .15s;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center" onmouseover="this.style.borderColor='var(--ink)';this.style.background='var(--paper)'" onmouseout="this.style.borderColor='var(--rule)';this.style.background='var(--pure)'">
+  el.innerHTML=termins.map(t=>`<button onclick="startRigoOrig(${t.number})" style="text-align:left;padding:18px 22px;border:2px solid var(--app-rule);background:var(--pure);cursor:pointer;font-family:inherit;transition:all .15s;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center" onmouseover="this.style.borderColor='var(--ink)';this.style.background='var(--paper)'" onmouseout="this.style.borderColor='var(--rule)';this.style.background='var(--pure)'">
     <div style="font-size:9px;letter-spacing:.2em;color:var(--swiss-red);font-weight:600;font-variant-numeric:tabular-nums">◢ TERMIN ${String(t.number).padStart(2,'0')}</div>
     <div style="font-size:14px;color:var(--ink);font-weight:500">${t.date}</div>
     <div style="font-size:11px;color:var(--mid);letter-spacing:.06em;font-variant-numeric:tabular-nums">${t.questions.length} FRAGEN →</div>
@@ -1880,50 +1751,133 @@ async function startWochentest(){
   document.getElementById('wtStartBtn').disabled=false;
 }
 
-// ── Source mode ───────────────────────────────────────────────────────────────
+// ── Quelle + Altfragen-Methode ────────────────────────────────────────────────
 function setSourceMode(mode){
-  if(mode==='alt'&&!state.poolText){document.getElementById('noPoolWarning').style.display='block';return}
-  document.getElementById('noPoolWarning').style.display='none';
+  if(mode==='alt'&&!state.poolText)mode='ki';
   state.sourceMode=mode;
-  document.getElementById('swKI').className='ssw'+(mode==='ki'?' active':'');
-  document.getElementById('swAlt').className='ssw'+(mode==='alt'?' active-alt':'');
-  document.getElementById('altSubMode').style.display=mode==='alt'?'block':'none';
-  document.getElementById('topicSectionLabel').textContent=mode==='alt'?'Themenbereiche (filtert im Altfragenpool)':'Themenbereiche';
-  const sb=document.getElementById('startBtn');
-  if(mode==='alt'){sb.classList.remove('btn-primary');sb.classList.add('btn-alt')}
-  else{sb.classList.add('btn-primary');sb.classList.remove('btn-alt')}
+  const sub=document.getElementById('altSubMode');
+  if(sub)sub.style.display=mode==='alt'?'block':'none';
+  updateDiffVisibility();
+}
+function setAltMode(m){
+  state.altMode=m;
+  playTick();
+  const ex=document.getElementById('amExact'),va=document.getElementById('amVaried');
+  if(ex)ex.classList.toggle('on',m==='exact');
+  if(va)va.classList.toggle('on',m==='varied');
+  const hint=document.getElementById('altModeHint');
+  if(hint)hint.textContent=m==='exact'
+    ? 'Originalfragen direkt aus dem Pool — kein Wort verändert.'
+    : 'Die KI nimmt den Pool als Vorlage und baut neue Fragen im gleichen Stil.';
   updateDiffVisibility();updateSummary();
 }
-function setAltMode(m){state.altMode=m;document.getElementById('amExact').className='altmode-card'+(m==='exact'?' selected':'');document.getElementById('amVaried').className='altmode-card'+(m==='varied'?' selected':'');updateDiffVisibility();updateSummary()}
-
+// Bei „Exakt" gibt es nichts zu variieren — Schwierigkeit spielt keine Rolle.
 function updateDiffVisibility(){
   const hide=state.sourceMode==='alt'&&state.altMode==='exact';
-  document.getElementById('diffSection').style.display=hide?'none':'';
-  document.getElementById('sumDiffRow').style.display=hide?'none':'';
+  const sec=document.getElementById('diffSection');
+  if(sec)sec.style.display=hide?'none':'';
 }
 
-// ── Topic tree ────────────────────────────────────────────────────────────────
+// ── Themenkatalog: Blockschalter + Einzelpunkte ───────────────────────────────
+const openBlocks={};
 function buildTopicArea(){
-  const area=document.getElementById('topicArea');area.innerHTML='';
-  const tree=document.createElement('div');tree.className='topic-tree';
-  TOPIC_GROUPS.forEach(g=>{
-    const grp=document.createElement('div');grp.className='topic-group';grp.id='grp_'+g.id;
-    const hdr=document.createElement('div');hdr.className='topic-group-header';
-    hdr.innerHTML=`<div class="tgh-check" id="chk_${g.id}"></div><div class="tgh-title">${g.label}</div><div class="tgh-count" id="cnt_${g.id}">0 / ${g.subs.length}</div><div class="tgh-arrow">&#9658;</div>`;
-    hdr.onclick=e=>{if(e.target.classList.contains('tgh-check')||e.target.closest('.tgh-check'))toggleGroup(g);else grp.classList.toggle('open')};
-    hdr.querySelector('.tgh-check').onclick=e=>{e.stopPropagation();toggleGroup(g)};
-    grp.appendChild(hdr);
-    const subs=document.createElement('div');subs.className='subtopics';
-    g.subs.forEach(s=>{const row=document.createElement('div');row.className='subtopic-row';row.innerHTML=`<div class="stc" id="stc_${s.id}"></div><div class="stc-label"><span class="stc-id">${s.id}</span>${s.text}</div>`;row.onclick=()=>toggleSub(s.id,g.id);subs.appendChild(row)});
-    grp.appendChild(subs);tree.appendChild(grp);
-  });
-  area.appendChild(tree);updateSummary();
-}
-function toggleSub(sid,gid){state.selectedSubs.has(sid)?state.selectedSubs.delete(sid):state.selectedSubs.add(sid);updateSubUI(sid);updateGroupUI(gid);updateSummary()}
-function toggleGroup(g){const all=g.subs.every(s=>state.selectedSubs.has(s.id));g.subs.forEach(s=>{all?state.selectedSubs.delete(s.id):state.selectedSubs.add(s.id);updateSubUI(s.id)});updateGroupUI(g.id);updateSummary()}
-function updateSubUI(sid){const el=document.getElementById('stc_'+sid);if(!el)return;const row=el.closest('.subtopic-row');if(state.selectedSubs.has(sid)){el.classList.add('checked');el.textContent='✓';if(row)row.classList.add('checked-row')}else{el.classList.remove('checked');el.textContent='';if(row)row.classList.remove('checked-row')}}
-function updateGroupUI(gid){const g=TOPIC_GROUPS.find(x=>x.id===gid);if(!g)return;const sel=g.subs.filter(s=>state.selectedSubs.has(s.id)).length;const chk=document.getElementById('chk_'+gid),cnt=document.getElementById('cnt_'+gid);if(cnt)cnt.textContent=sel+' / '+g.subs.length;if(!chk)return;chk.classList.remove('partial','full');chk.textContent='';if(sel===g.subs.length){chk.classList.add('full');chk.textContent='✓'}else if(sel>0){chk.classList.add('partial');chk.textContent='–'}}
+  const area=document.getElementById('topicArea');
+  if(!area)return;
+  area.innerHTML='';
+  TOPIC_GROUPS.forEach((g,gi)=>{
+    const nr=String(gi+1);
+    const blk=document.createElement('div');blk.className='blk';blk.id='blk_'+g.id;
+    const row=document.createElement('div');row.className='blk-row';
 
+    const sw=document.createElement('button');
+    sw.type='button';sw.className='sw';sw.id='sw_'+g.id;
+    sw.title='Block ein-/ausschalten';
+    sw.innerHTML='<span></span>';
+    sw.onclick=()=>toggleGroup(g);
+
+    const head=document.createElement('button');
+    head.type='button';head.className='blk-btn';
+    head.innerHTML='<span class="blk-title">'+nr+' · '+g.label+'</span>'+
+      '<span class="blk-meta"><span class="blk-tally" id="cnt_'+g.id+'"></span>'+
+      '<span class="blk-caret" id="car_'+g.id+'">▼</span></span>';
+    head.onclick=()=>{
+      openBlocks[g.id]=!openBlocks[g.id];
+      const pts=document.getElementById('pts_'+g.id);
+      if(pts)pts.style.display=openBlocks[g.id]?'grid':'none';
+      const car=document.getElementById('car_'+g.id);
+      if(car)car.textContent=openBlocks[g.id]?'▲':'▼';
+      playTick();
+    };
+
+    row.appendChild(sw);row.appendChild(head);blk.appendChild(row);
+
+    const pts=document.createElement('div');
+    pts.className='blk-points';pts.id='pts_'+g.id;
+    pts.style.display=openBlocks[g.id]?'grid':'none';
+    g.subs.forEach(s=>{
+      const b=document.createElement('button');
+      b.type='button';b.className='pt';
+      b.innerHTML='<span class="pt-sw" id="stc_'+s.id+'"><span></span></span>'+
+        '<span><span class="pt-nr">'+s.id+'</span><span class="pt-title">'+s.text+'</span></span>';
+      b.onclick=()=>toggleSub(s.id,g.id);
+      pts.appendChild(b);
+    });
+    blk.appendChild(pts);
+    area.appendChild(blk);
+    updateGroupUI(g.id);
+    g.subs.forEach(s=>updateSubUI(s.id));
+  });
+  updateSummary();
+}
+function toggleSub(sid,gid){
+  state.selectedSubs.has(sid)?state.selectedSubs.delete(sid):state.selectedSubs.add(sid);
+  playTick();
+  updateSubUI(sid);updateGroupUI(gid);updateSummary();
+}
+function toggleGroup(g){
+  const all=g.subs.every(s=>state.selectedSubs.has(s.id));
+  playTick();
+  g.subs.forEach(s=>{all?state.selectedSubs.delete(s.id):state.selectedSubs.add(s.id);updateSubUI(s.id)});
+  updateGroupUI(g.id);updateSummary();
+}
+function updateSubUI(sid){
+  const el=document.getElementById('stc_'+sid);
+  if(el)el.classList.toggle('on',state.selectedSubs.has(sid));
+}
+function updateGroupUI(gid){
+  const g=TOPIC_GROUPS.find(x=>x.id===gid);
+  if(!g)return;
+  const sel=g.subs.filter(s=>state.selectedSubs.has(s.id)).length;
+  const cnt=document.getElementById('cnt_'+gid);
+  if(cnt)cnt.textContent=sel+'/'+g.subs.length;
+  const sw=document.getElementById('sw_'+gid);
+  if(sw)sw.classList.toggle('on',sel>0);
+}
+function selectAllTopics(){
+  playTick();
+  state.selectedSubs=new Set(allSubIds());
+  refreshTopicUI();
+}
+function selectNoTopics(){
+  playTick();
+  state.selectedSubs=new Set();
+  refreshTopicUI();
+}
+function allSubIds(){
+  const out=[];
+  TOPIC_GROUPS.forEach(g=>g.subs.forEach(s=>out.push(s.id)));
+  return out;
+}
+function allTopicsSelected(){
+  return state.selectedSubs.size===0||state.selectedSubs.size===allSubIds().length;
+}
+function refreshTopicUI(){
+  TOPIC_GROUPS.forEach(g=>{g.subs.forEach(s=>updateSubUI(s.id));updateGroupUI(g.id)});
+  updateSummary();
+}
+
+// Startzustand: alles an — wer filtern will, schaltet ab.
+state.selectedSubs=new Set(allSubIds());
 buildTopicArea();
 loadTheme();
 loadPoolFromServer();
@@ -1932,44 +1886,55 @@ loadRigoOriginal();
 // Show admin button if admin key previously stored
 if(localStorage.getItem(ADMIN_KEY_STORE))document.getElementById('wtAdminWrap').style.display='block';
 
-// ── Exam mode toggle ─────────────────────────────────────────────────────────
+// ── Prüfungssimulation ───────────────────────────────────────────────────────
+// Ohne Menüeintrag; die Mechanik (20 Fragen, 40-Minuten-Timer) bleibt erhalten.
 function toggleExamMode(){
   state.examMode=!state.examMode;
-  const card=document.getElementById('examModeCard');
-  card.classList.toggle('selected',state.examMode);
-  card.classList.toggle('selected-alt',state.examMode);
-  // Override count when exam mode is on
-  const countGrid=document.getElementById('countGrid');
-  if(state.examMode){
-    state.count='20';
-    countGrid.style.opacity='.3';countGrid.style.pointerEvents='none';
-  } else {
-    state.count='5';
-    countGrid.style.opacity='';countGrid.style.pointerEvents='';
-    document.querySelectorAll('[data-cnt]').forEach(c=>c.classList.remove('selected'));
-    document.querySelector('[data-cnt="5"]').classList.add('selected');
-  }
+  state.count=state.examMode?'20':'5';
   updateSummary();
 }
 
-// ── Diff / Count ──────────────────────────────────────────────────────────────
-function selectDiff(el,val){document.querySelectorAll('[data-diff]').forEach(c=>c.classList.remove('selected'));el.classList.add('selected');state.difficulty=val;document.getElementById('sumDiff').textContent=val==='normal'?'Normal':'Hard'}
-function selectCount(el,val){if(state.examMode)return;document.querySelectorAll('[data-cnt]').forEach(c=>c.classList.remove('selected'));el.classList.add('selected');state.count=val;document.getElementById('sumCount').textContent=val+' Fragen'}
+// ── Schwierigkeit / Fragenzahl ───────────────────────────────────────────────
+function selectDiff(el,val){
+  document.querySelectorAll('[data-diff]').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');state.difficulty=val;playTick();updateSummary();
+}
+function selectCount(el,val){
+  if(state.examMode)return;
+  document.querySelectorAll('[data-cnt]').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');state.count=val;playTick();updateSummary();
+}
+function selectCountUp(el,val){
+  document.querySelectorAll('[data-cntu]').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');state.count=val;playTick();updateSummary();
+}
+function selectDiffUp(el,val){
+  document.querySelectorAll('[data-diffu]').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');state.difficulty=val;playTick();updateSummary();
+}
 
+// ── Hinweiszeilen ────────────────────────────────────────────────────────────
 function updateSummary(){
-  const isAlt=state.sourceMode==='alt';
-  document.getElementById('sumModus').textContent=state.examMode?'Prüfungssimulation':isAlt?('Altfragen — '+(state.altMode==='exact'?'Exakt':'Variiert')):'KI-Generierung';
-  document.getElementById('sumModus').className='summary-val'+(isAlt?' sv-alt':'');
-  let src='';if(isAlt)src=state.poolName||'Altfragenpool';else if(state.fileText)src=state.fileName||'Skript';else src='Semmelweis-Themenkatalog';
-  document.getElementById('sumSource').textContent=src;
   const sel=state.selectedSubs.size;
-  document.getElementById('sumTopics').textContent=sel===0?'Alle':sel+' Subthema'+(sel===1?'':'s');
-  document.getElementById('sumCount').textContent=state.examMode?'20 Fragen (40 Min.)':state.count+' Fragen';
-  // Context size
-  const ctxRow=document.getElementById('sumCtxRow'),ctxEl=document.getElementById('sumCtx');
-  const textLen=isAlt?state.poolText.length:state.fileText.length;
-  if(textLen>0){ctxRow.style.display='';const kb=Math.round(textLen/1024),tokens=Math.round(textLen/4),truncated=textLen>MAX_CONTEXT_CHARS;ctxEl.textContent=`${kb} KB (~${(tokens/1000).toFixed(0)}k Tokens)${truncated?' ⚠ wird gekürzt':''}`;ctxEl.style.color=truncated?'var(--warn)':'var(--blue2)'}
-  else{ctxRow.style.display='none'}
+  const total=allSubIds().length;
+  const cntTxt=document.getElementById('selCountText');
+  if(cntTxt)cntTxt.textContent=sel===0?'noch nichts gewählt'
+    :sel===total?'alle Punkte gewählt'
+    :sel===1?'1 Punkt gewählt':sel+' Punkte gewählt';
+
+  const n=state.examMode?20:parseInt(state.count||'5',10);
+  const hint=document.getElementById('startHint');
+  if(hint)hint.textContent=sel===0?'Wähle mindestens einen Punkt.'
+    :sel===total?n+' Fragen aus allen Punkten'
+    :n+' Fragen aus '+(sel===1?'einem Punkt':sel+' Punkten');
+  const sb=document.getElementById('startBtn');
+  if(sb)sb.disabled=sel===0;
+
+  const files=(state.uploadFiles||[]).length;
+  const uh=document.getElementById('uploadHint');
+  if(uh)uh.textContent=!state.fileText?'Noch keine Datei.'
+    :files<=1?'1 Datei bereit · '+n+' Fragen'
+    :files+' Dateien bereit · '+n+' Fragen';
 }
 
 // ── Smart text preparation ────────────────────────────────────────────────────
@@ -1988,7 +1953,8 @@ async function startQuiz(){
   if(!hasApiKey){openKeyModal();return}
   state.isWochentest=false;state.isRigoOrig=false;
   saveQuizConfig();
-  document.getElementById('startBtn').disabled=true;
+  const _sb=document.getElementById('startBtn');if(_sb)_sb.disabled=true;
+  const _ub=document.getElementById('uploadStartBtn');if(_ub)_ub.disabled=true;
   goTo('s3');startEKG();
   const lt=document.getElementById('loadingText');
   lt.textContent=LOADING_MSGS[Math.floor(Math.random()*LOADING_MSGS.length)];
@@ -1998,7 +1964,7 @@ async function startQuiz(){
     const canUsePool=state.sourceMode==='alt'&&state.altMode==='exact'&&state.parsedPool&&state.parsedPool.length>0;
     if(canUsePool){
       const n=parseInt(state.count);
-      const filtered=filterPoolByTopics(state.parsedPool,state.selectedSubs);
+      const filtered=filterPoolByTopics(state.parsedPool,allTopicsSelected()?null:state.selectedSubs);
       if(!filtered.length)throw new Error('Keine Fragen im Pool passen zum Themenfilter.');
       // Enforce 5-second minimum for the loading screen so the EKG animation runs
       await new Promise(r=>setTimeout(r,5000));
@@ -2017,7 +1983,7 @@ async function startQuiz(){
     if(state.examMode)startExamTimer();
   }catch(err){
     stopEKG();lt.style.color='var(--red2)';lt.textContent='Fehler: '+err.message;
-    setTimeout(()=>{document.getElementById('startBtn').disabled=false;goTo('s2')},4000);
+    setTimeout(()=>{const sb=document.getElementById('startBtn');if(sb)sb.disabled=false;const ub=document.getElementById('uploadStartBtn');if(ub)ub.disabled=false;goTo(state.flowMode==='skript'?'sUpload':'s2')},4000);
   }
 }
 
@@ -2025,14 +1991,14 @@ async function generateQuestions(){
   const n=parseInt(state.count),hard=state.difficulty==='hard';
   const isAlt=state.sourceMode==='alt';
   let topicCtx='';
-  if(state.selectedSubs.size>0){const labels=[];TOPIC_GROUPS.forEach(g=>g.subs.forEach(s=>{if(state.selectedSubs.has(s.id))labels.push(s.id+' '+s.text)}));topicCtx=labels.join('; ')}
+  if(state.selectedSubs.size>0&&!allTopicsSelected()){const labels=[];TOPIC_GROUPS.forEach(g=>g.subs.forEach(s=>{if(state.selectedSubs.has(s.id))labels.push(s.id+' '+s.text)}));topicCtx=labels.join('; ')}
   else topicCtx='Alle Themen des Semmelweis-Rigorosum-Katalogs';
 
   // ── Coverage hint: force even distribution across 8 topic groups ──────
   let coverageHint='';
   // Only inject when no narrow filter is set (or filter spans multiple groups)
   const involvedGroups=new Set();
-  if(state.selectedSubs.size>0){
+  if(state.selectedSubs.size>0&&!allTopicsSelected()){
     TOPIC_GROUPS.forEach(g=>g.subs.forEach(s=>{if(state.selectedSubs.has(s.id))involvedGroups.add(g.id)}));
   }else{
     TOPIC_GROUPS.forEach(g=>involvedGroups.add(g.id));
@@ -2584,14 +2550,14 @@ function toggleStats(){document.getElementById('statsOverlay').classList.toggle(
 async function renderLeaderboard(){
   const el=document.getElementById('leaderboardArea');if(!el)return;
   const tok=getSessionToken();
-  if(!tok){el.innerHTML='<div style="font-size:11px;color:var(--mid);padding:14px;text-align:center;border:1px solid var(--rule);background:var(--pure)">Anmelden, um das Ranking zu sehen</div>';return}
+  if(!tok){el.innerHTML='<div style="font-size:11px;color:var(--mid);padding:14px;text-align:center;border:2px solid var(--app-rule);background:var(--pure)">Anmelden, um das Ranking zu sehen</div>';return}
   el.innerHTML='<div style="font-size:10px;color:var(--mid);padding:12px;text-align:center;letter-spacing:0.1em;text-transform:uppercase">Lädt…</div>';
   try{
     const res=await fetch(WORKER_URL+'/leaderboard',{headers:{'X-Session-Token':tok}});
     if(res.status===401){
       // Session expired — clear and prompt re-login
       try{localStorage.removeItem(SESSION_TOKEN_KEY);localStorage.removeItem(USER_KEY)}catch{}
-      el.innerHTML='<div style="font-size:11px;color:var(--mid);padding:14px;text-align:center;border:1px solid var(--rule);background:var(--pure)">Session abgelaufen — bitte neu einloggen<br><button onclick="logout();openKeyModal()" style="margin-top:8px;padding:6px 12px;background:var(--ink);color:var(--paper);border:none;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;font-family:inherit">Anmelden</button></div>';
+      el.innerHTML='<div style="font-size:11px;color:var(--mid);padding:14px;text-align:center;border:2px solid var(--app-rule);background:var(--pure)">Session abgelaufen — bitte neu einloggen<br><button onclick="logout();openKeyModal()" style="margin-top:8px;padding:6px 12px;background:var(--ink);color:var(--paper);border:none;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;font-family:inherit">Anmelden</button></div>';
       return;
     }
     if(!res.ok){
@@ -2600,15 +2566,15 @@ async function renderLeaderboard(){
     }
     const data=await res.json();
     const rows=data.leaderboard||[];
-    if(!rows.length){el.innerHTML='<div style="font-size:11px;color:var(--mid);padding:14px;text-align:center;border:1px solid var(--rule);background:var(--pure)">Noch keine Daten</div>';return}
+    if(!rows.length){el.innerHTML='<div style="font-size:11px;color:var(--mid);padding:14px;text-align:center;border:2px solid var(--app-rule);background:var(--pure)">Noch keine Daten</div>';return}
     const myUsername=currentUser?currentUser.username:'';
-    const html='<div style="border:1px solid var(--rule);background:var(--pure)">'+rows.map((r,i)=>{
+    const html='<div style="border:2px solid var(--app-rule);background:var(--pure)">'+rows.map((r,i)=>{
       const lvl=Math.floor((r.xp||0)/XP_PER_LEVEL)+1;
       const rank=getRank(lvl,r.username);
       const isMe=r.username===myUsername;
       const rankIdx=i+1;
       const rankColor=rankIdx===1?'var(--swiss-red)':rankIdx===2?'var(--ink)':rankIdx===3?'var(--mid)':'var(--mid)';
-      return `<div style="display:grid;grid-template-columns:36px 1fr auto auto;gap:14px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--rule);${isMe?'background:var(--paper);':''}">
+      return `<div style="display:grid;grid-template-columns:36px 1fr auto auto;gap:14px;align-items:center;padding:10px 16px;border-bottom:2px solid var(--app-rule);${isMe?'background:var(--paper);':''}">
         <div style="font-size:14px;font-weight:600;color:${rankColor};font-variant-numeric:tabular-nums;letter-spacing:-0.02em">${String(rankIdx).padStart(2,'0')}</div>
         <div style="font-size:12px;color:var(--ink);font-weight:${isMe?'600':'500'};letter-spacing:0.01em">${r.username}${(()=>{const v=getVipBadge(r.username);return v?` <span style="color:${v.color};font-size:9px;letter-spacing:0.14em;font-weight:600">(${v.label})</span>`:''})()}${isMe?' <span style="color:var(--swiss-red);font-size:9px;letter-spacing:0.14em">· DU</span>':''}</div>
         <div style="font-size:10px;color:var(--mid);letter-spacing:0.08em;text-transform:uppercase">${rank.icon} ${rank.title}</div>
@@ -2618,7 +2584,7 @@ async function renderLeaderboard(){
     el.innerHTML=html;
   }catch(e){
     console.error('renderLeaderboard error:',e,e&&e.stack);
-    el.innerHTML='<div style="font-size:11px;color:var(--mid);padding:14px;text-align:center;border:1px solid var(--rule);background:var(--pure)">Ranking nicht verfügbar<br><span style="font-size:9px;color:var(--red2);letter-spacing:.02em">'+(e&&e.message?e.message:String(e))+'</span></div>';
+    el.innerHTML='<div style="font-size:11px;color:var(--mid);padding:14px;text-align:center;border:2px solid var(--app-rule);background:var(--pure)">Ranking nicht verfügbar<br><span style="font-size:9px;color:var(--red2);letter-spacing:.02em">'+(e&&e.message?e.message:String(e))+'</span></div>';
   }
 }
 
@@ -2674,9 +2640,8 @@ function getAudioCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.web
 function loadSoundPref(){try{soundMuted=localStorage.getItem(SOUND_KEY)==='muted';updateSoundIcon()}catch{}}
 function toggleSound(){soundMuted=!soundMuted;try{localStorage.setItem(SOUND_KEY,soundMuted?'muted':'on')}catch{}updateSoundIcon()}
 function updateSoundIcon(){
-  const on=document.getElementById('soundOn'),off=document.getElementById('soundOff'),btn=document.getElementById('soundBtn');
-  if(on&&off){on.style.display=soundMuted?'none':'block';off.style.display=soundMuted?'block':'none'}
-  if(btn)btn.classList.toggle('muted',soundMuted);
+  const lbl=document.getElementById('soundLabel');
+  if(lbl)lbl.textContent=soundMuted?'Ton aus':'Ton an';
 }
 function playTone(freq,dur,vol=0.15,type='sine'){
   if(soundMuted)return;
@@ -2891,25 +2856,25 @@ function renderGamification(stats){
   const xpEl=document.getElementById('xpSection');
   const vip=getVipBadge(uname);
   const vipBadge=vip?` <span style="color:${vip.color};font-size:.7rem;letter-spacing:0.14em;font-weight:600;margin-left:.4rem">(${vip.label})</span>`:'';
-  if(xpEl)xpEl.innerHTML=`<div class="xp-header"><div class="xp-level" style="display:flex;align-items:center;gap:.4rem"><span style="font-size:1.4rem">${rank.icon}</span><div><div style="color:${rank.color};font-weight:600;font-size:1rem;line-height:1.1">${rank.title}${vipBadge}</div><div style="font-size:.7rem;color:var(--text3);font-weight:400">Level ${level}</div></div></div><div class="xp-label">${xp} XP · ${XP_PER_LEVEL-xpInLevel} XP bis Level ${level+1}</div></div><div class="xp-track"><div class="xp-fill" style="width:${pctXP}%;background:${rank.color}"></div></div>${nextRank?`<div style="font-size:.72rem;color:var(--text3);margin-top:.4rem;text-align:right">Nächste Beförderung: ${nextRank.icon} ${nextRank.title} (Level ${nextRank.min})</div>`:''}`;
+  if(xpEl)xpEl.innerHTML=`<div class="xp-header"><div class="xp-level" style="display:flex;align-items:center;gap:.4rem"><span style="font-size:1.4rem">${rank.icon}</span><div><div style="color:var(--app-accent);font-family:var(--font-heading);font-weight:800;font-size:17px;line-height:1.15">${rank.title}${vipBadge}</div><div style="font-size:.7rem;color:var(--text3);font-weight:400">Level ${level}</div></div></div><div class="xp-label">${xp} XP · ${XP_PER_LEVEL-xpInLevel} XP bis Level ${level+1}</div></div><div class="xp-track"><div class="xp-fill" style="width:${pctXP}%"></div></div>${nextRank?`<div style="font-size:.72rem;color:var(--text3);margin-top:.4rem;text-align:right">Nächste Beförderung: ${nextRank.icon} ${nextRank.title} (Level ${nextRank.min})</div>`:''}`;
 
   // Career ladder — overview of all ranks
   const ladderEl=document.getElementById('rankLadder');
   if(ladderEl){
     const g=getUserGender(uname);
-    ladderEl.innerHTML='<div style="border:1px solid var(--rule);background:var(--pure)">'+RANKS.map(r=>{
+    ladderEl.innerHTML='<div style="border:2px solid var(--app-rule);background:var(--pure)">'+RANKS.map(r=>{
       const isCurrent=level>=r.min&&level<=r.max;
       const isPassed=level>r.max;
       const title=g==='f'?r.f:r.m;
       const range=r.max===Infinity?`Level ${r.min}+`:`Level ${r.min}–${r.max}`;
       const xpRange=r.max===Infinity?`ab ${r.min*XP_PER_LEVEL-XP_PER_LEVEL} XP`:`${r.min*XP_PER_LEVEL-XP_PER_LEVEL}–${r.max*XP_PER_LEVEL-1} XP`;
-      const status=isCurrent?'<span style="color:var(--swiss-red);font-size:9px;letter-spacing:0.18em;font-weight:600">◢ AKTUELL</span>':isPassed?'<span style="color:var(--success);font-size:9px;letter-spacing:0.18em;font-weight:600">✓ ERREICHT</span>':'';
-      const op=isPassed?0.55:1;
-      const bg=isCurrent?'background:var(--paper);':'';
-      return `<div style="display:grid;grid-template-columns:32px 1fr auto auto;gap:14px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--rule);opacity:${op};${bg}">
+      const status=isCurrent?'<span style="color:var(--app-accent);font-size:11px;letter-spacing:0.1em;text-transform:uppercase">◢ Aktuell</span>':isPassed?'<span style="color:var(--app-mute);font-size:11px;letter-spacing:0.1em;text-transform:uppercase">✓ Erreicht</span>':'<span style="color:var(--app-mute);font-size:11px;letter-spacing:0.1em;text-transform:uppercase">Gesperrt</span>';
+      const op=(isPassed||isCurrent)?1:0.45;
+      const bg=isCurrent?'background:var(--app-accent-soft);':'';
+      return `<div style="display:grid;grid-template-columns:32px 1fr auto auto;gap:14px;align-items:center;padding:10px 16px;border-bottom:2px solid var(--app-rule);opacity:${op};${bg}">
         <div style="font-size:18px;text-align:center">${r.icon}</div>
         <div>
-          <div style="font-size:13px;color:${r.color};font-weight:${isCurrent?'600':'500'};letter-spacing:0.01em">${title}</div>
+          <div style="font-family:var(--font-heading);font-weight:800;font-size:15.5px;color:${isCurrent?'var(--app-accent)':'var(--app-ink)'};letter-spacing:-0.01em">${title}</div>
           <div style="font-size:10px;color:var(--mid);margin-top:1px;letter-spacing:0.04em;font-variant-numeric:tabular-nums">${range} · ${xpRange}</div>
         </div>
         <div style="text-align:right">${status}</div>
@@ -2960,6 +2925,188 @@ function startWeaknessQuiz(){
   updateSummary();
   startQuiz();
 }
+
+// ══════════════════════════════════════════════════════════════════════════
+//  Eigene Unterlagen — Start
+// ══════════════════════════════════════════════════════════════════════════
+function startUploadQuiz(){
+  if(!hasApiKey){openKeyModal();return}
+  if(!state.fileText){
+    const nameEl=document.getElementById('fileName');
+    if(nameEl)nameEl.textContent='Erst eine Datei reinwerfen — sonst hat das Orakel nichts zu lesen.';
+    playWrong();
+    return;
+  }
+  state.flowMode='skript';
+  state.examMode=false;
+  setSourceMode('ki');
+  startQuiz();
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+//  Motion — Wellenfeld (Home), Digest (Upload), Aktionspotential (Ladescreen).
+//  Eine gemeinsame rAF-Schleife; gezeichnet wird nur der sichtbare Screen.
+// ══════════════════════════════════════════════════════════════════════════
+var paletteCache=null;
+var digestUntil=0;
+(function(){
+  var reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var t=0,last=performance.now(),dims={};
+
+  function pal(){
+    if(paletteCache)return paletteCache;
+    var cs=getComputedStyle(document.documentElement);
+    var dark=document.documentElement.getAttribute('data-orakel-theme')==='dark';
+    paletteCache={
+      accent:cs.getPropertyValue('--app-accent').trim()||'#ec3013',
+      ink:dark?'248,244,244':'32,30,29'
+    };
+    return paletteCache;
+  }
+
+  function fit(cv){
+    var dpr=Math.min(window.devicePixelRatio||1,2);
+    var r=cv.getBoundingClientRect();
+    if(!r.width||!r.height)return null;
+    cv.width=Math.round(r.width*dpr);
+    cv.height=Math.round(r.height*dpr);
+    var ctx=cv.getContext('2d');
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    return {ctx:ctx,w:r.width,h:r.height};
+  }
+
+  function active(id){
+    var el=document.getElementById(id);
+    return el&&el.classList.contains('active');
+  }
+
+  // Home: eine Depolarisationsfront über einem Punktraster
+  function drawWave(){
+    var cv=document.getElementById('waveCanvas');
+    if(!cv||!active('s1')){dims.wave=null;return}
+    var d=dims.wave||(dims.wave=fit(cv));
+    if(!d)return;
+    var ctx=d.ctx,w=d.w,h=d.h,p=pal();
+    var gap=w<560?26:34;
+    ctx.clearRect(0,0,w,h);
+    var cx=w*(0.5+0.42*Math.cos(t*0.22));
+    var cy=h*(0.5+0.36*Math.sin(t*0.17));
+    for(var x=gap/2;x<w;x+=gap){
+      for(var y=gap/2;y<h;y+=gap){
+        var dist=Math.hypot(x-cx,y-cy);
+        var wave=Math.sin(dist/46-t*2.1);
+        var k=Math.max(0,wave)*Math.exp(-dist/(Math.max(w,h)*0.55));
+        var s=2+k*5.5;
+        if(k>0.16){ctx.fillStyle=p.accent;ctx.globalAlpha=0.25+k*0.6}
+        else{ctx.fillStyle='rgb('+p.ink+')';ctx.globalAlpha=0.1}
+        ctx.fillRect(x-s/2,y-s/2,s,s);
+      }
+    }
+    ctx.globalAlpha=1;
+  }
+
+  // Upload: Seiten zerfallen in Fragen, sobald Material da ist
+  function drawDigest(now){
+    var cv=document.getElementById('digestCanvas');
+    if(!cv||!active('sUpload')){dims.digest=null;return}
+    var d=dims.digest||(dims.digest=fit(cv));
+    if(!d)return;
+    var ctx=d.ctx,w=d.w,h=d.h,p=pal();
+    var running=now<digestUntil&&!reduced;
+    ctx.clearRect(0,0,w,h);
+    var mid=h/2,bx=w*0.46;
+    ctx.fillStyle='rgba('+p.ink+',0.18)';
+    for(var y=8;y<h-8;y+=9)ctx.fillRect(bx,y,2,5);
+    ctx.font="600 10.5px Archivo, system-ui, sans-serif";
+    ctx.fillStyle='rgba('+p.ink+',0.72)';
+    ctx.fillText('DEIN MATERIAL',12,h-14);
+    ctx.fillStyle=p.accent;
+    var rt='FRAGEN';
+    ctx.fillText(rt,w-ctx.measureText(rt).width-12,h-14);
+    for(var i=0;i<26;i++){
+      var seed=i*0.618;
+      var phase=running?((t*0.5+seed)%1):((seed*1.7)%1);
+      var x=phase*w;
+      var spread=(Math.sin(seed*12.9)*0.5)*h*0.5;
+      var yy;
+      if(x<bx)yy=mid+spread*(1-phase*0.4);
+      else yy=mid+Math.round(spread/16)*16;
+      if(x>bx){ctx.fillStyle=p.accent;ctx.globalAlpha=0.9}
+      else{ctx.fillStyle='rgb('+p.ink+')';ctx.globalAlpha=0.3}
+      var s=x<bx?7:4;
+      ctx.fillRect(x,yy-s/2,s,s);
+    }
+    ctx.globalAlpha=1;
+    if(!running&&!state.fileText){
+      ctx.fillStyle='rgba('+p.ink+',0.55)';
+      ctx.font="600 11px Archivo, system-ui, sans-serif";
+      ctx.fillText('WARTET AUF DEIN MATERIAL',12,20);
+    }
+  }
+
+  // Ladescreen: ein fortlaufender Aktionspotential-Zug
+  function drawLoader(){
+    var cv=document.getElementById('loaderCanvas');
+    if(!cv||!active('s3')){dims.loader=null;return}
+    var d=dims.loader||(dims.loader=fit(cv));
+    if(!d)return;
+    var ctx=d.ctx,w=d.w,h=d.h,p=pal();
+    ctx.clearRect(0,0,w,h);
+    var base=h*0.78,amp=h*0.62,per=0.9;
+    ctx.strokeStyle='rgba('+p.ink+',0.14)';
+    ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(0,Math.round(base)+0.5);ctx.lineTo(w,Math.round(base)+0.5);ctx.stroke();
+    var spike=function(ph){
+      if(ph<0.06)return Math.pow(ph/0.06,1.7);
+      if(ph<0.2)return 1-1.12*Math.pow((ph-0.06)/0.14,0.8);
+      if(ph<0.55)return -0.12+0.12*(ph-0.2)/0.35;
+      return 0;
+    };
+    ctx.strokeStyle=p.accent;ctx.lineWidth=2;ctx.lineJoin='round';
+    ctx.beginPath();
+    var secondsVisible=Math.max(2.2,w/240);
+    for(var px=0;px<=w;px+=1.5){
+      var tt=t+(px/w)*secondsVisible;
+      var y=base-spike((tt%per)/per)*amp;
+      if(px===0)ctx.moveTo(px,y);else ctx.lineTo(px,y);
+    }
+    ctx.stroke();
+  }
+
+  function frame(now){
+    var dt=Math.min((now-last)/1000,0.05);
+    last=now;
+    if(!reduced)t+=dt;
+    drawWave();drawDigest(now);drawLoader();
+    requestAnimationFrame(frame);
+  }
+
+  window.addEventListener('resize',function(){dims={}},{passive:true});
+  requestAnimationFrame(frame);
+})();
+
+// ══════════════════════════════════════════════════════════════════════════
+//  Start
+// ══════════════════════════════════════════════════════════════════════════
+setSourceMode(state.sourceMode);
+setAltMode(state.altMode);
+renderPoolStatus(null);
+updateSummary();
+renderFileList();
+updateLoginHintVisibility();
+
+// Drag & Drop optisch quittieren
+(function(){
+  var z=document.getElementById('dropZone');
+  if(!z)return;
+  ['dragenter','dragover'].forEach(function(ev){
+    z.addEventListener(ev,function(e){e.preventDefault();z.classList.add('drag')});
+  });
+  ['dragleave','drop'].forEach(function(ev){
+    z.addEventListener(ev,function(){z.classList.remove('drag')});
+  });
+})();
+
 </script>
 </body>
 </html>

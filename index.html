@@ -1,240 +1,721 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nephron.at</title>
-<meta name="description" content="Eine Lernplattform, die sich an deine spezifischen Unterlagen anpasst. Gebaut von Medizinstudenten für Medizinstudierende.">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nephron.at — Physio-Orakel</title>
+<meta name="description" content="Das Physio-Orakel: gratis Fragentraining im Stil der Physio-Wochentests, nach Themenkatalogpunkt sortiert. Privates Lernprojekt, Semmelweis Budapest.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
+/* ── Design-System „Modernist" — Tokens ────────────────────────────────── */
 :root {
-  --paper: #F5F4F1;
-  --pure: #FFFFFF;
-  --ink: #0A0A0A;
-  --mid: #7A7A78;
-  --red: #DA291C;
-  --rule: #D8D6D1;
+  --color-bg: #f3f2f2;
+  --color-surface: #eae9e9;
+  --color-text: #201e1d;
+  --color-accent: #ec3013;
+  --color-divider: color-mix(in srgb, #201e1d 40%, transparent);
+  --color-neutral-100: #f8f4f4;
+  --color-accent-100: #fff2ef;
+  --color-accent-600: #dd2b0f;
+  --color-accent-700: #ae1800;
+  --font-heading: "Archivo", system-ui, sans-serif;
+  --font-body: "Archivo", system-ui, sans-serif;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --radius-md: 0px;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; }
+*, *::before, *::after { box-sizing: border-box; }
 body {
-  font-family: "Helvetica Neue", "Inter", Arial, sans-serif;
-  font-feature-settings: "tnum" 1;
-  background: var(--paper);
-  color: var(--ink);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-weight: 400;
-  line-height: 1.4;
-  display: flex;
-  flex-direction: column;
+  margin: 0; background: var(--color-bg); color: var(--color-text);
+  font-family: var(--font-body); font-size: 15px; line-height: 1.55; font-weight: 400;
+  text-wrap: pretty; -webkit-font-smoothing: antialiased;
 }
-a { color: inherit; text-decoration: none; }
-em { font-style: italic; }
+h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: 800; line-height: 1.12; letter-spacing: -0.015em; }
+img { display: block; max-width: 100%; }
+figure { margin: 0; }
+a { color: var(--color-accent-700); text-decoration: none; text-underline-offset: 3px; }
+a:hover { color: var(--color-accent); text-decoration: underline; }
+:focus { outline: none; }
+*:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+::selection { background: color-mix(in srgb, var(--color-accent) 30%, transparent); }
+.grayscale { filter: grayscale(1) contrast(1.08); }
 
-/* ─── Nav ──────────────────────────────────────── */
+/* ── Buttons ───────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  cursor: pointer; text-decoration: none;
+  font-family: var(--font-heading); font-weight: 800; font-size: 14px; line-height: 1.2;
+  color: var(--color-text); background: transparent;
+  border: 1px solid transparent; padding: var(--space-2) calc(var(--space-3) * 1.2);
+  border-radius: var(--radius-md);
+}
+.btn-primary { background: var(--color-accent); color: var(--color-bg); }
+.btn-primary:hover { background: var(--color-accent-600); color: var(--color-bg); text-decoration: none; }
+.btn-primary:active { background: var(--color-accent-700); }
+.btn-secondary { border-color: var(--color-divider); }
+.btn-secondary:hover { background: color-mix(in srgb, var(--color-text) 7%, transparent); color: var(--color-text); text-decoration: none; }
+.btn-ghost { color: var(--color-accent); padding-inline: var(--space-1); }
+.btn-ghost:hover { background: color-mix(in srgb, var(--color-accent) 10%, transparent); text-decoration: none; }
+
+/* ── Nav ───────────────────────────────────────────────────────────────── */
 .nav {
-  border-bottom: 1px solid var(--rule);
-  padding: 18px 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--paper);
+  display: flex; align-items: center; gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 2px solid var(--color-divider);
+  flex-wrap: nowrap;
 }
-.nav-brand { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
-.nav-brand span { color: var(--red); }
-.nav-links { display: flex; gap: 32px; }
-.nav-links a {
-  font-size: 11px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--mid);
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-  transition: color 0.15s;
-}
-.nav-links a:hover, .nav-links a.active { color: var(--ink); }
-.nav-links a.active::before { content: "◢ "; color: var(--red); }
+.nav-brand { font-family: var(--font-heading); font-weight: 800; font-size: 18px; }
+.nav a { color: inherit; text-decoration: none; font-size: 14px; }
+.nav a:hover { color: var(--color-accent); }
+/* .nav a { color: inherit } schlägt .btn-primary — die eigene Schrift des Buttons zurückholen */
+.nav a.btn-primary { color: var(--color-bg); text-decoration: none; white-space: nowrap; }
+.brand-indep { display: block; }
+.nav a.btn-primary:hover { color: var(--color-bg); background: var(--color-accent-600); }
 
-/* ─── Main ─────────────────────────────────────── */
-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 80px 60px;
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
-}
-.marker {
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--red);
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-  margin-bottom: 32px;
-}
-.marker::before { content: "◢ "; }
-.wordmark {
-  font-weight: 500;
-  font-size: 220px;
-  line-height: 0.85;
-  letter-spacing: -0.06em;
-  margin-bottom: 64px;
-  display: inline-flex;
-  align-items: baseline;
-}
-.wordmark .dot {
-  color: var(--red);
-  font-weight: 500;
-}
-.wordmark .tld {
-  font-size: 0.42em;
-  font-weight: 500;
-  letter-spacing: -0.03em;
-  color: var(--mid);
-  margin-left: 0.05em;
-  align-self: baseline;
-}
-.tagline {
-  font-size: 14px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--mid);
-  font-weight: 500;
-  margin-bottom: 16px;
-  font-variant-numeric: tabular-nums;
-}
+/* der CTA atmet — 3,6s, 3,5% Amplitude, nur transform */
+@keyframes ctaBreathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.035); } }
+.cta-pulse { animation: ctaBreathe 3.6s ease-in-out infinite; will-change: transform; }
+@media (prefers-reduced-motion: reduce) { .cta-pulse { animation: none; } }
 
-.mission {
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 32px;
-  max-width: 900px;
-  margin-top: 40px;
-}
-.mission-meta {
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--mid);
-  font-weight: 500;
-  padding-top: 6px;
-}
-.mission-text {
-  font-size: 18px;
-  line-height: 1.55;
-  color: var(--ink);
-  text-wrap: pretty;
-}
-.mission-text p { margin-bottom: 16px; }
-.mission-text p:last-child { margin-bottom: 0; }
-.mission-text strong { font-weight: 600; }
-
-.quick-cta {
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 32px;
-  max-width: 900px;
-  margin-top: 48px;
-  padding-top: 32px;
-  border-top: 1px solid var(--rule);
-  align-items: center;
-}
-.quick-cta-meta {
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--mid);
-  font-weight: 500;
-}
-.quick-cta-btn {
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  font-weight: 500;
-  padding: 12px 22px;
-  background: var(--ink);
-  color: var(--paper);
-  border: 1px solid var(--ink);
-  cursor: pointer;
-  transition: background 0.15s;
-  font-family: inherit;
-  display: inline-block;
-}
-.quick-cta-btn:hover { background: var(--red); border-color: var(--red); }
-.quick-cta-btn::after { content: " →"; }
-
-/* ─── Footer ───────────────────────────────────── */
-footer {
-  border-top: 1px solid var(--rule);
-  padding: 16px 60px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--mid);
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-}
-
-/* ─── Mobile ───────────────────────────────────── */
-@media (max-width: 800px) {
-  .nav { padding: 14px 24px; }
-  .nav-links { gap: 18px; }
-  .nav-links a { font-size: 10px; letter-spacing: 0.1em; }
-  main { padding: 48px 24px; }
-  .wordmark { font-size: 96px; margin-bottom: 40px; }
-  .mission, .quick-cta { grid-template-columns: 1fr; gap: 12px; }
-  .mission-text { font-size: 16px; }
-  footer { padding: 14px 24px; flex-direction: column; gap: 8px; align-items: flex-start; }
+/* Handy: der Textlink fällt weg, der Accent-Button bleibt */
+@media (max-width: 700px) { .nav a:not(.btn-primary) { display: none; } }
+@media (max-width: 620px) {
+  .brand-indep { display: none; }
+  .nav a.btn-primary { font-size: 13px; }
 }
 </style>
 </head>
 <body>
 
-<nav class="nav">
-  <div class="nav-brand">Nephron<span>.at</span></div>
-  <div class="nav-links">
-    <a href="/" class="active">N° 01 Mission</a>
-    <a href="/projekt.html">N° 02 Physio-Orakel</a>
-    <a href="/disclaimer.html">N° 03 Disclaimer</a>
-    <a href="/support.html">N° 04 Unterstützung</a>
-  </div>
-</nav>
+<div style="min-height: 100vh; background: var(--color-bg)">
 
-<main>
-  <div class="marker">N° 01 — Mission · Est. 2026</div>
-  <h1 class="wordmark">
-    Nephron<span class="dot">.</span><span class="tld">at</span>
-  </h1>
-  <div class="mission">
-    <div class="mission-meta">Manifest</div>
-    <div class="mission-text">
-      <p>Medizin lernen heißt: <strong>Berge von Stoff, zu wenig Zeit</strong> und das Gefühl, nie genug zu wissen.</p>
-      <p>Wir glauben, dass es nicht an der Motivation scheitert — sondern an den Werkzeugen. Deshalb bauen wir eine Lernplattform, die sich an deine spezifischen Unterlagen anpasst.</p>
-      <p><strong>Gebaut von Medizinstudenten. Für Medizinstudierende.</strong></p>
+  <nav class="nav" style="padding-inline: clamp(20px, 5vw, 72px); align-items: center">
+    <span style="margin-right: auto; display: flex; align-items: center; gap: 14px">
+      <span style="display: block; flex: none">
+        <span class="nav-brand" style="display: block; margin-right: 0">Nephron.at</span>
+        <span style="display: block; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap; color: color-mix(in srgb, var(--color-text) 72%, transparent); margin-top: 2px; font-feature-settings: 'tnum' 1">Estimated 2025</span>
+      </span>
+      <span class="brand-indep" style="width: 2px; height: 30px; background: var(--color-divider); flex: none"></span>
+      <span class="brand-indep" style="font-size: 10px; letter-spacing: 0.08em; line-height: 14px; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 72%, transparent); white-space: nowrap">
+        <span style="display: block">Developed independently</span>
+        <span style="display: block">at Semmelweis University</span>
+      </span>
+    </span>
+    <span style="margin-left: auto; display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 10px 18px">
+      <a href="#system" style="font-size: 13.5px">Wie es funktioniert</a>
+      <a href="#gratis" style="font-size: 13.5px">Warum gratis</a>
+      <a href="#rueckkopplung" style="font-size: 13.5px">Rückkopplung</a>
+      <a href="#ueber" style="font-size: 13.5px">Über mich</a>
+      <a href="#disclaimer" style="font-size: 13.5px; margin-right: 4px">Disclaimer</a>
+      <a href="/app/" class="btn btn-primary cta-pulse">Physio-Orakel öffnen</a>
+    </span>
+  </nav>
+
+  <section style="max-width: 1240px; margin: 0 auto; padding: clamp(28px, 5vw, 60px) clamp(20px, 5vw, 72px) 0">
+    <h1 style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(34px, 5vw, 64px); line-height: 1.04; letter-spacing: -0.03em; margin: 0 0 0 -0.058em; max-width: 24ch">
+      <span style="display: block">Das dritte Semester kommt,</span>
+      <span style="display: block">und mit ihm die Wochentests.</span>
+    </h1>
+    <p style="font-size: 17px; line-height: 28px; max-width: 48ch; margin: 26px 0 0">
+      Das Physio-Orakel ist dafür gebaut, dass du dabei weniger Aura verlierst. Gratis, kein Karl-Ess-Move.
+    </p>
+    <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 24px">
+      <a href="/app/" class="btn btn-primary cta-pulse" style="transform-origin: left center">Physio-Orakel öffnen</a>
+      <a href="#system" class="btn btn-ghost">Wie es funktioniert</a>
+    </div>
+  </section>
+
+  <section aria-label="Aktionspotential" style="max-width: 1240px; margin: 0 auto; padding: clamp(22px, 3.5vw, 40px) clamp(20px, 5vw, 72px) 0">
+    <div style="position: relative; border-top: 2px solid var(--color-divider); border-bottom: 2px solid var(--color-divider)">
+      <canvas id="heroCanvas" style="display: block; width: 100%; height: clamp(250px, 34vw, 390px)"></canvas>
+      <div style="position: absolute; right: 0; top: 8px; display: flex; gap: 16px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 72%, transparent); font-feature-settings: 'tnum' 1; pointer-events: none">
+        <span>Membranpotential</span>
+        <span id="vmValue" style="color: var(--color-accent-700); text-transform: none; letter-spacing: 0.04em">−70 mV</span>
+      </div>
+    </div>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 12px">
+      <button type="button" class="btn btn-secondary" onclick="orakelFire(20)" style="font-size: 12px; padding: 6px 10px">Reiz 20 mV</button>
+      <button type="button" class="btn btn-ghost" onclick="orakelFire(8)" style="font-size: 12px; padding: 6px 10px">Nur 8 mV</button>
+    </div>
+  </section>
+
+  <section id="system" style="background: var(--color-neutral-100); border-top: 2px solid var(--color-divider); border-bottom: 2px solid var(--color-divider); margin-top: clamp(48px, 7vw, 96px); scroll-margin-top: 80px">
+   <div style="max-width: 1240px; margin: 0 auto; padding: clamp(44px, 6vw, 80px) clamp(20px, 5vw, 72px)">
+    <div style="display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 20px clamp(24px, 5vw, 72px); align-items: start">
+      <div>
+        <h2 style="font-size: clamp(24px, 2.9vw, 34px); line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 10px">Wie das Physio-Orakel funktioniert</h2>
+        <p style="font-size: 12px; line-height: 18px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); margin: 0">Nach Themenkatalogpunkt, nicht nach Vorlesung</p>
+      </div>
+      <div>
+        <p style="font-size: 17px; line-height: 29px; margin: 0 0 22px; max-width: 58ch">
+          Ein Jahr lang hab ich neben dem Lernen an einem System gebastelt, das Fragen im Stil der Physio-Wochentests generiert. Nach Themenkatalogpunkt sortiert, nicht nach Vorlesung.
+        </p>
+        <p style="font-size: 17px; line-height: 29px; margin: 0; max-width: 58ch">
+          Trainingsmaterial: ausschließlich das, was sich bei mir eingebrannt hat. Mein Anwalt sagt, Flashbacks sind urheberrechtlich unbedenklich.
+        </p>
+      </div>
+    </div>
+
+    <div style="margin-top: clamp(28px, 4vw, 44px)">
+      <canvas id="filterCanvas" aria-hidden="true" style="display: block; width: 100%; height: clamp(240px, 30vw, 360px); border-top: 2px solid var(--color-divider); border-bottom: 2px solid var(--color-divider)"></canvas>
+      <p style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 70%, transparent); margin: 12px 0 0">
+        Filtration aufs Wesentliche
+      </p>
+    </div>
+   </div>
+  </section>
+
+  <section id="gratis" style="background: var(--color-accent-100); border-bottom: 2px solid var(--color-divider); scroll-margin-top: 80px">
+   <div style="max-width: 1240px; margin: 0 auto; padding: clamp(44px, 6vw, 80px) clamp(20px, 5vw, 72px)">
+    <div style="display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 20px clamp(24px, 5vw, 72px); align-items: start">
+      <div>
+        <h2 style="font-size: clamp(24px, 2.9vw, 34px); line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 10px">Warum das Projekt gratis ist</h2>
+        <p style="font-size: 12px; line-height: 18px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); margin: 0">Schwestern und Brüder der Medizin: Gönnt euch</p>
+      </div>
+      <div>
+        <p style="font-size: 17px; line-height: 29px; margin: 0 0 8px; max-width: 58ch">
+          Als ich 2013 eines Morgens aus unruhigen Träumen erwachte, fand ich mich in meinem Bett zu einem ungeheuren Bitcoin-Millionär verwandelt.
+        </p>
+        <p style="font-size: 17px; line-height: 29px; margin: 0 0 22px; color: color-mix(in srgb, var(--color-text) 72%, transparent)">(I wish.)</p>
+        <p style="font-size: 17px; line-height: 29px; margin: 0; max-width: 58ch">
+          Die Wahrheit ist unspektakulärer: Ich weiß noch ziemlich genau, wie sich das erste Jahr anfühlt. Ich hab keine Zeit, ein Startup daraus zu machen, und keine Lust, euch dafür Geld abzunehmen. Nehmt's einfach.
+        </p>
+        <div id="unterstuetzen" style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; scroll-margin-top: 80px">
+          <a href="https://paypal.me/PeerHechenberger" target="_blank" rel="noopener" class="btn btn-secondary">Über PayPal unterstützen</a>
+        </div>
+      </div>
+    </div>
+   </div>
+  </section>
+
+  <section id="rueckkopplung" style="background: var(--color-neutral-100); border-bottom: 2px solid var(--color-divider); scroll-margin-top: 80px">
+   <div style="max-width: 1240px; margin: 0 auto; padding: clamp(44px, 6vw, 80px) clamp(20px, 5vw, 72px)">
+    <h2 style="font-size: clamp(26px, 3.2vw, 38px); line-height: 1.06; letter-spacing: -0.02em; margin: 0 0 12px">Positive Rückkopplung</h2>
+    <p style="font-size: 17px; line-height: 29px; margin: 0; max-width: 52ch; color: color-mix(in srgb, var(--color-text) 82%, transparent)">Der einzige Circulus vitiosus, den ich hier haben will.</p>
+    <div style="margin-top: clamp(30px, 4vw, 44px); display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 0 clamp(24px, 4vw, 56px)">
+
+      <figure style="margin: 0; border-top: 2px solid var(--color-divider); padding: 20px 0 28px; display: flex; flex-direction: column; gap: 20px">
+        <blockquote style="font-size: 16px; line-height: 27px; margin: 0; max-width: 32ch; color: color-mix(in srgb, var(--color-text) 88%, transparent)">„Selbst wenn die Zeit zum Lernen kurz war, kamen oft Fragen, die nahezu 1:1 wie im Orakel waren, dran.“</blockquote>
+        <figcaption style="margin-top: auto; display: flex; align-items: baseline; gap: 10px 12px; flex-wrap: wrap">
+          <span style="display: block; width: 10px; height: 10px; background: var(--color-accent); flex: none; align-self: center"></span>
+          <span style="font-family: var(--font-heading); font-weight: 800; font-size: 17px; line-height: 22px; letter-spacing: -0.01em; align-self: center">Alina</span>
+          <span style="font-size: 13px; line-height: 20px; color: color-mix(in srgb, var(--color-text) 74%, transparent); align-self: center">3. Studienjahr</span>
+        </figcaption>
+      </figure>
+
+      <figure style="margin: 0; border-top: 2px solid var(--color-divider); padding: 20px 0 28px; display: flex; flex-direction: column; gap: 20px">
+        <blockquote style="font-size: 16px; line-height: 27px; margin: 0; max-width: 32ch; color: color-mix(in srgb, var(--color-text) 88%, transparent)">„Mit dem Physio-Orakel ist das gezielte Lernen für den Wochentest weniger trocken.“</blockquote>
+        <figcaption style="margin-top: auto; display: flex; align-items: baseline; gap: 10px 12px; flex-wrap: wrap">
+          <span style="display: block; width: 10px; height: 10px; background: var(--color-accent); flex: none; align-self: center"></span>
+          <span style="font-family: var(--font-heading); font-weight: 800; font-size: 17px; line-height: 22px; letter-spacing: -0.01em; align-self: center">Hiwa</span>
+          <span style="font-size: 13px; line-height: 20px; color: color-mix(in srgb, var(--color-text) 74%, transparent); align-self: center">3. Studienjahr</span>
+        </figcaption>
+      </figure>
+
+      <figure style="margin: 0; border-top: 2px solid var(--color-divider); padding: 20px 0 28px; display: flex; flex-direction: column; gap: 20px">
+        <blockquote style="font-size: 16px; line-height: 27px; margin: 0; max-width: 32ch; color: color-mix(in srgb, var(--color-text) 88%, transparent)">„Mega Möglichkeit, das eigene Wissen vor dem Test nochmal zu testen und zu festigen.“</blockquote>
+        <figcaption style="margin-top: auto; display: flex; align-items: baseline; gap: 10px 12px; flex-wrap: wrap">
+          <span style="display: block; width: 10px; height: 10px; background: var(--color-accent); flex: none; align-self: center"></span>
+          <span style="font-family: var(--font-heading); font-weight: 800; font-size: 17px; line-height: 22px; letter-spacing: -0.01em; align-self: center">Charlotte</span>
+          <span style="font-size: 13px; line-height: 20px; color: color-mix(in srgb, var(--color-text) 74%, transparent); align-self: center">3. Studienjahr</span>
+        </figcaption>
+      </figure>
+
+      <figure style="margin: 0; border-top: 2px solid var(--color-divider); padding: 20px 0 28px; display: flex; flex-direction: column; gap: 20px">
+        <blockquote style="font-size: 16px; line-height: 27px; margin: 0; max-width: 32ch; color: color-mix(in srgb, var(--color-text) 88%, transparent)">„Hab um zwei Uhr nachts im Morrison’s jemandem die Henle-Schleife erklärt. Sie ist gegangen. Aber ich lag richtig.“</blockquote>
+        <figcaption style="margin-top: auto; display: flex; align-items: baseline; gap: 10px 12px; flex-wrap: wrap">
+          <span style="display: block; width: 10px; height: 10px; background: var(--color-accent); flex: none; align-self: center"></span>
+          <span style="font-family: var(--font-heading); font-weight: 800; font-size: 17px; line-height: 22px; letter-spacing: -0.01em; align-self: center">Anonym</span>
+          <span style="font-size: 13px; line-height: 20px; color: color-mix(in srgb, var(--color-text) 74%, transparent); align-self: center">2. Studienjahr</span>
+        </figcaption>
+      </figure>
+
+    </div>
+
+    <figure style="margin: 0; border-top: 2px solid var(--color-divider); padding: 26px 0 30px; display: flex; flex-wrap: wrap; gap: 18px clamp(20px, 3vw, 40px); align-items: flex-start">
+      <img class="grayscale" src="assets/pashanim.jpg" alt="Pashanim" loading="lazy" style="display: block; width: 132px; height: 168px; flex: none; object-fit: cover; object-position: 50% 26%">
+      <div style="flex: 1 1 280px; min-width: 0">
+        <blockquote style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(19px, 2.2vw, 26px); line-height: 1.28; letter-spacing: -0.015em; margin: 0; max-width: 44ch">„Physio-Orakel geht sogar auf babyblaue Nokia 3310!“</blockquote>
+        <figcaption style="display: flex; align-items: baseline; gap: 10px 14px; flex-wrap: wrap; margin-top: 20px">
+          <span style="display: block; width: 10px; height: 10px; background: var(--color-accent); flex: none; align-self: center"></span>
+          <span style="font-family: var(--font-heading); font-weight: 800; font-size: 17px; line-height: 22px; letter-spacing: -0.01em">Pashanim</span>
+          <span style="font-size: 13px; line-height: 20px; color: color-mix(in srgb, var(--color-text) 74%, transparent)">Chefarzt, Charité Berlin</span>
+        </figcaption>
+      </div>
+    </figure>
+
+    <figure style="margin: 0; border-top: 2px solid var(--color-divider); padding: 26px 0 0; display: flex; flex-wrap: wrap; gap: 18px clamp(20px, 3vw, 40px); align-items: flex-start">
+      <img class="grayscale" src="assets/bad-bunny.jpg" alt="Bad Bunny" loading="lazy" style="display: block; width: 132px; height: 168px; flex: none; object-fit: cover; object-position: 50% 22%">
+      <div style="flex: 1 1 280px; min-width: 0">
+        <blockquote id="bbQuote" style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(19px, 2.2vw, 26px); line-height: 1.28; letter-spacing: -0.015em; margin: 0; max-width: 44ch">„Antes del Physio-Orakel: cero aura. Después: aura ilimitada. Mi potencial de membrana nunca estuvo tan estable.“</blockquote>
+        <figcaption style="display: flex; align-items: baseline; gap: 10px 14px; flex-wrap: wrap; margin-top: 20px">
+          <span style="display: block; width: 10px; height: 10px; background: var(--color-accent); flex: none; align-self: center"></span>
+          <span style="font-family: var(--font-heading); font-weight: 800; font-size: 17px; line-height: 22px; letter-spacing: -0.01em">Bad Bunny</span>
+          <span style="font-size: 13px; line-height: 20px; color: color-mix(in srgb, var(--color-text) 74%, transparent)">Assistenzarzt, Grand Prix Monaco</span>
+          <button type="button" id="bbToggle" class="btn btn-ghost" onclick="orakelToggleBb()" style="font-size: 12px; padding: 5px 9px">Übersetzen</button>
+        </figcaption>
+      </div>
+    </figure>
+   </div>
+  </section>
+
+  <section style="max-width: 1240px; margin: 0 auto; padding: clamp(40px, 6vw, 80px) clamp(20px, 5vw, 72px) 0">
+    <div style="display: flex; gap: 16px 32px; flex-wrap: wrap; align-items: baseline; justify-content: space-between; margin-bottom: 14px">
+      <p style="font-size: 13px; line-height: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); margin: 0">Auf dass dein Puls nicht im 3. Semester stehen bleibt</p>
+      <p id="bpmValue" style="font-family: var(--font-heading); font-weight: 800; font-size: 13px; letter-spacing: 0.06em; color: color-mix(in srgb, var(--color-text) 72%, transparent); margin: 0; font-feature-settings: 'tnum' 1">124 bpm</p>
+    </div>
+    <canvas id="ecgCanvas" aria-hidden="true" style="display: block; width: 100%; height: clamp(96px, 11vw, 128px); border-top: 2px solid var(--color-divider); border-bottom: 2px solid var(--color-divider)"></canvas>
+  </section>
+
+  <section id="los" style="background: var(--color-accent); color: var(--color-bg); margin-top: clamp(48px, 7vw, 96px)">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 7vw, 84px) clamp(20px, 5vw, 72px)">
+      <h3 style="font-size: clamp(32px, 5vw, 62px); line-height: 1.06; letter-spacing: -0.02em; margin: 0 0 0 -0.058em">
+        <span style="display: block">Akademisches Comeback</span>
+        <span style="display: block">depolarisieren</span>
+      </h3>
+      <p style="font-size: 18px; line-height: 30px; max-width: 52ch; margin: 26px 0 0">
+        Alles-oder-nichts gilt für AP, nicht für Semester.
+      </p>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px">
+        <a href="/app/" class="btn btn-ghost" style="color: var(--color-bg); border-color: var(--color-bg)">Orakel öffnen</a>
+        <a href="https://paypal.me/PeerHechenberger" target="_blank" rel="noopener" class="btn btn-ghost" style="color: var(--color-bg); border-color: var(--color-bg)">Projekt unterstützen</a>
+        <a href="#ueber" class="btn btn-ghost" style="color: var(--color-bg); border-color: var(--color-bg)">Über mich</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="ueber" style="background: var(--color-accent-100); border-bottom: 2px solid var(--color-divider); scroll-margin-top: 80px">
+   <div style="max-width: 1240px; margin: 0 auto; padding: clamp(44px, 6vw, 76px) clamp(20px, 5vw, 72px)">
+    <div style="display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px clamp(24px, 5vw, 80px); align-items: start">
+      <h2 style="font-size: clamp(26px, 3.2vw, 38px); line-height: 1.08; letter-spacing: -0.02em; margin: 0">Über mich</h2>
+      <div>
+        <p style="font-size: 17px; line-height: 29px; margin: 0; max-width: 56ch">
+          Ich studiere Humanmedizin an der Semmelweis, mittlerweile im dritten Jahr. Eigentlich sollte ich lernen. Stattdessen suche ich mir Side-Quests, und eine davon siehst du gerade.
+        </p>
+        <p style="font-family: var(--font-heading); font-weight: 800; font-size: 17px; line-height: 24px; margin: 22px 0 0">Peer Hechenberger</p>
+      </div>
+    </div>
+   </div>
+  </section>
+
+  <section id="disclaimer" style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 7vw, 88px) clamp(20px, 5vw, 72px) 0; scroll-margin-top: 80px">
+    <div style="border-top: 2px solid var(--color-divider); padding-top: 30px; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px clamp(24px, 5vw, 80px); align-items: start">
+      <div>
+        <h2 style="font-size: clamp(22px, 2.6vw, 30px); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 10px">Disclaimer</h2>
+        <p style="font-size: 12px; line-height: 18px; letter-spacing: 0.08em; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 72%, transparent); margin: 0">Physio-Orakel</p>
+        <canvas id="radCanvas" aria-hidden="true" style="display: block; width: 104px; height: 104px; margin-top: 22px"></canvas>
+      </div>
+      <div style="display: grid; gap: 18px; max-width: 74ch">
+        <p style="font-size: 14px; line-height: 24px; margin: 0; color: color-mix(in srgb, var(--color-text) 76%, transparent)">Das Physio-Orakel ist ein privates, nicht-kommerzielles Lernprojekt eines Studenten. Es handelt sich nicht um ein offizielles Angebot der Semmelweis Universität Budapest und steht in keinerlei institutioneller Verbindung zur Universität, deren Instituten oder Lehrpersonal. Inhalte, Darstellungen und Ergebnisse spiegeln nicht die Positionen der Universität wider.</p>
+        <p style="font-size: 14px; line-height: 24px; margin: 0; color: color-mix(in srgb, var(--color-text) 76%, transparent)">Sämtliche Fragen und Erklärungen werden von einer künstlichen Intelligenz (Claude, Anthropic) generiert und sind nicht von Fachpersonal geprüft. Die Antworten können inhaltliche Fehler, Ungenauigkeiten oder veraltete Informationen enthalten. Das Physio-Orakel ersetzt weder Vorlesungen, Lehrbücher noch sonstige geprüfte Lehrmaterialien und stellt keine akademische Beratung dar.</p>
+        <p style="font-size: 14px; line-height: 24px; margin: 0; color: color-mix(in srgb, var(--color-text) 76%, transparent)">Die Inhalte wurden unter Verwendung des Vorlesungsstoffs sowie gängiger Lehrbücher in eigenen Worten neu verfasst und nach Themenkatalog gegliedert. Vorlesungsfolien, Skripten und Prüfungsunterlagen der Universität werden weder vervielfältigt noch weitergegeben. Die Fragen basieren auf aus dem Gedächtnis rekonstruierten Inhalten. Sollten Rechteinhaber dennoch eine Verletzung ihrer Rechte sehen, genügt eine formlose Nachricht an [Mail] — beanstandete Inhalte werden umgehend entfernt.</p>
+        <p style="font-size: 14px; line-height: 24px; margin: 0; color: color-mix(in srgb, var(--color-text) 76%, transparent)">Es wird keine Gewähr für Aktualität, Vollständigkeit, Richtigkeit oder Prüfungsrelevanz übernommen. Änderungen im Curriculum oder in der Prüfungsgestaltung werden nicht automatisch abgebildet.</p>
+        <p style="font-size: 14px; line-height: 24px; margin: 0; color: color-mix(in srgb, var(--color-text) 76%, transparent)">Die bereitgestellten Inhalte dienen ausschließlich Lernzwecken und stellen keinen medizinischen Rat dar. Informationen aus dem Physio-Orakel dürfen nicht zur Diagnostik, Therapie oder Beratung von Patientinnen und Patienten herangezogen werden.</p>
+        <p style="font-size: 14px; line-height: 24px; margin: 0; color: color-mix(in srgb, var(--color-text) 76%, transparent)">Die Nutzung erfolgt auf eigene Verantwortung. Ich übernehme keine Haftung für Schäden, die aus der Nutzung oder dem Vertrauen auf die bereitgestellten Inhalte entstehen — einschließlich, aber nicht beschränkt auf, Prüfungsergebnisse oder akademische Konsequenzen.</p>
+      </div>
+    </div>
+  </section>
+
+  <div style="max-width: 1240px; margin: 0 auto; padding: clamp(36px, 5vw, 56px) clamp(20px, 5vw, 72px) 56px">
+    <div style="border-top: 2px solid var(--color-divider); padding-top: 20px; display: flex; gap: 12px 28px; flex-wrap: wrap; justify-content: space-between">
+      <p style="font-size: 13px; line-height: 22px; color: color-mix(in srgb, var(--color-text) 65%, transparent); margin: 0">
+        Nephron.at — Estimated 2025. Privates Lernprojekt, Semmelweis Budapest.
+      </p>
+      <p style="font-size: 13px; line-height: 22px; margin: 0"><a href="#disclaimer">Disclaimer</a></p>
     </div>
   </div>
 
-  <div class="quick-cta">
-    <div class="quick-cta-meta">Direkt zum Tool</div>
-    <div>
-      <a href="/app/" class="quick-cta-btn">Physio-Orakel öffnen</a>
-    </div>
-  </div>
-</main>
+</div>
 
-<footer>
-  <div>◢ Nephron.at — Budapest · Innsbruck</div>
-  <div>Weitere Projekte in Arbeit</div>
-</footer>
+<script>
+/* ═══════════════════════════════════════════════════════════════════════════
+   Motion Graphics — vier Canvases, eine gemeinsame rAF-Schleife.
+   Alles rein additiv: das Markup steht ohne JS, die Schleife startet erst
+   nach dem Laden. prefers-reduced-motion → ein einzelnes Standbild.
+   ═══════════════════════════════════════════════════════════════════════════ */
+(function () {
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var accent = getComputedStyle(document.documentElement).getPropertyValue('--color-accent').trim() || '#ec3013';
+
+  var TRACE_SPEED = 0.85, PARTICLE_COUNT = 190, START_BPM = 124, END_BPM = 58;
+  var AUTO_FIRE = true, SHOW_CHANNELS = true;
+
+  var el = {
+    hero: document.getElementById('heroCanvas'),
+    filter: document.getElementById('filterCanvas'),
+    ecg: document.getElementById('ecgCanvas'),
+    rad: document.getElementById('radCanvas'),
+    vm: document.getElementById('vmValue'),
+    bpm: document.getElementById('bpmValue')
+  };
+
+  var t = 0, frameDt = 1 / 60, last = 0, raf = null;
+  var spikes = [], nextAuto = 1.0;
+  var dims = {}, parts = null, lanes = 0;
+  var vis = { hero: true, filter: false, ecg: false, rad: false };
+
+  function fit(cv) {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var r = cv.getBoundingClientRect();
+    if (!r.width || !r.height) return null;
+    cv.width = Math.round(r.width * dpr);
+    cv.height = Math.round(r.height * dpr);
+    var ctx = cv.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { ctx: ctx, w: r.width, h: r.height };
+  }
+
+  /* ── 1. Aktionspotential ─────────────────────────────────────────────── */
+  function vmAt(tt) {
+    var v = -70 + Math.sin(tt * 7.3) * 0.5 + Math.sin(tt * 2.1) * 0.4;
+    for (var i = 0; i < spikes.length; i++) {
+      var s = spikes[i], dt = tt - s.t0;
+      if (dt < 0 || dt > 1.5) continue;
+      if (s.amp < 15) v += s.amp * Math.exp(-dt * 5.5) * (1 - Math.exp(-dt * 40));
+      else if (dt < 0.09) v += 110 * Math.pow(dt / 0.09, 1.7);
+      else if (dt < 0.3) v += 110 - 122 * Math.pow((dt - 0.09) / 0.21, 0.8);
+      else if (dt < 1.1) v += -12 + 12 * (dt - 0.3) / 0.8;
+    }
+    return v;
+  }
+
+  function livePhase() {
+    var phase = null;
+    for (var i = 0; i < spikes.length; i++) {
+      var dt = t - spikes[i].t0;
+      if (spikes[i].amp >= 15 && dt >= 0 && dt < 1.1) phase = dt;
+    }
+    return phase;
+  }
+
+  function drawHero() {
+    var cv = el.hero; if (!cv) return;
+    var d = dims.hero || (dims.hero = fit(cv)); if (!d) return;
+    var ctx = d.ctx, w = d.w, h = d.h;
+    var showCh = SHOW_CHANNELS && w > 420;
+    var traceH = showCh ? h * 0.6 : h - 34;
+    var windowS = 3.0;
+
+    ctx.clearRect(0, 0, w, h);
+    var vTop = 48, vBot = -92;
+    var y = function (mv) { return 10 + (vTop - mv) / (vTop - vBot) * (traceH - 20); };
+
+    ctx.lineWidth = 1;
+    ctx.font = "500 10px Archivo, system-ui, sans-serif";
+    var lines = [[0, '0'], [-55, 'Schwelle −55'], [-70, '−70']];
+    for (var li = 0; li < lines.length; li++) {
+      var mv = lines[li][0], label = lines[li][1];
+      var yy = Math.round(y(mv)) + 0.5;
+      ctx.strokeStyle = mv === -55 ? 'rgba(236,48,19,0.45)' : 'rgba(32,30,29,0.16)';
+      ctx.setLineDash(mv === -55 ? [4, 4] : []);
+      ctx.beginPath(); ctx.moveTo(0, yy); ctx.lineTo(w, yy); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = mv === -55 ? 'rgba(174,24,0,0.9)' : 'rgba(32,30,29,0.72)';
+      ctx.fillText(label, 2, yy - 5);
+    }
+
+    ctx.strokeStyle = accent; ctx.lineWidth = 2; ctx.lineJoin = 'round';
+    ctx.beginPath();
+    var step = Math.max(1, Math.round(w / 480));
+    for (var px = 0; px <= w; px += step) {
+      var tt = t - windowS * (1 - px / w);
+      var yv = y(vmAt(tt));
+      if (px === 0) ctx.moveTo(px, yv); else ctx.lineTo(px, yv);
+    }
+    ctx.stroke();
+
+    var vNow = vmAt(t);
+    ctx.fillStyle = accent;
+    ctx.fillRect(w - 5, y(vNow) - 2.5, 5, 5);
+    if (el.vm) {
+      var txt = (vNow >= 0 ? '+' : '−') + Math.abs(vNow).toFixed(0) + ' mV';
+      if (el.vm.textContent !== txt) el.vm.textContent = txt;
+    }
+    if (!showCh) return;
+
+    /* Membranstreifen — der laute Teil: Ionenströme */
+    var mTop = traceH + 10;
+    var mH = h - mTop - 26;
+    var mid = mTop + mH / 2;
+    var memTop = mid - mH * 0.2, memBot = mid + mH * 0.2;
+    var phase = livePhase();
+
+    var naLoad = phase === null ? 0 : Math.max(0, Math.min(1, phase < 0.12 ? phase / 0.12 : Math.exp(-(phase - 0.12) * 3.2)));
+    ctx.fillStyle = 'rgba(236,48,19,' + (0.05 + naLoad * 0.14).toFixed(3) + ')';
+    ctx.fillRect(0, memBot, w, h - memBot - 18);
+    ctx.fillStyle = 'rgba(32,30,29,0.035)';
+    ctx.fillRect(0, mTop - 6, w, memTop - mTop + 6);
+
+    ctx.fillStyle = 'rgba(32,30,29,0.5)';
+    ctx.fillRect(0, Math.round(memTop), w, 1.5);
+    ctx.fillRect(0, Math.round(memBot), w, 1.5);
+
+    var n = Math.max(4, Math.floor(w / 108));
+    var gap = w / n;
+    for (var i = 0; i < n; i++) {
+      var cx = gap * (i + 0.5);
+      var isNa = i % 2 === 0;
+      var open = phase !== null && (isNa ? phase < 0.14 : phase > 0.08 && phase < 0.46);
+      ctx.fillStyle = open ? accent : 'rgba(32,30,29,0.2)';
+      var gw = open ? 11 : 4;
+      ctx.fillRect(cx - gw / 2, memTop - 2, gw, memBot - memTop + 4);
+      if (open) {
+        ctx.fillStyle = 'rgba(236,48,19,0.18)';
+        ctx.fillRect(cx - gw / 2 - 4, memTop - 2, gw + 8, memBot - memTop + 4);
+      }
+      ctx.fillStyle = open ? 'rgba(174,24,0,0.95)' : 'rgba(32,30,29,0.72)';
+      ctx.font = "600 10px Archivo, system-ui, sans-serif";
+      ctx.fillText(isNa ? 'Na⁺' : 'K⁺', cx - 8, h - 8);
+
+      if (phase === null) continue;
+      var win = isNa ? [0, 0.42] : [0.08, 0.78];
+      if (phase < win[0] || phase > win[1]) continue;
+      var trav = (phase - win[0]) / (win[1] - win[0]);
+      var y0 = isNa ? mid - mH * 0.52 : mid + mH * 0.52;
+      var y1 = isNa ? mid + mH * 0.52 : mid - mH * 0.52;
+      for (var k = 0; k < 6; k++) {
+        var p = trav * 1.35 - k * 0.13;
+        if (p <= 0 || p >= 1) continue;
+        var yy2 = y0 + (y1 - y0) * p;
+        var xx = cx + Math.sin((p * 3.1 + k) * 2.2) * (isNa ? 3.4 : 2.4);
+        var fade = Math.min(1, (1 - Math.abs(p - 0.5) * 1.2));
+        ctx.fillStyle = isNa
+          ? 'rgba(236,48,19,' + (0.35 + fade * 0.6).toFixed(2) + ')'
+          : 'rgba(32,30,29,' + (0.25 + fade * 0.5).toFixed(2) + ')';
+        var sz = isNa ? 5 : 4;
+        ctx.fillRect(xx - sz / 2, yy2 - sz / 2, sz, sz);
+        ctx.fillStyle = isNa ? 'rgba(236,48,19,0.16)' : 'rgba(32,30,29,0.12)';
+        ctx.fillRect(xx - sz / 4, yy2 - (y1 - y0) * 0.035 - sz / 2, sz / 2, Math.abs((y1 - y0) * 0.035));
+      }
+      var ay = isNa ? memBot + 9 : memTop - 9;
+      var dir = isNa ? 1 : -1;
+      ctx.fillStyle = isNa ? 'rgba(236,48,19,0.7)' : 'rgba(32,30,29,0.5)';
+      ctx.beginPath();
+      ctx.moveTo(cx, ay + 4 * dir); ctx.lineTo(cx - 4, ay - 2 * dir); ctx.lineTo(cx + 4, ay - 2 * dir);
+      ctx.closePath(); ctx.fill();
+    }
+  }
+
+  /* ── 2. Filtration ───────────────────────────────────────────────────── */
+  function seed(w, h) {
+    var target = Math.round(PARTICLE_COUNT * Math.max(0.7, Math.min(1.5, w / 760)));
+    lanes = Math.max(4, Math.floor((h * 0.46) / 15));
+    var out = [];
+    for (var i = 0; i < target; i++) {
+      var passes = Math.random() > 0.42;
+      out.push({
+        x: Math.random() * w, lane: Math.floor(Math.random() * lanes),
+        yj: (Math.random() - 0.5) * h * 0.6,
+        v: 34 + Math.random() * 80,
+        s: passes ? 3 + Math.random() * 2 : 5 + Math.random() * 4.5,
+        passes: passes, wob: Math.random() * 6.28, stuck: 0
+      });
+    }
+    return out;
+  }
+
+  function drawFilter() {
+    var cv = el.filter; if (!cv) return;
+    var d = dims.filter || (dims.filter = fit(cv)); if (!d) return;
+    var ctx = d.ctx, w = d.w, h = d.h;
+    if (!parts) parts = seed(w, h);
+    var bx = w * 0.42, midY = h / 2, dt = frameDt;
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = 'rgba(32,30,29,0.18)';
+    for (var yy = 6; yy < h - 6; yy += 9) ctx.fillRect(bx, yy, 2, 5);
+
+    ctx.strokeStyle = 'rgba(32,30,29,0.07)';
+    ctx.lineWidth = 1;
+    for (var i = 0; i < lanes; i++) {
+      var ly = Math.round(midY - (lanes - 1) * 7.5 + i * 15) + 0.5;
+      ctx.beginPath(); ctx.moveTo(bx + 14, ly); ctx.lineTo(w, ly); ctx.stroke();
+    }
+
+    for (var pi = 0; pi < parts.length; pi++) {
+      var p = parts[pi];
+      if (!reduced) {
+        if (p.stuck) {
+          p.stuck -= dt;
+          p.yj += dt * 22 * (p.wob > 3.14 ? 1 : -1);
+          if (p.stuck <= 0) respawn(p, w, h);
+        } else {
+          p.x += p.v * dt;
+          if (!p.passes && p.x > bx - 3) { p.x = bx - 3; p.stuck = 1.5 + Math.random(); }
+          if (p.x > w + 18) respawn(p, w, h);
+        }
+      }
+      var chaos = midY + p.yj + Math.sin(t * 1.6 + p.wob) * 6;
+      var py;
+      if (p.x < bx - 44) py = chaos;
+      else if (p.x < bx) {
+        var k = (p.x - (bx - 44)) / 44;
+        var laneY = midY - (lanes - 1) * 7.5 + p.lane * 15;
+        py = p.passes ? chaos + (laneY - chaos) * (1 - Math.pow(1 - k, 3)) : chaos;
+      } else py = midY - (lanes - 1) * 7.5 + p.lane * 15;
+      ctx.fillStyle = p.passes && p.x > bx ? accent : 'rgba(32,30,29,0.28)';
+      ctx.fillRect(Math.round(p.x), Math.round(py - p.s / 2), p.s, p.s);
+    }
+
+    ctx.font = "600 10.5px Archivo, system-ui, sans-serif";
+    ctx.fillStyle = 'rgba(32,30,29,0.72)';
+    ctx.fillText('ALLES, WAS DIE UNI DIR VORSETZT', 12, h - 18);
+    ctx.fillStyle = 'rgba(174,24,0,0.92)';
+    var rt = 'WAS FÜR DIE PRÜFUNG RELEVANT IST';
+    ctx.fillText(rt, w - ctx.measureText(rt).width - 12, h - 18);
+    ctx.fillStyle = 'rgba(32,30,29,0.72)';
+    ctx.fillText('BARRIERE', bx + 10, 18);
+  }
+
+  function respawn(p, w, h) {
+    p.x = -18 - Math.random() * w * 0.5;
+    p.passes = Math.random() > 0.42;
+    p.s = p.passes ? 3 + Math.random() * 2 : 5 + Math.random() * 4.5;
+    p.yj = (Math.random() - 0.5) * h * 0.6;
+    p.lane = Math.floor(Math.random() * lanes);
+    p.stuck = 0;
+  }
+
+  /* ── 3. Puls ─────────────────────────────────────────────────────────── */
+  function beat(ph) {
+    var g = function (c, wd, a) { return a * Math.exp(-Math.pow((ph - c) / wd, 2)); };
+    return g(0.13, 0.030, 0.10) + g(0.215, 0.008, -0.07) + g(0.245, 0.010, 1.00)
+      + g(0.285, 0.013, -0.24) + g(0.44, 0.055, 0.24);
+  }
+
+  function drawEcg() {
+    var cv = el.ecg; if (!cv) return;
+    var d = dims.ecg || (dims.ecg = fit(cv)); if (!d) return;
+    var ctx = d.ctx, w = d.w, h = d.h;
+
+    /* die Bandposition im Viewport bestimmt die Frequenz: nach unten lesen beruhigt */
+    var r = cv.getBoundingClientRect();
+    var vh = window.innerHeight || 800;
+    var p = Math.max(0, Math.min(1, (vh - r.top) / (vh + r.height)));
+    var bpm = START_BPM + (END_BPM - START_BPM) * (1 - Math.pow(1 - p, 1.7));
+
+    var base = h * 0.66, amp = h * 0.5;
+    var secondsVisible = Math.max(2.4, w / 210);
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.strokeStyle = 'rgba(32,30,29,0.12)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, Math.round(base) + 0.5); ctx.lineTo(w, Math.round(base) + 0.5); ctx.stroke();
+
+    ctx.strokeStyle = accent;
+    ctx.lineWidth = 2; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    ctx.beginPath();
+    var step = w > 900 ? 2 : 1.5;
+    for (var px = 0; px <= w; px += step) {
+      var tSec = (reduced ? 0 : t) + (px / w) * secondsVisible;
+      var y = base - beat((tSec * bpm / 60) % 1) * amp;
+      if (px === 0) ctx.moveTo(px, y); else ctx.lineTo(px, y);
+    }
+    ctx.stroke();
+
+    if (el.bpm) {
+      var txt = Math.round(bpm) + ' bpm';
+      if (el.bpm.textContent !== txt) el.bpm.textContent = txt;
+    }
+  }
+
+  /* ── 4. Strahlenwarnzeichen ──────────────────────────────────────────── */
+  function drawRadiation() {
+    var cv = el.rad; if (!cv) return;
+    var d = dims.rad || (dims.rad = fit(cv)); if (!d) return;
+    var ctx = d.ctx, w = d.w, h = d.h;
+    var R = Math.min(w, h) / 2 - 2;
+    ctx.clearRect(0, 0, w, h);
+    ctx.save();
+    ctx.translate(w / 2, h / 2);
+    ctx.rotate((reduced ? 0 : t) * 0.28);
+    ctx.strokeStyle = 'rgba(32,30,29,0.35)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(0, 0, R, 0, Math.PI * 2); ctx.stroke();
+    ctx.fillStyle = accent;
+    for (var i = 0; i < 3; i++) {
+      var a0 = (i * 120 - 30) * Math.PI / 180;
+      var a1 = (i * 120 + 30) * Math.PI / 180;
+      ctx.beginPath();
+      ctx.arc(0, 0, R * 0.9, a0, a1);
+      ctx.arc(0, 0, R * 0.32, a1, a0, true);
+      ctx.closePath(); ctx.fill();
+    }
+    ctx.beginPath(); ctx.arc(0, 0, R * 0.17, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+  }
+
+  /* ── Schleife + Sichtbarkeit ─────────────────────────────────────────── */
+  function paintOne(which, forced) {
+    if (!forced && !vis[which]) return;
+    if (which === 'hero') drawHero();
+    else if (which === 'filter') drawFilter();
+    else if (which === 'ecg') drawEcg();
+    else drawRadiation();
+  }
+  function paint(forced) {
+    paintOne('hero', forced); paintOne('filter', forced);
+    paintOne('ecg', forced); paintOne('rad', forced);
+  }
+
+  function loop(now) {
+    var dt = Math.min((now - last) / 1000, 0.05);
+    last = now;
+    frameDt = dt * TRACE_SPEED;
+    t += frameDt;
+    if (AUTO_FIRE && t > nextAuto) {
+      spikes.push({ t0: t, amp: 20 });
+      nextAuto = t + 3.0;
+    }
+    spikes = spikes.filter(function (s) { return t - s.t0 < 6; });
+    paint(false);
+    raf = requestAnimationFrame(loop);
+  }
+
+  window.orakelFire = function (mv) {
+    spikes.push({ t0: t, amp: mv });
+    if (reduced) { paintOne('hero', true); return; }
+    nextAuto = t + 3.4;
+  };
+
+  window.addEventListener('resize', function () {
+    dims = {}; parts = null; paint(true);
+  }, { passive: true });
+
+  var map = [[el.hero, 'hero'], [el.filter, 'filter'], [el.ecg, 'ecg'], [el.rad, 'rad']];
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        for (var i = 0; i < map.length; i++) {
+          if (map[i][0] === e.target) {
+            vis[map[i][1]] = e.isIntersecting;
+            if (e.isIntersecting) paintOne(map[i][1], true);
+          }
+        }
+      });
+    }, { rootMargin: '140px' });
+    map.forEach(function (m) { if (m[0]) io.observe(m[0]); });
+  } else {
+    vis = { hero: true, filter: true, ecg: true, rad: true };
+  }
+
+  paint(true);
+  if (!reduced) { last = performance.now(); raf = requestAnimationFrame(loop); }
+})();
+
+/* Bad Bunny — Original ⇄ Übersetzung */
+(function () {
+  var de = false;
+  var ES = '„Antes del Physio-Orakel: cero aura. Después: aura ilimitada. Mi potencial de membrana nunca estuvo tan estable.“';
+  var DE = '„Vor dem Physio-Orakel: null Aura. Danach: unbegrenzte Aura. Mein Membranpotential war nie stabiler.“';
+  window.orakelToggleBb = function () {
+    de = !de;
+    document.getElementById('bbQuote').textContent = de ? DE : ES;
+    document.getElementById('bbToggle').textContent = de ? 'Original anzeigen' : 'Übersetzen';
+  };
+})();
+</script>
 
 </body>
 </html>
