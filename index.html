@@ -26,6 +26,7 @@
   --radius-md: 0px;
 }
 *, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0; background: var(--color-bg); color: var(--color-text);
   font-family: var(--font-body); font-size: 15px; line-height: 1.55; font-weight: 400;
@@ -35,7 +36,7 @@ h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: 800; line-height
 img { display: block; max-width: 100%; }
 figure { margin: 0; }
 a { color: var(--color-accent-700); text-decoration: none; text-underline-offset: 3px; }
-a:hover { color: var(--color-accent); text-decoration: underline; }
+@media (hover: hover) { a:hover { color: var(--color-accent); text-decoration: underline; } }
 :focus { outline: none; }
 *:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
 ::selection { background: color-mix(in srgb, var(--color-accent) 30%, transparent); }
@@ -54,9 +55,9 @@ a:hover { color: var(--color-accent); text-decoration: underline; }
 .btn-primary:hover { background: var(--color-accent-600); color: var(--color-bg); text-decoration: none; }
 .btn-primary:active { background: var(--color-accent-700); }
 .btn-secondary { border-color: var(--color-divider); }
-.btn-secondary:hover { background: color-mix(in srgb, var(--color-text) 7%, transparent); color: var(--color-text); text-decoration: none; }
+@media (hover: hover) { .btn-secondary:hover { background: color-mix(in srgb, var(--color-text) 7%, transparent); color: var(--color-text); text-decoration: none; } }
 .btn-ghost { color: var(--color-accent); padding-inline: var(--space-1); }
-.btn-ghost:hover { background: color-mix(in srgb, var(--color-accent) 10%, transparent); text-decoration: none; }
+@media (hover: hover) { .btn-ghost:hover { background: color-mix(in srgb, var(--color-accent) 10%, transparent); text-decoration: none; } }
 
 /* ── Nav ───────────────────────────────────────────────────────────────── */
 .nav {
@@ -78,8 +79,41 @@ a:hover { color: var(--color-accent); text-decoration: underline; }
 .cta-pulse { animation: ctaBreathe 3.6s ease-in-out infinite; will-change: transform; }
 @media (prefers-reduced-motion: reduce) { .cta-pulse { animation: none; } }
 
-/* Handy: der Textlink fällt weg, der Accent-Button bleibt */
-@media (max-width: 700px) { .nav a:not(.btn-primary) { display: none; } }
+/* ── Zweispalter ───────────────────────────────────────────────────────── */
+.split { display: grid; align-items: start; }
+.split-4-8 { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 20px clamp(24px, 5vw, 72px); }
+.split-5-7 { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px clamp(24px, 5vw, 80px); }
+
+/* ── Sprungmarken-Zeile fürs Telefon ───────────────────────────────────── */
+.nav-mobile { display: none; }
+
+/* ── Handy ─────────────────────────────────────────────────────────────── */
+/* Der Textlink in der Kopfzeile fällt weg, der Accent-Button bleibt;
+   die Sprungmarken wandern in die eigene Zeile darunter. */
+@media (max-width: 700px) {
+  .nav a:not(.btn-primary) { display: none; }
+  .nav-mobile {
+    display: flex; flex-wrap: wrap; gap: 8px 18px;
+    padding: 11px clamp(20px, 5vw, 72px) 13px;
+    border-bottom: 2px solid var(--color-divider);
+  }
+  .nav-mobile a {
+    font-size: 13.5px; line-height: 20px; white-space: nowrap;
+    color: var(--color-text); text-decoration: none;
+  }
+  .nav-mobile a:active { color: var(--color-accent); }
+  /* eine Spalte — sonst quetscht sich die Überschrift auf 110px */
+  .split-4-8, .split-5-7 { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  /* Fingerkuppe statt Mauszeiger: mindestens 44px hohe Schaltflächen */
+  .btn { padding: 12px 16px; min-height: 44px; }
+  .btn-mini { padding: 11px 14px; font-size: 13px; }
+  .btn-ghost.btn-mini { padding-inline: 10px; }
+  .nav a.btn-primary { min-height: 40px; }
+}
+@media (min-width: 701px) {
+  .btn-mini { font-size: 12px; padding: 6px 10px; }
+  .btn-ghost.btn-mini { padding: 5px 9px; }
+}
 @media (max-width: 620px) {
   .brand-indep { display: none; }
   .nav a.btn-primary { font-size: 13px; }
@@ -112,6 +146,15 @@ a:hover { color: var(--color-accent); text-decoration: underline; }
     </span>
   </nav>
 
+  <!-- Handy: die Sprungmarken bekommen eine eigene Zeile statt zu verschwinden -->
+  <nav class="nav-mobile" aria-label="Abschnitte">
+    <a href="#system">Wie es funktioniert</a>
+    <a href="#gratis">Warum gratis</a>
+    <a href="#rueckkopplung">Rückkopplung</a>
+    <a href="#ueber">Über mich</a>
+    <a href="#disclaimer">Disclaimer</a>
+  </nav>
+
   <section style="max-width: 1240px; margin: 0 auto; padding: clamp(28px, 5vw, 60px) clamp(20px, 5vw, 72px) 0">
     <h1 style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(34px, 5vw, 64px); line-height: 1.04; letter-spacing: -0.03em; margin: 0 0 0 -0.058em; max-width: 24ch">
       <span style="display: block">Das dritte Semester kommt,</span>
@@ -135,14 +178,14 @@ a:hover { color: var(--color-accent); text-decoration: underline; }
       </div>
     </div>
     <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 12px">
-      <button type="button" class="btn btn-secondary" onclick="orakelFire(20)" style="font-size: 12px; padding: 6px 10px">Reiz 20 mV</button>
-      <button type="button" class="btn btn-ghost" onclick="orakelFire(8)" style="font-size: 12px; padding: 6px 10px">Nur 8 mV</button>
+      <button type="button" class="btn btn-secondary btn-mini" onclick="orakelFire(20)">Reiz 20 mV</button>
+      <button type="button" class="btn btn-ghost btn-mini" onclick="orakelFire(8)">Nur 8 mV</button>
     </div>
   </section>
 
   <section id="system" style="background: var(--color-neutral-100); border-top: 2px solid var(--color-divider); border-bottom: 2px solid var(--color-divider); margin-top: clamp(48px, 7vw, 96px); scroll-margin-top: 80px">
    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(44px, 6vw, 80px) clamp(20px, 5vw, 72px)">
-    <div style="display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 20px clamp(24px, 5vw, 72px); align-items: start">
+    <div class="split split-4-8">
       <div>
         <h2 style="font-size: clamp(24px, 2.9vw, 34px); line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 10px">Wie das Physio-Orakel funktioniert</h2>
         <p style="font-size: 12px; line-height: 18px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); margin: 0">Nach Themenkatalogpunkt, nicht nach Vorlesung</p>
@@ -168,7 +211,7 @@ a:hover { color: var(--color-accent); text-decoration: underline; }
 
   <section id="gratis" style="background: var(--color-accent-100); border-bottom: 2px solid var(--color-divider); scroll-margin-top: 80px">
    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(44px, 6vw, 80px) clamp(20px, 5vw, 72px)">
-    <div style="display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 20px clamp(24px, 5vw, 72px); align-items: start">
+    <div class="split split-4-8">
       <div>
         <h2 style="font-size: clamp(24px, 2.9vw, 34px); line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 10px">Warum das Projekt gratis ist</h2>
         <p style="font-size: 12px; line-height: 18px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); margin: 0">Schwestern und Brüder der Medizin: Gönnt euch</p>
@@ -253,7 +296,7 @@ a:hover { color: var(--color-accent); text-decoration: underline; }
           <span style="display: block; width: 10px; height: 10px; background: var(--color-accent); flex: none; align-self: center"></span>
           <span style="font-family: var(--font-heading); font-weight: 800; font-size: 17px; line-height: 22px; letter-spacing: -0.01em">Bad Bunny</span>
           <span style="font-size: 13px; line-height: 20px; color: color-mix(in srgb, var(--color-text) 74%, transparent)">Assistenzarzt, Grand Prix Monaco</span>
-          <button type="button" id="bbToggle" class="btn btn-ghost" onclick="orakelToggleBb()" style="font-size: 12px; padding: 5px 9px">Übersetzen</button>
+          <button type="button" id="bbToggle" class="btn btn-ghost btn-mini" onclick="orakelToggleBb()">Übersetzen</button>
         </figcaption>
       </div>
     </figure>
@@ -287,7 +330,7 @@ a:hover { color: var(--color-accent); text-decoration: underline; }
 
   <section id="ueber" style="background: var(--color-accent-100); border-bottom: 2px solid var(--color-divider); scroll-margin-top: 80px">
    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(44px, 6vw, 76px) clamp(20px, 5vw, 72px)">
-    <div style="display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px clamp(24px, 5vw, 80px); align-items: start">
+    <div class="split split-5-7">
       <h2 style="font-size: clamp(26px, 3.2vw, 38px); line-height: 1.08; letter-spacing: -0.02em; margin: 0">Über mich</h2>
       <div>
         <p style="font-size: 17px; line-height: 29px; margin: 0; max-width: 56ch">
@@ -300,7 +343,7 @@ a:hover { color: var(--color-accent); text-decoration: underline; }
   </section>
 
   <section id="disclaimer" style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 7vw, 88px) clamp(20px, 5vw, 72px) 0; scroll-margin-top: 80px">
-    <div style="border-top: 2px solid var(--color-divider); padding-top: 30px; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px clamp(24px, 5vw, 80px); align-items: start">
+    <div class="split split-5-7" style="border-top: 2px solid var(--color-divider); padding-top: 30px">
       <div>
         <h2 style="font-size: clamp(22px, 2.6vw, 30px); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 10px">Disclaimer</h2>
         <p style="font-size: 12px; line-height: 18px; letter-spacing: 0.08em; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 72%, transparent); margin: 0">Physio-Orakel</p>
@@ -558,12 +601,22 @@ a:hover { color: var(--color-accent); text-decoration: underline; }
       ctx.fillRect(Math.round(p.x), Math.round(py - p.s / 2), p.s, p.s);
     }
 
-    ctx.font = "600 10.5px Archivo, system-ui, sans-serif";
-    ctx.fillStyle = 'rgba(32,30,29,0.72)';
-    ctx.fillText('ALLES, WAS DIE UNI DIR VORSETZT', 12, h - 18);
-    ctx.fillStyle = 'rgba(174,24,0,0.92)';
+    // Die beiden Randbeschriftungen stoßen auf schmalen Displays zusammen:
+    // erst kleiner setzen, und wenn das nicht reicht, untereinander.
+    var lt = 'ALLES, WAS DIE UNI DIR VORSETZT';
     var rt = 'WAS FÜR DIE PRÜFUNG RELEVANT IST';
-    ctx.fillText(rt, w - ctx.measureText(rt).width - 12, h - 18);
+    var size = 10.5;
+    var widths = function () {
+      ctx.font = "600 " + size + "px Archivo, system-ui, sans-serif";
+      return ctx.measureText(lt).width + ctx.measureText(rt).width;
+    };
+    if (widths() + 36 > w) { size = 9; }
+    var stacked = widths() + 36 > w;
+    ctx.font = "600 " + size + "px Archivo, system-ui, sans-serif";
+    ctx.fillStyle = 'rgba(32,30,29,0.72)';
+    ctx.fillText(lt, 12, h - 18);
+    ctx.fillStyle = 'rgba(174,24,0,0.92)';
+    ctx.fillText(rt, w - ctx.measureText(rt).width - 12, stacked ? h - 32 : h - 18);
     ctx.fillStyle = 'rgba(32,30,29,0.72)';
     ctx.fillText('BARRIERE', bx + 10, 18);
   }
