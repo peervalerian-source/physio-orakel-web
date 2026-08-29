@@ -18,3 +18,12 @@ wrangler.toml
 
 # macOS
 .DS_Store
+
+# Altfragenpool — liegt in KV, nicht im Repo. Lokal existiert die Datei aber
+# noch; ohne diesen Eintrag lädt ein lokales `wrangler deploy` sie als
+# öffentliches Asset hoch (der Cloud-Build sieht sie nicht, weil gitignored).
+pool-import.txt
+
+# Node/Logs, falls lokal vorhanden
+node_modules/
+*.log
