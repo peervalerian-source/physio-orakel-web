@@ -597,9 +597,7 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
     <p id="homeRankLine">Noch nicht angemeldet.</p>
   </div>
   <div style="max-width:1100px;margin:0 auto;padding:0 clamp(16px,4vw,56px) 40px;display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap">
-    <button type="button" class="btn-link" onclick="openWtAdmin()">admin · material</button>
-    <button type="button" class="btn-link" onclick="openPoolAdmin()">admin · altfragenpool</button>
-    <button type="button" class="btn-link" onclick="openCodeAdmin()">admin · einmalcodes</button>
+    <button type="button" class="btn-link" onclick="openAdmin()">admin</button>
   </div>
 </div>
 
@@ -1022,83 +1020,79 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
   </div>
 </div>
 
-<!-- ══ Admin: Altfragenpool ═══════════════════════════════════════════════ -->
-<div class="key-overlay" id="poolAdminOverlay">
-  <div class="key-backdrop" onclick="closePoolAdmin()"></div>
-  <div class="key-panel" style="max-width:560px">
-    <button type="button" class="modal-close" onclick="closePoolAdmin()" title="Schließen">✕</button>
+<!-- ══ Admin ═══════════════════════════════════════════════════════════════
+     Ein Fenster, drei Bereiche. Der Admin-Key steht oben und gilt fuer alle.
+     ══════════════════════════════════════════════════════════════════════ -->
+<div class="key-overlay" id="adminOverlay">
+  <div class="key-backdrop" onclick="closeAdmin()"></div>
+  <div class="key-panel" style="max-width:580px">
+    <button type="button" class="modal-close" onclick="closeAdmin()" title="Schließen">✕</button>
     <span class="kicker">Admin</span>
-    <div class="key-panel-title">Altfragenpool verwalten</div>
-    <div class="key-panel-sub">Zwei getrennte Bestände — der Upload ersetzt jeweils nur den gewählten.</div>
-    <div style="display:grid;gap:10px;margin-top:14px">
-      <input class="input" type="password" id="poolAdminKeyInput" placeholder="Admin-Key" autocomplete="off">
-      <div>
-        <span class="seg-label">Ziel</span>
-        <div class="seg seg-text" id="poolTargetSeg">
-          <button type="button" data-target="allgemein" class="on" onclick="setPoolTarget('allgemein')">Physiologie allgemein</button>
-          <button type="button" data-target="wochentest" onclick="setPoolTarget('wochentest')">Wochentest</button>
+    <div class="key-panel-title">Verwaltung</div>
+    <input class="input" type="password" id="adminKeyInput" placeholder="Admin-Key" autocomplete="off" style="margin-top:14px">
+
+    <div class="seg seg-text" id="adminTabs" style="margin-top:14px;width:100%">
+      <button type="button" data-tab="pool" class="on" onclick="setAdminTab('pool')">Altfragen</button>
+      <button type="button" data-tab="wt" onclick="setAdminTab('wt')">Material</button>
+      <button type="button" data-tab="codes" onclick="setAdminTab('codes')">Codes</button>
+    </div>
+
+    <!-- Altfragenpool -->
+    <div class="admin-panel" id="adminPanelPool" style="margin-top:16px">
+      <div class="key-panel-sub" style="margin-top:0">Zwei getrennte Bestände — der Upload ersetzt nur den gewählten.</div>
+      <div style="display:grid;gap:10px;margin-top:12px">
+        <div>
+          <span class="seg-label">Ziel</span>
+          <div class="seg seg-text" id="poolTargetSeg">
+            <button type="button" data-target="allgemein" class="on" onclick="setPoolTarget('allgemein')">Physiologie allgemein</button>
+            <button type="button" data-target="wochentest" onclick="setPoolTarget('wochentest')">Wochentest</button>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+          <label style="font-size:12px;color:var(--app-mute)">Altfragen einfügen oder Datei laden</label>
+          <label class="btn btn-secondary btn-sm" style="cursor:pointer">Datei wählen<input type="file" id="poolAdminFileInput" accept=".txt,.md,.pdf" style="display:none"></label>
+        </div>
+        <textarea class="input" id="poolTextInput" placeholder="Altfragen hier einfügen…"></textarea>
+      </div>
+      <div id="poolAdminStatus" style="font-size:13px;color:var(--app-mute);margin:12px 0"></div>
+      <div style="display:flex;gap:10px;justify-content:flex-end">
+        <button type="button" class="btn btn-primary" onclick="uploadPool()" id="poolUploadBtn">Hochladen</button>
+      </div>
+    </div>
+
+    <!-- Wochentest-Material -->
+    <div class="admin-panel" id="adminPanelWt" style="display:none;margin-top:16px">
+      <div class="key-panel-sub" style="margin-top:0">VO-Transkript für den kommenden Wochentest.</div>
+      <div style="display:grid;gap:10px;margin-top:12px">
+        <input class="input" type="text" id="wtTitleInput" placeholder="Titel (optional), z. B. Woche 5 — Herz-Kreislauf">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+          <label style="font-size:12px;color:var(--app-mute)">Transkript einfügen oder Datei laden</label>
+          <label class="btn btn-secondary btn-sm" style="cursor:pointer">Datei wählen<input type="file" id="wtAdminFileInput" accept=".pdf,.txt,.md" style="display:none"></label>
+        </div>
+        <textarea class="input" id="wtTranscriptInput" placeholder="VO-Transkript hier einfügen…"></textarea>
+      </div>
+      <div id="wtAdminStatus" style="font-size:13px;color:var(--app-mute);margin:12px 0"></div>
+      <div style="display:flex;gap:10px;justify-content:flex-end">
+        <button type="button" class="btn btn-primary" onclick="uploadWtTranscript()" id="wtUploadBtn">Hochladen</button>
+      </div>
+    </div>
+
+    <!-- Einmalcodes -->
+    <div class="admin-panel" id="adminPanelCodes" style="display:none;margin-top:16px">
+      <div class="key-panel-sub" style="margin-top:0">Ein Code pro Person. Nach der Registrierung ist er verbraucht.</div>
+      <div style="display:grid;gap:10px;margin-top:12px">
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px">
+          <input class="input" type="text" id="newCodeInput" placeholder="Code, z. B. HIWA-2026" autocomplete="off" spellcheck="false" style="text-transform:uppercase">
+          <input class="input" type="text" id="newCodeNote" placeholder="Notiz (optional)" autocomplete="off">
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button type="button" class="btn btn-primary" onclick="createCode()" id="createCodeBtn">Code anlegen</button>
+          <button type="button" class="btn btn-secondary" onclick="loadCodes()">Liste laden</button>
         </div>
       </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
-        <label style="font-size:12px;color:var(--app-mute)">Altfragen einfügen oder Datei laden</label>
-        <label class="btn btn-secondary btn-sm" style="cursor:pointer">Datei wählen<input type="file" id="poolAdminFileInput" accept=".txt,.md,.pdf" style="display:none"></label>
-      </div>
-      <textarea class="input" id="poolTextInput" placeholder="Altfragen hier einfügen…"></textarea>
+      <div id="codeAdminStatus" style="font-size:13px;color:var(--app-mute);margin:12px 0"></div>
+      <div id="codeList" style="display:grid;gap:8px;max-height:36vh;overflow:auto"></div>
     </div>
-    <div id="poolAdminStatus" style="font-size:13px;color:var(--app-mute);margin:12px 0"></div>
-    <div style="display:flex;gap:10px;justify-content:flex-end">
-      <button type="button" class="btn btn-secondary" onclick="closePoolAdmin()">Abbrechen</button>
-      <button type="button" class="btn btn-primary" onclick="uploadPool()" id="poolUploadBtn">Hochladen</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══ Admin: Wochentest-Material ═════════════════════════════════════════ -->
-<div class="key-overlay" id="wtAdminOverlay">
-  <div class="key-backdrop" onclick="closeWtAdmin()"></div>
-  <div class="key-panel" style="max-width:560px">
-    <button type="button" class="modal-close" onclick="closeWtAdmin()" title="Schließen">✕</button>
-    <span class="kicker">Admin</span>
-    <div class="key-panel-title">Wochentest-Material verwalten</div>
-    <div class="key-panel-sub">VO-Transkript für den kommenden Wochentest</div>
-    <div style="display:grid;gap:10px;margin-top:14px">
-      <input class="input" type="password" id="wtAdminKeyInput" placeholder="Admin-Key" autocomplete="off">
-      <input class="input" type="text" id="wtTitleInput" placeholder="Titel (optional), z. B. Woche 5 — Herz-Kreislauf">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
-        <label style="font-size:12px;color:var(--app-mute)">Transkript einfügen oder Datei laden</label>
-        <label class="btn btn-secondary btn-sm" style="cursor:pointer">Datei wählen<input type="file" id="wtAdminFileInput" accept=".pdf,.txt,.md" style="display:none"></label>
-      </div>
-      <textarea class="input" id="wtTranscriptInput" placeholder="VO-Transkript hier einfügen…"></textarea>
-    </div>
-    <div id="wtAdminStatus" style="font-size:13px;color:var(--app-mute);margin:12px 0"></div>
-    <div style="display:flex;gap:10px;justify-content:flex-end">
-      <button type="button" class="btn btn-secondary" onclick="closeWtAdmin()">Abbrechen</button>
-      <button type="button" class="btn btn-primary" onclick="uploadWtTranscript()" id="wtUploadBtn">Hochladen</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══ Admin: Einmalcodes ═════════════════════════════════════════════════ -->
-<div class="key-overlay" id="codeAdminOverlay">
-  <div class="key-backdrop" onclick="closeCodeAdmin()"></div>
-  <div class="key-panel" style="max-width:560px">
-    <button type="button" class="modal-close" onclick="closeCodeAdmin()" title="Schließen">✕</button>
-    <span class="kicker">Admin</span>
-    <div class="key-panel-title">Einmalcodes</div>
-    <div class="key-panel-sub">Ein Code pro Person. Nach der Registrierung ist er verbraucht.</div>
-    <div style="display:grid;gap:10px;margin-top:14px">
-      <input class="input" type="password" id="codeAdminKeyInput" placeholder="Admin-Key" autocomplete="off">
-      <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px">
-        <input class="input" type="text" id="newCodeInput" placeholder="Code, z. B. HIWA-2026" autocomplete="off" spellcheck="false" style="text-transform:uppercase">
-        <input class="input" type="text" id="newCodeNote" placeholder="Notiz (optional)" autocomplete="off">
-      </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button type="button" class="btn btn-primary" onclick="createCode()" id="createCodeBtn">Code anlegen</button>
-        <button type="button" class="btn btn-secondary" onclick="loadCodes()">Liste laden</button>
-      </div>
-    </div>
-    <div id="codeAdminStatus" style="font-size:13px;color:var(--app-mute);margin:12px 0"></div>
-    <div id="codeList" style="display:grid;gap:8px;max-height:40vh;overflow:auto"></div>
   </div>
 </div>
 
@@ -1239,6 +1233,10 @@ const POOL_META_KEY='physio_orakel_pool_meta';
 const STATS_KEY='physio_orakel_stats';
 const THEME_KEY='physio_orakel_theme';
 const MAX_CONTEXT_CHARS=120000;
+// Wie lange der Ladescreen mindestens steht: beim Poolzug (sofort fertig)
+// und beim KI-Weg, falls die Antwort ungewoehnlich schnell kommt.
+const MIN_LOAD_POOL_MS=8000;
+const MIN_LOAD_API_MS=4500;
 
 // ── State ─────────────────────────────────────────────────────────────────────
 const state={
@@ -1849,14 +1847,42 @@ function drawFromPool(pool,n,evenDistribution){
   }
   return result.sort(()=>Math.random()-0.5);
 }
-// ── Einmalcodes verwalten ────────────────────────────────────────────────────
-function openCodeAdmin(){
-  document.getElementById('codeAdminOverlay').classList.add('active');
-  document.getElementById('codeAdminKeyInput').value=localStorage.getItem(ADMIN_KEY_STORE)||'';
-  document.getElementById('codeAdminStatus').textContent='';
-  if(localStorage.getItem(ADMIN_KEY_STORE))loadCodes();
+// ── Admin: ein Fenster, drei Bereiche ────────────────────────────────────────
+// Der Admin-Key steht einmal oben und gilt fuer alle drei.
+function adminKey(){
+  const el=document.getElementById('adminKeyInput');
+  return el?el.value.trim():'';
 }
-function closeCodeAdmin(){document.getElementById('codeAdminOverlay').classList.remove('active')}
+function openAdmin(tab){
+  const ov=document.getElementById('adminOverlay');
+  if(!ov)return;
+  ov.classList.add('active');
+  const k=document.getElementById('adminKeyInput');
+  if(k&&!k.value)k.value=localStorage.getItem(ADMIN_KEY_STORE)||'';
+  setAdminTab(tab||'pool');
+}
+function closeAdmin(){
+  const ov=document.getElementById('adminOverlay');
+  if(ov)ov.classList.remove('active');
+}
+function setAdminTab(tab){
+  document.querySelectorAll('#adminTabs [data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
+  const map={pool:'adminPanelPool',wt:'adminPanelWt',codes:'adminPanelCodes'};
+  Object.keys(map).forEach(k=>{
+    const el=document.getElementById(map[k]);
+    if(el)el.style.display=k===tab?'block':'none';
+  });
+  if(tab==='pool')setPoolTarget(poolUploadTarget);
+  if(tab==='wt')loadWochentestAdminHint();
+  if(tab==='codes'&&adminKey())loadCodes();
+}
+function loadWochentestAdminHint(){
+  const st=document.getElementById('wtAdminStatus');
+  if(st&&!st.textContent)st.textContent=state.wtText?'Material liegt vor.':'Noch kein Material hinterlegt.';
+}
+// Alte Einstiegspunkte zeigen jetzt auf das gemeinsame Fenster
+function openCodeAdmin(){openAdmin('codes')}
+function closeCodeAdmin(){closeAdmin()}
 function codeAdminStatus(msg,accent){
   const el=document.getElementById('codeAdminStatus');
   if(!el)return;
@@ -1864,7 +1890,7 @@ function codeAdminStatus(msg,accent){
   el.style.color=accent?'var(--app-accent)':'var(--app-mute)';
 }
 async function createCode(){
-  const key=document.getElementById('codeAdminKeyInput').value.trim();
+  const key=adminKey();
   const code=document.getElementById('newCodeInput').value.trim().toUpperCase();
   const note=document.getElementById('newCodeNote').value.trim();
   if(!key){codeAdminStatus('Admin-Key fehlt.',true);return}
@@ -1884,7 +1910,7 @@ async function createCode(){
   btn.disabled=false;
 }
 async function loadCodes(){
-  const key=document.getElementById('codeAdminKeyInput').value.trim();
+  const key=adminKey();
   if(!key){codeAdminStatus('Admin-Key fehlt.',true);return}
   const list=document.getElementById('codeList');
   list.innerHTML='<div style="font-size:12px;color:var(--app-mute)">Lädt…</div>';
@@ -1908,7 +1934,7 @@ async function loadCodes(){
   }catch(e){list.innerHTML='';codeAdminStatus(e.message,true)}
 }
 async function deleteCode(code){
-  const key=document.getElementById('codeAdminKeyInput').value.trim();
+  const key=adminKey();
   if(!key)return;
   try{
     const res=await fetch(WORKER_URL+'/admin/codes',{method:'DELETE',headers:{'Content-Type':'application/json','X-Admin-Key':key},body:JSON.stringify({code})});
@@ -1925,13 +1951,8 @@ function setPoolTarget(kind){
   const st=document.getElementById('poolAdminStatus');
   if(st){st.style.color='var(--app-mute)';st.textContent='Ziel: '+(POOL_LABELS[kind]||kind)}
 }
-function openPoolAdmin(){
-  document.getElementById('poolAdminOverlay').style.display='flex';
-  setPoolTarget(poolUploadTarget);
-  document.getElementById('poolAdminKeyInput').value=localStorage.getItem(ADMIN_KEY_STORE)||'';
-  document.getElementById('poolAdminStatus').textContent='';
-}
-function closePoolAdmin(){const o=document.getElementById('poolAdminOverlay');o.style.display='none';o.classList.remove('active')}
+function openPoolAdmin(){openAdmin('pool')}
+function closePoolAdmin(){closeAdmin()}
 document.getElementById('poolAdminFileInput').addEventListener('change',async e=>{
   const file=e.target.files[0];if(!file)return;
   const ext=file.name.split('.').pop().toLowerCase();
@@ -1944,17 +1965,17 @@ document.getElementById('poolAdminFileInput').addEventListener('change',async e=
   }
 });
 async function uploadPool(){
-  const adminKey=document.getElementById('poolAdminKeyInput').value.trim();
+  const key=adminKey();
   const pool=document.getElementById('poolTextInput').value.trim();
-  if(!adminKey){document.getElementById('poolAdminStatus').textContent='Admin-Key fehlt.';return}
+  if(!key){document.getElementById('poolAdminStatus').textContent='Admin-Key fehlt.';return}
   if(!pool){document.getElementById('poolAdminStatus').textContent='Kein Altfragenpool eingegeben.';return}
   document.getElementById('poolUploadBtn').disabled=true;
   document.getElementById('poolAdminStatus').textContent='Wird hochgeladen…';
   try{
-    const res=await fetch(WORKER_URL+'/pool',{method:'PUT',headers:{'Content-Type':'application/json','X-Admin-Key':adminKey},body:JSON.stringify({pool,kind:poolUploadTarget,name:POOL_LABELS[poolUploadTarget]})});
+    const res=await fetch(WORKER_URL+'/pool',{method:'PUT',headers:{'Content-Type':'application/json','X-Admin-Key':key},body:JSON.stringify({pool,kind:poolUploadTarget,name:POOL_LABELS[poolUploadTarget]})});
     const data=await res.json();
     if(!res.ok)throw new Error(data.error||'Fehler '+res.status);
-    localStorage.setItem(ADMIN_KEY_STORE,adminKey);
+    localStorage.setItem(ADMIN_KEY_STORE,key);
     document.getElementById('poolAdminStatus').textContent='In „'+(POOL_LABELS[poolUploadTarget]||poolUploadTarget)+'“ hochgeladen.';
     setTimeout(()=>{closePoolAdmin();loadPoolFromServer()},1000);
   }catch(e){document.getElementById('poolAdminStatus').textContent='Fehler: '+e.message}
@@ -2082,13 +2103,8 @@ async function loadWochentest(){
   }
 }
 
-function openWtAdmin(){
-  document.getElementById('wtAdminOverlay').style.display='flex';
-  const savedKey=localStorage.getItem(ADMIN_KEY_STORE)||'';
-  document.getElementById('wtAdminKeyInput').value=savedKey;
-  document.getElementById('wtAdminStatus').textContent='';
-}
-function closeWtAdmin(){document.getElementById('wtAdminOverlay').style.display='none'}
+function openWtAdmin(){openAdmin('wt')}
+function closeWtAdmin(){closeAdmin()}
 
 document.getElementById('wtAdminFileInput').addEventListener('change',async e=>{
   const file=e.target.files[0];if(!file)return;
@@ -2103,18 +2119,18 @@ document.getElementById('wtAdminFileInput').addEventListener('change',async e=>{
 });
 
 async function uploadWtTranscript(){
-  const adminKey=document.getElementById('wtAdminKeyInput').value.trim();
+  const key=adminKey();
   const transcript=document.getElementById('wtTranscriptInput').value.trim();
   const title=document.getElementById('wtTitleInput').value.trim();
-  if(!adminKey){document.getElementById('wtAdminStatus').textContent='Admin-Key fehlt.';return}
+  if(!key){document.getElementById('wtAdminStatus').textContent='Admin-Key fehlt.';return}
   if(!transcript){document.getElementById('wtAdminStatus').textContent='Kein Transkript eingegeben.';return}
   document.getElementById('wtUploadBtn').disabled=true;
   document.getElementById('wtAdminStatus').textContent='Wird hochgeladen…';
   try{
-    const res=await fetch(WORKER_URL+'/transcript',{method:'PUT',headers:{'Content-Type':'application/json','X-Admin-Key':adminKey},body:JSON.stringify({transcript,title})});
+    const res=await fetch(WORKER_URL+'/transcript',{method:'PUT',headers:{'Content-Type':'application/json','X-Admin-Key':key},body:JSON.stringify({transcript,title})});
     const data=await res.json();
     if(!res.ok)throw new Error(data.error||'Fehler '+res.status);
-    localStorage.setItem(ADMIN_KEY_STORE,adminKey);
+    localStorage.setItem(ADMIN_KEY_STORE,key);
     document.getElementById('wtAdminStatus').textContent='Erfolgreich hochgeladen!';
     setTimeout(()=>{closeWtAdmin();loadWochentest()},1000);
   }catch(e){document.getElementById('wtAdminStatus').textContent='Fehler: '+e.message}
@@ -2390,14 +2406,18 @@ async function startQuiz(){
       const n=parseInt(state.count);
       const filtered=filterPoolByTopics(state.parsedPool,allTopicsSelected()?null:state.selectedSubs);
       if(!filtered.length)throw new Error('Keine Fragen im Pool passen zum Themenfilter.');
-      // Enforce 5-second minimum for the loading screen so the EKG animation runs
-      await new Promise(r=>setTimeout(r,5000));
+      // Der Zug aus dem Pool ist sofort fertig — der Ladescreen bekommt
+      // trotzdem seine Zeit, sonst blitzt er nur kurz auf.
+      await new Promise(r=>setTimeout(r,MIN_LOAD_POOL_MS));
       state.questions=drawFromPool(filtered,n,state.examMode).map((q,i)=>({
         id:i+1,topic:q.topic||'',question:q.question,
         options:q.options,correct:q.correct,explanation:q.explanation||''
       }));
     }else{
+      const t0=Date.now();
       state.questions=await generateQuestions();
+      const rest=MIN_LOAD_API_MS-(Date.now()-t0);
+      if(rest>0)await new Promise(r=>setTimeout(r,rest));
     }
     savePrevQuestionTopics(state.questions);
     stopEKG();state.userAnswers={};state.evaluated=false;state.currentQuestionIndex=0;state.quizStartTime=Date.now();

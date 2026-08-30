@@ -15,11 +15,16 @@
   --color-surface: #eae9e9;
   --color-text: #201e1d;
   --color-accent: #ec3013;
-  --color-divider: color-mix(in srgb, #201e1d 40%, transparent);
+  --color-divider: color-mix(in srgb, #201e1d 48%, transparent);
   --color-neutral-100: #f8f4f4;
   --color-accent-100: #fff2ef;
   --color-accent-600: #dd2b0f;
   --color-accent-700: #ae1800;
+  /* Auf #ec3013 erreicht Papierschrift nur 3,76:1. Flaechen, die Text
+     tragen, bekommen deshalb ein eigenes, etwas tieferes Rot (4,8:1);
+     die reine Grafik behaelt das Marken-Rot. */
+  --color-accent-ui: #cf2410;
+  --color-nav: #eae7e7;
   --font-heading: "Archivo", system-ui, sans-serif;
   --font-body: "Archivo", system-ui, sans-serif;
   --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
@@ -32,24 +37,28 @@
   --color-bg: #1b1a19;
   --color-surface: #232120;
   --color-text: #f8f4f4;
-  --color-divider: color-mix(in srgb, #f8f4f4 34%, transparent);
-  --color-neutral-100: #232120;
-  --color-accent-100: #2b2220;
+  --color-divider: color-mix(in srgb, #f8f4f4 44%, transparent);
+  --color-neutral-100: #262322;
+  --color-accent-100: #322523;
   --color-accent: #ff563c;
   --color-accent-600: #ff7359;
   --color-accent-700: #ff9783;
+  --color-accent-ui: #ff563c;
+  --color-nav: #232120;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --color-bg: #1b1a19;
     --color-surface: #232120;
     --color-text: #f8f4f4;
-    --color-divider: color-mix(in srgb, #f8f4f4 34%, transparent);
-    --color-neutral-100: #232120;
-    --color-accent-100: #2b2220;
+    --color-divider: color-mix(in srgb, #f8f4f4 44%, transparent);
+    --color-neutral-100: #262322;
+    --color-accent-100: #322523;
     --color-accent: #ff563c;
     --color-accent-600: #ff7359;
     --color-accent-700: #ff9783;
+    --color-accent-ui: #ff563c;
+    --color-nav: #232120;
   }
 }
 
@@ -79,20 +88,24 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
   border: 1px solid transparent; padding: var(--space-2) calc(var(--space-3) * 1.2);
   border-radius: var(--radius-md);
 }
-.btn-primary { background: var(--color-accent); color: var(--color-bg); }
+.btn-primary { background: var(--color-accent-ui); color: var(--color-bg); }
 .btn-primary:hover { background: var(--color-accent-600); color: var(--color-bg); text-decoration: none; }
 .btn-primary:active { background: var(--color-accent-700); }
 .btn-secondary { border-color: var(--color-divider); }
 @media (hover: hover) { .btn-secondary:hover { background: color-mix(in srgb, var(--color-text) 7%, transparent); color: var(--color-text); text-decoration: none; } }
-.btn-ghost { color: var(--color-accent); padding-inline: var(--space-1); }
+.btn-ghost { color: var(--color-accent-700); padding-inline: var(--space-1); }
 @media (hover: hover) { .btn-ghost:hover { background: color-mix(in srgb, var(--color-accent) 10%, transparent); text-decoration: none; } }
 
 /* ── Nav ───────────────────────────────────────────────────────────────── */
+/* Die Leiste bleibt oben stehen und traegt eine eigene Flaeche, damit der
+   Inhalt sichtbar darunter durchlaeuft statt mit ihr zu verschmelzen. */
 .nav {
   display: flex; align-items: center; gap: var(--space-4);
   padding: var(--space-3) var(--space-4);
   border-bottom: 2px solid var(--color-divider);
   flex-wrap: nowrap;
+  position: sticky; top: 0; z-index: 20;
+  background: var(--color-nav);
 }
 .nav-brand { font-family: var(--font-heading); font-weight: 800; font-size: 18px; }
 .nav a { color: inherit; text-decoration: none; font-size: 14px; }
@@ -101,6 +114,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
 .nav a.btn-primary { color: var(--color-bg); text-decoration: none; white-space: nowrap; }
 .brand-indep { display: block; }
 .theme-btn { font-size: 13px; white-space: nowrap; }
+.theme-ico { display: none; }
 .nav a.btn-primary:hover { color: var(--color-bg); background: var(--color-accent-600); }
 
 /* der CTA atmet — 3,6s, 3,5% Amplitude, nur transform */
@@ -127,25 +141,39 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
 /* Der Textlink in der Kopfzeile fällt weg, der Accent-Button bleibt;
    die Sprungmarken wandern in die eigene Zeile darunter. */
 @media (max-width: 700px) {
+  /* Kopfzeile: eine Zeile, kompakt — Wortmarke, Umschalter, Aktion.
+     Die Sprungmarken bekommen darunter eine eigene Spur, die waagrecht
+     scrollt statt auf zwei Zeilen umzubrechen. */
+  .nav { gap: 10px; padding: 9px clamp(14px, 4vw, 72px); }
   .nav a:not(.btn-primary) { display: none; }
-  .nav-mobile {
-    display: flex; flex-wrap: wrap; gap: 8px 18px;
-    padding: 11px clamp(20px, 5vw, 72px) 13px;
-    border-bottom: 2px solid var(--color-divider);
+  .nav-brand { font-size: 16px; }
+  .brand-sub-line { font-size: 9.5px !important; letter-spacing: 0.12em !important; }
+  /* Wortmarke, Umschalter und Aktion muessen in eine Zeile — dafuer wird
+     der Umschalter zum Zeichen. */
+  .nav > span:last-child { flex-wrap: nowrap !important; gap: 8px !important; }
+  .theme-btn {
+    font-size: 15px; padding: 0; min-height: 36px; width: 36px;
+    border-color: var(--color-divider); flex: none; justify-content: center;
   }
+  .theme-word { display: none; }
+  .theme-ico { display: inline; line-height: 1; }
+  .nav a.btn-primary { font-size: 12.5px; padding: 9px 12px; min-height: 36px; }
+
+  .nav-mobile {
+    display: flex; flex-wrap: nowrap; gap: 20px;
+    padding: 10px clamp(14px, 4vw, 72px) 11px;
+    border-bottom: 2px solid var(--color-divider);
+    background: var(--color-nav);
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .nav-mobile::-webkit-scrollbar { display: none; }
   .nav-mobile a {
-    font-size: 13.5px; line-height: 20px; white-space: nowrap;
+    font-size: 13.5px; line-height: 20px; white-space: nowrap; flex: none;
     color: var(--color-text); text-decoration: none;
   }
-  .nav-mobile a:active { color: var(--color-accent); }
-  /* In der Kopfzeile ist auf dem Telefon kein Platz mehr — der Umschalter
-     zieht zu den Sprungmarken. */
-  .theme-btn { display: none; }
-  .nav-mobile-theme {
-    background: none; border: none; padding: 0; margin-left: auto; cursor: pointer;
-    font-family: var(--font-body); font-size: 13.5px; line-height: 20px;
-    color: var(--color-accent-700); white-space: nowrap;
-  }
+  .nav-mobile a:active { color: var(--color-accent-700); }
+  .nav-mobile-theme { display: none; }
   /* eine Spalte — sonst quetscht sich die Überschrift auf 110px */
   .split-4-8, .split-5-7 { grid-template-columns: minmax(0, 1fr); gap: 12px; }
   /* Fingerkuppe statt Mauszeiger: mindestens 44px hohe Schaltflächen */
@@ -172,7 +200,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     <span style="margin-right: auto; display: flex; align-items: center; gap: 14px">
       <span style="display: block; flex: none">
         <span class="nav-brand" style="display: block; margin-right: 0">Nephron.at</span>
-        <span style="display: block; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap; color: color-mix(in srgb, var(--color-text) 72%, transparent); margin-top: 2px; font-feature-settings: 'tnum' 1">Estimated 2025</span>
+        <span class="brand-sub-line" style="display: block; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap; color: color-mix(in srgb, var(--color-text) 72%, transparent); margin-top: 2px; font-feature-settings: 'tnum' 1">Estimated 2025</span>
       </span>
       <span class="brand-indep" style="width: 2px; height: 30px; background: var(--color-divider); flex: none"></span>
       <span class="brand-indep" style="font-size: 10px; letter-spacing: 0.08em; line-height: 14px; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 72%, transparent); white-space: nowrap">
@@ -186,7 +214,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
       <a href="#rueckkopplung" style="font-size: 13.5px">Rückkopplung</a>
       <a href="#ueber" style="font-size: 13.5px">Über mich</a>
       <a href="#disclaimer" style="font-size: 13.5px; margin-right: 4px">Disclaimer</a>
-      <button type="button" class="btn btn-secondary theme-btn" onclick="orakelToggleTheme()" title="Hell oder dunkel"><span id="themeLabel">Dunkel</span></button>
+      <button type="button" class="btn btn-secondary theme-btn" id="themeBtn" onclick="orakelToggleTheme()" title="Hell oder dunkel" aria-label="Hell oder dunkel"><span class="theme-word" id="themeLabel">Dunkel</span><span class="theme-ico" aria-hidden="true">◐</span></button>
       <a href="/app/" class="btn btn-primary cta-pulse">Physio-Orakel öffnen</a>
     </span>
   </nav>
@@ -198,7 +226,6 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     <a href="#rueckkopplung">Rückkopplung</a>
     <a href="#ueber">Über mich</a>
     <a href="#disclaimer">Disclaimer</a>
-    <button type="button" class="nav-mobile-theme" onclick="orakelToggleTheme()"><span id="themeLabelMobile">Dunkel</span></button>
   </nav>
 
   <section style="max-width: 1240px; margin: 0 auto; padding: clamp(28px, 5vw, 60px) clamp(20px, 5vw, 72px) 0">
@@ -294,7 +321,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
       </figure>
 
       <figure style="margin: 0; border-top: 2px solid var(--color-divider); padding: 20px 0 28px; display: flex; flex-direction: column; gap: 20px">
-        <blockquote style="font-size: 16px; line-height: 27px; margin: 0; max-width: 32ch; color: color-mix(in srgb, var(--color-text) 88%, transparent)">„Mit dem Physio-Orakel ist das gezielte Lernen für den Wochentest weniger trocken.“</blockquote>
+        <blockquote style="font-size: 16px; line-height: 27px; margin: 0; max-width: 32ch; color: color-mix(in srgb, var(--color-text) 88%, transparent)">„Hab gern damit gelernt. Ist ziemlich idiotensicher. Vor allem hilfreich, um Themen zu verfestigen, aber auch wenn man mal zu knapp angefangen hat mit dem Lernen und sich einen Überblick über die Themen verschaffen will. Kann es sehr empfehlen!“</blockquote>
         <figcaption style="margin-top: auto; display: flex; align-items: baseline; gap: 10px 12px; flex-wrap: wrap">
           <span style="display: block; width: 10px; height: 10px; background: var(--color-accent); flex: none; align-self: center"></span>
           <span style="font-family: var(--font-heading); font-weight: 800; font-size: 17px; line-height: 22px; letter-spacing: -0.01em; align-self: center">Hiwa</span>
@@ -325,7 +352,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     <figure style="margin: 0; border-top: 2px solid var(--color-divider); padding: 26px 0 30px; display: flex; flex-wrap: wrap; gap: 18px clamp(20px, 3vw, 40px); align-items: flex-start">
       <img class="grayscale" src="assets/pashanim.jpg" alt="Pashanim" loading="lazy" style="display: block; width: 132px; height: 168px; flex: none; object-fit: cover; object-position: 50% 26%">
       <div style="flex: 1 1 280px; min-width: 0">
-        <blockquote style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(19px, 2.2vw, 26px); line-height: 1.28; letter-spacing: -0.015em; margin: 0; max-width: 44ch">„Physio-Orakel geht sogar auf babyblaue Nokia 3310!“</blockquote>
+        <blockquote style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(19px, 2.2vw, 26px); line-height: 1.28; letter-spacing: -0.015em; margin: 0; max-width: 44ch">„Vallah, Physio-Orakel funktioniert sogar auf babyblauem Nokia 3310“</blockquote>
         <figcaption style="display: flex; align-items: baseline; gap: 10px 14px; flex-wrap: wrap; margin-top: 20px">
           <span style="display: block; width: 10px; height: 10px; background: var(--color-accent); flex: none; align-self: center"></span>
           <span style="font-family: var(--font-heading); font-weight: 800; font-size: 17px; line-height: 22px; letter-spacing: -0.01em">Pashanim</span>
@@ -357,7 +384,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     <canvas id="ecgCanvas" aria-hidden="true" style="display: block; width: 100%; height: clamp(96px, 11vw, 128px); border-top: 2px solid var(--color-divider); border-bottom: 2px solid var(--color-divider)"></canvas>
   </section>
 
-  <section id="los" style="background: var(--color-accent); color: var(--color-bg); margin-top: clamp(48px, 7vw, 96px)">
+  <section id="los" style="background: var(--color-accent-ui); color: var(--color-bg); margin-top: clamp(48px, 7vw, 96px)">
     <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 7vw, 84px) clamp(20px, 5vw, 72px)">
       <h3 style="font-size: clamp(32px, 5vw, 62px); line-height: 1.06; letter-spacing: -0.02em; margin: 0 0 0 -0.058em">
         <span style="display: block">Akademisches Comeback</span>
