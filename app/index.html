@@ -569,7 +569,7 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
       <div class="login-hint" id="loginHint" style="display:none">
         <span class="kicker">Hinweis</span>
         <div style="font-family:var(--font-heading);font-weight:800;font-size:19px;line-height:1.2;color:var(--app-ink)">Bitte zuerst anmelden.</div>
-        <p style="font-size:14px;line-height:23px;color:var(--app-mute);margin:10px 0 16px;max-width:52ch">Zum Registrieren brauchst du einen Einmalcode — den bekommst du direkt von mir. Danach reichen Username und Passwort.</p>
+        <p style="font-size:14px;line-height:23px;color:var(--app-mute);margin:10px 0 16px;max-width:52ch">Zum Registrieren brauchst du einen Zugangscode — den bekommst du direkt von mir. Danach reichen Username und Passwort.</p>
         <button type="button" class="btn btn-primary" onclick="openKeyModal()">Anmelden / Registrieren</button>
       </div>
 
@@ -1011,8 +1011,8 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
       <input class="input" type="text" id="regUser" placeholder="Username (3–20 Zeichen)" autocomplete="username">
       <input class="input" type="email" id="regEmail" placeholder="Email" autocomplete="email">
       <input class="input" type="password" id="regPass" placeholder="Passwort (mind. 6 Zeichen)" autocomplete="new-password">
-      <input class="input" type="text" id="regCode" placeholder="Einmalcode" autocomplete="off" spellcheck="false" style="text-transform:uppercase">
-      <p style="font-size:12px;line-height:19px;color:var(--app-mute);margin:0">Den Einmalcode bekommst du von mir. Er gilt für genau einen Account.</p>
+      <input class="input" type="text" id="regCode" placeholder="Zugangscode" autocomplete="off" spellcheck="false" style="text-transform:uppercase">
+      <p style="font-size:12px;line-height:19px;color:var(--app-mute);margin:0">Den Zugangscode bekommst du von mir.</p>
       <button type="button" class="btn btn-primary btn-block" onclick="doRegister()">Account erstellen</button>
     </div>
 
@@ -1079,12 +1079,16 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
 
     <!-- Einmalcodes -->
     <div class="admin-panel" id="adminPanelCodes" style="display:none;margin-top:16px">
-      <div class="key-panel-sub" style="margin-top:0">Ein Code pro Person. Nach der Registrierung ist er verbraucht.</div>
+      <div class="key-panel-sub" style="margin-top:0">Einmalcode: gilt für eine Person und ist danach verbraucht. Sammelcode: gilt für alle, bis du ihn sperrst.</div>
       <div style="display:grid;gap:10px;margin-top:12px">
         <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px">
           <input class="input" type="text" id="newCodeInput" placeholder="Code, z. B. HIWA-2026" autocomplete="off" spellcheck="false" style="text-transform:uppercase">
           <input class="input" type="text" id="newCodeNote" placeholder="Notiz (optional)" autocomplete="off">
         </div>
+        <label style="display:flex;gap:9px;align-items:center;font-size:13px;color:var(--app-ink);cursor:pointer">
+          <input type="checkbox" id="newCodeMulti" style="width:16px;height:16px;accent-color:var(--app-accent);flex:none">
+          <span>Sammelcode — beliebig oft einlösbar, für alle derselbe</span>
+        </label>
         <div style="display:flex;gap:10px;flex-wrap:wrap">
           <button type="button" class="btn btn-primary" onclick="createCode()" id="createCodeBtn">Code anlegen</button>
           <button type="button" class="btn btn-secondary" onclick="loadCodes()">Liste laden</button>
@@ -1336,7 +1340,7 @@ function setAuthTab(tab){
   document.getElementById('authFormLogin').style.display=tab==='login'?'block':'none';
   document.getElementById('authFormRegister').style.display=tab==='register'?'block':'none';
   document.getElementById('authTitle').textContent=tab==='login'?'Anmelden':'Account erstellen';
-  document.getElementById('authSub').textContent=tab==='login'?'Username und Passwort genügen':'Username, Email, Passwort + dein Einmalcode';
+  document.getElementById('authSub').textContent=tab==='login'?'Username und Passwort genügen':'Username, Email, Passwort + dein Zugangscode';
   document.getElementById('authStatus').textContent='';
 }
 function showAuthStatus(msg,color){const el=document.getElementById('authStatus');el.textContent=msg;el.style.color=color}
@@ -1893,18 +1897,20 @@ async function createCode(){
   const key=adminKey();
   const code=document.getElementById('newCodeInput').value.trim().toUpperCase();
   const note=document.getElementById('newCodeNote').value.trim();
+  const multiEl=document.getElementById('newCodeMulti');
+  const multi=!!(multiEl&&multiEl.checked);
   if(!key){codeAdminStatus('Admin-Key fehlt.',true);return}
   if(!code){codeAdminStatus('Kein Code eingegeben.',true);return}
   const btn=document.getElementById('createCodeBtn');
   btn.disabled=true;codeAdminStatus('Wird angelegt…');
   try{
-    const res=await fetch(WORKER_URL+'/admin/codes',{method:'POST',headers:{'Content-Type':'application/json','X-Admin-Key':key},body:JSON.stringify({code,note})});
+    const res=await fetch(WORKER_URL+'/admin/codes',{method:'POST',headers:{'Content-Type':'application/json','X-Admin-Key':key},body:JSON.stringify({code,note,multi})});
     const data=await res.json();
     if(!res.ok)throw new Error(data.error||'Fehler '+res.status);
     localStorage.setItem(ADMIN_KEY_STORE,key);
     document.getElementById('newCodeInput').value='';
     document.getElementById('newCodeNote').value='';
-    codeAdminStatus(code+' angelegt.');
+    codeAdminStatus(code+(multi?' als Sammelcode angelegt.':' angelegt.'));
     loadCodes();
   }catch(e){codeAdminStatus(e.message,true)}
   btn.disabled=false;
@@ -1923,12 +1929,16 @@ async function loadCodes(){
     codeAdminStatus(data.open+' frei · '+data.used+' eingelöst');
     if(!codes.length){list.innerHTML='<div style="font-size:12px;color:var(--app-mute)">Noch keine Codes angelegt.</div>';return}
     list.innerHTML=codes.map(c=>{
-      const used=!!c.usedBy;
-      return '<div style="display:flex;gap:10px;align-items:center;justify-content:space-between;border:2px solid '+(used?'var(--app-rule)':'var(--app-accent)')+';padding:9px 12px;background:var(--app-panel)">'+
+      const spent=!c.multi&&!!c.usedBy;
+      const uses=c.uses||0;
+      const sub=c.multi
+        ?('Sammelcode · '+(uses===1?'1 Registrierung':uses+' Registrierungen')+(c.note?' · '+c.note:''))
+        :(spent?('eingelöst von '+c.usedBy):(c.note||'frei'));
+      return '<div style="display:flex;gap:10px;align-items:center;justify-content:space-between;border:2px solid '+(spent?'var(--app-rule)':'var(--app-accent)')+';padding:9px 12px;background:var(--app-panel)">'+
         '<span style="min-width:0"><span style="display:block;font-family:var(--font-heading);font-weight:800;font-size:14px;color:var(--app-ink);letter-spacing:.04em">'+c.code+'</span>'+
-        '<span style="display:block;font-size:11.5px;color:var(--app-mute)">'+(used?('eingelöst von '+c.usedBy):(c.note||'frei'))+'</span></span>'+
-        (used?'<span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--app-mute);flex:none">vergeben</span>'
-             :'<button type="button" class="btn btn-secondary btn-sm" style="flex:none" onclick="deleteCode(\''+c.code+'\')">Löschen</button>')+
+        '<span style="display:block;font-size:11.5px;color:var(--app-mute)">'+sub+'</span></span>'+
+        (spent?'<span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--app-mute);flex:none">vergeben</span>'
+              :'<button type="button" class="btn btn-secondary btn-sm" style="flex:none" onclick="deleteCode(\''+c.code+'\')">'+(c.multi?'Sperren':'Löschen')+'</button>')+
       '</div>';
     }).join('');
   }catch(e){list.innerHTML='';codeAdminStatus(e.message,true)}
