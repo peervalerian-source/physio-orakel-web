@@ -34,8 +34,8 @@
   --app-accent: var(--color-accent);
   --app-accent-ink: var(--color-bg);
   --app-accent-soft: var(--color-accent-100);
-  --app-ok: #1c7a43;
-  --app-warn: #a06000;
+  --app-ok: #12643a;
+  --app-warn: #8a5200;
 }
 :root[data-orakel-theme="dark"] {
   --app-bg: #1b1a19;
@@ -290,6 +290,11 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
 .pulse-dot { display: block; width: 12px; height: 12px; background: var(--app-accent); animation: softPulse 1.1s ease-in-out infinite; flex: none; }
 .load-bar { height: 8px; background: var(--app-panel); border: 2px solid var(--app-rule); margin-top: 4px; }
 .load-bar > span { display: block; height: 100%; background: var(--app-accent); width: 0; transition: width 200ms linear; }
+.load-msg {
+  font-family: var(--font-heading); font-weight: 800;
+  font-size: clamp(16px, 2vw, 21px); line-height: 1.3; letter-spacing: -0.015em;
+  color: var(--app-ink); margin-top: 16px; max-width: 44ch; min-height: 1.3em;
+}
 
 /* ── Quiz ──────────────────────────────────────────────────────────────── */
 .quiz-layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: clamp(24px, 4vw, 48px); align-items: start; }
@@ -575,7 +580,16 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
       <span style="font-size:13px;color:var(--app-mute)" id="selCountText">alle Punkte gewählt</span>
     </div>
 
-    <div id="poolStatusWrap" style="margin-top:20px"></div>
+    <div style="margin-top:26px">
+      <span class="seg-label">Welche Datenbank?</span>
+      <div class="seg seg-text" id="poolKindSeg">
+        <button type="button" data-pool="allgemein" class="on" onclick="setPoolKind('allgemein')">Physiologie allgemein</button>
+        <button type="button" data-pool="wochentest" onclick="setPoolKind('wochentest')">Wochentest</button>
+      </div>
+      <p style="font-size:12.5px;line-height:20px;color:var(--app-mute);margin:8px 0 0;max-width:60ch" id="poolKindHint"></p>
+    </div>
+
+    <div id="poolStatusWrap" style="margin-top:16px"></div>
 
     <div id="topicArea" style="margin-top:26px;border-top:2px solid var(--app-rule)"></div>
 
@@ -658,17 +672,10 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
         <span class="pulse-dot" id="loaderDot"></span>
         <h1 id="genText" style="font-size:clamp(22px,3vw,34px);line-height:1.08;letter-spacing:-0.02em;color:var(--app-ink)">Generiere Fragen…</h1>
       </div>
-      <canvas id="loaderCanvas" aria-hidden="true" style="display:block;width:100%;height:clamp(120px,16vw,170px);margin-top:22px"></canvas>
+      <canvas id="loaderCanvas" aria-hidden="true" style="display:block;width:100%;height:clamp(190px,26vw,280px);margin-top:22px"></canvas>
       <div class="load-bar" id="loadBar"><span id="loadBarFill"></span></div>
-      <div id="loadingText" style="font-size:13px;line-height:20px;color:var(--app-mute);margin-top:12px"></div>
+      <div id="loadingText" class="load-msg"></div>
       <div id="loadingDetail" style="font-size:11.5px;line-height:18px;color:var(--app-mute);margin-top:6px;opacity:.75"></div>
-      <figure id="loaderQuoteWrap" style="margin:26px 0 0;border-top:2px solid var(--app-rule);padding-top:20px">
-        <blockquote id="loaderQuote" style="font-family:var(--font-heading);font-weight:800;font-size:clamp(17px,2.1vw,23px);line-height:1.3;letter-spacing:-0.015em;margin:0;max-width:44ch;color:var(--app-ink)"></blockquote>
-        <figcaption style="display:flex;align-items:center;gap:10px;margin-top:14px">
-          <span style="display:block;width:9px;height:9px;background:var(--app-accent);flex:none"></span>
-          <span id="loaderName" style="font-size:13px;letter-spacing:0.06em;text-transform:uppercase;color:var(--app-mute)"></span>
-        </figcaption>
-      </figure>
     </div>
   </section>
 </div>
@@ -770,9 +777,16 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
     <button type="button" class="modal-close" onclick="closePoolAdmin()" title="Schließen">✕</button>
     <span class="kicker">Admin</span>
     <div class="key-panel-title">Altfragenpool verwalten</div>
-    <div class="key-panel-sub">Altfragen zentral für alle Studierenden hinterlegen</div>
+    <div class="key-panel-sub">Zwei getrennte Bestände — der Upload ersetzt jeweils nur den gewählten.</div>
     <div style="display:grid;gap:10px;margin-top:14px">
       <input class="input" type="password" id="poolAdminKeyInput" placeholder="Admin-Key" autocomplete="off">
+      <div>
+        <span class="seg-label">Ziel</span>
+        <div class="seg seg-text" id="poolTargetSeg">
+          <button type="button" data-target="allgemein" class="on" onclick="setPoolTarget('allgemein')">Physiologie allgemein</button>
+          <button type="button" data-target="wochentest" onclick="setPoolTarget('wochentest')">Wochentest</button>
+        </div>
+      </div>
       <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
         <label style="font-size:12px;color:var(--app-mute)">Altfragen einfügen oder Datei laden</label>
         <label class="btn btn-secondary btn-sm" style="cursor:pointer">Datei wählen<input type="file" id="poolAdminFileInput" accept=".txt,.md,.pdf" style="display:none"></label>
@@ -978,7 +992,9 @@ const MAX_CONTEXT_CHARS=120000;
 const state={
   fileText:'',fileName:'',uploadFiles:[],
   wtText:'',isWochentest:false,flowMode:'',
-  poolText:'',poolName:'',parsedPool:[],rigoOriginal:[],isRigoOrig:false,rigoOrigTermin:null,
+  poolText:'',poolName:'',parsedPool:[],
+  poolKind:'allgemein',
+  pools:{allgemein:{text:'',parsed:[],meta:null},wochentest:{text:'',parsed:[],meta:null}},rigoOriginal:[],isRigoOrig:false,rigoOrigTermin:null,
   sourceMode:'ki',
   altMode:'exact',
   selectedSubs:new Set(),
@@ -1299,19 +1315,11 @@ loadSession();
 // ── Ladescreen ───────────────────────────────────────────────────────────────
 // Aktionspotential-Zug + Fortschrittsbalken + rotierende Zitate.
 // Namen startEKG/stopEKG bleiben, damit alle Aufrufstellen unverändert bleiben.
-const LOADER_QUOTES=[
-  ['„Hab um zwei Uhr nachts im Morrison\u2019s jemandem die Henle-Schleife erklärt. Sie ist gegangen. Aber ich lag richtig.“','Anonym, 2. Studienjahr'],
-  ['„Physio-Orakel geht sogar auf babyblaue Nokia 3310!“','Pashanim, Chefarzt'],
-  ['„Antes del Physio-Orakel: cero aura. Después: aura ilimitada.“','Bad Bunny, Grand Prix Monaco'],
-  ['„Selbst wenn die Zeit kurz war, kamen Fragen fast 1:1 wie im Orakel dran.“','Alina, 3. Studienjahr'],
-  ['„Mit dem Orakel ist gezieltes Lernen für den Wochentest weniger trocken.“','Hiwa, 3. Studienjahr']
-];
 let loaderActive=false,loaderPct=0,loaderQuoteIdx=0,loaderQuoteTimer=null,loaderPctTimer=null;
+// Auf dem Ladescreen stehen die Ladetexte — sonst nichts.
 function renderLoaderQuote(){
-  const q=LOADER_QUOTES[loaderQuoteIdx%LOADER_QUOTES.length];
-  const a=document.getElementById('loaderQuote'),b=document.getElementById('loaderName');
-  if(a)a.textContent=q[0];
-  if(b)b.textContent=q[1];
+  const el=document.getElementById('loadingText');
+  if(el&&!loaderError)el.textContent=LOADING_MSGS[loaderQuoteIdx%LOADING_MSGS.length];
 }
 function setLoadPct(p){
   loaderPct=p;
@@ -1324,7 +1332,7 @@ function startEKG(){
   const n=state.examMode?20:parseInt(state.count||'5',10);
   const gt=document.getElementById('genText');
   if(gt)gt.textContent='Generiere '+n+' Frage'+(n===1?'':'n')+'…';
-  loaderQuoteIdx=Math.floor(Math.random()*LOADER_QUOTES.length);
+  loaderQuoteIdx=Math.floor(Math.random()*LOADING_MSGS.length);
   renderLoaderQuote();
   setLoadPct(4);
   clearInterval(loaderQuoteTimer);clearInterval(loaderPctTimer);
@@ -1343,7 +1351,7 @@ function renderPoolStatus(meta){
   const wrap=document.getElementById('poolStatusWrap');
   if(!wrap)return;
   if(!meta||!state.poolText){
-    wrap.innerHTML='<p style="font-size:13px;line-height:21px;color:var(--app-accent);margin:0">Noch kein Altfragenpool hinterlegt — sobald Altfragen eingespielt sind, kannst du hier üben.</p>';
+    wrap.innerHTML='<p style="font-size:13px;line-height:21px;color:var(--app-accent);margin:0">In „'+(POOL_LABELS[state.poolKind]||'diesem Bestand')+'" liegen noch keine Fragen.</p>';
     return;
   }
   const date=meta.date?new Date(meta.date).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'}):'';
@@ -1353,19 +1361,47 @@ function renderPoolStatus(meta){
     (state.parsedPool?state.parsedPool.length:0)+' Fragen erkannt</div></div></div>';
 }
 
+const POOL_LABELS={allgemein:'Physiologie allgemein',wochentest:'Wochentest'};
+const POOL_HINTS={
+  allgemein:'Die grosse Sammlung am Vorlesungsstoff entlang.',
+  wochentest:'Fragen im Zuschnitt des kommenden Wochentests.'
+};
 async function loadPoolFromServer(){
   if(!hasApiKey)return;
+  await Promise.all(Object.keys(state.pools).map(loadOnePool));
+  applyPoolKind();
+}
+async function loadOnePool(kind){
   try{
-    const res=await fetch(WORKER_URL+'/pool',{headers:authHeaders()});
+    const res=await fetch(WORKER_URL+'/pool?kind='+encodeURIComponent(kind),{headers:authHeaders()});
     if(!res.ok)return;
     const data=await res.json();
-    if(data.pool){
-      state.poolText=data.pool;
-      state.poolName=(data.meta&&data.meta.name)||'Altfragenpool';
-      state.parsedPool=parseStructuredPool(data.pool);
-      renderPoolStatus(data.meta);
-    }else{state.poolText='';state.parsedPool=[];renderPoolStatus(null)}
+    const slot=state.pools[kind];
+    if(!slot)return;
+    slot.text=data.pool||'';
+    slot.parsed=data.pool?parseStructuredPool(data.pool):[];
+    slot.meta=data.meta||null;
   }catch{}
+}
+// Der gewaehlte Bestand ist der einzige, aus dem gezogen wird — die beiden
+// werden nie vermischt.
+function applyPoolKind(){
+  const slot=state.pools[state.poolKind]||{text:'',parsed:[],meta:null};
+  state.poolText=slot.text;
+  state.parsedPool=slot.parsed;
+  state.poolName=(slot.meta&&slot.meta.name)||POOL_LABELS[state.poolKind];
+  document.querySelectorAll('[data-pool]').forEach(b=>b.classList.toggle('on',b.dataset.pool===state.poolKind));
+  const hint=document.getElementById('poolKindHint');
+  if(hint)hint.textContent=POOL_HINTS[state.poolKind]||'';
+  renderPoolStatus(slot.meta);
+  updateSummary();
+}
+function setPoolKind(kind){
+  if(!state.pools[kind])return;
+  state.poolKind=kind;
+  playTick();
+  try{localStorage.setItem('physio_orakel_pool_kind',kind)}catch{}
+  applyPoolKind();
 }
 
 // ── Structured Pool Parser (offline mode, no AI) ──────────────────────────
@@ -1616,12 +1652,20 @@ async function deleteCode(code){
   }catch(e){codeAdminStatus(e.message,true)}
 }
 
+let poolUploadTarget='allgemein';
+function setPoolTarget(kind){
+  poolUploadTarget=kind;
+  document.querySelectorAll('[data-target]').forEach(b=>b.classList.toggle('on',b.dataset.target===kind));
+  const st=document.getElementById('poolAdminStatus');
+  if(st){st.style.color='var(--app-mute)';st.textContent='Ziel: '+(POOL_LABELS[kind]||kind)}
+}
 function openPoolAdmin(){
   document.getElementById('poolAdminOverlay').style.display='flex';
+  setPoolTarget(poolUploadTarget);
   document.getElementById('poolAdminKeyInput').value=localStorage.getItem(ADMIN_KEY_STORE)||'';
   document.getElementById('poolAdminStatus').textContent='';
 }
-function closePoolAdmin(){document.getElementById('poolAdminOverlay').style.display='none'}
+function closePoolAdmin(){const o=document.getElementById('poolAdminOverlay');o.style.display='none';o.classList.remove('active')}
 document.getElementById('poolAdminFileInput').addEventListener('change',async e=>{
   const file=e.target.files[0];if(!file)return;
   const ext=file.name.split('.').pop().toLowerCase();
@@ -1641,11 +1685,11 @@ async function uploadPool(){
   document.getElementById('poolUploadBtn').disabled=true;
   document.getElementById('poolAdminStatus').textContent='Wird hochgeladen…';
   try{
-    const res=await fetch(WORKER_URL+'/pool',{method:'PUT',headers:{'Content-Type':'application/json','X-Admin-Key':adminKey},body:JSON.stringify({pool,name:'Altfragenpool'})});
+    const res=await fetch(WORKER_URL+'/pool',{method:'PUT',headers:{'Content-Type':'application/json','X-Admin-Key':adminKey},body:JSON.stringify({pool,kind:poolUploadTarget,name:POOL_LABELS[poolUploadTarget]})});
     const data=await res.json();
     if(!res.ok)throw new Error(data.error||'Fehler '+res.status);
     localStorage.setItem(ADMIN_KEY_STORE,adminKey);
-    document.getElementById('poolAdminStatus').textContent='Erfolgreich hochgeladen!';
+    document.getElementById('poolAdminStatus').textContent='In „'+(POOL_LABELS[poolUploadTarget]||poolUploadTarget)+'“ hochgeladen.';
     setTimeout(()=>{closePoolAdmin();loadPoolFromServer()},1000);
   }catch(e){document.getElementById('poolAdminStatus').textContent='Fehler: '+e.message}
   document.getElementById('poolUploadBtn').disabled=false;
@@ -1836,7 +1880,7 @@ async function startRigoOrig(terminNumber){
   saveQuizConfig();
   goTo('s3');startEKG();
   const lt=document.getElementById('loadingText');
-  lt.textContent=LOADING_MSGS[Math.floor(Math.random()*LOADING_MSGS.length)];lt.style.color='';
+
   await new Promise(r=>setTimeout(r,3000));
   state.questions=termin.questions.map((q,i)=>({
     id:i+1,topic:'Termin '+terminNumber,question:q.question,
@@ -1857,9 +1901,6 @@ async function startWochentest(){
   document.getElementById('wtStartBtn').disabled=true;
   state.sourceMode='ki';state.examMode=false;state.count='10';state.difficulty=wtDifficulty;
   goTo('s3');startEKG();
-  const lt=document.getElementById('loadingText');
-  lt.textContent=LOADING_MSGS[Math.floor(Math.random()*LOADING_MSGS.length)];
-  lt.style.color='';
   try{
     const{text:wtCtx,warning}=prepareTextForPrompt(state.wtText);
     const jsonFormat=`[{"id":1,"topic":"Kurzname","question":"Welche der folgenden Aussagen sind richtig?","options":[{"key":"a","text":"..."},{"key":"b","text":"..."},{"key":"c","text":"..."},{"key":"d","text":"..."}],"correct":["a","c"],"explanation":"Max 2 Sätze: erst Buchstaben der richtigen Antworten nennen, dann knapp warum die anderen falsch sind."}]`;
@@ -2038,7 +2079,7 @@ function updateSummary(){
   const n=state.examMode?20:parseInt(state.count||'5',10);
   const hint=document.getElementById('startHint');
   const noPool=state.sourceMode==='alt'&&!(state.parsedPool&&state.parsedPool.length);
-  if(hint)hint.textContent=noPool?'Es ist noch kein Altfragenpool hinterlegt.'
+  if(hint)hint.textContent=noPool?('In „'+(POOL_LABELS[state.poolKind]||'')+'“ liegen noch keine Fragen.')
     :sel===0?'Wähle mindestens einen Punkt.'
     :sel===total?n+' Fragen aus allen Punkten'
     :n+' Fragen aus '+(sel===1?'einem Punkt':sel+' Punkten');
@@ -2071,16 +2112,13 @@ async function startQuiz(){
   const _sb=document.getElementById('startBtn');if(_sb)_sb.disabled=true;
   const _ub=document.getElementById('uploadStartBtn');if(_ub)_ub.disabled=true;
   goTo('s3');startEKG();
-  const lt=document.getElementById('loadingText');
-  lt.textContent=LOADING_MSGS[Math.floor(Math.random()*LOADING_MSGS.length)];
-  lt.style.color='';
   try{
     // Offline pool draw (no API) — when Altfragen-Exakt is selected AND we have a parsed pool
     const canUsePool=state.sourceMode==='alt'&&state.parsedPool&&state.parsedPool.length>0;
     if(state.sourceMode==='alt'&&!canUsePool){
       throw Object.assign(new Error('Kein Altfragenpool hinterlegt.'),{userInfo:{
-        title:'Es ist noch kein Altfragenpool hinterlegt.',
-        detail:'Sobald Altfragen eingespielt sind, kannst du hier üben.',fixable:false}});
+        title:'In „'+(POOL_LABELS[state.poolKind]||'diesem Bestand')+'“ liegen noch keine Fragen.',
+        detail:'Wähle die andere Datenbank oder warte, bis Fragen eingespielt sind.',fixable:false}});
     }
     if(canUsePool){
       const n=parseInt(state.count);
@@ -2272,11 +2310,11 @@ function showLoadingError(err){
   const gt=document.getElementById('genText');
   if(gt)gt.textContent=info.title;
   const lt=document.getElementById('loadingText');
-  if(lt){lt.style.color='';lt.textContent=info.detail||''}
+  if(lt){lt.classList.remove('load-msg');lt.style.cssText='font-size:13px;line-height:20px;color:var(--app-mute);margin-top:12px';lt.textContent=info.detail||''}
   const ld=document.getElementById('loadingDetail');
   const tech=(err&&err.technical)||(err&&err.message)||'';
   if(ld)ld.textContent=(tech&&tech!==info.title)?tech:'';
-  ['loaderDot','loadBar','loaderQuoteWrap'].forEach(id=>{
+  ['loaderDot','loadBar'].forEach(id=>{
     const el=document.getElementById(id);if(el)el.style.display='none';
   });
   const cv=document.getElementById('loaderCanvas');
@@ -2285,10 +2323,10 @@ function showLoadingError(err){
 function clearLoadingError(){
   loaderError=false;
   const lt=document.getElementById('loadingText');
-  if(lt){lt.style.color='';lt.textContent=''}
+  if(lt){lt.style.cssText='';lt.classList.add('load-msg');lt.textContent=''}
   const ld=document.getElementById('loadingDetail');
   if(ld)ld.textContent='';
-  ['loaderDot','loadBar','loaderQuoteWrap'].forEach(id=>{
+  ['loaderDot','loadBar'].forEach(id=>{
     const el=document.getElementById(id);if(el)el.style.display='';
   });
   const cv=document.getElementById('loaderCanvas');
@@ -2331,6 +2369,7 @@ function stopStopwatch(){if(stopwatchInterval){clearInterval(stopwatchInterval);
 
 // ── Quiz ──────────────────────────────────────────────────────────────────────
 function renderQuiz(){
+  quietRound=false;
   const qa=document.getElementById('questionsArea'),nd=document.getElementById('navDots');
   qa.innerHTML='';nd.innerHTML='';
   state.questions.forEach((q,i)=>{
@@ -2423,12 +2462,11 @@ function runEvaluate(){
     document.getElementById('q'+i).appendChild(fb);
   });
   const pct=Math.round(totalPts/state.questions.length*100);
-  // Play per-question sounds with delay
-  state.questions.forEach((q,i)=>{
-    const correct=new Set(q.correct||[]),chosen=state.userAnswers[i]||new Set();
-    const sc=calcScore(correct,chosen);
-    setTimeout(()=>{if(sc>=0.99)playCorrect();else if(sc===0)playWrong()},i*200);
-  });
+  // Genau ein Ton fuer die ganze Auswertung — die Tonhoehe traegt das
+  // Ergebnis. Beförderungs- und Achievement-Toene bleiben dabei stumm,
+  // sonst waeren es wieder mehrere.
+  quietRound=true;
+  playResultTone(pct);
   // Streak (correct answers in this round)
   const streak=calcStreak(state.questions,state.userAnswers);
   updateStreakDisplay(streak);
@@ -2470,7 +2508,7 @@ function runEvaluate(){
   const eb=document.getElementById('evalBtn');eb.textContent='Ausgewertet';eb.disabled=true;
   // Particles
   if(pct>=75)launchConfetti();else if(pct<51)launchBloodRain();
-  setTimeout(()=>goTo('s5'),600);
+  setTimeout(()=>{quietRound=false;goTo('s5')},600);
 }
 
 // ── Simple Markdown → HTML ────────────────────────────────────────────────────
@@ -2549,10 +2587,13 @@ function buildResult(pct,pts,max,topicScores){
     let optsHtml='';
     q.options.forEach(opt=>{
       const wc=chosen.has(opt.key),ic=correct.has(opt.key);
-      let cls='',lc='var(--cream2)',lc2='var(--blue3)',cbVis='hidden',cbC='';
-      if(wc&&ic){cls='rv-correct';lc='#90f0a0';lc2='var(--success)';cbVis='visible';cbC='#90f0a0'}
-      else if(wc&&!ic){cls='rv-wrong';lc='#ffaaaa';lc2='var(--red3)';cbVis='visible';cbC='#ffaaaa'}
-      else if(!wc&&ic){cls='rv-missed';lc='#ffd0a0';lc2='var(--miss)'}
+      // Der Text bleibt immer Tinte auf Papier — die Wertung traegt der
+      // Rahmen und der Buchstabe. Pastelltoene waren im hellen Modus
+      // praktisch unlesbar.
+      let cls='',lc='var(--app-ink)',lc2='var(--app-mute)',cbVis='hidden',cbC='';
+      if(wc&&ic){cls='rv-correct';lc2='var(--app-ok)';cbVis='visible';cbC='var(--app-ok)'}
+      else if(wc&&!ic){cls='rv-wrong';lc2='var(--app-accent)';cbVis='visible';cbC='var(--app-accent)'}
+      else if(!wc&&ic){cls='rv-missed';lc2='var(--app-warn)'}
       optsHtml+=`<div class="option-row ${cls}" style="cursor:default"><div class="opt-cb" style="visibility:${cbVis};color:${cbC};border-color:${cbC||'var(--border3)'}">✓</div><div class="opt-label" style="color:${lc}"><span class="opt-letter" style="color:${lc2}">${opt.key})</span>${opt.text}</div></div>`;
     });
     bl.innerHTML=`<div class="q-number">Frage ${i+1} · ${q.topic||''}</div><div class="q-text serif">${q.question}</div><div class="options">${optsHtml}</div><div class="feedback-block" style="margin-top:.85rem"><div class="fb-row"><span class="fb-status ${s.c}">${s.t}</span><span class="fb-score">${score.toFixed(2).replace('.',',')} / 1,00 Pkt.</span></div><div class="fb-explain">${q.explanation||''}</div><button class="btn btn-explain" onclick="deepDive(${i},this,'rv_ddive')">🔬 Erklär mir das</button><div id="rv_ddive${i}"></div></div>`;
@@ -2901,9 +2942,24 @@ function playTone(freq,dur,vol=0.15,type='sine'){
 function playTick(){playTone(800,.05,.08)}
 function playCorrect(){playTone(523,.12,.12);setTimeout(()=>playTone(659,.15,.12),120)}
 function playWrong(){playTone(330,.15,.1);setTimeout(()=>playTone(262,.2,.1),150)}
-function playLevelUp(){playTone(523,.15,.15);setTimeout(()=>playTone(659,.15,.15),150);setTimeout(()=>playTone(784,.25,.18),300)}
-function playAchievement(){playTone(784,.1,.12);setTimeout(()=>playTone(988,.2,.15),120)}
+function playLevelUp(){if(quietRound)return;playTone(523,.15,.15);setTimeout(()=>playTone(659,.15,.15),150);setTimeout(()=>playTone(784,.25,.18),300)}
+function playAchievement(){if(quietRound)return;playTone(784,.1,.12);setTimeout(()=>playTone(988,.2,.15),120)}
 function playCountdownTick(){playTone(1000,.06,.08,'square')}
+// Waehrend der Auswertung schweigt alles ausser dem Ergebniston
+let quietRound=false;
+function playResultTone(pct){
+  const freq=pct>=87?880:pct>=75?740:pct>=63?620:pct>=51?520:330;
+  if(soundMuted)return;
+  try{
+    const ctx=getAudioCtx(),o=ctx.createOscillator(),g=ctx.createGain();
+    o.type='sine';o.frequency.value=freq;
+    g.gain.setValueAtTime(0.0001,ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.16,ctx.currentTime+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+0.55);
+    o.connect(g);g.connect(ctx.destination);
+    o.start();o.stop(ctx.currentTime+0.6);
+  }catch{}
+}
 loadSoundPref();
 
 // ── Toast system ─────────────────────────────────────────────────────────────
@@ -3229,7 +3285,37 @@ var digestUntil=0;
     }
   }
 
-  // Ladescreen: ein fortlaufender Aktionspotential-Zug
+  // Ladescreen: die Erregung laeuft durch das Reizleitungssystem, daneben
+  // schreibt der Monitor synchron mit. Beides aus derselben Phase — was im
+  // Herzen leuchtet, steht im EKG an der richtigen Stelle.
+  var BEAT = 1.1;
+  function ecgWave(ph){
+    var g=function(c,wd,amp){return amp*Math.exp(-Math.pow((ph-c)/wd,2))};
+    return g(0.13,0.030,0.10)      // P
+         + g(0.215,0.008,-0.07)    // Q
+         + g(0.245,0.010,1.00)     // R
+         + g(0.285,0.013,-0.24)    // S
+         + g(0.44,0.055,0.24);     // T
+  }
+  // Fenster, in denen ein Abschnitt erregt ist
+  function win(ph,a,b){
+    if(ph<a||ph>b)return 0;
+    var k=(ph-a)/(b-a);
+    return Math.sin(k*Math.PI);
+  }
+
+  function heartOutline(ctx,x,y,sz){
+    var P=function(a,b){return [x+a*sz/100,y+b*sz/100]};
+    ctx.beginPath();
+    var st=P(30,15); ctx.moveTo(st[0],st[1]);
+    ctx.bezierCurveTo.apply(ctx,P(37,8).concat(P(50,10),P(54,20)));  // Vorhof links, flacher
+    ctx.bezierCurveTo.apply(ctx,P(64,2).concat(P(89,11),P(92,35)));  // Vorhof rechts, hoeher
+    ctx.bezierCurveTo.apply(ctx,P(95,60).concat(P(67,86),P(41,97))); // rechter Rand zur Spitze
+    ctx.bezierCurveTo.apply(ctx,P(23,84).concat(P(8,62),P(9,38)));   // linker Rand hinauf
+    ctx.bezierCurveTo.apply(ctx,P(9,23).concat(P(18,13),P(30,15)));
+    ctx.closePath();
+  }
+
   function drawLoader(){
     var cv=document.getElementById('loaderCanvas');
     if(!cv||!active('s3')||loaderError){dims.loader=null;return}
@@ -3237,25 +3323,152 @@ var digestUntil=0;
     if(!d)return;
     var ctx=d.ctx,w=d.w,h=d.h,p=pal();
     ctx.clearRect(0,0,w,h);
-    var base=h*0.78,amp=h*0.62,per=0.9;
-    ctx.strokeStyle='rgba('+p.ink+',0.14)';
-    ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(0,Math.round(base)+0.5);ctx.lineTo(w,Math.round(base)+0.5);ctx.stroke();
-    var spike=function(ph){
-      if(ph<0.06)return Math.pow(ph/0.06,1.7);
-      if(ph<0.2)return 1-1.12*Math.pow((ph-0.06)/0.14,0.8);
-      if(ph<0.55)return -0.12+0.12*(ph-0.2)/0.35;
-      return 0;
-    };
-    ctx.strokeStyle=p.accent;ctx.lineWidth=2;ctx.lineJoin='round';
-    ctx.beginPath();
-    var secondsVisible=Math.max(2.2,w/240);
-    for(var px=0;px<=w;px+=1.5){
-      var tt=t+(px/w)*secondsVisible;
-      var y=base-spike((tt%per)/per)*amp;
-      if(px===0)ctx.moveTo(px,y);else ctx.lineTo(px,y);
+
+    var tt=reduced?0.30:t;
+    var ph=(tt/BEAT)%1;
+    var pad=12;
+    var sz=Math.min(h-pad*2,w*0.40);
+    var hx=pad, hy=(h-sz)/2;
+    var S=function(a,b){return [hx+a*sz/100,hy+b*sz/100]};
+
+    // ── Herz ──────────────────────────────────────────────────────────────
+    var atrium=win(ph,0.04,0.24);
+    var ventricle=Math.max(win(ph,0.40,0.60),win(ph,0.58,0.86)*0.45);
+
+    ctx.save();
+    heartOutline(ctx,hx,hy,sz);
+    ctx.clip();
+    // Vorhoefe oben, Kammern unten — die Faerbung folgt der Erregung
+    ctx.fillStyle='rgba('+p.ink+',0.05)';
+    ctx.fillRect(hx,hy,sz,sz);
+    if(atrium>0.01){
+      var ga=ctx.createLinearGradient(0,hy,0,hy+sz*0.62);
+      ga.addColorStop(0,hexA(p.accent,0.14+atrium*0.42));
+      ga.addColorStop(0.65,hexA(p.accent,0.10+atrium*0.22));
+      ga.addColorStop(1,hexA(p.accent,0));
+      ctx.fillStyle=ga; ctx.fillRect(hx,hy,sz,sz*0.62);
     }
+    if(ventricle>0.01){
+      var gv=ctx.createLinearGradient(0,hy+sz*0.28,0,hy+sz);
+      gv.addColorStop(0,hexA(p.accent,0));
+      gv.addColorStop(0.35,hexA(p.accent,0.12+ventricle*0.26));
+      gv.addColorStop(1,hexA(p.accent,0.14+ventricle*0.44));
+      ctx.fillStyle=gv; ctx.fillRect(hx,hy+sz*0.28,sz,sz*0.72);
+    }
+    ctx.restore();
+
+    heartOutline(ctx,hx,hy,sz);
+    ctx.strokeStyle='rgba('+p.ink+',0.45)';
+    ctx.lineWidth=2; ctx.lineJoin='round';
     ctx.stroke();
+
+    // Septum
+    ctx.beginPath();
+    var a1=S(50,12), a2=S(56,44), a3=S(46,94);
+    ctx.moveTo(a1[0],a1[1]);
+    ctx.bezierCurveTo(a2[0],a2[1],a2[0],a2[1],a3[0],a3[1]);
+    ctx.strokeStyle='rgba('+p.ink+',0.22)';
+    ctx.lineWidth=1.5; ctx.stroke();
+
+    // ── Reizleitung ───────────────────────────────────────────────────────
+    var sa=S(68,25), av=S(53,53), his=S(51,63), lbb=S(33,80), rbb=S(68,76), apx=S(47,92);
+    var segs=[
+      {from:sa,to:av,a:0.03,b:0.24,wide:2.5},   // Vorhofleitung
+      {from:av,to:his,a:0.32,b:0.40,wide:3},    // His-Buendel
+      {from:his,to:lbb,a:0.37,b:0.47,wide:2.5}, // linker Schenkel
+      {from:his,to:rbb,a:0.37,b:0.47,wide:2.5}, // rechter Schenkel
+      {from:lbb,to:apx,a:0.44,b:0.60,wide:2},   // Purkinje
+      {from:rbb,to:apx,a:0.44,b:0.60,wide:2}
+    ];
+    segs.forEach(function(sg){
+      var k=win(ph,sg.a,sg.b);
+      ctx.beginPath();
+      ctx.moveTo(sg.from[0],sg.from[1]);
+      ctx.lineTo(sg.to[0],sg.to[1]);
+      ctx.strokeStyle=k>0.02?hexA(p.accent,0.5+k*0.5):'rgba('+p.ink+',0.20)';
+      ctx.lineWidth=sg.wide;
+      ctx.lineCap='round';
+      if(k>0.02&&!reduced){ctx.shadowColor=p.accent;ctx.shadowBlur=10+k*10}
+      ctx.stroke();
+      ctx.shadowBlur=0;
+      // Erregungspunkt wandert den Abschnitt entlang
+      if(k>0.02){
+        var prog=Math.min(1,Math.max(0,(ph-sg.a)/(sg.b-sg.a)));
+        var px=sg.from[0]+(sg.to[0]-sg.from[0])*prog;
+        var py=sg.from[1]+(sg.to[1]-sg.from[1])*prog;
+        ctx.beginPath(); ctx.arc(px,py,3.2,0,Math.PI*2);
+        ctx.fillStyle=p.accent;
+        if(!reduced){ctx.shadowColor=p.accent;ctx.shadowBlur=14}
+        ctx.fill(); ctx.shadowBlur=0;
+      }
+    });
+
+    // Sinus- und AV-Knoten
+    [[sa,win(ph,0.0,0.10),'SA'],[av,win(ph,0.22,0.36),'AV']].forEach(function(n){
+      var pt=n[0],k=n[1];
+      if(k>0.02&&!reduced){
+        ctx.beginPath(); ctx.arc(pt[0],pt[1],4+k*9,0,Math.PI*2);
+        ctx.strokeStyle=hexA(p.accent,0.5*(1-k)); ctx.lineWidth=1.5; ctx.stroke();
+      }
+      ctx.beginPath(); ctx.arc(pt[0],pt[1],k>0.02?4.4:3.2,0,Math.PI*2);
+      ctx.fillStyle=k>0.02?p.accent:'rgba('+p.ink+',0.35)';
+      if(k>0.02&&!reduced){ctx.shadowColor=p.accent;ctx.shadowBlur=16}
+      ctx.fill(); ctx.shadowBlur=0;
+    });
+
+    // ── Monitor ───────────────────────────────────────────────────────────
+    var ex=hx+sz+18, ew=w-ex-pad;
+    if(ew<70)return;
+    var ey=hy, eh=sz;
+
+    // Rasterpapier
+    ctx.save();
+    ctx.beginPath(); ctx.rect(ex,ey,ew,eh); ctx.clip();
+    ctx.strokeStyle=hexA(p.accent,0.10); ctx.lineWidth=1;
+    for(var gx=ex;gx<=ex+ew;gx+=10){ctx.beginPath();ctx.moveTo(Math.round(gx)+0.5,ey);ctx.lineTo(Math.round(gx)+0.5,ey+eh);ctx.stroke()}
+    for(var gy=ey;gy<=ey+eh;gy+=10){ctx.beginPath();ctx.moveTo(ex,Math.round(gy)+0.5);ctx.lineTo(ex+ew,Math.round(gy)+0.5);ctx.stroke()}
+    ctx.strokeStyle=hexA(p.accent,0.20);
+    for(var gx2=ex;gx2<=ex+ew;gx2+=50){ctx.beginPath();ctx.moveTo(Math.round(gx2)+0.5,ey);ctx.lineTo(Math.round(gx2)+0.5,ey+eh);ctx.stroke()}
+    for(var gy2=ey;gy2<=ey+eh;gy2+=50){ctx.beginPath();ctx.moveTo(ex,Math.round(gy2)+0.5);ctx.lineTo(ex+ew,Math.round(gy2)+0.5);ctx.stroke()}
+    ctx.restore();
+
+    ctx.strokeStyle='rgba('+p.ink+',0.22)';
+    ctx.lineWidth=2;
+    ctx.strokeRect(Math.round(ex)+1,Math.round(ey)+1,Math.round(ew)-2,Math.round(eh)-2);
+
+    var base=ey+eh*0.62, amp=eh*0.34;
+    var seconds=Math.max(2.2,ew/150);
+    ctx.beginPath();
+    for(var px2=0;px2<=ew;px2+=1.5){
+      var tSec=tt-seconds*(1-px2/ew);
+      var y=base-ecgWave(((tSec/BEAT)%1+1)%1)*amp;
+      if(px2===0)ctx.moveTo(ex+px2,y); else ctx.lineTo(ex+px2,y);
+    }
+    ctx.strokeStyle=p.accent; ctx.lineWidth=2; ctx.lineJoin='round'; ctx.lineCap='round';
+    if(!reduced){ctx.shadowColor=p.accent;ctx.shadowBlur=12}
+    ctx.stroke();
+    ctx.shadowBlur=0;
+
+    // Schreibkopf
+    var headY=base-ecgWave(ph)*amp;
+    ctx.beginPath(); ctx.arc(ex+ew,headY,3.4,0,Math.PI*2);
+    ctx.fillStyle=p.accent;
+    if(!reduced){ctx.shadowColor=p.accent;ctx.shadowBlur=18}
+    ctx.fill(); ctx.shadowBlur=0;
+
+    ctx.font="600 9.5px Archivo, system-ui, sans-serif";
+    ctx.fillStyle='rgba('+p.ink+',0.60)';
+    ctx.fillText('ABLEITUNG II',ex+8,ey+15);
+    var bpmTxt=Math.round(60/BEAT)+' BPM';
+    ctx.fillStyle=hexA(p.accent,0.95);
+    ctx.fillText(bpmTxt,ex+ew-ctx.measureText(bpmTxt).width-8,ey+15);
+  }
+
+  // #rrggbb + Alpha, damit Glow und Fuellungen dieselbe Akzentfarbe nutzen
+  function hexA(hex,alpha){
+    var m=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(String(hex).trim());
+    if(!m)return 'rgba(236,48,19,'+alpha+')';
+    return 'rgba('+parseInt(m[1],16)+','+parseInt(m[2],16)+','+parseInt(m[3],16)+','+alpha+')';
   }
 
   function frame(now){
@@ -3273,8 +3486,9 @@ var digestUntil=0;
 // ══════════════════════════════════════════════════════════════════════════
 //  Start
 // ══════════════════════════════════════════════════════════════════════════
+try{const k=localStorage.getItem('physio_orakel_pool_kind');if(k&&state.pools[k])state.poolKind=k}catch{}
 setSourceMode(state.sourceMode);
-renderPoolStatus(null);
+applyPoolKind();
 updateSummary();
 renderFileList();
 updateLoginHintVisibility();
