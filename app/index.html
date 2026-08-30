@@ -639,13 +639,14 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
     <button type="button" class="btn btn-ghost" onclick="goTo('s1')" style="color:var(--app-ink);font-size:12.5px;margin-bottom:22px">← Abbrechen</button>
     <div style="border-top:2px solid var(--app-rule);border-bottom:2px solid var(--app-rule);padding:clamp(28px,4vw,44px) 0 clamp(24px,4vw,36px)">
       <div style="display:flex;gap:14px;align-items:center">
-        <span class="pulse-dot"></span>
+        <span class="pulse-dot" id="loaderDot"></span>
         <h1 id="genText" style="font-size:clamp(22px,3vw,34px);line-height:1.08;letter-spacing:-0.02em;color:var(--app-ink)">Generiere Fragen…</h1>
       </div>
       <canvas id="loaderCanvas" aria-hidden="true" style="display:block;width:100%;height:clamp(120px,16vw,170px);margin-top:22px"></canvas>
-      <div class="load-bar"><span id="loadBarFill"></span></div>
+      <div class="load-bar" id="loadBar"><span id="loadBarFill"></span></div>
       <div id="loadingText" style="font-size:13px;line-height:20px;color:var(--app-mute);margin-top:12px"></div>
-      <figure style="margin:26px 0 0;border-top:2px solid var(--app-rule);padding-top:20px">
+      <div id="loadingDetail" style="font-size:11.5px;line-height:18px;color:var(--app-mute);margin-top:6px;opacity:.75"></div>
+      <figure id="loaderQuoteWrap" style="margin:26px 0 0;border-top:2px solid var(--app-rule);padding-top:20px">
         <blockquote id="loaderQuote" style="font-family:var(--font-heading);font-weight:800;font-size:clamp(17px,2.1vw,23px);line-height:1.3;letter-spacing:-0.015em;margin:0;max-width:44ch;color:var(--app-ink)"></blockquote>
         <figcaption style="display:flex;align-items:center;gap:10px;margin-top:14px">
           <span style="display:block;width:9px;height:9px;background:var(--app-accent);flex:none"></span>
@@ -1279,6 +1280,7 @@ function setLoadPct(p){
 }
 function startEKG(){
   loaderActive=true;
+  clearLoadingError();
   const n=state.examMode?20:parseInt(state.count||'5',10);
   const gt=document.getElementById('genText');
   if(gt)gt.textContent='Generiere '+n+' Frage'+(n===1?'':'n')+'…';
@@ -1761,8 +1763,8 @@ async function startWochentest(){
     document.getElementById('evalBtn').textContent='Auswerten';document.getElementById('evalBtn').disabled=false;
     renderQuiz();goTo('s4');startStopwatch();
   }catch(err){
-    stopEKG();lt.style.color='var(--red2)';lt.textContent='Fehler: '+err.message;
-    setTimeout(()=>{document.getElementById('wtStartBtn').disabled=false;goTo('s1')},4000);
+    stopEKG();showLoadingError(err);
+    setTimeout(()=>{document.getElementById('wtStartBtn').disabled=false;goTo('s1')},7000);
   }
   document.getElementById('wtStartBtn').disabled=false;
 }
@@ -1998,8 +2000,8 @@ async function startQuiz(){
     startStopwatch();
     if(state.examMode)startExamTimer();
   }catch(err){
-    stopEKG();lt.style.color='var(--red2)';lt.textContent='Fehler: '+err.message;
-    setTimeout(()=>{const sb=document.getElementById('startBtn');if(sb)sb.disabled=false;const ub=document.getElementById('uploadStartBtn');if(ub)ub.disabled=false;goTo(state.flowMode==='skript'?'sUpload':'s2')},4000);
+    stopEKG();showLoadingError(err);
+    setTimeout(()=>{const sb=document.getElementById('startBtn');if(sb)sb.disabled=false;const ub=document.getElementById('uploadStartBtn');if(ub)ub.disabled=false;goTo(state.flowMode==='skript'?'sUpload':'s2')},7000);
   }
 }
 
@@ -2053,27 +2055,147 @@ async function generateQuestions(){
   return await callAnthropicWithRetry(sys,usr,maxTokens);
 }
 
+// Die KI liefert manchmal abgeschnittenes JSON — das ist keine Stoerung,
+// sondern ein Grund, es einfach nochmal zu versuchen.
+function badAnswerError(detail){
+  const e=new Error('Die Antwort der KI war unvollständig.');
+  e.userInfo={title:'Die Antwort der KI war unvollständig.',detail:'Das passiert gelegentlich bei langen Runden. Starte die Runde einfach neu.',fixable:true};
+  e.retryable=true;
+  e.technical=detail;
+  return e;
+}
+
 async function callAnthropicWithRetry(sys,usr,maxTokens,retries=2){
   let lastErr;
   for(let attempt=0;attempt<=retries;attempt++){
     try{
-      const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json','X-Access-Code':getAccessCode()},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:maxTokens,system:sys,messages:[{role:'user',content:usr}]})});
-      if(!res.ok){let m='API '+res.status;try{const j=await res.json();m=j.error?.message||m}catch{}
-        if((res.status===429||res.status===529)&&attempt<retries){const wait=Math.pow(2,attempt+1)*1000;updateLoadingMsg(`Rate-Limit — Retry in ${wait/1000}s…`);await new Promise(r=>setTimeout(r,wait));continue}
-        throw new Error(m)}
+      let res;
+      try{
+        res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json','X-Access-Code':getAccessCode()},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:maxTokens,system:sys,messages:[{role:'user',content:usr}]})});
+      }catch(netErr){
+        // fetch wirft nur, wenn die Anfrage gar nicht erst rausging
+        const e=new Error('Keine Verbindung.');
+        e.userInfo=describeApiError(0,null);
+        e.retryable=true;
+        throw e;
+      }
+      if(!res.ok){
+        let payload=null;try{payload=await res.json()}catch{}
+        if((res.status===429||res.status===529)&&attempt<retries){
+          const wait=Math.pow(2,attempt+1)*1000;
+          updateLoadingMsg(`Gerade zu viel los — neuer Versuch in ${wait/1000}s…`);
+          await new Promise(r=>setTimeout(r,wait));
+          continue;
+        }
+        const info=describeApiError(res.status,payload);
+        const e=new Error(info.title);
+        e.userInfo=info;
+        e.technical=info.raw||'';
+        e.retryable=res.status>=500||res.status===429||res.status===529;
+        throw e;
+      }
       const data=await res.json();
-      const raw=data.content.map(b=>b.text||'').join('');
+      const raw=(data.content||[]).map(b=>b.text||'').join('');
       const clean=raw.replace(/^```(?:json)?\s*|\s*```$/gm,'').trim();
       let parsed;
-      try{parsed=JSON.parse(clean)}catch{const m=clean.match(/\[[\s\S]*\]/);if(m){try{parsed=JSON.parse(m[0])}catch{let fix=m[0].replace(/,\s*$/,'');if(!fix.endsWith(']'))fix+='}]';try{parsed=JSON.parse(fix)}catch{throw new Error('JSON-Parsefehler')}}}else throw new Error('Kein JSON in Antwort')}
-      if(!Array.isArray(parsed)||!parsed.length)throw new Error('Keine Fragen erhalten');
+      try{parsed=JSON.parse(clean)}catch{
+        const m=clean.match(/\[[\s\S]*\]/);
+        if(m){
+          try{parsed=JSON.parse(m[0])}catch{
+            let fix=m[0].replace(/,\s*$/,'');
+            if(!fix.endsWith(']'))fix+='}]';
+            try{parsed=JSON.parse(fix)}catch{throw badAnswerError('JSON-Parsefehler')}
+          }
+        }else throw badAnswerError('Kein JSON in Antwort');
+      }
+      if(!Array.isArray(parsed)||!parsed.length)throw badAnswerError('Leeres Fragen-Array');
       return parsed;
-    }catch(e){lastErr=e;if(attempt<retries&&e.message.includes('Netzwerk')){await new Promise(r=>setTimeout(r,2000));continue}}
+    }catch(e){
+      lastErr=e;
+      // Nur wiederholen, was sich durch Wiederholen bessern kann — einen
+      // ungültigen Schlüssel dreimal anzufragen hilft niemandem.
+      if(attempt<retries&&e.retryable){await new Promise(r=>setTimeout(r,2000));continue}
+      break;
+    }
   }
   throw lastErr||new Error('Unbekannter Fehler');
 }
 
-function updateLoadingMsg(msg){const el=document.getElementById('loadingText');if(el)el.textContent=msg}
+function updateLoadingMsg(msg){const el=document.getElementById('loadingText');if(el)el.textContent=msg;const d=document.getElementById('loadingDetail');if(d)d.textContent=''}
+
+// ── Fehler einordnen ─────────────────────────────────────────────────────────
+// Der Worker reicht Antworten von Anthropic unveraendert durch. Roh sieht das
+// dann aus wie "API key is invalid" — was so klingt, als hätte der Student
+// etwas falsch gemacht. Also: erst einordnen, wer es reparieren kann.
+function describeApiError(status,payload){
+  // Der Worker selbst antwortet mit {error:"Text"} — der ist schon für
+  // Menschen geschrieben und meist wirklich Sache des Nutzers.
+  if(payload&&typeof payload.error==='string'){
+    const t=payload.error;
+    if(/zugangscode/i.test(t))return{
+      title:'Der Wochencode stimmt nicht mehr.',
+      detail:'Melde dich neu an — der Code wird jede Woche getauscht.',
+      fixable:true
+    };
+    return{title:t,detail:'',fixable:true};
+  }
+  const err=(payload&&payload.error)||{};
+  const type=err.type||'';
+  const msg=err.message||'';
+  // raw wandert in die kleine Zeile darunter: fuer den Betreiber diagnostisch,
+  // fuer den Studenten unauffaellig.
+  const raw=msg||('HTTP '+status);
+  const mine='Das Orakel ist gerade nicht erreichbar — das liegt nicht an dir.';
+
+  if(status===401||status===403||type==='authentication_error'||type==='permission_error')
+    return{title:mine,detail:'Der Zugang zur KI muss vom Betreiber erneuert werden. Probier es später nochmal.',fixable:false,raw:raw};
+  if(/credit balance|billing|quota/i.test(msg))
+    return{title:mine,detail:'Das Kontingent des Betreibers ist aufgebraucht. Probier es später nochmal.',fixable:false,raw:raw};
+  if(status===429||type==='rate_limit_error')
+    return{title:'Gerade zu viel los.',detail:'Zu viele Anfragen auf einmal. Warte kurz und starte die Runde neu.',fixable:true,raw:raw};
+  if(status===529||type==='overloaded_error')
+    return{title:'Die KI ist gerade überlastet.',detail:'Das passiert zu Stoßzeiten. In ein paar Minuten nochmal versuchen.',fixable:true,raw:raw};
+  if(status===404||type==='not_found_error')
+    return{title:mine,detail:'Das hinterlegte Modell ist nicht verfügbar — der Betreiber muss das anpassen.',fixable:false,raw:raw};
+  if(status>=500)
+    return{title:'Die KI hat gerade einen Aussetzer.',detail:'Serverfehler auf der Gegenseite. Gleich nochmal probieren.',fixable:true,raw:raw};
+  if(status===0||!status)
+    return{title:'Keine Verbindung.',detail:'Prüf dein Netz — die Anfrage ist nicht angekommen.',fixable:true};
+  return{title:'Das hat nicht geklappt.',detail:'Unerwartete Antwort vom Dienst. Starte die Runde noch einmal.',fixable:true,raw:raw};
+}
+
+// Der Fehler ist ein eigener Zustand, kein Text unter einer weiterlaufenden
+// Animation: Klartext in die Überschrift, Puls und Balken aus, Technik klein
+// darunter — damit der Betreiber sie sieht, ohne den Studenten zu verwirren.
+let loaderError=false;
+function showLoadingError(err){
+  const info=err&&err.userInfo?err.userInfo:{title:'Das hat nicht geklappt.',detail:(err&&err.message)||''};
+  loaderError=true;
+  const gt=document.getElementById('genText');
+  if(gt)gt.textContent=info.title;
+  const lt=document.getElementById('loadingText');
+  if(lt){lt.style.color='';lt.textContent=info.detail||''}
+  const ld=document.getElementById('loadingDetail');
+  const tech=(err&&err.technical)||(err&&err.message)||'';
+  if(ld)ld.textContent=(tech&&tech!==info.title)?tech:'';
+  ['loaderDot','loadBar','loaderQuoteWrap'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.style.display='none';
+  });
+  const cv=document.getElementById('loaderCanvas');
+  if(cv)cv.style.display='none';
+}
+function clearLoadingError(){
+  loaderError=false;
+  const lt=document.getElementById('loadingText');
+  if(lt){lt.style.color='';lt.textContent=''}
+  const ld=document.getElementById('loadingDetail');
+  if(ld)ld.textContent='';
+  ['loaderDot','loadBar','loaderQuoteWrap'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.style.display='';
+  });
+  const cv=document.getElementById('loaderCanvas');
+  if(cv)cv.style.display='';
+}
 
 // ── Exam Timer ────────────────────────────────────────────────────────────────
 function startExamTimer(){
@@ -2284,13 +2406,16 @@ Thema: ${q.topic||''}`;
 
   try{
     const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json','X-Access-Code':getAccessCode()},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:2048,system:'Du bist ein Physiologie-Dozent an der Semmelweis Universität. Erkläre verständlich, präzise und klinisch relevant auf Deutsch.',messages:[{role:'user',content:prompt}]})});
-    if(!res.ok)throw new Error('API-Fehler');
+    if(!res.ok){let payload=null;try{payload=await res.json()}catch{}
+      const info=describeApiError(res.status,payload);
+      const err=new Error(info.title);err.userInfo=info;throw err}
     const data=await res.json();
     const text=data.content.map(b=>b.text||'').join('');
     container.innerHTML=`<div class="deep-dive"><h4>Tiefgehende Erklärung</h4><p style="margin:.4rem 0">${mdToHtml(text)}</p></div>`;
     btn.textContent='🔬 Erklärung ausblenden';
   }catch(e){
-    container.innerHTML=`<div class="deep-dive" style="color:var(--red2)">Fehler: ${e.message}</div>`;
+    const info=e&&e.userInfo?e.userInfo:{title:'Das hat nicht geklappt.',detail:e.message||''};
+    container.innerHTML=`<div class="deep-dive"><h4>Klappt gerade nicht</h4><p style="margin:.4rem 0;color:var(--app-ink)">${info.title}</p>${info.detail?`<p style="margin:.2rem 0 0;font-size:12px;color:var(--app-mute)">${info.detail}</p>`:''}</div>`;
     btn.textContent='🔬 Erneut versuchen';
   }
   btn.classList.remove('loading');
@@ -3065,7 +3190,7 @@ var digestUntil=0;
   // Ladescreen: ein fortlaufender Aktionspotential-Zug
   function drawLoader(){
     var cv=document.getElementById('loaderCanvas');
-    if(!cv||!active('s3')){dims.loader=null;return}
+    if(!cv||!active('s3')||loaderError){dims.loader=null;return}
     var d=dims.loader||(dims.loader=fit(cv));
     if(!d)return;
     var ctx=d.ctx,w=d.w,h=d.h,p=pal();
