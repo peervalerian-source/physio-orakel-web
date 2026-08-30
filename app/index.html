@@ -166,25 +166,34 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
 .brand-btn { all: unset; cursor: pointer; display: block; }
 .brand-name { display: block; font-family: var(--font-heading); font-weight: 800; font-size: 18px; line-height: 22px; color: var(--app-ink); }
 .brand-sub { display: block; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--app-mute); margin-top: 2px; }
-.toolbar { margin-left: auto; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
-.toolbar .btn { font-size: 12.5px; padding: 7px 11px; }
-.back-link { font-size: 12.5px; color: var(--app-mute); margin-right: 6px; }
-.back-link:hover { color: var(--app-accent); }
+.toolbar { margin-left: auto; display: flex; align-items: stretch; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+/* Jedes Element der Leiste traegt dieselbe Hoehe und dieselbe 2px-Kante —
+   nur „Statistik" ist gefuellt, damit ein einziger Akzent bleibt. */
+.toolbar .btn, .toolbar #userBadge {
+  height: 38px; padding: 0 12px; font-size: 12.5px; line-height: 1;
+  display: inline-flex; align-items: center; white-space: nowrap;
+}
+.back-link {
+  display: inline-flex; align-items: center; height: 38px; padding: 0 10px 0 0;
+  font-size: 12.5px; color: var(--app-mute); white-space: nowrap;
+}
+.back-link:hover { color: var(--app-accent); text-decoration: none; }
 #keyCornerBtn.has-key { border-color: var(--app-accent); color: var(--app-accent); }
 
 /* Konto-Badge (wird per JS in die Toolbar gehängt) */
 #userBadge {
-  display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
-  background: transparent; border: 2px solid var(--app-rule); border-radius: 0;
-  padding: 5px 10px; font-family: var(--font-body); color: var(--app-ink);
+  cursor: pointer; background: transparent; border: 2px solid var(--app-rule);
+  border-radius: 0; font-family: var(--font-heading); font-weight: 800;
+  color: var(--app-ink); gap: 7px;
 }
-#userBadge:hover { border-color: var(--app-accent); }
-.ub-dot { width: 8px; height: 8px; background: var(--app-accent); flex: none; }
-.ub-text { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.15; }
+@media (hover: hover) { #userBadge:hover { border-color: var(--app-accent); } }
+.ub-dot { width: 7px; height: 7px; background: var(--app-accent); flex: none; }
+.ub-text { display: inline-flex; align-items: baseline; gap: 6px; min-width: 0; }
 .ub-name { font-family: var(--font-heading); font-weight: 800; font-size: 12.5px; }
-.ub-rank-line { display: flex; gap: 4px; align-items: center; font-size: 10px; color: var(--app-mute); letter-spacing: 0.04em; }
-.ub-rank-icon { font-size: 10px; }
-.ub-arrow { font-size: 10px; color: var(--app-mute); }
+.ub-rank-line { display: inline-flex; gap: 4px; align-items: baseline; font-size: 11px; font-weight: 400; color: var(--app-mute); }
+.ub-rank-icon { font-size: 11px; }
+.ub-arrow { font-size: 9px; color: var(--app-mute); }
+@media (max-width: 700px) { .ub-rank-line { display: none; } }
 
 /* ── Screens ───────────────────────────────────────────────────────────── */
 .screen { display: none; }
@@ -413,12 +422,33 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
 .xp-label { font-size: 12px; color: var(--app-mute); font-feature-settings: 'tnum' 1; }
 .xp-track { height: 12px; background: var(--app-bg); border: 2px solid var(--app-rule); margin-top: 16px; }
 .xp-fill { height: 100%; background: var(--app-accent); }
-.challenge-card { display: flex; gap: 14px 20px; flex-wrap: wrap; align-items: center; justify-content: space-between; border: 2px solid var(--app-rule); background: var(--app-panel); padding: 16px 18px; }
-.challenge-left { display: flex; gap: 14px; align-items: center; }
-.challenge-icon { font-size: 24px; }
-.challenge-topic { font-family: var(--font-heading); font-weight: 800; font-size: 15px; color: var(--app-ink); }
-.challenge-sub { font-size: 12px; color: var(--app-mute); margin-top: 2px; }
-.challenge-done { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--app-ok); }
+/* ── Podest ────────────────────────────────────────────────────────────────
+   Drei Säulen, die mittlere am höchsten. Radius 0, 2px-Kanten, Rot nur für
+   Platz 1 — die anderen beiden tragen die Papierfläche. */
+.podium { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; align-items: end; margin-top: 6px; }
+.pod { display: flex; flex-direction: column; align-items: center; min-width: 0; }
+.pod-head { display: flex; flex-direction: column; align-items: center; gap: 3px; padding-bottom: 10px; text-align: center; width: 100%; min-width: 0; }
+.pod-emoji { font-size: 26px; line-height: 1; }
+.pod-name { font-family: var(--font-heading); font-weight: 800; font-size: 14.5px; line-height: 18px; color: var(--app-ink); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pod-rank { font-size: 11px; line-height: 15px; color: var(--app-mute); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pod-xp { font-size: 12px; color: var(--app-accent); font-feature-settings: 'tnum' 1; }
+.pod-block { width: 100%; border: 2px solid var(--app-rule); border-bottom: none; background: var(--app-panel); display: flex; align-items: flex-start; justify-content: center; padding-top: 9px; }
+.pod-1 .pod-block { height: 92px; background: var(--app-accent); border-color: var(--app-accent); }
+.pod-2 .pod-block { height: 64px; }
+.pod-3 .pod-block { height: 48px; }
+.pod-pos { font-family: var(--font-heading); font-weight: 800; font-size: 26px; line-height: 1; color: var(--app-mute); font-feature-settings: 'tnum' 1; }
+.pod-1 .pod-pos { color: var(--app-accent-ink); font-size: 32px; }
+.pod-me .pod-name { color: var(--app-accent); }
+.pod-floor { height: 2px; background: var(--app-rule); }
+@media (max-width: 480px) {
+  .podium { gap: 6px; }
+  .pod-name { font-size: 12.5px; }
+  .pod-emoji { font-size: 22px; }
+  .pod-1 .pod-block { height: 76px; }
+  .pod-2 .pod-block { height: 54px; }
+  .pod-3 .pod-block { height: 40px; }
+}
+
 .achievement-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
 .achievement { display: flex; gap: 12px; align-items: center; border: 2px solid var(--app-rule); background: var(--app-panel); padding: 12px 14px; }
 .achievement.locked { opacity: 0.42; }
@@ -426,11 +456,6 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
 .achievement-icon { font-size: 20px; }
 .achievement-name { font-family: var(--font-heading); font-weight: 800; font-size: 13.5px; color: var(--app-ink); }
 .achievement-desc { font-size: 11.5px; color: var(--app-mute); margin-top: 2px; }
-.heatmap-row { display: grid; grid-template-columns: minmax(0, 190px) 1fr auto; gap: 14px; align-items: center; padding: 8px 0; border-bottom: 2px solid var(--app-rule); }
-.heatmap-label { font-size: 13px; color: var(--app-ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.heatmap-bar { position: relative; height: 10px; background: var(--app-panel); border: 2px solid var(--app-rule); }
-.heatmap-fill { height: 100%; }
-.heatmap-val { font-size: 11px; color: var(--app-mute); font-feature-settings: 'tnum' 1; min-width: 38px; text-align: right; }
 .hist-row { display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center; padding: 10px 0; border-bottom: 2px solid var(--app-rule); }
 .hist-date { font-size: 12px; color: var(--app-mute); font-feature-settings: 'tnum' 1; }
 .hist-mode { font-size: 12.5px; color: var(--app-ink); }
@@ -459,13 +484,12 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
   .topbar { padding: 9px clamp(14px, 4vw, 56px); gap: 8px 8px; }
   .brand-name { font-size: 16px; line-height: 20px; }
   .toolbar { gap: 6px; }
-  .toolbar .btn { font-size: 12px; padding: 7px 9px; }
+  .toolbar .btn, .toolbar #userBadge { height: 34px; padding: 0 10px; font-size: 12px; }
+  .back-link { height: 34px; }
   /* 16px verhindert, dass iOS beim Antippen eines Feldes hineinzoomt */
   .input { font-size: 16px; }
   .key-panel { padding: 22px 18px 20px; }
   .stats-panel { padding: 24px 16px 56px; }
-  .heatmap-row { grid-template-columns: minmax(0, 1fr) auto; row-gap: 6px; }
-  .heatmap-bar { grid-column: 1 / -1; }
   .bi-item { grid-template-columns: minmax(0, 1fr) auto; }
   .bi-bar { grid-column: 1 / -1; }
   .q-text { max-width: none; }
@@ -504,12 +528,12 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
       <div class="login-hint" id="loginHint" style="display:none">
         <span class="kicker">Hinweis</span>
         <div style="font-family:var(--font-heading);font-weight:800;font-size:19px;line-height:1.2;color:var(--app-ink)">Bitte zuerst anmelden.</div>
-        <p style="font-size:14px;line-height:23px;color:var(--app-mute);margin:10px 0 16px;max-width:52ch">Du brauchst einen Account und den aktuellen Wochencode. Wenn du noch keinen hast, kannst du dich kostenlos registrieren.</p>
+        <p style="font-size:14px;line-height:23px;color:var(--app-mute);margin:10px 0 16px;max-width:52ch">Zum Registrieren brauchst du einen Einmalcode — den bekommst du direkt von mir. Danach reichen Username und Passwort.</p>
         <button type="button" class="btn btn-primary" onclick="openKeyModal()">Anmelden / Registrieren</button>
       </div>
 
       <h1 class="home-h1"><span style="display:block">Was üben wir heute?</span></h1>
-      <p style="font-size:16px;line-height:27px;color:var(--app-mute);margin:18px 0 0;max-width:46ch">Gratis Account erstellen und loslegen. Keine Werbung / Newsletter.</p>
+      <p style="font-size:16px;line-height:27px;color:var(--app-mute);margin:18px 0 0;max-width:46ch">Gratis Account erstellen und loslegen. Keine Werbung.</p>
 
       <div class="mode-grid" id="modeGrid">
         <button type="button" class="mode-card" onclick="chooseMode('altfragen')">
@@ -534,6 +558,7 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
   <div style="max-width:1100px;margin:0 auto;padding:0 clamp(16px,4vw,56px) 40px;display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap">
     <button type="button" class="btn-link" onclick="openWtAdmin()">admin · material</button>
     <button type="button" class="btn-link" onclick="openPoolAdmin()">admin · altfragenpool</button>
+    <button type="button" class="btn-link" onclick="openCodeAdmin()">admin · einmalcodes</button>
   </div>
 </div>
 
@@ -553,15 +578,6 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
     <div id="poolStatusWrap" style="margin-top:20px"></div>
 
     <div id="topicArea" style="margin-top:26px;border-top:2px solid var(--app-rule)"></div>
-
-    <div id="altSubMode" style="display:none;margin-top:30px">
-      <span class="seg-label">Altfragen-Methode</span>
-      <div class="seg seg-text">
-        <button type="button" id="amExact" onclick="setAltMode('exact')" class="on">Exakt</button>
-        <button type="button" id="amVaried" onclick="setAltMode('varied')">Variiert (KI)</button>
-      </div>
-      <p style="font-size:12.5px;line-height:20px;color:var(--app-mute);margin:8px 0 0;max-width:56ch" id="altModeHint">Originalfragen direkt aus dem Pool — kein Wort verändert.</p>
-    </div>
 
     <div id="diffSection" style="margin-top:30px">
       <span class="seg-label">Schwierigkeit</span>
@@ -726,12 +742,11 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
       <button type="button" class="ssw" id="authTabRegister" onclick="setAuthTab('register')">Registrieren</button>
     </div>
     <div class="key-panel-title" id="authTitle">Anmelden</div>
-    <div class="key-panel-sub" id="authSub">Mit deinem Account-Login + Wochencode</div>
+    <div class="key-panel-sub" id="authSub">Username und Passwort genügen</div>
 
     <div id="authFormLogin" style="display:grid;gap:10px;margin-top:14px">
       <input class="input" type="text" id="loginUser" placeholder="Username oder Email" autocomplete="username">
       <input class="input" type="password" id="loginPass" placeholder="Passwort" autocomplete="current-password">
-      <input class="input" type="password" id="loginCode" placeholder="Wochencode" autocomplete="off">
       <button type="button" class="btn btn-primary btn-block" onclick="doLogin()">Anmelden</button>
     </div>
 
@@ -739,7 +754,8 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
       <input class="input" type="text" id="regUser" placeholder="Username (3–20 Zeichen)" autocomplete="username">
       <input class="input" type="email" id="regEmail" placeholder="Email" autocomplete="email">
       <input class="input" type="password" id="regPass" placeholder="Passwort (mind. 6 Zeichen)" autocomplete="new-password">
-      <input class="input" type="password" id="regCode" placeholder="Wochencode" autocomplete="off">
+      <input class="input" type="text" id="regCode" placeholder="Einmalcode" autocomplete="off" spellcheck="false" style="text-transform:uppercase">
+      <p style="font-size:12px;line-height:19px;color:var(--app-mute);margin:0">Den Einmalcode bekommst du von mir. Er gilt für genau einen Account.</p>
       <button type="button" class="btn btn-primary btn-block" onclick="doRegister()">Account erstellen</button>
     </div>
 
@@ -796,6 +812,30 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
   </div>
 </div>
 
+<!-- ══ Admin: Einmalcodes ═════════════════════════════════════════════════ -->
+<div class="key-overlay" id="codeAdminOverlay">
+  <div class="key-backdrop" onclick="closeCodeAdmin()"></div>
+  <div class="key-panel" style="max-width:560px">
+    <button type="button" class="modal-close" onclick="closeCodeAdmin()" title="Schließen">✕</button>
+    <span class="kicker">Admin</span>
+    <div class="key-panel-title">Einmalcodes</div>
+    <div class="key-panel-sub">Ein Code pro Person. Nach der Registrierung ist er verbraucht.</div>
+    <div style="display:grid;gap:10px;margin-top:14px">
+      <input class="input" type="password" id="codeAdminKeyInput" placeholder="Admin-Key" autocomplete="off">
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px">
+        <input class="input" type="text" id="newCodeInput" placeholder="Code, z. B. HIWA-2026" autocomplete="off" spellcheck="false" style="text-transform:uppercase">
+        <input class="input" type="text" id="newCodeNote" placeholder="Notiz (optional)" autocomplete="off">
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button type="button" class="btn btn-primary" onclick="createCode()" id="createCodeBtn">Code anlegen</button>
+        <button type="button" class="btn btn-secondary" onclick="loadCodes()">Liste laden</button>
+      </div>
+    </div>
+    <div id="codeAdminStatus" style="font-size:13px;color:var(--app-mute);margin:12px 0"></div>
+    <div id="codeList" style="display:grid;gap:8px;max-height:40vh;overflow:auto"></div>
+  </div>
+</div>
+
 <!-- ══ Statistik ══════════════════════════════════════════════════════════ -->
 <div class="stats-overlay" id="statsOverlay">
   <div class="stats-backdrop" onclick="toggleStats()"></div>
@@ -808,17 +848,10 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
     <div class="xp-section" id="xpSection"></div>
     <div class="section-label">Die Leiter</div>
     <div id="rankLadder"></div>
-    <div class="section-label">Tages-Challenge</div>
-    <div id="challengeArea"></div>
     <div class="section-label">Jahrgang</div>
     <div id="leaderboardArea"></div>
     <div class="section-label">Achievements</div>
     <div class="achievement-grid" id="achievementGrid"></div>
-    <div class="section-label">Schwachstellen</div>
-    <div class="heatmap" id="heatmap"></div>
-    <div id="weaknessBtn" style="display:none;margin:18px 0">
-      <button type="button" class="btn btn-primary" onclick="startWeaknessQuiz()">Schwachstellen üben</button>
-    </div>
     <div class="section-label">Letzte Sitzungen</div>
     <div class="stats-history" id="statsHistory"></div>
     <div class="stats-reset"><button type="button" class="btn btn-secondary btn-sm" onclick="resetStats()" style="color:var(--app-accent);border-color:var(--app-accent)">Statistik zurücksetzen</button></div>
@@ -931,7 +964,7 @@ const ACHIEVEMENTS=[
   {id:'hard_ace',name:'Hartgesotten',desc:'≥80% auf Hard',icon:'💪'},
   {id:'level_5',name:'Aufsteiger',desc:'Level 5 erreicht',icon:'⭐'},
   {id:'level_10',name:'Experte',desc:'Level 10 erreicht',icon:'🌟'},
-  {id:'daily_challenge',name:'Herausforderer',desc:'Tages-Challenge gemeistert',icon:'🏆'}
+  {id:'streak_master',name:'Serienstark',desc:'Beste Serie ≥ 15',icon:'🏆'}
 ];
 
 const SOUND_KEY='physio_orakel_sound';
@@ -955,8 +988,7 @@ const state={
   examTimerInterval:null,
   examTimeLeft:2400,
   currentQuestionIndex:0,
-  quizStartTime:0,
-  isDailyChallenge:false
+  quizStartTime:0
 };
 
 // ── Theme ─────────────────────────────────────────────────────────────────────
@@ -991,6 +1023,8 @@ function goTo(id){
     const ub=document.getElementById('uploadStartBtn');if(ub)ub.disabled=false;
     const eb=document.getElementById('evalBtn');if(eb){eb.textContent='Auswerten';eb.disabled=false}
     stopExamTimer();stopStopwatch();stopParticles();stopEKG();
+    // Danach nochmal pruefen — ohne Pool bleibt „Quiz starten" gesperrt.
+    updateSummary();
   }
 }
 
@@ -1015,12 +1049,8 @@ function backToMenu(){goTo('s1')}
 function goToConfigWith(mode){
   state.examMode=false;
   state.flowMode=mode;
-  if(mode==='altfragen'){
-    // Altfragen aus dem Pool, wenn einer hinterlegt ist — sonst KI aus dem Katalog
-    setSourceMode(state.poolText?'alt':'ki');
-  }else{
-    setSourceMode('ki');
-  }
+  // Altfragen kommen ausschliesslich aus dem Pool.
+  setSourceMode(mode==='altfragen'?'alt':'ki');
   updateSummary();
   goTo('s2');
 }
@@ -1040,7 +1070,7 @@ function setAuthTab(tab){
   document.getElementById('authFormLogin').style.display=tab==='login'?'block':'none';
   document.getElementById('authFormRegister').style.display=tab==='register'?'block':'none';
   document.getElementById('authTitle').textContent=tab==='login'?'Anmelden':'Account erstellen';
-  document.getElementById('authSub').textContent=tab==='login'?'Mit deinem Account-Login + Wochencode':'Username, Email, Passwort + Wochencode';
+  document.getElementById('authSub').textContent=tab==='login'?'Username und Passwort genügen':'Username, Email, Passwort + dein Einmalcode';
   document.getElementById('authStatus').textContent='';
 }
 function showAuthStatus(msg,color){const el=document.getElementById('authStatus');el.textContent=msg;el.style.color=color}
@@ -1062,14 +1092,14 @@ async function liveCheckCode(input){
   },400);
 }
 document.addEventListener('DOMContentLoaded',()=>{
-  ['loginCode','regCode'].forEach(id=>{
+  ['regCode'].forEach(id=>{
     const el=document.getElementById(id);
     if(el)el.addEventListener('input',()=>liveCheckCode(el));
   });
 });
 // Also bind immediately in case DOMContentLoaded already fired
 setTimeout(()=>{
-  ['loginCode','regCode'].forEach(id=>{
+  ['regCode'].forEach(id=>{
     const el=document.getElementById(id);
     if(el&&!el._liveBound){el._liveBound=true;el.addEventListener('input',()=>liveCheckCode(el))}
   });
@@ -1077,38 +1107,37 @@ setTimeout(()=>{
 async function doLogin(){
   const username=document.getElementById('loginUser').value.trim();
   const password=document.getElementById('loginPass').value;
-  const accessCode=document.getElementById('loginCode').value.trim();
-  if(!username||!password||!accessCode){showAuthStatus('Alle Felder ausfüllen','var(--red2)');return}
-  showAuthStatus('Wird angemeldet…','var(--text3)');
+  if(!username||!password){showAuthStatus('Username und Passwort ausfüllen','var(--app-accent)');return}
+  showAuthStatus('Wird angemeldet…','var(--app-mute)');
   try{
-    const res=await fetch(WORKER_URL+'/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password,accessCode})});
+    const res=await fetch(WORKER_URL+'/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password})});
     const data=await res.json();
     if(!res.ok)throw new Error(data.error||'Fehler');
-    onAuthSuccess(data,accessCode);
-  }catch(e){showAuthStatus(e.message,'var(--red2)')}
+    onAuthSuccess(data,'');
+  }catch(e){showAuthStatus(e.message,'var(--app-accent)')}
 }
 async function doRegister(){
   const username=document.getElementById('regUser').value.trim();
   const email=document.getElementById('regEmail').value.trim();
   const password=document.getElementById('regPass').value;
-  const accessCode=document.getElementById('regCode').value.trim();
-  if(!username||!email||!password||!accessCode){showAuthStatus('Alle Felder ausfüllen','var(--red2)');return}
-  showAuthStatus('Account wird erstellt…','var(--text3)');
+  const accessCode=document.getElementById('regCode').value.trim().toUpperCase();
+  if(!username||!email||!password||!accessCode){showAuthStatus('Alle Felder ausfüllen','var(--app-accent)');return}
+  showAuthStatus('Account wird erstellt…','var(--app-mute)');
   try{
     const res=await fetch(WORKER_URL+'/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,email,password,accessCode})});
     const data=await res.json();
     if(!res.ok)throw new Error(data.error||'Fehler');
-    onAuthSuccess(data,accessCode);
-  }catch(e){showAuthStatus(e.message,'var(--red2)')}
+    onAuthSuccess(data,'');
+  }catch(e){showAuthStatus(e.message,'var(--app-accent)')}
 }
 function onAuthSuccess(data,accessCode){
   try{
     localStorage.setItem(SESSION_TOKEN_KEY,data.token);
     localStorage.setItem(USER_KEY,JSON.stringify(data.user));
-    localStorage.setItem(ACCESS_CODE_KEY,accessCode);
+    if(accessCode)localStorage.setItem(ACCESS_CODE_KEY,accessCode);
   }catch{}
   currentUser=data.user;hasApiKey=true;
-  showAuthStatus('Erfolgreich!','var(--success)');
+  showAuthStatus('Erfolgreich!','var(--app-ok)');
   document.getElementById('keyCornerBtn').classList.add('has-key');
   updateUserBadge();updateLoginHintVisibility();
   setTimeout(()=>{closeKeyModal();syncStatsFromServer().then(()=>{loadPoolFromServer();loadWochentest();loadRigoOriginal()})},600);
@@ -1124,6 +1153,17 @@ async function logout(){
 }
 function getSessionToken(){try{return localStorage.getItem(SESSION_TOKEN_KEY)||''}catch{return ''}}
 function getAccessCode(){try{return localStorage.getItem(ACCESS_CODE_KEY)||''}catch{return ''}}
+// Autorisiert wird ueber das Session-Token. Der alte gemeinsame Code wird
+// mitgeschickt, solange er noch im Browser liegt — damit der Umstieg auch
+// dann klappt, wenn Worker und Seite nicht sekundengleich aktualisiert sind.
+function authHeaders(extra){
+  const h=Object.assign({},extra||{});
+  const tok=getSessionToken();
+  if(tok)h['X-Session-Token']=tok;
+  const legacy=getAccessCode();
+  if(legacy)h['X-Access-Code']=legacy;
+  return h;
+}
 function loadSession(){
   let tok,userStr;
   try{
@@ -1177,7 +1217,7 @@ function updateUserBadge(){
     badge=document.createElement('button');badge.id='userBadge';
     badge.title='Konto-Menü';
     badge.onclick=(e)=>{e.stopPropagation();toggleUserMenu()};
-    // Insert into toolbar AFTER Wochencode (between key + statistik) — kept first means leftmost
+    // Direkt nach dem Anmelde-Knopf einsortieren
     const tb=document.getElementById('topToolbar');
     if(tb){
       const keyBtn=document.getElementById('keyCornerBtn');
@@ -1220,7 +1260,7 @@ function updateUserBadge(){
     if(typeof getLevel==='function')_lvl=getLevel(_xp);
     if(typeof getRank==='function'&&typeof RANKS!=='undefined')_rank=getRank(_lvl,currentUser.username);
   }catch{}
-  badge.innerHTML=`<span class="ub-dot"></span><span class="ub-text"><span class="ub-name">${currentUser.username}</span><span class="ub-rank-line" title="Karriereleiter ansehen" onclick="event.stopPropagation();openLadderFromMenu()"><span class="ub-rank-icon">${_rank.icon}</span><span>${_rank.title}</span><span>·</span><span class="ub-rank-lvl">Lv. ${_lvl}</span></span></span><span class="ub-arrow">▾</span>`;
+  badge.innerHTML=`<span class="ub-dot"></span><span class="ub-text"><span class="ub-name">${currentUser.username}</span><span class="ub-rank-line"><span class="ub-rank-icon">${_rank.icon}</span><span>Lv. ${_lvl}</span></span></span><span class="ub-arrow">▾</span>`;
   document.getElementById('umUsername').textContent=currentUser.username;
   document.getElementById('umEmail').textContent=currentUser.email||'';
   // Sync gender toggle visual state
@@ -1303,7 +1343,7 @@ function renderPoolStatus(meta){
   const wrap=document.getElementById('poolStatusWrap');
   if(!wrap)return;
   if(!meta||!state.poolText){
-    wrap.innerHTML='<p style="font-size:13px;line-height:21px;color:var(--app-mute);margin:0">Kein Altfragenpool hinterlegt — die Fragen kommen so lange direkt aus dem Themenkatalog.</p>';
+    wrap.innerHTML='<p style="font-size:13px;line-height:21px;color:var(--app-accent);margin:0">Noch kein Altfragenpool hinterlegt — sobald Altfragen eingespielt sind, kannst du hier üben.</p>';
     return;
   }
   const date=meta.date?new Date(meta.date).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'}):'';
@@ -1316,7 +1356,7 @@ function renderPoolStatus(meta){
 async function loadPoolFromServer(){
   if(!hasApiKey)return;
   try{
-    const res=await fetch(WORKER_URL+'/pool',{headers:{'X-Access-Code':getAccessCode()}});
+    const res=await fetch(WORKER_URL+'/pool',{headers:authHeaders()});
     if(!res.ok)return;
     const data=await res.json();
     if(data.pool){
@@ -1507,6 +1547,75 @@ function drawFromPool(pool,n,evenDistribution){
   }
   return result.sort(()=>Math.random()-0.5);
 }
+// ── Einmalcodes verwalten ────────────────────────────────────────────────────
+function openCodeAdmin(){
+  document.getElementById('codeAdminOverlay').classList.add('active');
+  document.getElementById('codeAdminKeyInput').value=localStorage.getItem(ADMIN_KEY_STORE)||'';
+  document.getElementById('codeAdminStatus').textContent='';
+  if(localStorage.getItem(ADMIN_KEY_STORE))loadCodes();
+}
+function closeCodeAdmin(){document.getElementById('codeAdminOverlay').classList.remove('active')}
+function codeAdminStatus(msg,accent){
+  const el=document.getElementById('codeAdminStatus');
+  if(!el)return;
+  el.textContent=msg;
+  el.style.color=accent?'var(--app-accent)':'var(--app-mute)';
+}
+async function createCode(){
+  const key=document.getElementById('codeAdminKeyInput').value.trim();
+  const code=document.getElementById('newCodeInput').value.trim().toUpperCase();
+  const note=document.getElementById('newCodeNote').value.trim();
+  if(!key){codeAdminStatus('Admin-Key fehlt.',true);return}
+  if(!code){codeAdminStatus('Kein Code eingegeben.',true);return}
+  const btn=document.getElementById('createCodeBtn');
+  btn.disabled=true;codeAdminStatus('Wird angelegt…');
+  try{
+    const res=await fetch(WORKER_URL+'/admin/codes',{method:'POST',headers:{'Content-Type':'application/json','X-Admin-Key':key},body:JSON.stringify({code,note})});
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.error||'Fehler '+res.status);
+    localStorage.setItem(ADMIN_KEY_STORE,key);
+    document.getElementById('newCodeInput').value='';
+    document.getElementById('newCodeNote').value='';
+    codeAdminStatus(code+' angelegt.');
+    loadCodes();
+  }catch(e){codeAdminStatus(e.message,true)}
+  btn.disabled=false;
+}
+async function loadCodes(){
+  const key=document.getElementById('codeAdminKeyInput').value.trim();
+  if(!key){codeAdminStatus('Admin-Key fehlt.',true);return}
+  const list=document.getElementById('codeList');
+  list.innerHTML='<div style="font-size:12px;color:var(--app-mute)">Lädt…</div>';
+  try{
+    const res=await fetch(WORKER_URL+'/admin/codes',{headers:{'X-Admin-Key':key}});
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.error||'Fehler '+res.status);
+    localStorage.setItem(ADMIN_KEY_STORE,key);
+    const codes=data.codes||[];
+    codeAdminStatus(data.open+' frei · '+data.used+' eingelöst');
+    if(!codes.length){list.innerHTML='<div style="font-size:12px;color:var(--app-mute)">Noch keine Codes angelegt.</div>';return}
+    list.innerHTML=codes.map(c=>{
+      const used=!!c.usedBy;
+      return '<div style="display:flex;gap:10px;align-items:center;justify-content:space-between;border:2px solid '+(used?'var(--app-rule)':'var(--app-accent)')+';padding:9px 12px;background:var(--app-panel)">'+
+        '<span style="min-width:0"><span style="display:block;font-family:var(--font-heading);font-weight:800;font-size:14px;color:var(--app-ink);letter-spacing:.04em">'+c.code+'</span>'+
+        '<span style="display:block;font-size:11.5px;color:var(--app-mute)">'+(used?('eingelöst von '+c.usedBy):(c.note||'frei'))+'</span></span>'+
+        (used?'<span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--app-mute);flex:none">vergeben</span>'
+             :'<button type="button" class="btn btn-secondary btn-sm" style="flex:none" onclick="deleteCode(\''+c.code+'\')">Löschen</button>')+
+      '</div>';
+    }).join('');
+  }catch(e){list.innerHTML='';codeAdminStatus(e.message,true)}
+}
+async function deleteCode(code){
+  const key=document.getElementById('codeAdminKeyInput').value.trim();
+  if(!key)return;
+  try{
+    const res=await fetch(WORKER_URL+'/admin/codes',{method:'DELETE',headers:{'Content-Type':'application/json','X-Admin-Key':key},body:JSON.stringify({code})});
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.error||'Fehler '+res.status);
+    loadCodes();
+  }catch(e){codeAdminStatus(e.message,true)}
+}
+
 function openPoolAdmin(){
   document.getElementById('poolAdminOverlay').style.display='flex';
   document.getElementById('poolAdminKeyInput').value=localStorage.getItem(ADMIN_KEY_STORE)||'';
@@ -1638,7 +1747,7 @@ function setWtDiff(d){
 async function loadWochentest(){
   if(!hasApiKey){document.getElementById('wtStatus').textContent='Bitte zuerst Zugangscode eingeben.';document.getElementById('wtReady').style.display='none';document.getElementById('wtEmpty').style.display='none';return}
   try{
-    const res=await fetch(WORKER_URL+'/transcript',{headers:{'X-Access-Code':getAccessCode()}});
+    const res=await fetch(WORKER_URL+'/transcript',{headers:authHeaders()});
     if(!res.ok)throw new Error('Fehler '+res.status);
     const data=await res.json();
     if(data.transcript){
@@ -1771,29 +1880,15 @@ async function startWochentest(){
 
 // ── Quelle + Altfragen-Methode ────────────────────────────────────────────────
 function setSourceMode(mode){
-  if(mode==='alt'&&!state.poolText)mode='ki';
   state.sourceMode=mode;
-  const sub=document.getElementById('altSubMode');
-  if(sub)sub.style.display=mode==='alt'?'block':'none';
+  state.altMode='exact';
   updateDiffVisibility();
 }
-function setAltMode(m){
-  state.altMode=m;
-  playTick();
-  const ex=document.getElementById('amExact'),va=document.getElementById('amVaried');
-  if(ex)ex.classList.toggle('on',m==='exact');
-  if(va)va.classList.toggle('on',m==='varied');
-  const hint=document.getElementById('altModeHint');
-  if(hint)hint.textContent=m==='exact'
-    ? 'Originalfragen direkt aus dem Pool — kein Wort verändert.'
-    : 'Die KI nimmt den Pool als Vorlage und baut neue Fragen im gleichen Stil.';
-  updateDiffVisibility();updateSummary();
-}
-// Bei „Exakt" gibt es nichts zu variieren — Schwierigkeit spielt keine Rolle.
+// „Altfragen üben" heisst Originalfragen aus dem Pool — daran gibt es nichts
+// zu variieren, also auch keinen Schwierigkeitsgrad.
 function updateDiffVisibility(){
-  const hide=state.sourceMode==='alt'&&state.altMode==='exact';
   const sec=document.getElementById('diffSection');
-  if(sec)sec.style.display=hide?'none':'';
+  if(sec)sec.style.display=state.sourceMode==='alt'?'none':'';
 }
 
 // ── Themenkatalog: Blockschalter + Einzelpunkte ───────────────────────────────
@@ -1942,11 +2037,13 @@ function updateSummary(){
 
   const n=state.examMode?20:parseInt(state.count||'5',10);
   const hint=document.getElementById('startHint');
-  if(hint)hint.textContent=sel===0?'Wähle mindestens einen Punkt.'
+  const noPool=state.sourceMode==='alt'&&!(state.parsedPool&&state.parsedPool.length);
+  if(hint)hint.textContent=noPool?'Es ist noch kein Altfragenpool hinterlegt.'
+    :sel===0?'Wähle mindestens einen Punkt.'
     :sel===total?n+' Fragen aus allen Punkten'
     :n+' Fragen aus '+(sel===1?'einem Punkt':sel+' Punkten');
   const sb=document.getElementById('startBtn');
-  if(sb)sb.disabled=sel===0;
+  if(sb)sb.disabled=sel===0||noPool;
 
   const files=(state.uploadFiles||[]).length;
   const uh=document.getElementById('uploadHint');
@@ -1979,7 +2076,12 @@ async function startQuiz(){
   lt.style.color='';
   try{
     // Offline pool draw (no API) — when Altfragen-Exakt is selected AND we have a parsed pool
-    const canUsePool=state.sourceMode==='alt'&&state.altMode==='exact'&&state.parsedPool&&state.parsedPool.length>0;
+    const canUsePool=state.sourceMode==='alt'&&state.parsedPool&&state.parsedPool.length>0;
+    if(state.sourceMode==='alt'&&!canUsePool){
+      throw Object.assign(new Error('Kein Altfragenpool hinterlegt.'),{userInfo:{
+        title:'Es ist noch kein Altfragenpool hinterlegt.',
+        detail:'Sobald Altfragen eingespielt sind, kannst du hier üben.',fixable:false}});
+    }
     if(canUsePool){
       const n=parseInt(state.count);
       const filtered=filterPoolByTopics(state.parsedPool,allTopicsSelected()?null:state.selectedSubs);
@@ -2041,10 +2143,6 @@ async function generateQuestions(){
     const{text:poolCtx}=prepareTextForPrompt(state.poolText);
     sys=`Du bist ein Experte für Physiologie-Prüfungen der Semmelweis Universität Budapest.\nExtrahiere exakt ${n} Fragen aus dem gegebenen Altfragenpool.\nAntworte NUR mit einem validen JSON-Array, kein Text davor/danach, keine Backticks.\nFormat: ${jsonFormat}\nRegeln: Übernimm die Fragen EXAKT wie im Pool — ändere nichts am Wortlaut. Wenn ein Themenfilter angegeben ist, wähle nur passende Fragen. Wähle bei jeder Runde ANDERE Fragen aus dem Pool — maximale Abdeckung über mehrere Runden.${varHint}`;
     usr=`Altfragenpool:\n---\n${poolCtx}\n---\nThemenfilter: ${topicCtx}\nExtrahiere ${n} Fragen.`;
-  } else if(isAlt&&state.altMode==='varied'){
-    const{text:poolCtx}=prepareTextForPrompt(state.poolText);
-    sys=`Du bist ein Experte für Physiologie-Prüfungen der Semmelweis Universität Budapest.\nNutze den gegebenen Altfragenpool als Vorlage und erstelle ${n} neue, ähnliche Fragen im gleichen Stil.\nAntworte NUR mit einem validen JSON-Array, kein Text davor/danach, keine Backticks.\nFormat: ${jsonFormat}\nRegeln: Variiere Fragestellung und Optionen, behalte aber Schwierigkeitsgrad und Thema bei. Nutze den GESAMTEN Pool als Wissensbasis — decke über mehrere Runden alle Bereiche gleichmäßig ab.\n\nKRITISCH — VARIATION DER RICHTIGEN ANTWORTEN (Anti-Muster-Pflicht):\n- Variiere die ANZAHL richtiger Antworten stark zwischen den Fragen: nutze 1, 2, 3 UND 4 richtige Antworten gleichmäßig durchmischt. Nicht jede Frage soll 3 richtige haben!\n- Bei ${n} Fragen: ungefähre Verteilung anstreben — ~25% mit 1 richtig, ~30% mit 2 richtig, ~25% mit 3 richtig, ~20% mit 4 richtig (zufällig durchmischt).\n- Variiere die POSITIONEN: nicht immer a/b/c. Nutze auch d, e und beliebige Kombinationen wie {b,d}, {a,e}, {c,d,e}, {b,c,e}.\n${hard?'HARD: Steigere Schwierigkeit durch Ausnahmen, klinische Vignetten, Verwechslungen.':''}${varHint}`;
-    usr=`Altfragenpool als Vorlage:\n---\n${poolCtx}\n---\nThemenfilter: ${topicCtx}\nSchwierigkeit: ${hard?'Hard':'Normal'}\nErstelle ${n} variierte Fragen.`;
   } else {
     sys=`Du bist ein Experte für Physiologie-Prüfungen der Semmelweis Universität Budapest.\nGeneriere exakt ${n} Multiple-Choice-Fragen im typischen Semmelweis-Stil.\nAntworte NUR mit einem validen JSON-Array, kein Text davor/danach, keine Backticks.\nFormat: ${jsonFormat}\nRegeln: 4-5 Optionen (a-e), Aussagen beginnen direkt mit Subjekt, subtile Distraktoren (falsches Organ/Richtung/Rezeptortyp), Enzym-/Rezeptornamen explizit. Decke den GESAMTEN Text gleichmäßig ab — nicht nur Anfang oder prominente Abschnitte.\n\nKRITISCH — VARIATION DER RICHTIGEN ANTWORTEN (Anti-Muster-Pflicht):\n- Variiere die ANZAHL richtiger Antworten stark zwischen den Fragen: nutze 1, 2, 3 UND 4 richtige Antworten gleichmäßig durchmischt. Nicht jede Frage soll 3 richtige haben!\n- Bei ${n} Fragen: ungefähre Verteilung anstreben — ~25% mit 1 richtig, ~30% mit 2 richtig, ~25% mit 3 richtig, ~20% mit 4 richtig (zufällig durchmischt, nicht in Reihenfolge).\n- Variiere die POSITIONEN der richtigen Antworten: nicht immer a/b/c. Nutze auch d, e und beliebige Kombinationen wie {b,d}, {a,e}, {c,d,e}, {b,c,e} usw. Vermeide das Muster "die ersten N Optionen sind richtig".\n${hard?'HARD: mind. 1-2 klinische Fallvignetten, Ausnahmen, Verwechslungen.':''}${coverageHint}${varHint}`;
     if(state.fileText){const{text:scriptCtx,warning}=prepareTextForPrompt(state.fileText);usr=`Themen: ${topicCtx}\nSchwierigkeit: ${hard?'Hard':'Normal'}\n\nFragen AUSSCHLIESSLICH aus dem folgenden Skript ableiten. Nutze den GESAMTEN sichtbaren Text als Wissensbasis — verteile Fragen gleichmäßig über alle Abschnitte (Anfang, Mitte, Ende).${warning?'\n'+warning:''}\n\n---\n${scriptCtx}\n---`}
@@ -2071,7 +2169,7 @@ async function callAnthropicWithRetry(sys,usr,maxTokens,retries=2){
     try{
       let res;
       try{
-        res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json','X-Access-Code':getAccessCode()},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:maxTokens,system:sys,messages:[{role:'user',content:usr}]})});
+        res=await fetch(WORKER_URL,{method:'POST',headers:authHeaders({'Content-Type':'application/json'}),body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:maxTokens,system:sys,messages:[{role:'user',content:usr}]})});
       }catch(netErr){
         // fetch wirft nur, wenn die Anfrage gar nicht erst rausging
         const e=new Error('Keine Verbindung.');
@@ -2132,9 +2230,9 @@ function describeApiError(status,payload){
   // Menschen geschrieben und meist wirklich Sache des Nutzers.
   if(payload&&typeof payload.error==='string'){
     const t=payload.error;
-    if(/zugangscode/i.test(t))return{
-      title:'Der Wochencode stimmt nicht mehr.',
-      detail:'Melde dich neu an — der Code wird jede Woche getauscht.',
+    if(/zugangscode|anmelden/i.test(t))return{
+      title:'Deine Anmeldung ist abgelaufen.',
+      detail:'Melde dich einfach neu an — dein Fortschritt bleibt erhalten.',
       fixable:true
     };
     return{title:t,detail:'',fixable:true};
@@ -2361,7 +2459,6 @@ function runEvaluate(){
   stats.runStreak=runStreak;
   if(!stats.bestRunStreak||runStreak>stats.bestRunStreak)stats.bestRunStreak=runStreak;
   // Daily challenge check
-  if(state.isDailyChallenge&&pct>=80){markDailyChallengeCompleted();state.isDailyChallenge=false}
   // Achievements
   const updatedStats=checkAchievements(pct,streak,stats);
   saveStats(updatedStats);
@@ -2405,7 +2502,7 @@ Kurzerklärung: ${q.explanation||''}
 Thema: ${q.topic||''}`;
 
   try{
-    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json','X-Access-Code':getAccessCode()},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:2048,system:'Du bist ein Physiologie-Dozent an der Semmelweis Universität. Erkläre verständlich, präzise und klinisch relevant auf Deutsch.',messages:[{role:'user',content:prompt}]})});
+    const res=await fetch(WORKER_URL,{method:'POST',headers:authHeaders({'Content-Type':'application/json'}),body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:2048,system:'Du bist ein Physiologie-Dozent an der Semmelweis Universität. Erkläre verständlich, präzise und klinisch relevant auf Deutsch.',messages:[{role:'user',content:prompt}]})});
     if(!res.ok){let payload=null;try{payload=await res.json()}catch{}
       const info=describeApiError(res.status,payload);
       const err=new Error(info.title);err.userInfo=info;throw err}
@@ -2503,7 +2600,7 @@ function restoreQuizConfig(){
 }
 function newRound(){
   restoreQuizConfig();
-  state.questions=[];state.userAnswers={};state.evaluated=false;state.currentQuestionIndex=0;state.isDailyChallenge=false;
+  state.questions=[];state.userAnswers={};state.evaluated=false;state.currentQuestionIndex=0;
   stopExamTimer();stopParticles();updateStreakDisplay(0);
   const ring=document.getElementById('ringCircle');ring.style.transition='none';ring.setAttribute('stroke-dashoffset','415');
   document.getElementById('evalBtn').textContent='Auswerten';document.getElementById('evalBtn').disabled=false;
@@ -2709,20 +2806,48 @@ async function renderLeaderboard(){
     const rows=data.leaderboard||[];
     if(!rows.length){el.innerHTML='<div style="font-size:11px;color:var(--mid);padding:14px;text-align:center;border:2px solid var(--app-rule);background:var(--pure)">Noch keine Daten</div>';return}
     const myUsername=currentUser?currentUser.username:'';
-    const html='<div style="border:2px solid var(--app-rule);background:var(--pure)">'+rows.map((r,i)=>{
+    const line=(r)=>{
       const lvl=Math.floor((r.xp||0)/XP_PER_LEVEL)+1;
       const rank=getRank(lvl,r.username);
-      const isMe=r.username===myUsername;
-      const rankIdx=i+1;
-      const rankColor=rankIdx===1?'var(--swiss-red)':rankIdx===2?'var(--ink)':rankIdx===3?'var(--mid)':'var(--mid)';
-      return `<div style="display:grid;grid-template-columns:36px 1fr auto auto;gap:14px;align-items:center;padding:10px 16px;border-bottom:2px solid var(--app-rule);${isMe?'background:var(--paper);':''}">
-        <div style="font-size:14px;font-weight:600;color:${rankColor};font-variant-numeric:tabular-nums;letter-spacing:-0.02em">${String(rankIdx).padStart(2,'0')}</div>
-        <div style="font-size:12px;color:var(--ink);font-weight:${isMe?'600':'500'};letter-spacing:0.01em">${r.username}${(()=>{const v=getVipBadge(r.username);return v?` <span style="color:${v.color};font-size:9px;letter-spacing:0.14em;font-weight:600">(${v.label})</span>`:''})()}${isMe?' <span style="color:var(--swiss-red);font-size:9px;letter-spacing:0.14em">· DU</span>':''}</div>
-        <div style="font-size:10px;color:var(--mid);letter-spacing:0.08em;text-transform:uppercase">${rank.icon} ${rank.title}</div>
-        <div style="font-size:11px;color:var(--ink);font-variant-numeric:tabular-nums;font-weight:600;min-width:56px;text-align:right">${r.xp||0} XP</div>
+      const vip=getVipBadge(r.username);
+      return {lvl,rank,vip,isMe:r.username===myUsername,
+        vipTag:vip?` <span style="color:${vip.color};font-size:9px;letter-spacing:0.14em">(${vip.label})</span>`:''};
+    };
+
+    // Podest: Reihenfolge 2 · 1 · 3, damit die Mitte oben steht
+    const podium=rows.slice(0,3);
+    let podHtml='';
+    if(podium.length){
+      podHtml='<div class="podium">'+[1,0,2].map(idx=>{
+        const r=podium[idx];
+        if(!r)return '<div class="pod"></div>';
+        const m=line(r);
+        return `<div class="pod pod-${idx+1}${m.isMe?' pod-me':''}">
+          <div class="pod-head">
+            <span class="pod-emoji">${m.rank.icon}</span>
+            <span class="pod-name" title="${r.username}">${r.username}${m.isMe?' · du':''}${m.vipTag}</span>
+            <span class="pod-rank">${m.rank.title}</span>
+            <span class="pod-xp">${(r.xp||0).toLocaleString('de-DE')} XP</span>
+          </div>
+          <div class="pod-block"><span class="pod-pos">${idx+1}</span></div>
+        </div>`;
+      }).join('')+'</div><div class="pod-floor"></div>';
+    }
+
+    const rest=rows.slice(3);
+    const restHtml=rest.length?'<div style="border-top:2px solid var(--app-rule);margin-top:24px">'+rest.map((r,i)=>{
+      const m=line(r);
+      return `<div style="display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:12px;align-items:center;padding:11px 8px;border-bottom:2px solid var(--app-rule);${m.isMe?'background:var(--app-accent-soft);':''}">
+        <span style="font-family:var(--font-heading);font-weight:800;font-size:14px;color:var(--app-mute);font-feature-settings:'tnum' 1;text-align:center">${i+4}</span>
+        <span style="min-width:0">
+          <span style="display:block;font-family:var(--font-heading);font-weight:800;font-size:14.5px;color:${m.isMe?'var(--app-accent)':'var(--app-ink)'};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.username}${m.isMe?' · du':''}${m.vipTag}</span>
+          <span style="display:block;font-size:11.5px;color:var(--app-mute)">${m.rank.icon} ${m.rank.title}</span>
+        </span>
+        <span style="font-size:12.5px;color:var(--app-accent);font-feature-settings:'tnum' 1">${(r.xp||0).toLocaleString('de-DE')} XP</span>
       </div>`;
-    }).join('')+'</div>';
-    el.innerHTML=html;
+    }).join('')+'</div>':'';
+
+    el.innerHTML=podHtml+restHtml;
   }catch(e){
     console.error('renderLeaderboard error:',e,e&&e.stack);
     el.innerHTML='<div style="font-size:11px;color:var(--mid);padding:14px;text-align:center;border:2px solid var(--app-rule);background:var(--pure)">Ranking nicht verfügbar<br><span style="font-size:9px;color:var(--red2);letter-spacing:.02em">'+(e&&e.message?e.message:String(e))+'</span></div>';
@@ -2743,24 +2868,6 @@ function renderStats(){
     <div class="stat-card"><div class="stat-card-num">${bestScore}%</div><div class="stat-card-label">Bester</div></div>
     <div class="stat-card"><div class="stat-card-num">🔥 ${bestStreak}</div><div class="stat-card-label">Beste Serie</div></div>`;
   renderGamification(stats);
-
-  // Heatmap: aggregate topic scores
-  const topicAgg={};
-  sessions.forEach(s=>{if(!s.topics)return;Object.entries(s.topics).forEach(([t,{pts,max}])=>{if(!topicAgg[t])topicAgg[t]={pts:0,max:0};topicAgg[t].pts+=pts;topicAgg[t].max+=max})});
-  const hm=document.getElementById('heatmap');hm.innerHTML='';
-  const sorted=Object.entries(topicAgg).sort((a,b)=>(a[1].pts/a[1].max)-(b[1].pts/b[1].max));
-  if(!sorted.length){hm.innerHTML='<div style="font-size:.82rem;color:var(--text3);text-align:center;padding:1rem">Noch keine Daten vorhanden</div>';return}
-  sorted.forEach(([topic,{pts,max}])=>{
-    const pct=Math.round(pts/max*100);
-    const col=pct>=75?'var(--success)':pct>=50?'var(--warn)':'var(--red2)';
-    const row=document.createElement('div');row.className='heatmap-row';
-    row.innerHTML=`<div class="heatmap-label" title="${topic}">${topic}</div><div class="heatmap-bar"><div class="heatmap-fill" style="width:${pct}%;background:${col}"></div></div><div class="heatmap-val">${pct}%</div>`;
-    hm.appendChild(row);
-  });
-
-  // Show weakness button if there are weak topics (<75%)
-  const weakTopics=sorted.filter(([,{pts,max}])=>Math.round(pts/max*100)<75);
-  document.getElementById('weaknessBtn').style.display=weakTopics.length?'block':'none';
 
   // Session history (last 20)
   const hist=document.getElementById('statsHistory');hist.innerHTML='';
@@ -2927,12 +3034,11 @@ function checkAchievements(pct,streak,stats){
   const xpLevel=getLevel(stats.xp||0);
   if(xpLevel>=5)unlock('level_5');
   if(xpLevel>=10)unlock('level_10');
+  if((stats.bestStreak||0)>=15)unlock('streak_master');
   // Topic master: any topic ≥90%
   const topicAgg={};
   (stats.sessions||[]).forEach(s=>{if(!s.topics)return;Object.entries(s.topics).forEach(([t,{pts,max}])=>{if(!topicAgg[t])topicAgg[t]={pts:0,max:0};topicAgg[t].pts+=pts;topicAgg[t].max+=max})});
   if(Object.values(topicAgg).some(({pts,max})=>max>=3&&Math.round(pts/max*100)>=90))unlock('topic_master');
-  // Daily challenge
-  if(state.isDailyChallenge&&pct>=80)unlock('daily_challenge');
 
   stats.achievements=unlocked;
   // Show toasts for new achievements
@@ -2956,36 +3062,6 @@ function calcXPGain(questions,userAnswers,pct,streak){
   // Score bonus
   if(pct>=87)xp+=50;else if(pct>=75)xp+=25;
   return xp;
-}
-
-// ── Daily challenge ──────────────────────────────────────────────────────────
-function getDailyChallenge(){
-  const today=new Date();const seed=today.getFullYear()*10000+(today.getMonth()+1)*100+today.getDate();
-  const groupIdx=seed%TOPIC_GROUPS.length;
-  const group=TOPIC_GROUPS[groupIdx];
-  const diff=seed%3===0?'hard':'normal';
-  return{group,difficulty:diff,seed};
-}
-function isDailyChallengeCompleted(){
-  const stats=loadStats();const dc=getDailyChallenge();
-  return(stats.dailyChallenges||[]).includes(dc.seed);
-}
-function startDailyChallenge(){
-  const dc=getDailyChallenge();
-  state.selectedSubs=new Set(dc.group.subs.map(s=>s.id));
-  state.sourceMode='ki';state.difficulty=dc.difficulty;
-  state.count='5';state.examMode=false;state.isDailyChallenge=true;
-  document.getElementById('statsOverlay').classList.remove('active');
-  document.getElementById('startBtn').disabled=false;
-  updateSummary();startQuiz();
-}
-function markDailyChallengeCompleted(){
-  const stats=loadStats();const dc=getDailyChallenge();
-  if(!stats.dailyChallenges)stats.dailyChallenges=[];
-  if(!stats.dailyChallenges.includes(dc.seed))stats.dailyChallenges.push(dc.seed);
-  // Keep last 30 days
-  if(stats.dailyChallenges.length>30)stats.dailyChallenges=stats.dailyChallenges.slice(-30);
-  saveStats(stats);
 }
 
 // ── Render gamification in Stats overlay ─────────────────────────────────────
@@ -3023,10 +3099,6 @@ function renderGamification(stats){
     }).join('').replace(/border-bottom:1px solid var\(--rule\);(?=[^"]*<\/div>$)/, '')+'</div>';
   }
 
-  // Daily challenge
-  const dc=getDailyChallenge();const done=isDailyChallengeCompleted();
-  const dcEl=document.getElementById('challengeArea');
-  if(dcEl)dcEl.innerHTML=`<div class="challenge-card"><div class="challenge-left"><div class="challenge-icon">${done?'✅':'🎯'}</div><div><div class="challenge-topic">${dc.group.label}</div><div class="challenge-sub">${dc.difficulty==='hard'?'Hard':'Normal'} · 5 Fragen</div></div></div>${done?'<div class="challenge-done">Gemeistert</div>':'<button class="btn btn-primary btn-sm" onclick="startDailyChallenge()">Starten</button>'}</div>`;
 
   // Achievements
   const unlocked=stats.achievements||[];
@@ -3036,36 +3108,6 @@ function renderGamification(stats){
 
 function resetStats(){if(confirm('Alle Statistiken unwiderruflich löschen?')){try{localStorage.removeItem(STATS_KEY)}catch{}renderStats()}}
 
-function startWeaknessQuiz(){
-  // Aggregate topic scores from stats
-  const stats=loadStats();const topicAgg={};
-  stats.sessions.forEach(s=>{if(!s.topics)return;Object.entries(s.topics).forEach(([t,{pts,max}])=>{if(!topicAgg[t])topicAgg[t]={pts:0,max:0};topicAgg[t].pts+=pts;topicAgg[t].max+=max})});
-  // Filter weak topics (<75%)
-  const weakNames=Object.entries(topicAgg).filter(([,{pts,max}])=>Math.round(pts/max*100)<75).map(([name])=>name.toLowerCase());
-  if(!weakNames.length)return;
-  // Match weak topic names against TOPIC_GROUPS by group label
-  const matchedSubs=new Set();
-  TOPIC_GROUPS.forEach(g=>{
-    const gl=g.label.toLowerCase();
-    const hasMatch=weakNames.some(w=>gl.includes(w)||w.includes(gl)||gl.split(/[,\s]+/).some(word=>word.length>3&&w.includes(word)));
-    if(hasMatch){g.subs.forEach(s=>matchedSubs.add(s.id));return}
-    // Also try matching against individual sub texts
-    g.subs.forEach(s=>{
-      const sl=s.text.toLowerCase();
-      if(weakNames.some(w=>sl.includes(w)||w.includes(sl.slice(0,20))))matchedSubs.add(s.id);
-    });
-  });
-  // Set state and start
-  state.selectedSubs=matchedSubs.size?matchedSubs:new Set();
-  state.sourceMode='ki';state.altMode='exact';
-  state.count=String(Math.min(10,Math.max(5,weakNames.length*2)));
-  state.examMode=false;
-  // Close overlay and start quiz
-  document.getElementById('statsOverlay').classList.remove('active');
-  document.getElementById('startBtn').disabled=false;
-  updateSummary();
-  startQuiz();
-}
 
 // ══════════════════════════════════════════════════════════════════════════
 //  Eigene Unterlagen — Start
@@ -3232,7 +3274,6 @@ var digestUntil=0;
 //  Start
 // ══════════════════════════════════════════════════════════════════════════
 setSourceMode(state.sourceMode);
-setAltMode(state.altMode);
 renderPoolStatus(null);
 updateSummary();
 renderFileList();

@@ -25,8 +25,36 @@
   --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
   --radius-md: 0px;
 }
+/* Dunkel: dieselben Rollen, andere Werte. Zwei Bloecke — einer fuer die
+   ausdrueckliche Wahl, einer fuer die Systemeinstellung, solange niemand
+   ausdruecklich „hell" gewaehlt hat. */
+:root[data-theme="dark"] {
+  --color-bg: #1b1a19;
+  --color-surface: #232120;
+  --color-text: #f8f4f4;
+  --color-divider: color-mix(in srgb, #f8f4f4 34%, transparent);
+  --color-neutral-100: #232120;
+  --color-accent-100: #2b2220;
+  --color-accent: #ff563c;
+  --color-accent-600: #ff7359;
+  --color-accent-700: #ff9783;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg: #1b1a19;
+    --color-surface: #232120;
+    --color-text: #f8f4f4;
+    --color-divider: color-mix(in srgb, #f8f4f4 34%, transparent);
+    --color-neutral-100: #232120;
+    --color-accent-100: #2b2220;
+    --color-accent: #ff563c;
+    --color-accent-600: #ff7359;
+    --color-accent-700: #ff9783;
+  }
+}
+
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; color-scheme: light dark; }
 body {
   margin: 0; background: var(--color-bg); color: var(--color-text);
   font-family: var(--font-body); font-size: 15px; line-height: 1.55; font-weight: 400;
@@ -72,6 +100,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
 /* .nav a { color: inherit } schlägt .btn-primary — die eigene Schrift des Buttons zurückholen */
 .nav a.btn-primary { color: var(--color-bg); text-decoration: none; white-space: nowrap; }
 .brand-indep { display: block; }
+.theme-btn { font-size: 13px; white-space: nowrap; }
 .nav a.btn-primary:hover { color: var(--color-bg); background: var(--color-accent-600); }
 
 /* der CTA atmet — 3,6s, 3,5% Amplitude, nur transform */
@@ -109,6 +138,14 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     color: var(--color-text); text-decoration: none;
   }
   .nav-mobile a:active { color: var(--color-accent); }
+  /* In der Kopfzeile ist auf dem Telefon kein Platz mehr — der Umschalter
+     zieht zu den Sprungmarken. */
+  .theme-btn { display: none; }
+  .nav-mobile-theme {
+    background: none; border: none; padding: 0; margin-left: auto; cursor: pointer;
+    font-family: var(--font-body); font-size: 13.5px; line-height: 20px;
+    color: var(--color-accent-700); white-space: nowrap;
+  }
   /* eine Spalte — sonst quetscht sich die Überschrift auf 110px */
   .split-4-8, .split-5-7 { grid-template-columns: minmax(0, 1fr); gap: 12px; }
   /* Fingerkuppe statt Mauszeiger: mindestens 44px hohe Schaltflächen */
@@ -149,6 +186,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
       <a href="#rueckkopplung" style="font-size: 13.5px">Rückkopplung</a>
       <a href="#ueber" style="font-size: 13.5px">Über mich</a>
       <a href="#disclaimer" style="font-size: 13.5px; margin-right: 4px">Disclaimer</a>
+      <button type="button" class="btn btn-secondary theme-btn" onclick="orakelToggleTheme()" title="Hell oder dunkel"><span id="themeLabel">Dunkel</span></button>
       <a href="/app/" class="btn btn-primary cta-pulse">Physio-Orakel öffnen</a>
     </span>
   </nav>
@@ -160,6 +198,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     <a href="#rueckkopplung">Rückkopplung</a>
     <a href="#ueber">Über mich</a>
     <a href="#disclaimer">Disclaimer</a>
+    <button type="button" class="nav-mobile-theme" onclick="orakelToggleTheme()"><span id="themeLabelMobile">Dunkel</span></button>
   </nav>
 
   <section style="max-width: 1240px; margin: 0 auto; padding: clamp(28px, 5vw, 60px) clamp(20px, 5vw, 72px) 0">
@@ -386,7 +425,19 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
    ═══════════════════════════════════════════════════════════════════════════ */
 (function () {
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var accent = getComputedStyle(document.documentElement).getPropertyValue('--color-accent').trim() || '#ec3013';
+  // Tinte und Akzent kommen aus dem Theme — sonst zeichnet der Canvas im
+  // Dunkelmodus weiter mit schwarzer Tinte auf schwarzem Grund.
+  var accent, INK, ACC, ACCT;
+  function readPalette() {
+    var cs = getComputedStyle(document.documentElement);
+    accent = cs.getPropertyValue('--color-accent').trim() || '#ec3013';
+    var dark = isDarkNow();
+    INK = dark ? '248,244,244' : '32,30,29';
+    ACC = dark ? '255,86,60' : '236,48,19';
+    ACCT = dark ? '255,151,131' : '174,24,0';
+  }
+  readPalette();
+  window.orakelRepaint = function () { readPalette(); dims = {}; paint(true); };
 
   var TRACE_SPEED = 0.85, PARTICLE_COUNT = 190, START_BPM = 124, END_BPM = 58;
   var AUTO_FIRE = true, SHOW_CHANNELS = true;
@@ -459,11 +510,11 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     for (var li = 0; li < lines.length; li++) {
       var mv = lines[li][0], label = lines[li][1];
       var yy = Math.round(y(mv)) + 0.5;
-      ctx.strokeStyle = mv === -55 ? 'rgba(236,48,19,0.45)' : 'rgba(32,30,29,0.16)';
+      ctx.strokeStyle = mv === -55 ? 'rgba('+ACC+',0.45)' : 'rgba('+INK+',0.16)';
       ctx.setLineDash(mv === -55 ? [4, 4] : []);
       ctx.beginPath(); ctx.moveTo(0, yy); ctx.lineTo(w, yy); ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = mv === -55 ? 'rgba(174,24,0,0.9)' : 'rgba(32,30,29,0.72)';
+      ctx.fillStyle = mv === -55 ? 'rgba('+ACCT+',0.9)' : 'rgba('+INK+',0.72)';
       ctx.fillText(label, 2, yy - 5);
     }
 
@@ -494,12 +545,12 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     var phase = livePhase();
 
     var naLoad = phase === null ? 0 : Math.max(0, Math.min(1, phase < 0.12 ? phase / 0.12 : Math.exp(-(phase - 0.12) * 3.2)));
-    ctx.fillStyle = 'rgba(236,48,19,' + (0.05 + naLoad * 0.14).toFixed(3) + ')';
+    ctx.fillStyle = 'rgba('+ACC+',' + (0.05 + naLoad * 0.14).toFixed(3) + ')';
     ctx.fillRect(0, memBot, w, h - memBot - 18);
-    ctx.fillStyle = 'rgba(32,30,29,0.035)';
+    ctx.fillStyle = 'rgba('+INK+',0.035)';
     ctx.fillRect(0, mTop - 6, w, memTop - mTop + 6);
 
-    ctx.fillStyle = 'rgba(32,30,29,0.5)';
+    ctx.fillStyle = 'rgba('+INK+',0.5)';
     ctx.fillRect(0, Math.round(memTop), w, 1.5);
     ctx.fillRect(0, Math.round(memBot), w, 1.5);
 
@@ -509,14 +560,14 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
       var cx = gap * (i + 0.5);
       var isNa = i % 2 === 0;
       var open = phase !== null && (isNa ? phase < 0.14 : phase > 0.08 && phase < 0.46);
-      ctx.fillStyle = open ? accent : 'rgba(32,30,29,0.2)';
+      ctx.fillStyle = open ? accent : 'rgba('+INK+',0.2)';
       var gw = open ? 11 : 4;
       ctx.fillRect(cx - gw / 2, memTop - 2, gw, memBot - memTop + 4);
       if (open) {
-        ctx.fillStyle = 'rgba(236,48,19,0.18)';
+        ctx.fillStyle = 'rgba('+ACC+',0.18)';
         ctx.fillRect(cx - gw / 2 - 4, memTop - 2, gw + 8, memBot - memTop + 4);
       }
-      ctx.fillStyle = open ? 'rgba(174,24,0,0.95)' : 'rgba(32,30,29,0.72)';
+      ctx.fillStyle = open ? 'rgba('+ACCT+',0.95)' : 'rgba('+INK+',0.72)';
       ctx.font = "600 10px Archivo, system-ui, sans-serif";
       ctx.fillText(isNa ? 'Na⁺' : 'K⁺', cx - 8, h - 8);
 
@@ -533,16 +584,16 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
         var xx = cx + Math.sin((p * 3.1 + k) * 2.2) * (isNa ? 3.4 : 2.4);
         var fade = Math.min(1, (1 - Math.abs(p - 0.5) * 1.2));
         ctx.fillStyle = isNa
-          ? 'rgba(236,48,19,' + (0.35 + fade * 0.6).toFixed(2) + ')'
-          : 'rgba(32,30,29,' + (0.25 + fade * 0.5).toFixed(2) + ')';
+          ? 'rgba('+ACC+',' + (0.35 + fade * 0.6).toFixed(2) + ')'
+          : 'rgba('+INK+',' + (0.25 + fade * 0.5).toFixed(2) + ')';
         var sz = isNa ? 5 : 4;
         ctx.fillRect(xx - sz / 2, yy2 - sz / 2, sz, sz);
-        ctx.fillStyle = isNa ? 'rgba(236,48,19,0.16)' : 'rgba(32,30,29,0.12)';
+        ctx.fillStyle = isNa ? 'rgba('+ACC+',0.16)' : 'rgba('+INK+',0.12)';
         ctx.fillRect(xx - sz / 4, yy2 - (y1 - y0) * 0.035 - sz / 2, sz / 2, Math.abs((y1 - y0) * 0.035));
       }
       var ay = isNa ? memBot + 9 : memTop - 9;
       var dir = isNa ? 1 : -1;
-      ctx.fillStyle = isNa ? 'rgba(236,48,19,0.7)' : 'rgba(32,30,29,0.5)';
+      ctx.fillStyle = isNa ? 'rgba('+ACC+',0.7)' : 'rgba('+INK+',0.5)';
       ctx.beginPath();
       ctx.moveTo(cx, ay + 4 * dir); ctx.lineTo(cx - 4, ay - 2 * dir); ctx.lineTo(cx + 4, ay - 2 * dir);
       ctx.closePath(); ctx.fill();
@@ -575,10 +626,10 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     var bx = w * 0.42, midY = h / 2, dt = frameDt;
 
     ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = 'rgba(32,30,29,0.18)';
+    ctx.fillStyle = 'rgba('+INK+',0.18)';
     for (var yy = 6; yy < h - 6; yy += 9) ctx.fillRect(bx, yy, 2, 5);
 
-    ctx.strokeStyle = 'rgba(32,30,29,0.07)';
+    ctx.strokeStyle = 'rgba('+INK+',0.07)';
     ctx.lineWidth = 1;
     for (var i = 0; i < lanes; i++) {
       var ly = Math.round(midY - (lanes - 1) * 7.5 + i * 15) + 0.5;
@@ -606,7 +657,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
         var laneY = midY - (lanes - 1) * 7.5 + p.lane * 15;
         py = p.passes ? chaos + (laneY - chaos) * (1 - Math.pow(1 - k, 3)) : chaos;
       } else py = midY - (lanes - 1) * 7.5 + p.lane * 15;
-      ctx.fillStyle = p.passes && p.x > bx ? accent : 'rgba(32,30,29,0.28)';
+      ctx.fillStyle = p.passes && p.x > bx ? accent : 'rgba('+INK+',0.28)';
       ctx.fillRect(Math.round(p.x), Math.round(py - p.s / 2), p.s, p.s);
     }
 
@@ -622,11 +673,11 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     if (widths() + 36 > w) { size = 9; }
     var stacked = widths() + 36 > w;
     ctx.font = "600 " + size + "px Archivo, system-ui, sans-serif";
-    ctx.fillStyle = 'rgba(32,30,29,0.72)';
+    ctx.fillStyle = 'rgba('+INK+',0.72)';
     ctx.fillText(lt, 12, h - 18);
-    ctx.fillStyle = 'rgba(174,24,0,0.92)';
+    ctx.fillStyle = 'rgba('+ACCT+',0.92)';
     ctx.fillText(rt, w - ctx.measureText(rt).width - 12, stacked ? h - 32 : h - 18);
-    ctx.fillStyle = 'rgba(32,30,29,0.72)';
+    ctx.fillStyle = 'rgba('+INK+',0.72)';
     ctx.fillText('BARRIERE', bx + 10, 18);
   }
 
@@ -661,7 +712,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     var secondsVisible = Math.max(2.4, w / 210);
 
     ctx.clearRect(0, 0, w, h);
-    ctx.strokeStyle = 'rgba(32,30,29,0.12)';
+    ctx.strokeStyle = 'rgba('+INK+',0.12)';
     ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(0, Math.round(base) + 0.5); ctx.lineTo(w, Math.round(base) + 0.5); ctx.stroke();
 
@@ -692,7 +743,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     ctx.save();
     ctx.translate(w / 2, h / 2);
     ctx.rotate((reduced ? 0 : t) * 0.28);
-    ctx.strokeStyle = 'rgba(32,30,29,0.35)';
+    ctx.strokeStyle = 'rgba('+INK+',0.35)';
     ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.arc(0, 0, R, 0, Math.PI * 2); ctx.stroke();
     ctx.fillStyle = accent;
@@ -764,6 +815,47 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
 
   paint(true);
   if (!reduced) { last = performance.now(); raf = requestAnimationFrame(loop); }
+})();
+
+/* ── Hell / Dunkel ────────────────────────────────────────────────────────
+   Ein Attribut am <html>. Ohne ausdrueckliche Wahl folgt die Seite dem
+   System; der Knopf setzt sie fest und merkt sich das. */
+var THEME_KEY = 'nephron_theme';
+function isDarkNow() {
+  var t = document.documentElement.getAttribute('data-theme');
+  if (t === 'dark') return true;
+  if (t === 'light') return false;
+  return window.matchMedia('(prefers-color-scheme: dark)').matches;
+}
+function applyLandingTheme(choice) {
+  var root = document.documentElement;
+  if (choice === 'dark' || choice === 'light') root.setAttribute('data-theme', choice);
+  else root.removeAttribute('data-theme');
+  var txt = isDarkNow() ? 'Hell' : 'Dunkel';
+  ['themeLabel', 'themeLabelMobile'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = txt;
+  });
+  if (window.orakelRepaint) window.orakelRepaint();
+}
+function orakelToggleTheme() {
+  var next = isDarkNow() ? 'light' : 'dark';
+  try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+  applyLandingTheme(next);
+}
+(function () {
+  var saved = null;
+  try { saved = localStorage.getItem(THEME_KEY); } catch (e) {}
+  applyLandingTheme(saved === 'dark' || saved === 'light' ? saved : null);
+  // Ohne eigene Wahl dem System folgen, auch wenn es sich spaeter aendert
+  var mq = window.matchMedia('(prefers-color-scheme: dark)');
+  var onChange = function () {
+    var s = null;
+    try { s = localStorage.getItem(THEME_KEY); } catch (e) {}
+    if (s !== 'dark' && s !== 'light') applyLandingTheme(null);
+  };
+  if (mq.addEventListener) mq.addEventListener('change', onChange);
+  else if (mq.addListener) mq.addListener(onChange);
 })();
 
 /* Bad Bunny — Original ⇄ Übersetzung */
