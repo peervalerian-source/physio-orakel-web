@@ -3016,8 +3016,14 @@ function launchBloodRain(){
 }
 
 // ── Stats / Lernhistorie ──────────────────────────────────────────────────────
-function loadStats(){try{return JSON.parse(localStorage.getItem(STATS_KEY)||'{"sessions":[]}')}catch{return{sessions:[]}}}
-function saveStats(data){try{localStorage.setItem(STATS_KEY,JSON.stringify(data))}catch{}scheduleStatsSync()}
+// Ein Eimer pro Konto, plus einer fuer Gaeste. Sonst uebernimmt am selben
+// Browser der naechste Angemeldete den Fortschritt des vorigen Nutzers.
+function statsKey(){
+  const u=currentUser&&currentUser.username?String(currentUser.username).toLowerCase():'';
+  return u?STATS_KEY+':'+u:STATS_KEY+':gast';
+}
+function loadStats(){try{return JSON.parse(localStorage.getItem(statsKey())||'{"sessions":[]}')}catch{return{sessions:[]}}}
+function saveStats(data){try{localStorage.setItem(statsKey(),JSON.stringify(data))}catch{}scheduleStatsSync()}
 
 // Server stats sync — always preserve highest values (defensive merge)
 let _statsSyncTimer=null;
@@ -3068,7 +3074,7 @@ async function syncStatsToServer(){
     const local=loadStats();
     const merged=mergeStats(local,remote);
     // Save merged locally (so local doesn't lose any progress that came from server)
-    try{localStorage.setItem(STATS_KEY,JSON.stringify(merged))}catch{}
+    try{localStorage.setItem(statsKey(),JSON.stringify(merged))}catch{}
     await fetch(WORKER_URL+'/stats',{method:'PUT',headers:{'Content-Type':'application/json','X-Session-Token':tok},body:JSON.stringify({xp:merged.xp,bestStreak:merged.bestStreak,sessions:merged.sessions,achievements:merged.achievements,dailyChallengeDone:merged.dailyChallengeDone})});
   }catch{}
 }
@@ -3081,7 +3087,7 @@ async function syncStatsFromServer(){
     const remote=await res.json();
     const local=loadStats();
     const merged=mergeStats(local,remote);
-    try{localStorage.setItem(STATS_KEY,JSON.stringify(merged))}catch{}
+    try{localStorage.setItem(statsKey(),JSON.stringify(merged))}catch{}
     // Push merged back to server so both sides agree
     syncStatsToServer();
   }catch{}
@@ -3458,7 +3464,20 @@ function renderGamification(stats){
   if(ag)ag.innerHTML=ACHIEVEMENTS.map(a=>`<div class="achievement ${unlocked.includes(a.id)?'unlocked':'locked'}"><div class="achievement-icon">${a.icon}</div><div class="achievement-info"><div class="achievement-name">${a.name}</div><div class="achievement-desc">${a.desc}</div></div></div>`).join('');
 }
 
-function resetStats(){if(confirm('Alle Statistiken unwiderruflich löschen?')){try{localStorage.removeItem(STATS_KEY)}catch{}renderStats()}}
+async function resetStats(){
+  if(!confirm('Alle Statistiken unwiderruflich löschen?'))return;
+  try{localStorage.removeItem(statsKey())}catch{}
+  // Auch auf dem Server leeren — sonst holt der naechste Abgleich alles zurueck.
+  const tok=getSessionToken();
+  if(currentUser&&tok){
+    try{
+      await fetch(WORKER_URL+'/stats',{method:'PUT',headers:{'Content-Type':'application/json','X-Session-Token':tok},
+        body:JSON.stringify({xp:0,bestStreak:0,sessions:[],achievements:[],dailyChallengeDone:''})});
+    }catch{}
+  }
+  renderStats();
+  try{updateUserBadge();updateHomeRank()}catch{}
+}
 
 
 // ══════════════════════════════════════════════════════════════════════════
