@@ -604,7 +604,7 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;align-items:center">
       <button type="button" class="btn btn-secondary" onclick="selectAllTopics()" style="font-size:12.5px">Alle wählen</button>
       <button type="button" class="btn btn-ghost" onclick="selectNoTopics()" style="color:var(--app-ink);font-size:12.5px">Auswahl leeren</button>
-      <span style="font-size:13px;color:var(--app-mute)" id="selCountText">alle Punkte gewählt</span>
+      <span style="font-size:13px;color:var(--app-mute)" id="selCountText">noch nichts gewählt</span>
     </div>
 
     <div style="margin-top:26px">
@@ -638,8 +638,8 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
         </div>
       </div>
       <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-        <span style="font-size:13px;color:var(--app-mute)" id="startHint">5 Fragen aus allen Punkten</span>
-        <button type="button" class="btn btn-primary btn-large" id="startBtn" onclick="startQuiz()">Quiz starten</button>
+        <span style="font-size:13px;color:var(--app-mute)" id="startHint">Wähle mindestens einen Punkt.</span>
+        <button type="button" class="btn btn-primary btn-large" id="startBtn" onclick="startQuiz()" disabled>Quiz starten</button>
       </div>
     </div>
   </section>
@@ -2287,15 +2287,16 @@ function allSubIds(){
   return out;
 }
 function allTopicsSelected(){
-  return state.selectedSubs.size===0||state.selectedSubs.size===allSubIds().length;
+  const total=allSubIds().length;
+  return total>0&&state.selectedSubs.size===total;
 }
 function refreshTopicUI(){
   TOPIC_GROUPS.forEach(g=>{g.subs.forEach(s=>updateSubUI(s.id));updateGroupUI(g.id)});
   updateSummary();
 }
 
-// Startzustand: alles an — wer filtern will, schaltet ab.
-state.selectedSubs=new Set(allSubIds());
+// Startzustand: nichts gewaehlt — die Punkte sind eine bewusste Wahl.
+state.selectedSubs=new Set();
 buildTopicArea();
 loadPoolFromServer();
 loadWochentest();
