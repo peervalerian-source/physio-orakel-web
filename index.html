@@ -234,6 +234,36 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     background: color-mix(in srgb, var(--color-muted) 60%, transparent);
   }
   html[data-story] #rueckkopplung .fb-dots span.on { background: var(--color-accent); }
+
+  /* ── Sektion 5: ein einziger Auftritt fuer die Schlusszeile ───────────
+     Der Ausgangszustand wird per Skript gesetzt, nie im Stylesheet — ohne
+     JavaScript darf die Zeile nie unsichtbar sein. */
+  html[data-story] #losTitle.reveal-init {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  html[data-story] #losTitle.reveal-in {
+    opacity: 1;
+    transform: none;
+    transition: opacity 420ms ease-out, transform 420ms ease-out;
+  }
+
+  /* ── Sektion 3: ein halber Moment, sonst Ruhe ─────────────────────────
+     Der Abschnitt ist der Ruhepunkt zwischen zwei starken Sektionen. Der
+     Zeile wird einmal kurz aufgezogen, mehr nicht. */
+  html[data-story] #gratisKicker.pop {
+    animation: storyPop 400ms ease-out 1;
+    transform-origin: left center;
+  }
+  /* Klemme gegen waagrechtes Ueberlaufen waehrend des Aufziehens. In diesem
+     Abschnitt steht nichts Klebriges, das darunter litte. */
+  html[data-story] #gratis > div { overflow-x: clip; }
+}
+
+@keyframes storyPop {
+  0%   { transform: scale(1); }
+  45%  { transform: scale(1.12); }
+  100% { transform: scale(1); }
 }
 
 @media (max-width: 620px) {
@@ -377,7 +407,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     <div class="split split-4-8">
       <div>
         <h2 style="font-size: clamp(24px, 2.9vw, 34px); line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 10px">Warum das Projekt gratis ist</h2>
-        <p style="font-size: 12px; line-height: 18px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); margin: 0">Schwestern und Brüder der Medizin: Gönnt euch</p>
+        <p id="gratisKicker" style="font-size: 12px; line-height: 18px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); margin: 0">Schwestern und Brüder der Medizin: Gönnt euch</p>
       </div>
       <div>
         <p style="font-size: 17px; line-height: 29px; margin: 0 0 8px; max-width: 58ch">
@@ -478,7 +508,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
 
   <section id="los" style="background: var(--color-accent-ui); color: var(--color-bg); margin-top: clamp(48px, 7vw, 96px)">
     <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 7vw, 84px) clamp(20px, 5vw, 72px)">
-      <h3 style="font-size: clamp(32px, 5vw, 62px); line-height: 1.06; letter-spacing: -0.02em; margin: 0 0 0 -0.058em">
+      <h3 id="losTitle" style="font-size: clamp(32px, 5vw, 62px); line-height: 1.06; letter-spacing: -0.02em; margin: 0 0 0 -0.058em">
         <span style="display: block">Akademisches Comeback</span>
         <span style="display: block">depolarisieren</span>
       </h3>
@@ -828,7 +858,11 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     var r = cv.getBoundingClientRect();
     var vh = window.innerHeight || 800;
     var p = Math.max(0, Math.min(1, (vh - r.top) / (vh + r.height)));
-    var bpm = START_BPM + (END_BPM - START_BPM) * (1 - Math.pow(1 - p, 1.7));
+    // Auf Desktop beruhigt sich der Puls beim Lesen nach unten (124 → 58).
+    // In der Mobil-Story laeuft er umgekehrt auf 124 hoch und bleibt dort.
+    var from = window.storyOn ? END_BPM : START_BPM;
+    var to = window.storyOn ? START_BPM : END_BPM;
+    var bpm = from + (to - from) * (1 - Math.pow(1 - p, 1.7));
 
     var base = h * 0.66, amp = h * 0.5;
     var secondsVisible = Math.max(2.4, w / 210);
@@ -1067,6 +1101,67 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
 
   syncNav();
   if (window.storyOn) onScroll();
+})();
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Mobile-Scroll-Story · Sektion 3: der halbe Moment
+   ══════════════════════════════════════════════════════════════════════════ */
+(function () {
+  var kicker = document.getElementById('gratisKicker');
+  if (!kicker || !('IntersectionObserver' in window)) return;
+  var io = null, done = false;
+
+  function arm() {
+    if (done || io) return;
+    io = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) return;
+      done = true;
+      kicker.classList.add('pop');
+      io.disconnect(); io = null;
+    }, { rootMargin: '0px 0px -18% 0px' });
+    io.observe(kicker);
+  }
+  function disarm() {
+    if (io) { io.disconnect(); io = null; }
+    kicker.classList.remove('pop');
+    done = false;
+  }
+
+  window.addEventListener('storychange', function (e) { e.detail ? arm() : disarm(); });
+  if (window.storyOn) arm();
+})();
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Mobile-Scroll-Story · Sektion 5: der eine Auftritt der Schlusszeile
+
+   Der Ausgangszustand entsteht erst hier, nicht im Stylesheet: ohne
+   JavaScript soll die Zeile nie unsichtbar sein. Einmal pro Aufruf.
+   ══════════════════════════════════════════════════════════════════════════ */
+(function () {
+  var title = document.getElementById('losTitle');
+  if (!title || !('IntersectionObserver' in window)) return;
+  var done = false, io = null;
+
+  function arm() {
+    if (done || io) return;
+    title.classList.add('reveal-init');
+    io = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) return;
+      done = true;
+      title.classList.add('reveal-in');
+      io.disconnect(); io = null;
+    }, { rootMargin: '0px 0px -12% 0px' });
+    io.observe(title);
+  }
+
+  function disarm() {
+    if (io) { io.disconnect(); io = null; }
+    title.classList.remove('reveal-init', 'reveal-in');
+    done = false;
+  }
+
+  window.addEventListener('storychange', function (e) { e.detail ? arm() : disarm(); });
+  if (window.storyOn) arm();
 })();
 
 /* ══════════════════════════════════════════════════════════════════════════
