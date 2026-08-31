@@ -10,44 +10,39 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 /* ══════════════════════════════════════════════════════════════════════════
-   Design-System „Modernist" — Tokens. Radius 0, 2px-Regeln, Rot sparsam.
+   Design-System „Modernist" — Tokens. Radius 0, 2px-Regeln.
+   Palette „Neon Physio": Navy traegt, Lime handelt, Cyan zeigt Physiologie.
    ══════════════════════════════════════════════════════════════════════════ */
 :root {
-  --color-bg: #f3f2f2;
-  --color-text: #201e1d;
-  --color-accent: #ec3013;
-  --color-divider: color-mix(in srgb, #201e1d 40%, transparent);
-  --color-neutral-100: #f8f4f4;
-  --color-accent-100: #fff2ef;
-  --color-accent-600: #dd2b0f;
-  --color-accent-700: #ae1800;
+  --color-bg: #0B1020;
+  --color-text: #F2F4EA;
+  --color-accent: #C7F36B;
+  --color-accent-2: #54D6E8;
+  --color-error: #FF6B6B;
+  --color-divider: color-mix(in srgb, #8993A8 62%, transparent);
+  --color-neutral-100: #121A2E;
+  --color-accent-100: color-mix(in srgb, #C7F36B 8%, #121A2E);
+  --color-accent-600: #D8F894;
+  --color-accent-700: #C7F36B;
   --font-heading: "Archivo", system-ui, sans-serif;
   --font-body: "Archivo", system-ui, sans-serif;
 
-  /* App-Tokens — nur diese werden von Elementen benutzt. Der Theme-Wechsel
-     setzt ausschließlich data-orakel-theme am <html>. */
+  /* App-Tokens — nur diese werden von Elementen benutzt. Ein Modus,
+     ein Wertesatz. */
   --app-bg: var(--color-bg);
   --app-panel: var(--color-neutral-100);
   --app-ink: var(--color-text);
-  --app-mute: color-mix(in srgb, var(--color-text) 72%, transparent);
+  --app-mute: #8993A8;
   --app-rule: var(--color-divider);
   --app-accent: var(--color-accent);
+  --app-accent-2: var(--color-accent-2);
   --app-accent-ink: var(--color-bg);
   --app-accent-soft: var(--color-accent-100);
-  --app-ok: #12643a;
-  --app-warn: #8a5200;
-}
-:root[data-orakel-theme="dark"] {
-  --app-bg: #1b1a19;
-  --app-panel: #232120;
-  --app-ink: #f8f4f4;
-  --app-mute: color-mix(in srgb, #f8f4f4 70%, transparent);
-  --app-rule: #3b3838;
-  --app-accent: #ff563c;
-  --app-accent-ink: #1b1a19;
-  --app-accent-soft: #2b2220;
-  --app-ok: #5ecf8b;
-  --app-warn: #e0a23a;
+  /* Richtig ist ein Hoehepunkt, falsch eine Warnung — beides kommt aus der
+     Palette, statt eigene Gruen- und Rottoene zu erfinden. */
+  --app-ok: var(--color-accent);
+  --app-warn: var(--color-error);
+  --app-error: var(--color-error);
 }
 /* Alt-Aliase: die dynamisch erzeugten Markup-Strings (Rangleiter, Ranking,
    Heatmap, Verlauf) benutzen diese Namen. Sie zeigen jetzt auf die App-Tokens,
@@ -80,7 +75,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; color-scheme: dark; }
 body {
   margin: 0; background: var(--app-bg); color: var(--app-ink);
   font-family: var(--font-body); font-size: 15px; line-height: 1.55; font-weight: 400;
@@ -116,7 +111,6 @@ img { display: block; max-width: 100%; }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; }
 .btn-primary { background: var(--app-accent); color: var(--app-accent-ink); border-color: var(--app-accent); }
 .btn-primary:hover { background: var(--color-accent-600); border-color: var(--color-accent-600); color: var(--app-accent-ink); }
-:root[data-orakel-theme="dark"] .btn-primary:hover { background: #ff7359; border-color: #ff7359; }
 .btn-secondary { border-color: var(--app-rule); color: var(--app-ink); }
 @media (hover: hover) { .btn-secondary:hover { background: color-mix(in srgb, var(--app-ink) 8%, transparent); } }
 .btn-ghost { color: var(--app-accent); border-color: transparent; padding-inline: 6px; }
@@ -302,7 +296,7 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
 #ekgLoader text { font-family: var(--font-body); }
 .ekg-muscle   { fill: color-mix(in srgb, var(--app-ink) 7%, var(--app-bg)); stroke: color-mix(in srgb, var(--app-ink) 34%, transparent); }
 .ekg-chamber  { fill: var(--app-accent); stroke: color-mix(in srgb, var(--app-ink) 26%, transparent); }
-.ekg-repol    { fill: var(--app-warn); }
+.ekg-repol    { fill: var(--app-accent-2); }
 .ekg-idle     { stroke: color-mix(in srgb, var(--app-ink) 40%, transparent); }
 .ekg-live     { stroke: var(--app-accent); }
 .ekg-node     { fill: var(--app-accent); }
@@ -373,15 +367,15 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
 .opt-label { font-size: 15.5px; line-height: 24px; color: var(--app-ink); }
 .opt-letter { font-family: var(--font-heading); font-weight: 800; font-size: 13px; color: var(--app-accent); margin-right: 8px; }
 .option-row.rv-correct { border-color: var(--app-ok); background: color-mix(in srgb, var(--app-ok) 12%, transparent); }
-.option-row.rv-wrong { border-color: var(--app-accent); background: var(--app-accent-soft); }
+.option-row.rv-wrong { border-color: var(--app-error); background: color-mix(in srgb, var(--app-error) 12%, transparent); }
 .option-row.rv-missed { border-color: var(--app-warn); border-style: dashed; }
 
 .feedback-block { border-left: 2px solid var(--app-accent); padding: 12px 0 2px 14px; margin-top: 18px; }
 .fb-row { display: flex; gap: 12px; align-items: baseline; justify-content: space-between; flex-wrap: wrap; }
 .fb-status { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-family: var(--font-heading); font-weight: 800; }
 .fb-status.full { color: var(--app-ok); }
-.fb-status.partial { color: var(--app-warn); }
-.fb-status.wrong { color: var(--app-accent); }
+.fb-status.partial { color: var(--app-accent-2); }
+.fb-status.wrong { color: var(--app-error); }
 .fb-score { font-size: 12px; color: var(--app-mute); font-feature-settings: 'tnum' 1; }
 .fb-explain { font-size: 14.5px; line-height: 24px; color: var(--app-mute); margin-top: 8px; max-width: 62ch; }
 .btn-explain {
@@ -552,7 +546,6 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
     <a href="/" class="back-link">← Nephron.at</a>
     <button type="button" class="btn btn-secondary" id="keyCornerBtn" onclick="openKeyModal()" title="Anmelden oder registrieren">Anmelden</button>
     <button type="button" class="btn btn-secondary" id="soundBtn" onclick="toggleSound()" title="Ton an/aus"><span id="soundLabel">Ton an</span></button>
-    <button type="button" class="btn btn-secondary" id="themeBtn" onclick="toggleTheme()" title="Hell/Dunkel"><span id="themeLabel">Dunkel</span></button>
     <button type="button" class="btn btn-primary" id="statsBtn" onclick="toggleStats()" title="Statistik &amp; Verlauf">Statistik</button>
   </span>
 </nav>
@@ -1236,7 +1229,6 @@ const SOUND_KEY='physio_orakel_sound';
 const POOL_KEY='physio_orakel_pool';
 const POOL_META_KEY='physio_orakel_pool_meta';
 const STATS_KEY='physio_orakel_stats';
-const THEME_KEY='physio_orakel_theme';
 const MAX_CONTEXT_CHARS=120000;
 // Wie lange der Ladescreen mindestens steht: beim Poolzug (sofort fertig)
 // und beim KI-Weg, falls die Antwort ungewoehnlich schnell kommt.
@@ -1261,26 +1253,6 @@ const state={
   currentQuestionIndex:0,
   quizStartTime:0
 };
-
-// ── Theme ─────────────────────────────────────────────────────────────────────
-// Ein Attribut, zwei Token-Sets: data-orakel-theme am <html> schaltet alles.
-function toggleTheme(){
-  const html=document.documentElement;
-  const next=html.getAttribute('data-orakel-theme')==='dark'?'light':'dark';
-  applyTheme(next);
-  try{localStorage.setItem(THEME_KEY,next)}catch{}
-}
-function applyTheme(theme){
-  document.documentElement.setAttribute('data-orakel-theme',theme);
-  const lbl=document.getElementById('themeLabel');
-  if(lbl)lbl.textContent=theme==='dark'?'Hell':'Dunkel';
-  paletteCache=null;
-}
-function loadTheme(){
-  let t='light';
-  try{t=localStorage.getItem(THEME_KEY)||'light'}catch{}
-  applyTheme(t==='dark'?'dark':'light');
-}
 
 // ── Navigation ────────────────────────────────────────────────────────────────
 const SCREENS=['s1','s2','sUpload','s3','s4','s5'];
@@ -1378,28 +1350,28 @@ setTimeout(()=>{
 async function doLogin(){
   const username=document.getElementById('loginUser').value.trim();
   const password=document.getElementById('loginPass').value;
-  if(!username||!password){showAuthStatus('Username und Passwort ausfüllen','var(--app-accent)');return}
+  if(!username||!password){showAuthStatus('Username und Passwort ausfüllen','var(--app-error)');return}
   showAuthStatus('Wird angemeldet…','var(--app-mute)');
   try{
     const res=await fetch(WORKER_URL+'/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password})});
     const data=await res.json();
     if(!res.ok)throw new Error(data.error||'Fehler');
     onAuthSuccess(data,'');
-  }catch(e){showAuthStatus(e.message,'var(--app-accent)')}
+  }catch(e){showAuthStatus(e.message,'var(--app-error)')}
 }
 async function doRegister(){
   const username=document.getElementById('regUser').value.trim();
   const email=document.getElementById('regEmail').value.trim();
   const password=document.getElementById('regPass').value;
   const accessCode=document.getElementById('regCode').value.trim().toUpperCase();
-  if(!username||!email||!password||!accessCode){showAuthStatus('Alle Felder ausfüllen','var(--app-accent)');return}
+  if(!username||!email||!password||!accessCode){showAuthStatus('Alle Felder ausfüllen','var(--app-error)');return}
   showAuthStatus('Account wird erstellt…','var(--app-mute)');
   try{
     const res=await fetch(WORKER_URL+'/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,email,password,accessCode})});
     const data=await res.json();
     if(!res.ok)throw new Error(data.error||'Fehler');
     onAuthSuccess(data,'');
-  }catch(e){showAuthStatus(e.message,'var(--app-accent)')}
+  }catch(e){showAuthStatus(e.message,'var(--app-error)')}
 }
 function onAuthSuccess(data,accessCode){
   try{
@@ -1892,7 +1864,7 @@ function codeAdminStatus(msg,accent){
   const el=document.getElementById('codeAdminStatus');
   if(!el)return;
   el.textContent=msg;
-  el.style.color=accent?'var(--app-accent)':'var(--app-mute)';
+  el.style.color=accent?'var(--app-error)':'var(--app-mute)';
 }
 async function createCode(){
   const key=adminKey();
@@ -2095,7 +2067,7 @@ async function loadWochentest(){
       state.wtText=data.transcript;
       const meta=data.meta||{};
       const date=meta.date?new Date(meta.date).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'}):'';
-      document.getElementById('wtStatus').innerHTML=`<span style="color:var(--green2,#4ade80)">●</span> ${meta.title||'Material bereit'}${date?' — aktualisiert am '+date:''} (${meta.size||'?'} KB)`;
+      document.getElementById('wtStatus').innerHTML=`<span style="color:var(--green2,#C7F36B)">●</span> ${meta.title||'Material bereit'}${date?' — aktualisiert am '+date:''} (${meta.size||'?'} KB)`;
       document.getElementById('wtReady').style.display='block';
       document.getElementById('wtEmpty').style.display='none';
       // Show admin button if admin key stored
@@ -2325,7 +2297,6 @@ function refreshTopicUI(){
 // Startzustand: alles an — wer filtern will, schaltet ab.
 state.selectedSubs=new Set(allSubIds());
 buildTopicArea();
-loadTheme();
 loadPoolFromServer();
 loadWochentest();
 loadRigoOriginal();
@@ -2888,7 +2859,7 @@ function buildResult(pct,pts,max,topicScores){
       // praktisch unlesbar.
       let cls='',lc='var(--app-ink)',lc2='var(--app-mute)',cbVis='hidden',cbC='';
       if(wc&&ic){cls='rv-correct';lc2='var(--app-ok)';cbVis='visible';cbC='var(--app-ok)'}
-      else if(wc&&!ic){cls='rv-wrong';lc2='var(--app-accent)';cbVis='visible';cbC='var(--app-accent)'}
+      else if(wc&&!ic){cls='rv-wrong';lc2='var(--app-error)';cbVis='visible';cbC='var(--app-error)'}
       else if(!wc&&ic){cls='rv-missed';lc2='var(--app-warn)'}
       optsHtml+=`<div class="option-row ${cls}" style="cursor:default"><div class="opt-cb" style="visibility:${cbVis};color:${cbC};border-color:${cbC||'var(--border3)'}">✓</div><div class="opt-label" style="color:${lc}"><span class="opt-letter" style="color:${lc2}">${opt.key})</span>${opt.text}</div></div>`;
     });
@@ -2956,7 +2927,7 @@ function launchConfetti(){
   const canvas=document.getElementById('particleCanvas');
   const ctx=canvas.getContext('2d');
   canvas.width=window.innerWidth;canvas.height=window.innerHeight;
-  const colors=['#D42B2B','#E84545','#FF6B6B','#ffd700','#ffffff','#F0F0F2','#d8a820'];
+  const colors=['#C7F36B','#54D6E8','#D8F894','#F2F4EA','#8993A8','#FF6B6B','#ffd700'];
   for(let i=0;i<150;i++){
     particles.push({
       x:Math.random()*canvas.width,y:Math.random()*canvas.height*-1,
@@ -3510,10 +3481,9 @@ var digestUntil=0;
   function pal(){
     if(paletteCache)return paletteCache;
     var cs=getComputedStyle(document.documentElement);
-    var dark=document.documentElement.getAttribute('data-orakel-theme')==='dark';
     paletteCache={
-      accent:cs.getPropertyValue('--app-accent').trim()||'#ec3013',
-      ink:dark?'248,244,244':'32,30,29'
+      accent:cs.getPropertyValue('--app-accent').trim()||'#C7F36B',
+      ink:'242,244,234'
     };
     return paletteCache;
   }

@@ -11,59 +11,34 @@
 <style>
 /* ── Design-System „Modernist" — Tokens ────────────────────────────────── */
 :root {
-  --color-bg: #f3f2f2;
-  --color-surface: #eae9e9;
-  --color-text: #201e1d;
-  --color-accent: #ec3013;
-  --color-divider: color-mix(in srgb, #201e1d 48%, transparent);
-  --color-neutral-100: #f8f4f4;
-  --color-accent-100: #fff2ef;
-  --color-accent-600: #dd2b0f;
-  --color-accent-700: #ae1800;
-  /* Auf #ec3013 erreicht Papierschrift nur 3,76:1. Flaechen, die Text
-     tragen, bekommen deshalb ein eigenes, etwas tieferes Rot (4,8:1);
-     die reine Grafik behaelt das Marken-Rot. */
-  --color-accent-ui: #cf2410;
-  --color-nav: #eae7e7;
+  /* Neon Physio — dunkles Navy traegt die Seite, Lime handelt (Buttons,
+     CTAs, aktive Elemente), Cyan bleibt den physiologischen Akzenten
+     vorbehalten. Nur ein Modus, deshalb keine zweite Wertetafel. */
+  --color-bg: #0B1020;
+  --color-surface: #121A2E;
+  --color-text: #F2F4EA;
+  --color-muted: #8993A8;
+  --color-accent: #C7F36B;
+  --color-accent-2: #54D6E8;
+  --color-error: #FF6B6B;
+  --color-divider: color-mix(in srgb, #8993A8 62%, transparent);
+  --color-neutral-100: #121A2E;
+  /* Akzentflaechen bleiben Navy, nur mit einem Hauch Lime darin — sonst
+     schluckt eine volle Limeflaeche den halben Bildschirm. */
+  --color-accent-100: color-mix(in srgb, #C7F36B 8%, #121A2E);
+  --color-accent-600: #D8F894;
+  --color-accent-700: #C7F36B;
+  /* Lime traegt navyfarbene Schrift mit 14:1 — ein eigener UI-Ton wie beim
+     alten Rot ist hier nicht noetig. */
+  --color-accent-ui: #C7F36B;
+  --color-nav: #121A2E;
   --font-heading: "Archivo", system-ui, sans-serif;
   --font-body: "Archivo", system-ui, sans-serif;
   --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
   --radius-md: 0px;
 }
-/* Dunkel: dieselben Rollen, andere Werte. Zwei Bloecke — einer fuer die
-   ausdrueckliche Wahl, einer fuer die Systemeinstellung, solange niemand
-   ausdruecklich „hell" gewaehlt hat. */
-:root[data-theme="dark"] {
-  --color-bg: #1b1a19;
-  --color-surface: #232120;
-  --color-text: #f8f4f4;
-  --color-divider: color-mix(in srgb, #f8f4f4 44%, transparent);
-  --color-neutral-100: #262322;
-  --color-accent-100: #322523;
-  --color-accent: #ff563c;
-  --color-accent-600: #ff7359;
-  --color-accent-700: #ff9783;
-  --color-accent-ui: #ff563c;
-  --color-nav: #232120;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --color-bg: #1b1a19;
-    --color-surface: #232120;
-    --color-text: #f8f4f4;
-    --color-divider: color-mix(in srgb, #f8f4f4 44%, transparent);
-    --color-neutral-100: #262322;
-    --color-accent-100: #322523;
-    --color-accent: #ff563c;
-    --color-accent-600: #ff7359;
-    --color-accent-700: #ff9783;
-    --color-accent-ui: #ff563c;
-    --color-nav: #232120;
-  }
-}
-
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; color-scheme: light dark; }
+html { -webkit-text-size-adjust: 100%; color-scheme: dark; }
 body {
   margin: 0; background: var(--color-bg); color: var(--color-text);
   font-family: var(--font-body); font-size: 15px; line-height: 1.55; font-weight: 400;
@@ -113,8 +88,6 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
 /* .nav a { color: inherit } schlägt .btn-primary — die eigene Schrift des Buttons zurückholen */
 .nav a.btn-primary { color: var(--color-bg); text-decoration: none; white-space: nowrap; }
 .brand-indep { display: block; }
-.theme-btn { font-size: 13px; white-space: nowrap; }
-.theme-ico { display: none; }
 .nav a.btn-primary:hover { color: var(--color-bg); background: var(--color-accent-600); }
 
 /* der CTA atmet — 3,6s, 3,5% Amplitude, nur transform */
@@ -148,15 +121,8 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
   .nav a:not(.btn-primary) { display: none; }
   .nav-brand { font-size: 16px; }
   .brand-sub-line { font-size: 9.5px !important; letter-spacing: 0.12em !important; }
-  /* Wortmarke, Umschalter und Aktion muessen in eine Zeile — dafuer wird
-     der Umschalter zum Zeichen. */
+  /* Wortmarke und Aktion muessen in eine Zeile passen. */
   .nav > span:last-child { flex-wrap: nowrap !important; gap: 8px !important; }
-  .theme-btn {
-    font-size: 15px; padding: 0; min-height: 36px; width: 36px;
-    border-color: var(--color-divider); flex: none; justify-content: center;
-  }
-  .theme-word { display: none; }
-  .theme-ico { display: inline; line-height: 1; }
   .nav a.btn-primary { font-size: 12.5px; padding: 9px 12px; min-height: 36px; }
 
   .nav-mobile {
@@ -200,10 +166,10 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     <span style="margin-right: auto; display: flex; align-items: center; gap: 14px">
       <span style="display: block; flex: none">
         <span class="nav-brand" style="display: block; margin-right: 0">Nephron.at</span>
-        <span class="brand-sub-line" style="display: block; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap; color: color-mix(in srgb, var(--color-text) 72%, transparent); margin-top: 2px; font-feature-settings: 'tnum' 1">Estimated 2025</span>
+        <span class="brand-sub-line" style="display: block; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap; color: var(--color-muted); margin-top: 2px; font-feature-settings: 'tnum' 1">Estimated 2025</span>
       </span>
       <span class="brand-indep" style="width: 2px; height: 30px; background: var(--color-divider); flex: none"></span>
-      <span class="brand-indep" style="font-size: 10px; letter-spacing: 0.08em; line-height: 14px; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 72%, transparent); white-space: nowrap">
+      <span class="brand-indep" style="font-size: 10px; letter-spacing: 0.08em; line-height: 14px; text-transform: uppercase; color: var(--color-muted); white-space: nowrap">
         <span style="display: block">Developed independently</span>
         <span style="display: block">at Semmelweis University</span>
       </span>
@@ -214,7 +180,6 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
       <a href="#rueckkopplung" style="font-size: 13.5px">Rückkopplung</a>
       <a href="#ueber" style="font-size: 13.5px">Über mich</a>
       <a href="#disclaimer" style="font-size: 13.5px; margin-right: 4px">Disclaimer</a>
-      <button type="button" class="btn btn-secondary theme-btn" id="themeBtn" onclick="orakelToggleTheme()" title="Hell oder dunkel" aria-label="Hell oder dunkel"><span class="theme-word" id="themeLabel">Dunkel</span><span class="theme-ico" aria-hidden="true">◐</span></button>
       <a href="/app/" class="btn btn-primary cta-pulse">Physio-Orakel öffnen</a>
     </span>
   </nav>
@@ -245,7 +210,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
   <section aria-label="Aktionspotential" style="max-width: 1240px; margin: 0 auto; padding: clamp(22px, 3.5vw, 40px) clamp(20px, 5vw, 72px) 0">
     <div style="position: relative; border-top: 2px solid var(--color-divider); border-bottom: 2px solid var(--color-divider)">
       <canvas id="heroCanvas" class="hero-canvas"></canvas>
-      <div style="position: absolute; right: 0; top: 8px; display: flex; gap: 16px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 72%, transparent); font-feature-settings: 'tnum' 1; pointer-events: none">
+      <div style="position: absolute; right: 0; top: 8px; display: flex; gap: 16px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted); font-feature-settings: 'tnum' 1; pointer-events: none">
         <span>Membranpotential</span>
         <span id="vmValue" style="color: var(--color-accent-700); text-transform: none; letter-spacing: 0.04em">−70 mV</span>
       </div>
@@ -275,7 +240,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
 
     <div style="margin-top: clamp(28px, 4vw, 44px)">
       <canvas id="filterCanvas" aria-hidden="true" style="display: block; width: 100%; height: clamp(240px, 30vw, 360px); border-top: 2px solid var(--color-divider); border-bottom: 2px solid var(--color-divider)"></canvas>
-      <p style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 70%, transparent); margin: 12px 0 0">
+      <p style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted); margin: 12px 0 0">
         Filtration aufs Wesentliche
       </p>
     </div>
@@ -293,7 +258,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
         <p style="font-size: 17px; line-height: 29px; margin: 0 0 8px; max-width: 58ch">
           Als ich 2013 eines Morgens aus unruhigen Träumen erwachte, fand ich mich in meinem Bett zu einem ungeheuren Bitcoin-Millionär verwandelt.
         </p>
-        <p style="font-size: 17px; line-height: 29px; margin: 0 0 22px; color: color-mix(in srgb, var(--color-text) 72%, transparent)">(I wish.)</p>
+        <p style="font-size: 17px; line-height: 29px; margin: 0 0 22px; color: var(--color-muted)">(I wish.)</p>
         <p style="font-size: 17px; line-height: 29px; margin: 0; max-width: 58ch">
           Die Wahrheit ist unspektakulärer: Ich weiß noch ziemlich genau, wie sich das erste Jahr anfühlt. Ich hab keine Zeit, ein Startup daraus zu machen, und keine Lust, euch dafür Geld abzunehmen. Nehmt's einfach.
         </p>
@@ -316,7 +281,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
         <figcaption style="margin-top: auto; display: flex; align-items: baseline; gap: 10px 12px; flex-wrap: wrap">
           <span style="display: block; width: 10px; height: 10px; background: var(--color-accent); flex: none; align-self: center"></span>
           <span style="font-family: var(--font-heading); font-weight: 800; font-size: 17px; line-height: 22px; letter-spacing: -0.01em; align-self: center">Alina</span>
-          <span style="font-size: 13px; line-height: 20px; color: color-mix(in srgb, var(--color-text) 74%, transparent); align-self: center">3. Studienjahr</span>
+          <span style="font-size: 13px; line-height: 20px; color: var(--color-muted); align-self: center">3. Studienjahr</span>
         </figcaption>
       </figure>
 
@@ -325,7 +290,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
         <figcaption style="margin-top: auto; display: flex; align-items: baseline; gap: 10px 12px; flex-wrap: wrap">
           <span style="display: block; width: 10px; height: 10px; background: var(--color-accent); flex: none; align-self: center"></span>
           <span style="font-family: var(--font-heading); font-weight: 800; font-size: 17px; line-height: 22px; letter-spacing: -0.01em; align-self: center">Hiwa</span>
-          <span style="font-size: 13px; line-height: 20px; color: color-mix(in srgb, var(--color-text) 74%, transparent); align-self: center">3. Studienjahr</span>
+          <span style="font-size: 13px; line-height: 20px; color: var(--color-muted); align-self: center">3. Studienjahr</span>
         </figcaption>
       </figure>
 
@@ -334,7 +299,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
         <figcaption style="margin-top: auto; display: flex; align-items: baseline; gap: 10px 12px; flex-wrap: wrap">
           <span style="display: block; width: 10px; height: 10px; background: var(--color-accent); flex: none; align-self: center"></span>
           <span style="font-family: var(--font-heading); font-weight: 800; font-size: 17px; line-height: 22px; letter-spacing: -0.01em; align-self: center">Charlotte</span>
-          <span style="font-size: 13px; line-height: 20px; color: color-mix(in srgb, var(--color-text) 74%, transparent); align-self: center">3. Studienjahr</span>
+          <span style="font-size: 13px; line-height: 20px; color: var(--color-muted); align-self: center">3. Studienjahr</span>
         </figcaption>
       </figure>
 
@@ -343,7 +308,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
         <figcaption style="margin-top: auto; display: flex; align-items: baseline; gap: 10px 12px; flex-wrap: wrap">
           <span style="display: block; width: 10px; height: 10px; background: var(--color-accent); flex: none; align-self: center"></span>
           <span style="font-family: var(--font-heading); font-weight: 800; font-size: 17px; line-height: 22px; letter-spacing: -0.01em; align-self: center">Anonym</span>
-          <span style="font-size: 13px; line-height: 20px; color: color-mix(in srgb, var(--color-text) 74%, transparent); align-self: center">2. Studienjahr</span>
+          <span style="font-size: 13px; line-height: 20px; color: var(--color-muted); align-self: center">2. Studienjahr</span>
         </figcaption>
       </figure>
 
@@ -356,7 +321,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
         <figcaption style="display: flex; align-items: baseline; gap: 10px 14px; flex-wrap: wrap; margin-top: 20px">
           <span style="display: block; width: 10px; height: 10px; background: var(--color-accent); flex: none; align-self: center"></span>
           <span style="font-family: var(--font-heading); font-weight: 800; font-size: 17px; line-height: 22px; letter-spacing: -0.01em">Pashanim</span>
-          <span style="font-size: 13px; line-height: 20px; color: color-mix(in srgb, var(--color-text) 74%, transparent)">Chefarzt, Charité Berlin</span>
+          <span style="font-size: 13px; line-height: 20px; color: var(--color-muted)">Chefarzt, Charité Berlin</span>
         </figcaption>
       </div>
     </figure>
@@ -368,7 +333,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
         <figcaption style="display: flex; align-items: baseline; gap: 10px 14px; flex-wrap: wrap; margin-top: 20px">
           <span style="display: block; width: 10px; height: 10px; background: var(--color-accent); flex: none; align-self: center"></span>
           <span style="font-family: var(--font-heading); font-weight: 800; font-size: 17px; line-height: 22px; letter-spacing: -0.01em">Bad Bunny</span>
-          <span style="font-size: 13px; line-height: 20px; color: color-mix(in srgb, var(--color-text) 74%, transparent)">Assistenzarzt, Grand Prix Monaco</span>
+          <span style="font-size: 13px; line-height: 20px; color: var(--color-muted)">Assistenzarzt, Grand Prix Monaco</span>
           <button type="button" id="bbToggle" class="btn btn-ghost btn-mini" onclick="orakelToggleBb()">Übersetzen</button>
         </figcaption>
       </div>
@@ -379,7 +344,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
   <section style="max-width: 1240px; margin: 0 auto; padding: clamp(40px, 6vw, 80px) clamp(20px, 5vw, 72px) 0">
     <div style="display: flex; gap: 16px 32px; flex-wrap: wrap; align-items: baseline; justify-content: space-between; margin-bottom: 14px">
       <p style="font-size: 13px; line-height: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); margin: 0">Auf dass dein Puls nicht im 3. Semester stehen bleibt</p>
-      <p id="bpmValue" style="font-family: var(--font-heading); font-weight: 800; font-size: 13px; letter-spacing: 0.06em; color: color-mix(in srgb, var(--color-text) 72%, transparent); margin: 0; font-feature-settings: 'tnum' 1">124 bpm</p>
+      <p id="bpmValue" style="font-family: var(--font-heading); font-weight: 800; font-size: 13px; letter-spacing: 0.06em; color: var(--color-muted); margin: 0; font-feature-settings: 'tnum' 1">124 bpm</p>
     </div>
     <canvas id="ecgCanvas" aria-hidden="true" style="display: block; width: 100%; height: clamp(96px, 11vw, 128px); border-top: 2px solid var(--color-divider); border-bottom: 2px solid var(--color-divider)"></canvas>
   </section>
@@ -419,23 +384,23 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     <div class="split split-5-7" style="border-top: 2px solid var(--color-divider); padding-top: 30px">
       <div>
         <h2 style="font-size: clamp(22px, 2.6vw, 30px); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 10px">Disclaimer</h2>
-        <p style="font-size: 12px; line-height: 18px; letter-spacing: 0.08em; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 72%, transparent); margin: 0">Physio-Orakel</p>
+        <p style="font-size: 12px; line-height: 18px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted); margin: 0">Physio-Orakel</p>
         <canvas id="radCanvas" aria-hidden="true" style="display: block; width: 104px; height: 104px; margin-top: 22px"></canvas>
       </div>
       <div style="display: grid; gap: 18px; max-width: 74ch">
-        <p style="font-size: 14px; line-height: 24px; margin: 0; color: color-mix(in srgb, var(--color-text) 76%, transparent)">Das Physio-Orakel ist ein privates, nicht-kommerzielles Lernprojekt eines Studenten. Es handelt sich nicht um ein offizielles Angebot der Semmelweis Universität Budapest und steht in keinerlei institutioneller Verbindung zur Universität, deren Instituten oder Lehrpersonal. Inhalte, Darstellungen und Ergebnisse spiegeln nicht die Positionen der Universität wider.</p>
-        <p style="font-size: 14px; line-height: 24px; margin: 0; color: color-mix(in srgb, var(--color-text) 76%, transparent)">Sämtliche Fragen und Erklärungen werden von einer künstlichen Intelligenz (Claude, Anthropic) generiert und sind nicht von Fachpersonal geprüft. Die Antworten können inhaltliche Fehler, Ungenauigkeiten oder veraltete Informationen enthalten. Das Physio-Orakel ersetzt weder Vorlesungen, Lehrbücher noch sonstige geprüfte Lehrmaterialien und stellt keine akademische Beratung dar.</p>
-        <p style="font-size: 14px; line-height: 24px; margin: 0; color: color-mix(in srgb, var(--color-text) 76%, transparent)">Die Inhalte wurden unter Verwendung des Vorlesungsstoffs sowie gängiger Lehrbücher in eigenen Worten neu verfasst und nach Themenkatalog gegliedert. Vorlesungsfolien, Skripten und Prüfungsunterlagen der Universität werden weder vervielfältigt noch weitergegeben. Die Fragen basieren auf aus dem Gedächtnis rekonstruierten Inhalten. Sollten Rechteinhaber dennoch eine Verletzung ihrer Rechte sehen, genügt eine formlose Nachricht an [Mail] — beanstandete Inhalte werden umgehend entfernt.</p>
-        <p style="font-size: 14px; line-height: 24px; margin: 0; color: color-mix(in srgb, var(--color-text) 76%, transparent)">Es wird keine Gewähr für Aktualität, Vollständigkeit, Richtigkeit oder Prüfungsrelevanz übernommen. Änderungen im Curriculum oder in der Prüfungsgestaltung werden nicht automatisch abgebildet.</p>
-        <p style="font-size: 14px; line-height: 24px; margin: 0; color: color-mix(in srgb, var(--color-text) 76%, transparent)">Die bereitgestellten Inhalte dienen ausschließlich Lernzwecken und stellen keinen medizinischen Rat dar. Informationen aus dem Physio-Orakel dürfen nicht zur Diagnostik, Therapie oder Beratung von Patientinnen und Patienten herangezogen werden.</p>
-        <p style="font-size: 14px; line-height: 24px; margin: 0; color: color-mix(in srgb, var(--color-text) 76%, transparent)">Die Nutzung erfolgt auf eigene Verantwortung. Ich übernehme keine Haftung für Schäden, die aus der Nutzung oder dem Vertrauen auf die bereitgestellten Inhalte entstehen — einschließlich, aber nicht beschränkt auf, Prüfungsergebnisse oder akademische Konsequenzen.</p>
+        <p style="font-size: 14px; line-height: 24px; margin: 0; color: var(--color-muted)">Das Physio-Orakel ist ein privates, nicht-kommerzielles Lernprojekt eines Studenten. Es handelt sich nicht um ein offizielles Angebot der Semmelweis Universität Budapest und steht in keinerlei institutioneller Verbindung zur Universität, deren Instituten oder Lehrpersonal. Inhalte, Darstellungen und Ergebnisse spiegeln nicht die Positionen der Universität wider.</p>
+        <p style="font-size: 14px; line-height: 24px; margin: 0; color: var(--color-muted)">Sämtliche Fragen und Erklärungen werden von einer künstlichen Intelligenz (Claude, Anthropic) generiert und sind nicht von Fachpersonal geprüft. Die Antworten können inhaltliche Fehler, Ungenauigkeiten oder veraltete Informationen enthalten. Das Physio-Orakel ersetzt weder Vorlesungen, Lehrbücher noch sonstige geprüfte Lehrmaterialien und stellt keine akademische Beratung dar.</p>
+        <p style="font-size: 14px; line-height: 24px; margin: 0; color: var(--color-muted)">Die Inhalte wurden unter Verwendung des Vorlesungsstoffs sowie gängiger Lehrbücher in eigenen Worten neu verfasst und nach Themenkatalog gegliedert. Vorlesungsfolien, Skripten und Prüfungsunterlagen der Universität werden weder vervielfältigt noch weitergegeben. Die Fragen basieren auf aus dem Gedächtnis rekonstruierten Inhalten. Sollten Rechteinhaber dennoch eine Verletzung ihrer Rechte sehen, genügt eine formlose Nachricht an [Mail] — beanstandete Inhalte werden umgehend entfernt.</p>
+        <p style="font-size: 14px; line-height: 24px; margin: 0; color: var(--color-muted)">Es wird keine Gewähr für Aktualität, Vollständigkeit, Richtigkeit oder Prüfungsrelevanz übernommen. Änderungen im Curriculum oder in der Prüfungsgestaltung werden nicht automatisch abgebildet.</p>
+        <p style="font-size: 14px; line-height: 24px; margin: 0; color: var(--color-muted)">Die bereitgestellten Inhalte dienen ausschließlich Lernzwecken und stellen keinen medizinischen Rat dar. Informationen aus dem Physio-Orakel dürfen nicht zur Diagnostik, Therapie oder Beratung von Patientinnen und Patienten herangezogen werden.</p>
+        <p style="font-size: 14px; line-height: 24px; margin: 0; color: var(--color-muted)">Die Nutzung erfolgt auf eigene Verantwortung. Ich übernehme keine Haftung für Schäden, die aus der Nutzung oder dem Vertrauen auf die bereitgestellten Inhalte entstehen — einschließlich, aber nicht beschränkt auf, Prüfungsergebnisse oder akademische Konsequenzen.</p>
       </div>
     </div>
   </section>
 
   <div style="max-width: 1240px; margin: 0 auto; padding: clamp(36px, 5vw, 56px) clamp(20px, 5vw, 72px) 56px">
     <div style="border-top: 2px solid var(--color-divider); padding-top: 20px; display: flex; gap: 12px 28px; flex-wrap: wrap; justify-content: space-between">
-      <p style="font-size: 13px; line-height: 22px; color: color-mix(in srgb, var(--color-text) 65%, transparent); margin: 0">
+      <p style="font-size: 13px; line-height: 22px; color: var(--color-muted); margin: 0">
         Nephron.at — Estimated 2025. Privates Lernprojekt, Semmelweis Budapest.
       </p>
       <p style="font-size: 13px; line-height: 22px; margin: 0"><a href="#disclaimer">Disclaimer</a></p>
@@ -452,16 +417,15 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
    ═══════════════════════════════════════════════════════════════════════════ */
 (function () {
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // Tinte und Akzent kommen aus dem Theme — sonst zeichnet der Canvas im
-  // Dunkelmodus weiter mit schwarzer Tinte auf schwarzem Grund.
+  // Feste Palette: Tinte, Lime als Akzent, Cyan fuer die physiologischen
+  // Marker (offene Kanaele, Schwellenpotential, Filtration).
   var accent, INK, ACC, ACCT;
   function readPalette() {
     var cs = getComputedStyle(document.documentElement);
-    accent = cs.getPropertyValue('--color-accent').trim() || '#ec3013';
-    var dark = isDarkNow();
-    INK = dark ? '248,244,244' : '32,30,29';
-    ACC = dark ? '255,86,60' : '236,48,19';
-    ACCT = dark ? '255,151,131' : '174,24,0';
+    accent = cs.getPropertyValue('--color-accent').trim() || '#C7F36B';
+    INK = '242,244,234';
+    ACC = '199,243,107';
+    ACCT = '84,214,232';
   }
   readPalette();
   window.orakelRepaint = function () { readPalette(); dims = {}; paint(true); };
@@ -842,47 +806,6 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
 
   paint(true);
   if (!reduced) { last = performance.now(); raf = requestAnimationFrame(loop); }
-})();
-
-/* ── Hell / Dunkel ────────────────────────────────────────────────────────
-   Ein Attribut am <html>. Ohne ausdrueckliche Wahl folgt die Seite dem
-   System; der Knopf setzt sie fest und merkt sich das. */
-var THEME_KEY = 'nephron_theme';
-function isDarkNow() {
-  var t = document.documentElement.getAttribute('data-theme');
-  if (t === 'dark') return true;
-  if (t === 'light') return false;
-  return window.matchMedia('(prefers-color-scheme: dark)').matches;
-}
-function applyLandingTheme(choice) {
-  var root = document.documentElement;
-  if (choice === 'dark' || choice === 'light') root.setAttribute('data-theme', choice);
-  else root.removeAttribute('data-theme');
-  var txt = isDarkNow() ? 'Hell' : 'Dunkel';
-  ['themeLabel', 'themeLabelMobile'].forEach(function (id) {
-    var el = document.getElementById(id);
-    if (el) el.textContent = txt;
-  });
-  if (window.orakelRepaint) window.orakelRepaint();
-}
-function orakelToggleTheme() {
-  var next = isDarkNow() ? 'light' : 'dark';
-  try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
-  applyLandingTheme(next);
-}
-(function () {
-  var saved = null;
-  try { saved = localStorage.getItem(THEME_KEY); } catch (e) {}
-  applyLandingTheme(saved === 'dark' || saved === 'light' ? saved : null);
-  // Ohne eigene Wahl dem System folgen, auch wenn es sich spaeter aendert
-  var mq = window.matchMedia('(prefers-color-scheme: dark)');
-  var onChange = function () {
-    var s = null;
-    try { s = localStorage.getItem(THEME_KEY); } catch (e) {}
-    if (s !== 'dark' && s !== 'light') applyLandingTheme(null);
-  };
-  if (mq.addEventListener) mq.addEventListener('change', onChange);
-  else if (mq.addListener) mq.addListener(onChange);
 })();
 
 /* Bad Bunny — Original ⇄ Übersetzung */
