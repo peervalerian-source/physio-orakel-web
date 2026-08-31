@@ -195,6 +195,45 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
   }
   html[data-story] #system .sys-text { order: 3; margin-top: 26px; }
   html[data-story] #system.is-live .sys-fig { will-change: transform; }
+
+  /* ── Sektion 4: sechs Stimmen als Wischbahn ───────────────────────────
+     Native Touch-Physik statt nachgebauter: scroll-snap plus overflow-x.
+     display:contents loest das Vierer-Grid auf, damit alle sechs Figuren
+     Geschwister in derselben Bahn werden. */
+  html[data-story] #rueckkopplung .fb-track {
+    margin-top: clamp(30px, 4vw, 44px);
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  html[data-story] #rueckkopplung .fb-track::-webkit-scrollbar { display: none; }
+  /* !important, weil das Grid inline gesetzt ist */
+  html[data-story] #rueckkopplung .fb-track > div { display: contents !important; }
+  html[data-story] #rueckkopplung .fb-track > figure,
+  html[data-story] #rueckkopplung .fb-track > div > figure {
+    flex: 0 0 100%;
+    /* sonst treibt der Mindestinhalt der Bildkarten die Karte breiter */
+    min-width: 0;
+    scroll-snap-align: start;
+    padding-bottom: 24px;
+  }
+  /* Karten in ihrer natuerlichen Hoehe: gestreckt klaffte in der kurzen
+     Karte ein Loch, weil die Bildunterschrift auf Desktop nach unten
+     gedrueckt wird. Die feste Bahnhoehe haelt den Rahmen trotzdem ruhig. */
+  html[data-story] #rueckkopplung .fb-track { align-items: start; }
+  html[data-story] #rueckkopplung .fb-track figcaption { margin-top: 0 !important; }
+  html[data-story] #rueckkopplung .fb-dots {
+    display: flex; gap: 8px; margin-top: 4px;
+  }
+  html[data-story] #rueckkopplung .fb-dots span {
+    width: 8px; height: 8px; flex: none;
+    background: color-mix(in srgb, var(--color-muted) 60%, transparent);
+  }
+  html[data-story] #rueckkopplung .fb-dots span.on { background: var(--color-accent); }
 }
 
 @media (max-width: 620px) {
@@ -360,6 +399,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(44px, 6vw, 80px) clamp(20px, 5vw, 72px)">
     <h2 style="font-size: clamp(26px, 3.2vw, 38px); line-height: 1.06; letter-spacing: -0.02em; margin: 0 0 12px">Positive Rückkopplung</h2>
     <p style="font-size: 17px; line-height: 29px; margin: 0; max-width: 52ch; color: color-mix(in srgb, var(--color-text) 82%, transparent)">Der einzige Circulus vitiosus, den ich hier haben will.</p>
+    <div class="fb-track">
     <div style="margin-top: clamp(30px, 4vw, 44px); display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 0 clamp(24px, 4vw, 56px)">
 
       <figure style="margin: 0; border-top: 2px solid var(--color-divider); padding: 20px 0 28px; display: flex; flex-direction: column; gap: 20px">
@@ -424,6 +464,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
         </figcaption>
       </div>
     </figure>
+    </div>
    </div>
   </section>
 
@@ -1028,11 +1069,95 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
   if (window.storyOn) onScroll();
 })();
 
+/* ══════════════════════════════════════════════════════════════════════════
+   Mobile-Scroll-Story · Sektion 4: die Stimmen als Wischbahn
+
+   Gewischt wird nativ; hier entstehen nur die Punkte darunter und eine feste
+   Bahnhoehe. Die braucht es, weil „Uebersetzen" bei Bad Bunny die laengere
+   Zeile bringt — ohne feste Hoehe wuechse die Bahn beim Umschalten und
+   schoebe alles darunter nach unten.
+   ══════════════════════════════════════════════════════════════════════════ */
+(function () {
+  var section = document.getElementById('rueckkopplung');
+  var track = section && section.querySelector('.fb-track');
+  if (!track) return;
+
+  var cards = [].slice.call(track.querySelectorAll('figure'));
+  var dots = null, queued = false, built = false;
+
+  function measure() {
+    // Beide Fassungen des Bad-Bunny-Zitats messen, die hoehere gewinnt.
+    var quote = document.getElementById('bbQuote');
+    var high = track.getBoundingClientRect().height;
+    if (quote) {
+      var keep = quote.textContent;
+      var other = window.orakelBbOther && window.orakelBbOther();
+      if (other) {
+        quote.textContent = other;
+        high = Math.max(high, track.getBoundingClientRect().height);
+        quote.textContent = keep;
+      }
+    }
+    track.style.minHeight = Math.ceil(high) + 'px';
+  }
+
+  function syncDots() {
+    queued = false;
+    if (!dots) return;
+    var i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth + 20));
+    for (var d = 0; d < dots.children.length; d++) {
+      dots.children[d].classList.toggle('on', d === i);
+    }
+  }
+
+  function onTrackScroll() {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(syncDots);
+  }
+
+  function build() {
+    if (built) return;
+    built = true;
+    track.setAttribute('tabindex', '0');
+    track.setAttribute('aria-roledescription', 'carousel');
+    dots = document.createElement('div');
+    dots.className = 'fb-dots';
+    dots.setAttribute('aria-hidden', 'true');
+    for (var i = 0; i < cards.length; i++) dots.appendChild(document.createElement('span'));
+    track.parentNode.insertBefore(dots, track.nextSibling);
+    track.addEventListener('scroll', onTrackScroll, { passive: true });
+    measure();
+    syncDots();
+    // Nochmal, sobald Schriften geladen sind und das Bad-Bunny-Skript seine
+    // zweite Fassung bereitstellt — beides steht beim ersten Messen noch nicht.
+    var remeasure = function () { track.style.minHeight = ''; measure(); };
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(remeasure);
+    window.addEventListener('load', remeasure, { once: true });
+  }
+
+  function tear() {
+    if (!built) return;
+    built = false;
+    track.removeAttribute('tabindex');
+    track.removeAttribute('aria-roledescription');
+    track.style.minHeight = '';
+    track.removeEventListener('scroll', onTrackScroll);
+    if (dots && dots.parentNode) dots.parentNode.removeChild(dots);
+    dots = null;
+  }
+
+  window.addEventListener('storychange', function (e) { e.detail ? build() : tear(); });
+  window.addEventListener('resize', function () { if (built) { track.style.minHeight = ''; measure(); } }, { passive: true });
+  if (window.storyOn) build();
+})();
+
 /* Bad Bunny — Original ⇄ Übersetzung */
 (function () {
   var de = false;
   var ES = '„Antes del Physio-Orakel: cero aura. Después: aura ilimitada. Mi potencial de membrana nunca estuvo tan estable.“';
   var DE = '„Vor dem Physio-Orakel: null Aura. Danach: unbegrenzte Aura. Mein Membranpotential war nie stabiler.“';
+  window.orakelBbOther = function () { return de ? ES : DE; };
   window.orakelToggleBb = function () {
     de = !de;
     document.getElementById('bbQuote').textContent = de ? DE : ES;
