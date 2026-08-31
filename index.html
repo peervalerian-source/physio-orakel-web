@@ -157,6 +157,45 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
   .nav a.btn-primary { font-size: 13px; }
 }
 </style>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════════════
+   Gate der Mobile-Scroll-Story.
+
+   Alles, was danach kommt — CSS wie Skript — haengt an einem einzigen
+   Attribut am <html>. Faellt es weg (Desktop, reduzierte Bewegung, kein
+   JavaScript), rendert die Seite exakt wie bisher. Laeuft im <head>, damit
+   nie ein Zwischenzustand sichtbar wird.
+
+   Die Grenze ist 700px, nicht 768px: bei 700px schaltet das bestehende
+   Layout um, und ein zweiter Wert daneben wuerde ein Fenster erzeugen, in
+   dem Story-Regeln auf Desktop-Layout treffen.
+   ══════════════════════════════════════════════════════════════════════════ */
+(function () {
+  var onMobile = window.matchMedia('(max-width: 700px)');
+  var wantsCalm = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function apply() {
+    var on = onMobile.matches && !wantsCalm.matches;
+    if (on) document.documentElement.setAttribute('data-story', 'on');
+    else document.documentElement.removeAttribute('data-story');
+    window.storyOn = on;
+    window.dispatchEvent(new CustomEvent('storychange', { detail: on }));
+  }
+  [onMobile, wantsCalm].forEach(function (mq) {
+    if (mq.addEventListener) mq.addEventListener('change', apply);
+    else if (mq.addListener) mq.addListener(apply);
+  });
+  // Zusaetzlich am resize: das change-Ereignis der Media Query bleibt beim
+  // Drehen und in Geraete-Emulationen gelegentlich aus.
+  var pending = false;
+  window.addEventListener('resize', function () {
+    if (pending) return;
+    pending = true;
+    requestAnimationFrame(function () { pending = false; apply(); });
+  }, { passive: true });
+  apply();
+})();
+</script>
 </head>
 <body>
 
