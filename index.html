@@ -92,6 +92,13 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
 
 /* der CTA atmet — 3,6s, 3,5% Amplitude, nur transform */
 @keyframes ctaBreathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.035); } }
+/* Die Schlussknoepfe huepfen nacheinander an, damit klar ist: hier klicken */
+@keyframes ctaHop {
+  0%, 72%, 100% { transform: translate3d(0, 0, 0); }
+  80% { transform: translate3d(0, -7px, 0); }
+  88% { transform: translate3d(0, 0, 0); }
+  93% { transform: translate3d(0, -3px, 0); }
+}
 .cta-pulse { animation: ctaBreathe 3.6s ease-in-out infinite; will-change: transform; }
 @media (prefers-reduced-motion: reduce) { .cta-pulse { animation: none; } }
 
@@ -172,8 +179,10 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
 
   html[data-story] .m-only { display: block; }
 
-  html[data-story] .reel { position: relative; height: 168svh; }
-  html[data-story] .reel-t { height: 142svh; }
+  html[data-story] .reel { position: relative; height: 158svh; }
+  html[data-story] .reel-t { height: 132svh; }
+  /* Das Aktionspotential braucht Zeit zum Wirken */
+  html[data-story] #reelAP { height: 215svh; }
   /* Das erste Bild soll den Rest des Fensters unter der Kopfzeile fuellen,
      nicht eine volle Fensterhoehe darunter beginnen. */
   html[data-story] #reelH1 > .reel-in {
@@ -189,12 +198,32 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     height: 100svh;
     display: grid;
     align-content: center;
-    padding: calc(var(--nav-h, 58px) + 24px) 0 44px;
+    justify-items: center;
+    padding: calc(var(--nav-h, 58px) + 24px) 18px 44px;
     /* eigener Stapelkontext, damit der Schein hinter dem Text bleibt und
        nicht hinter den Abschnittshintergrund rutscht */
     isolation: isolate;
   }
   html[data-story] .reel.is-live > .reel-in { will-change: transform, opacity; }
+
+  html[data-story] .reel-t > .reel-in { text-align: center; }
+  html[data-story] .reel-t h1,
+  html[data-story] .reel-t h2,
+  html[data-story] .reel-t p { margin-left: auto; margin-right: auto; max-width: 22ch; }
+  html[data-story] .reel-t #heroTitle { margin-left: auto; max-width: 16ch; }
+  html[data-story] .reel-t .sys-text p,
+  html[data-story] #gratis .reel-t p { max-width: 26ch; }
+  /* Schnipsel: erscheinen nacheinander, gesteuert vom Fortschritt */
+  html[data-story] .frag { opacity: 0; }
+  html[data-story] .word { opacity: 0; }
+
+  /* Im Film traegt die Kopfzeile den Knopf — hier braucht es ihn nicht */
+  html[data-story] .hero-cta { display: none; }
+
+  /* Die Schlussknoepfe huepfen abwechselnd */
+  html[data-story] .los-cta .btn { animation: ctaHop 2.4s ease-in-out infinite; }
+  html[data-story] .los-cta .btn:nth-child(2) { animation-delay: 0.8s; }
+  html[data-story] .los-cta .btn:nth-child(3) { animation-delay: 1.6s; }
 
   /* Der Schein: eine Scheibe hinter der Schrift, die mit ihr waechst */
   html[data-story] .reel-t > .reel-in::before {
@@ -248,23 +277,38 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
   /* ── Der Stapel: oberste Karte laesst sich wegwischen ────────────────── */
   html[data-story] #reelCards .fb-track {
     position: relative;
-    height: 62svh;
-    margin-top: 0;
+    height: var(--stack-h, 46svh);
+    width: min(100%, 340px);
+    margin: 0 auto;
   }
   html[data-story] #reelCards .fb-track > div { display: contents !important; }
   html[data-story] #reelCards .fb-track figure {
     position: absolute; left: 0; right: 0; top: 0; bottom: 0;
     margin: 0;
     border: 2px solid var(--color-divider);
-    background: var(--color-bg);
-    padding: 22px 20px;
-    overflow-y: auto;
-    overscroll-behavior: contain;
+    background: var(--color-neutral-100);
+    padding: 24px 22px;
+    /* Die Bildkarten stehen nebeneinander — im Stapel gehoert das Bild
+       ueber das Zitat, sonst bleibt fuer beides zu wenig Breite. */
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: space-between;
+    gap: 16px !important;
+    overflow: hidden;
+    /* senkrecht bleibt Scrollen, waagrecht gehoert uns */
     touch-action: pan-y;
-    gap: 16px;
   }
-  html[data-story] #reelCards .fb-track figcaption { margin-top: auto !important; }
-  html[data-story] #reelCards .fb-track img { width: 96px; height: 122px; }
+  html[data-story] #reelCards .fb-track blockquote {
+    font-size: 17px !important; line-height: 27px !important;
+    max-width: none !important;
+  }
+  html[data-story] #reelCards .fb-track figcaption { margin-top: 0 !important; }
+  html[data-story] #reelCards .fb-track img { width: 76px; height: 96px; }
+  /* !important, weil die Bildkarten ihre Flex-Werte inline tragen — sonst
+     erzwingt flex-basis:280px im Spaltenfluss 280px Hoehe. */
+  html[data-story] #reelCards .fb-track figure > * { flex: none !important; }
+  html[data-story] #reelCards .fb-track figure > div { width: 100%; }
   html[data-story] .fb-dots { display: flex; gap: 8px; margin-top: 14px; justify-content: center; }
   html[data-story] .fb-dots span {
     width: 8px; height: 8px; flex: none;
@@ -373,7 +417,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
       Das Physio-Orakel ist dafür gebaut, dass du dabei weniger Aura verlierst. Gratis, kein Karl-Ess-Move.
     </p>
     </div></div>
-    <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 24px">
+    <div class="hero-cta" style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 24px">
       <a href="/app/" class="btn btn-primary cta-pulse" style="transform-origin: left center">Physio-Orakel öffnen</a>
       <a href="#system" class="btn btn-ghost">Wie es funktioniert</a>
     </div>
@@ -541,7 +585,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
       <p style="font-size: 18px; line-height: 30px; max-width: 52ch; margin: 26px 0 0">
         Alles-oder-nichts gilt für AP, nicht für Semester.
       </p>
-      <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px">
+      <div class="los-cta" style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px">
         <a href="/app/" class="btn btn-ghost" style="color: var(--color-bg); border-color: var(--color-bg)">Orakel öffnen</a>
         <a href="https://paypal.me/PeerHechenberger" target="_blank" rel="noopener" class="btn btn-ghost" style="color: var(--color-bg); border-color: var(--color-bg)">Projekt unterstützen</a>
         <a href="#ueber" class="btn btn-ghost" style="color: var(--color-bg); border-color: var(--color-bg)">Über mich</a>
@@ -843,18 +887,20 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     // erst kleiner setzen, und wenn das nicht reicht, untereinander.
     var lt = 'ALLES, WAS DIE UNI DIR VORSETZT';
     var rt = 'WAS FÜR DIE PRÜFUNG RELEVANT IST';
-    var size = 10.5;
+    var size = window.storyOn ? 15 : 10.5;
     var widths = function () {
       ctx.font = "600 " + size + "px Archivo, system-ui, sans-serif";
       return ctx.measureText(lt).width + ctx.measureText(rt).width;
     };
-    if (widths() + 36 > w) { size = 9; }
+    if (widths() + 36 > w) { size = window.storyOn ? 12.5 : 9; }
     var stacked = widths() + 36 > w;
     ctx.font = "600 " + size + "px Archivo, system-ui, sans-serif";
     ctx.fillStyle = 'rgba('+INK+',0.72)';
     ctx.fillText(lt, 12, h - 18);
     ctx.fillStyle = 'rgba('+ACCT+',0.92)';
-    ctx.fillText(rt, w - ctx.measureText(rt).width - 12, stacked ? h - 32 : h - 18);
+    // Uebereinander muessen sie weiter auseinander, sonst beruehren sich die
+    // Zeilen bei der groesseren Schrift im Film.
+    ctx.fillText(rt, w - ctx.measureText(rt).width - 12, stacked ? h - (size * 2 + 12) : h - 18);
     ctx.fillStyle = 'rgba('+INK+',0.72)';
     ctx.fillText('BARRIERE', bx + 10, 18);
   }
@@ -1036,6 +1082,81 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
   var buttons = { 8: document.getElementById('stim8'), 20: document.getElementById('stim20') };
 
   function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+  function esc(t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+  /* Ein Textkapitel zerfaellt in Schritte: kurze Zeilen erscheinen als
+     Schnipsel nacheinander, lange Absaetze schreiben sich Wort fuer Wort.
+     Die Schritte teilen sich den Fortschritt nach Gewicht. */
+  function prepare(reel) {
+    if (reel._steps) return;
+    var inner = reel.firstElementChild;
+    var raw = [];
+    [].slice.call(inner.children).forEach(function (el) {
+      if (el.tagName === 'H1' && el.children.length > 1) {
+        [].slice.call(el.children).forEach(function (line) { raw.push({ el: line, type: 'frag' }); });
+        return;
+      }
+      var text = (el.textContent || '').trim();
+      if (el.tagName === 'P' && !el.children.length && text.length > 110) {
+        el._plain = text;
+        el.innerHTML = text.split(/(\s+)/).map(function (t) {
+          return /^\s*$/.test(t) ? t : '<span class="word">' + esc(t) + '</span>';
+        }).join('');
+        raw.push({ el: el, type: 'type', words: [].slice.call(el.querySelectorAll('.word')) });
+        return;
+      }
+      raw.push({ el: el, type: 'frag' });
+    });
+
+    var total = 0;
+    raw.forEach(function (st) { total += st.type === 'type' ? 2.4 : 1; });
+    var span = 0.70, at = 0.03, acc = 0;
+    raw.forEach(function (st, i) {
+      var wgt = st.type === 'type' ? 2.4 : 1;
+      st.t0 = at + span * (acc / total);
+      acc += wgt;
+      st.t1 = at + span * (acc / total);
+      // Das allererste Bild steht sofort — es traegt das LCP.
+      if (reel === first && i === 0) { st.t0 = -1; st.t1 = -0.5; }
+      if (st.type === 'frag') st.el.classList.add('frag');
+    });
+    reel._steps = raw;
+  }
+
+  function unprepare(reel) {
+    if (!reel._steps) return;
+    reel._steps.forEach(function (st) {
+      st.el.classList.remove('frag');
+      st.el.style.opacity = '';
+      st.el.style.transform = '';
+      if (st.type === 'type' && st.el._plain) st.el.textContent = st.el._plain;
+    });
+    reel._steps = null;
+  }
+
+  function paintSteps(reel, p) {
+    var steps = reel._steps;
+    if (!steps) return;
+    for (var i = 0; i < steps.length; i++) {
+      var st = steps[i];
+      var a = clamp((p - st.t0) / Math.max(0.001, st.t1 - st.t0));
+      if (st.type === 'frag') {
+        if (st._a === a) continue;
+        st._a = a;
+        st.el.style.opacity = a.toFixed(3);
+        st.el.style.transform = 'translate3d(0,' + ((1 - a) * 15).toFixed(1) + 'px,0)';
+      } else {
+        var shown = a * st.words.length;
+        for (var w = 0; w < st.words.length; w++) {
+          var o = clamp(shown - w);
+          var el = st.words[w];
+          if (el._o === o) continue;
+          el._o = o;
+          el.style.opacity = o.toFixed(3);
+        }
+      }
+    }
+  }
   function easeOut(v) { return 1 - Math.pow(1 - v, 2); }
 
   function syncNav() {
@@ -1106,8 +1227,15 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
       var r = reel.getBoundingClientRect();
       if (r.bottom < -vh || r.top > vh * 2) continue;   // weit weg: nichts tun
       var span = r.height - vh;
-      var p = span > 0 ? clamp(-r.top / span) : (r.top < 0 ? 1 : 0);
+      // Ist das Kapitel hoeher als das Fenster, zaehlt der Klebeweg. Ist es
+      // kuerzer — kurzes Fenster, Querformat —, zaehlt die Fahrt durchs Bild;
+      // sonst spraenge der Fortschritt zwischen 0 und 1 und das Kapitel
+      // bliebe leer.
+      var p = span > 8
+        ? clamp(-r.top / span)
+        : clamp((vh - r.top) / (vh + r.height));
       paintReel(reel, p);
+      if (reel.classList.contains('reel-t')) paintSteps(reel, p);
 
       if (reel === apReel) {
         // Reize werden ausgeloest, nicht gescrubbt: ein Aktionspotential
@@ -1133,6 +1261,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
   }
 
   function clear() {
+    reels.forEach(unprepare);
     reels.forEach(function (reel) {
       var inner = reel.firstElementChild;
       if (!inner) return;
@@ -1169,7 +1298,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', function () { syncNav(); syncFirst(); onScroll(); }, { passive: true });
   window.addEventListener('storychange', function (e) {
-    if (e.detail) { syncNav(); orderPage(true); syncFirst(); onScroll(); } else { clear(); }
+    if (e.detail) { prepAll(); syncNav(); orderPage(true); syncFirst(); onScroll(); } else { clear(); }
   });
 
   if ('IntersectionObserver' in window) {
@@ -1185,8 +1314,12 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     document.documentElement.style.setProperty('--reel1-off', off + 'px');
   }
 
+  function prepAll() {
+    reels.forEach(function (r) { if (r.classList.contains('reel-t')) prepare(r); });
+  }
+
   syncNav();
-  if (window.storyOn) { orderPage(true); syncFirst(); onScroll(); }
+  if (window.storyOn) { prepAll(); orderPage(true); syncFirst(); onScroll(); }
 })();
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -1216,6 +1349,23 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
 
   var dots = null, built = false, swiped = 0;
   var drag = null;
+
+  /* Die Bahn bekommt die Hoehe der hoechsten Karte statt eines festen Werts —
+     sonst steht wenig Text in einem riesigen Kasten. */
+  function measure() {
+    var h = 0;
+    stack.forEach(function (fig) {
+      var keep = fig.getAttribute('style') || '';
+      fig.style.position = 'relative';
+      fig.style.opacity = '1';
+      fig.style.transform = 'none';
+      fig.style.height = 'auto';
+      h = Math.max(h, fig.getBoundingClientRect().height);
+      fig.setAttribute('style', keep);
+    });
+    var cap = Math.round((window.innerHeight || 800) * 0.60);
+    track.style.setProperty('--stack-h', Math.min(cap, Math.ceil(h) + 6) + 'px');
+  }
 
   function render(anim) {
     stack.forEach(function (fig, i) {
@@ -1259,6 +1409,8 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
       if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
       drag.axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
       if (drag.axis === 'y') { drag = null; render(true); return; }
+      // Ab hier gehoert die Geste uns, der Browser soll nicht mitscrollen.
+      stack[0].style.touchAction = 'none';
     }
     drag.dx = dx;
     stack[0].style.transform = 'translate3d(' + dx + 'px,' + (Math.abs(dx) * -0.06) + 'px,0) rotate(' + (dx / 22).toFixed(2) + 'deg)';
@@ -1268,7 +1420,8 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     if (!drag || e.pointerId !== drag.id) return;
     var dx = drag.dx;
     drag = null;
-    if (Math.abs(dx) > 88) fly(dx > 0 ? 1 : -1);
+    stack[0].style.touchAction = '';
+    if (Math.abs(dx) > 78) fly(dx > 0 ? 1 : -1);
     else render(true);
   }
 
@@ -1286,6 +1439,11 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     window.addEventListener('pointerup', onUp);
     window.addEventListener('pointercancel', onUp);
     render(false);
+    measure();
+    var again = function () { measure(); render(false); };
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(again);
+    window.addEventListener('load', again, { once: true });
+    window.addEventListener('resize', function () { if (built) again(); }, { passive: true });
   }
 
   function tear() {
@@ -1298,6 +1456,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     window.removeEventListener('pointercancel', onUp);
     if (dots && dots.parentNode) dots.parentNode.removeChild(dots);
     dots = null;
+    track.style.removeProperty('--stack-h');
     all.forEach(function (f) {
       f.style.zIndex = f.style.transition = f.style.transform = '';
       f.style.opacity = f.style.pointerEvents = '';
