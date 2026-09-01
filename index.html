@@ -152,118 +152,132 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
   .btn-mini { font-size: 12px; padding: 6px 10px; }
   .btn-ghost.btn-mini { padding: 5px 9px; }
 }
-/* ── Mobile-Scroll-Story ───────────────────────────────────────────────── */
-/* Jede Regel haengt an html[data-story]. Ohne JavaScript, auf Desktop und bei
-   reduzierter Bewegung greift hier nichts — die Buehne ist dann ein Div ohne
-   Eigenschaften und die Sektion steht, wo sie immer stand. */
-@media (max-width: 700px) {
-  /* Anlauf, damit sticky ueberhaupt Weg hat. svh statt vh: sonst springt das
-     Layout auf iOS, sobald die Browserleiste ein- oder ausfaehrt. */
-  html[data-story] .ap-stage { height: 230vh; height: 230svh; }
-  html[data-story] .ap-stage > section {
-    position: sticky;
-    top: calc(var(--nav-h, 58px) + 6px);
-  }
-  /* nur waehrend die Buehne laeuft — dauerhaft kostet auf aelteren Geraeten
-     Speicher */
-  html[data-story] .ap-stage.is-live > section { will-change: transform; }
-  html[data-story] .ap-stage.is-live #heroTitle { will-change: transform, opacity; }
-  /* Der gerade wirkende Reiz zeigt sich am zugehoerigen Knopf. Kein neuer
-     Text — die beiden Werte stehen schon da. */
-  html[data-story] .stim-on { border-color: var(--color-accent); color: var(--color-accent); }
+/* ══════════════════════════════════════════════════════════════════════════
+   Mobiler Film — Kapitel statt Textseite
 
-  /* ── Sektion 2: die Filtration steht, der Text laeuft darunter durch ──
-     display:contents loest den Zweispalter auf, damit Ueberschrift, Grafik
-     und Fliesstext Geschwister werden und sich per order sortieren lassen.
-     Die Reihenfolge im Markup bleibt unangetastet. */
-  /* Anlauf am Abschnitt selbst, nicht am Innencontainer: dessen padding
-     steht inline und schluege jede Regel von hier. */
-  html[data-story] #system { padding-bottom: 38vh; padding-bottom: 38svh; }
+   Jedes Kapitel ist ein .reel: ein hoher Anlauf, in dem ein .reel-in klebt
+   und den Bildschirm fuellt. Das Skript rechnet je Kapitel einen Fortschritt
+   aus und schreibt ausschliesslich transform, opacity und --glow.
+
+   Alles haengt an html[data-story]. Ohne JavaScript, auf Desktop und bei
+   reduzierter Bewegung ist ein .reel ein Div ohne Eigenschaften und die
+   Seite steht so da wie immer.
+   ══════════════════════════════════════════════════════════════════════════ */
+.m-only { display: none; }
+
+@media (max-width: 700px) {
+  /* Die Kopfzeile liegt ueber allen Kapiteln — der Knopf muss immer da sein */
+  html[data-story] .nav { z-index: 60; }
+  html[data-story] .nav-mobile { position: relative; z-index: 55; }
+
+  html[data-story] .m-only { display: block; }
+
+  html[data-story] .reel { position: relative; height: 168svh; }
+  html[data-story] .reel-t { height: 142svh; }
+  /* Das erste Bild soll den Rest des Fensters unter der Kopfzeile fuellen,
+     nicht eine volle Fensterhoehe darunter beginnen. */
+  html[data-story] #reelH1 > .reel-in {
+    height: calc(100svh - var(--reel1-off, 110px));
+    padding-top: 0;
+  }
+  html[data-story] .reel > .reel-in {
+    position: sticky;
+    top: 0;
+    /* Hoehe statt Mindesthoehe: box-sizing ist border-box, die Polsterung
+       zaehlt also mit. Sonst wird das klebende Kapitel hoeher als das
+       Fenster und rutscht durch, statt zu stehen. */
+    height: 100svh;
+    display: grid;
+    align-content: center;
+    padding: calc(var(--nav-h, 58px) + 24px) 0 44px;
+    /* eigener Stapelkontext, damit der Schein hinter dem Text bleibt und
+       nicht hinter den Abschnittshintergrund rutscht */
+    isolation: isolate;
+  }
+  html[data-story] .reel.is-live > .reel-in { will-change: transform, opacity; }
+
+  /* Der Schein: eine Scheibe hinter der Schrift, die mit ihr waechst */
+  html[data-story] .reel-t > .reel-in::before {
+    content: '';
+    position: absolute;
+    left: -40%; top: 50%;
+    width: 180%; aspect-ratio: 1;
+    transform: translate3d(0, -50%, 0);
+    background: radial-gradient(circle,
+      color-mix(in srgb, var(--color-accent) 30%, transparent) 0%,
+      color-mix(in srgb, var(--color-accent) 8%, transparent) 38%,
+      transparent 64%);
+    opacity: var(--glow, 0);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  /* Schriftgrade fuer den Bildschirm, nicht fuer die Spalte */
+  html[data-story] #reelH1 h1 { font-size: clamp(40px, 12.5vw, 58px); }
+  html[data-story] #reelSub p {
+    font-size: clamp(23px, 6.6vw, 31px); line-height: 1.34; margin: 0;
+    font-family: var(--font-heading); font-weight: 800; letter-spacing: -0.02em;
+  }
+  html[data-story] .sys-head h2,
+  html[data-story] .fb-head h2,
+  html[data-story] #gratis .reel-t h2 { font-size: clamp(30px, 8.6vw, 42px); }
+  html[data-story] .sys-text p,
+  html[data-story] #gratis .reel-t p { font-size: 18.5px; line-height: 31px; }
+  html[data-story] #fbKicker {
+    font-family: var(--font-heading); font-weight: 800;
+    font-size: clamp(30px, 8.6vw, 42px); line-height: 1.06;
+    letter-spacing: -0.02em; margin: 0 0 18px;
+  }
+
+  /* Die Grafiken fuellen den Bildschirm */
+  html[data-story] .hero-canvas { height: 58svh; }
+  html[data-story] #filterCanvas { height: 54svh !important; }
+  html[data-story] #ecgCanvas { height: 26svh !important; }
+
+  /* #system: Kopf, Grafik, Text — in dieser Reihenfolge */
   html[data-story] #system .sys-wrap { display: flex; flex-direction: column; }
   html[data-story] #system .split { display: contents; }
   html[data-story] #system .sys-head { order: 1; }
-  html[data-story] #system .sys-fig {
-    order: 2;
-    position: sticky;
-    top: calc(var(--nav-h, 58px) + 6px);
-    /* Undurchsichtig, sonst scheint der Text durch die Grafik durch. Die
-       2px-Regel darunter macht aus der Schnittkante eine Kante — ohne sie
-       verschwindet der Fliesstext mitten im Buchstaben. */
-    background: var(--color-neutral-100);
-    padding-bottom: 16px;
-    border-bottom: 2px solid var(--color-divider);
-  }
-  html[data-story] #system .sys-text { order: 3; margin-top: 26px; }
-  html[data-story] #system.is-live .sys-fig { will-change: transform; }
+  html[data-story] #system .sys-fig { order: 2; }
+  html[data-story] #system .sys-text { order: 3; }
+  html[data-story] #system .sys-fig { margin-top: 0 !important; }
 
-  /* ── Sektion 4: sechs Stimmen als Wischbahn ───────────────────────────
-     Native Touch-Physik statt nachgebauter: scroll-snap plus overflow-x.
-     display:contents loest das Vierer-Grid auf, damit alle sechs Figuren
-     Geschwister in derselben Bahn werden. */
-  html[data-story] #rueckkopplung .fb-track {
-    margin-top: clamp(30px, 4vw, 44px);
-    display: flex;
-    gap: 20px;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
+  /* Der gerade wirkende Reiz zeigt sich am zugehoerigen Knopf */
+  html[data-story] .stim-on { border-color: var(--color-accent); color: var(--color-accent); }
+
+  /* ── Der Stapel: oberste Karte laesst sich wegwischen ────────────────── */
+  html[data-story] #reelCards .fb-track {
+    position: relative;
+    height: 62svh;
+    margin-top: 0;
   }
-  html[data-story] #rueckkopplung .fb-track::-webkit-scrollbar { display: none; }
-  /* !important, weil das Grid inline gesetzt ist */
-  html[data-story] #rueckkopplung .fb-track > div { display: contents !important; }
-  html[data-story] #rueckkopplung .fb-track > figure,
-  html[data-story] #rueckkopplung .fb-track > div > figure {
-    flex: 0 0 100%;
-    /* sonst treibt der Mindestinhalt der Bildkarten die Karte breiter */
-    min-width: 0;
-    scroll-snap-align: start;
-    padding-bottom: 24px;
+  html[data-story] #reelCards .fb-track > div { display: contents !important; }
+  html[data-story] #reelCards .fb-track figure {
+    position: absolute; left: 0; right: 0; top: 0; bottom: 0;
+    margin: 0;
+    border: 2px solid var(--color-divider);
+    background: var(--color-bg);
+    padding: 22px 20px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+    gap: 16px;
   }
-  /* Karten in ihrer natuerlichen Hoehe: gestreckt klaffte in der kurzen
-     Karte ein Loch, weil die Bildunterschrift auf Desktop nach unten
-     gedrueckt wird. Die feste Bahnhoehe haelt den Rahmen trotzdem ruhig. */
-  html[data-story] #rueckkopplung .fb-track { align-items: start; }
-  html[data-story] #rueckkopplung .fb-track figcaption { margin-top: 0 !important; }
-  html[data-story] #rueckkopplung .fb-dots {
-    display: flex; gap: 8px; margin-top: 4px;
-  }
-  html[data-story] #rueckkopplung .fb-dots span {
+  html[data-story] #reelCards .fb-track figcaption { margin-top: auto !important; }
+  html[data-story] #reelCards .fb-track img { width: 96px; height: 122px; }
+  html[data-story] .fb-dots { display: flex; gap: 8px; margin-top: 14px; justify-content: center; }
+  html[data-story] .fb-dots span {
     width: 8px; height: 8px; flex: none;
-    background: color-mix(in srgb, var(--color-muted) 60%, transparent);
+    background: color-mix(in srgb, var(--color-muted) 55%, transparent);
   }
-  html[data-story] #rueckkopplung .fb-dots span.on { background: var(--color-accent); }
+  html[data-story] .fb-dots span.on { background: var(--color-accent); }
 
-  /* ── Sektion 5: ein einziger Auftritt fuer die Schlusszeile ───────────
-     Der Ausgangszustand wird per Skript gesetzt, nie im Stylesheet — ohne
-     JavaScript darf die Zeile nie unsichtbar sein. */
-  html[data-story] #losTitle.reveal-init {
-    opacity: 0;
-    transform: translate3d(0, 14px, 0);
-  }
+  /* Die Schlusszeile bekommt einen einzigen Auftritt */
+  html[data-story] #losTitle.reveal-init { opacity: 0; transform: translate3d(0, 14px, 0); }
   html[data-story] #losTitle.reveal-in {
-    opacity: 1;
-    transform: none;
+    opacity: 1; transform: none;
     transition: opacity 420ms ease-out, transform 420ms ease-out;
   }
-
-  /* ── Sektion 3: ein halber Moment, sonst Ruhe ─────────────────────────
-     Der Abschnitt ist der Ruhepunkt zwischen zwei starken Sektionen. Der
-     Zeile wird einmal kurz aufgezogen, mehr nicht. */
-  html[data-story] #gratisKicker.pop {
-    animation: storyPop 400ms ease-out 1;
-    transform-origin: left center;
-  }
-  /* Klemme gegen waagrechtes Ueberlaufen waehrend des Aufziehens. In diesem
-     Abschnitt steht nichts Klebriges, das darunter litte. */
-  html[data-story] #gratis > div { overflow-x: clip; }
-}
-
-@keyframes storyPop {
-  0%   { transform: scale(1); }
-  45%  { transform: scale(1.12); }
-  100% { transform: scale(1); }
 }
 
 @media (max-width: 620px) {
@@ -313,7 +327,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
 </head>
 <body>
 
-<div style="min-height: 100vh; background: var(--color-bg)">
+<div id="page" style="min-height: 100vh; background: var(--color-bg)">
 
   <nav class="nav" style="padding-inline: clamp(20px, 5vw, 72px); align-items: center">
     <span style="margin-right: auto; display: flex; align-items: center; gap: 14px">
@@ -347,20 +361,25 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
   </nav>
 
   <section style="max-width: 1240px; margin: 0 auto; padding: clamp(28px, 5vw, 60px) clamp(20px, 5vw, 72px) 0">
+    <div class="reel reel-t" id="reelH1"><div class="reel-in">
     <h1 id="heroTitle" style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(34px, 5vw, 64px); line-height: 1.04; letter-spacing: -0.03em; margin: 0 0 0 -0.058em; max-width: 24ch">
       <span style="display: block">Das dritte Semester kommt,</span>
       <span style="display: block">und mit ihm die Wochentests.</span>
     </h1>
-    <p style="font-size: 17px; line-height: 28px; max-width: 48ch; margin: 26px 0 0">
+    </div></div>
+
+    <div class="reel reel-t" id="reelSub"><div class="reel-in">
+    <p id="heroSub" style="font-size: 17px; line-height: 28px; max-width: 48ch; margin: 26px 0 0">
       Das Physio-Orakel ist dafür gebaut, dass du dabei weniger Aura verlierst. Gratis, kein Karl-Ess-Move.
     </p>
+    </div></div>
     <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 24px">
       <a href="/app/" class="btn btn-primary cta-pulse" style="transform-origin: left center">Physio-Orakel öffnen</a>
       <a href="#system" class="btn btn-ghost">Wie es funktioniert</a>
     </div>
   </section>
 
-  <div class="ap-stage">
+  <div class="ap-stage reel reel-g" id="reelAP"><div class="reel-in">
   <section aria-label="Aktionspotential" style="max-width: 1240px; margin: 0 auto; padding: clamp(22px, 3.5vw, 40px) clamp(20px, 5vw, 72px) 0">
     <div style="position: relative; border-top: 2px solid var(--color-divider); border-bottom: 2px solid var(--color-divider)">
       <canvas id="heroCanvas" class="hero-canvas"></canvas>
@@ -374,42 +393,42 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
       <button type="button" class="btn btn-ghost btn-mini" id="stim8" onclick="orakelFire(8)">Nur 8 mV</button>
     </div>
   </section>
-  </div>
+  </div></div>
 
   <section id="system" style="background: var(--color-neutral-100); border-top: 2px solid var(--color-divider); border-bottom: 2px solid var(--color-divider); margin-top: clamp(48px, 7vw, 96px); scroll-margin-top: 80px">
    <div class="sys-wrap" style="max-width: 1240px; margin: 0 auto; padding: clamp(44px, 6vw, 80px) clamp(20px, 5vw, 72px)">
     <div class="split split-4-8">
-      <div class="sys-head">
+      <div class="sys-head reel reel-t"><div class="reel-in">
         <h2 style="font-size: clamp(24px, 2.9vw, 34px); line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 10px">Wie das Physio-Orakel funktioniert</h2>
         <p style="font-size: 12px; line-height: 18px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); margin: 0">Nach Themenkatalogpunkt, nicht nach Vorlesung</p>
-      </div>
-      <div class="sys-text">
+      </div></div>
+      <div class="sys-text reel reel-t"><div class="reel-in">
         <p style="font-size: 17px; line-height: 29px; margin: 0 0 22px; max-width: 58ch">
           Ein Jahr lang hab ich neben dem Lernen an einem System gebastelt, das Fragen im Stil der Physio-Wochentests generiert. Nach Themenkatalogpunkt sortiert, nicht nach Vorlesung.
         </p>
         <p style="font-size: 17px; line-height: 29px; margin: 0; max-width: 58ch">
           Trainingsmaterial: ausschließlich das, was sich bei mir eingebrannt hat. Mein Anwalt sagt, Flashbacks sind urheberrechtlich unbedenklich.
         </p>
-      </div>
+      </div></div>
     </div>
 
-    <div class="sys-fig" style="margin-top: clamp(28px, 4vw, 44px)">
+    <div class="sys-fig reel reel-g" style="margin-top: clamp(28px, 4vw, 44px)"><div class="reel-in">
       <canvas id="filterCanvas" aria-hidden="true" style="display: block; width: 100%; height: clamp(240px, 30vw, 360px); border-top: 2px solid var(--color-divider); border-bottom: 2px solid var(--color-divider)"></canvas>
       <p style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted); margin: 12px 0 0">
         Filtration aufs Wesentliche
       </p>
-    </div>
+    </div></div>
    </div>
   </section>
 
   <section id="gratis" style="background: var(--color-accent-100); border-bottom: 2px solid var(--color-divider); scroll-margin-top: 80px">
    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(44px, 6vw, 80px) clamp(20px, 5vw, 72px)">
     <div class="split split-4-8">
-      <div>
+      <div class="reel reel-t"><div class="reel-in">
         <h2 style="font-size: clamp(24px, 2.9vw, 34px); line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 10px">Warum das Projekt gratis ist</h2>
         <p id="gratisKicker" style="font-size: 12px; line-height: 18px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); margin: 0">Schwestern und Brüder der Medizin: Gönnt euch</p>
-      </div>
-      <div>
+      </div></div>
+      <div class="reel reel-t"><div class="reel-in">
         <p style="font-size: 17px; line-height: 29px; margin: 0 0 8px; max-width: 58ch">
           Als ich 2013 eines Morgens aus unruhigen Träumen erwachte, fand ich mich in meinem Bett zu einem ungeheuren Bitcoin-Millionär verwandelt.
         </p>
@@ -420,15 +439,19 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
         <div id="unterstuetzen" style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; scroll-margin-top: 80px">
           <a href="https://paypal.me/PeerHechenberger" target="_blank" rel="noopener" class="btn btn-secondary">Über PayPal unterstützen</a>
         </div>
-      </div>
+      </div></div>
     </div>
    </div>
   </section>
 
   <section id="rueckkopplung" style="background: var(--color-neutral-100); border-bottom: 2px solid var(--color-divider); scroll-margin-top: 80px">
    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(44px, 6vw, 80px) clamp(20px, 5vw, 72px)">
+    <div class="fb-head reel reel-t"><div class="reel-in">
+    <p class="m-only" id="fbKicker">Was andere Semmelweis-Studenten sagen</p>
     <h2 style="font-size: clamp(26px, 3.2vw, 38px); line-height: 1.06; letter-spacing: -0.02em; margin: 0 0 12px">Positive Rückkopplung</h2>
     <p style="font-size: 17px; line-height: 29px; margin: 0; max-width: 52ch; color: color-mix(in srgb, var(--color-text) 82%, transparent)">Der einzige Circulus vitiosus, den ich hier haben will.</p>
+    </div></div>
+    <div class="reel reel-g" id="reelCards"><div class="reel-in">
     <div class="fb-track">
     <div style="margin-top: clamp(30px, 4vw, 44px); display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 0 clamp(24px, 4vw, 56px)">
 
@@ -495,15 +518,18 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
       </div>
     </figure>
     </div>
+    </div></div>
    </div>
   </section>
 
-  <section style="max-width: 1240px; margin: 0 auto; padding: clamp(40px, 6vw, 80px) clamp(20px, 5vw, 72px) 0">
+  <section id="pulsSection" style="max-width: 1240px; margin: 0 auto; padding: clamp(40px, 6vw, 80px) clamp(20px, 5vw, 72px) 0">
+    <div class="reel reel-g" id="reelEkg"><div class="reel-in">
     <div style="display: flex; gap: 16px 32px; flex-wrap: wrap; align-items: baseline; justify-content: space-between; margin-bottom: 14px">
       <p style="font-size: 13px; line-height: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); margin: 0">Auf dass dein Puls nicht im 3. Semester stehen bleibt</p>
       <p id="bpmValue" style="font-family: var(--font-heading); font-weight: 800; font-size: 13px; letter-spacing: 0.06em; color: var(--color-muted); margin: 0; font-feature-settings: 'tnum' 1">124 bpm</p>
     </div>
     <canvas id="ecgCanvas" aria-hidden="true" style="display: block; width: 100%; height: clamp(96px, 11vw, 128px); border-top: 2px solid var(--color-divider); border-bottom: 2px solid var(--color-divider)"></canvas>
+    </div></div>
   </section>
 
   <section id="los" style="background: var(--color-accent-ui); color: var(--color-bg); margin-top: clamp(48px, 7vw, 96px)">
@@ -858,8 +884,11 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     var r = cv.getBoundingClientRect();
     var vh = window.innerHeight || 800;
     var p = Math.max(0, Math.min(1, (vh - r.top) / (vh + r.height)));
+    // Im Film klebt der Canvas, seine Lage im Fenster steht dann still —
+    // der Fortschritt kommt deshalb vom Kapitel.
+    if (window.storyOn && window.orakelPulseP != null) p = window.orakelPulseP;
     // Auf Desktop beruhigt sich der Puls beim Lesen nach unten (124 → 58).
-    // In der Mobil-Story laeuft er umgekehrt auf 124 hoch und bleibt dort.
+    // Im Film laeuft er umgekehrt auf 124 hoch und bleibt dort.
     var from = window.storyOn ? END_BPM : START_BPM;
     var to = window.storyOn ? START_BPM : END_BPM;
     var bpm = from + (to - from) * (1 - Math.pow(1 - p, 1.7));
@@ -983,37 +1012,55 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
 })();
 
 /* ══════════════════════════════════════════════════════════════════════════
-   Mobile-Scroll-Story · Sektion 1: Hero und Membranpotential
+   Mobiler Film — ein Rechner fuer alle Kapitel
 
-   Der Fortschritt der Buehne loest die beiden Reize aus, statt die Kurve zu
-   scrubben. Ein Aktionspotential dauert rund 100 ms; ueber ein Drittel
-   Bildschirmhoehe Scrollweg gezogen waere der Aufstrich kein Aufstrich mehr,
-   sondern eine Rampe. Ausgeloest laeuft er in seiner echten Geschwindigkeit,
-   und der Scroll bestimmt nur, wann.
+   Pro Bild: je Kapitel ein Fortschritt aus seiner Lage im Fenster, daraus
+   transform, opacity und der Schein. Nichts davon loest Layout aus. Die
+   Kapitel, die eine Grafik tragen, geben ihren Fortschritt zusaetzlich an
+   die Zeichenschleife weiter — der Scroll ist dort die Uhr.
    ══════════════════════════════════════════════════════════════════════════ */
 (function () {
-  var stage = document.querySelector('.ap-stage');
-  var title = document.getElementById('heroTitle');
+  var page = document.getElementById('page');
   var nav = document.querySelector('.nav');
-  var buttons = { 8: document.getElementById('stim8'), 20: document.getElementById('stim20') };
-  if (!stage || !title) return;
+  var reels = [].slice.call(document.querySelectorAll('.reel'));
+  if (!page || !reels.length) return;
 
-  var MAX_LIFT = 52;        // Versatz der Ueberschrift in px, bewusst klein
-  var MIN_OPACITY = 0.58;
-  var LIFT_OVER = 280;      // Scrollweg, ueber den der Versatz aufgebaut wird
-  var SUB_AT = 0.30, SUPRA_AT = 0.60, ARM = 0.05;
+  var apReel = document.getElementById('reelAP');
+  var figReel = document.querySelector('.sys-fig');
+  var ekgReel = document.getElementById('reelEkg');
+  var first = reels[0];
 
-  var sysSection = document.getElementById('system');
-  var FILTER_SPAN = 12;     // Sekunden Simulation ueber die ganze Sektion
-  var lastSysP = null;
-
-  var firedSub = false, firedSupra = false;
+  var firedSub = false, firedSupra = false, lastFigP = null;
   var marked = null, markTimer = null;
-  var queued = false;
+  var queued = false, live = false;
+  var buttons = { 8: document.getElementById('stim8'), 20: document.getElementById('stim20') };
+
+  function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+  function easeOut(v) { return 1 - Math.pow(1 - v, 2); }
 
   function syncNav() {
     var h = nav ? Math.round(nav.getBoundingClientRect().height) : 58;
     document.documentElement.style.setProperty('--nav-h', h + 'px');
+  }
+
+  /* Reihenfolge auf dem Telefon: die Stimmen kommen vor „Warum gratis". Als
+     order, nicht im Markup — Desktop soll die Seite unveraendert bekommen. */
+  function orderPage(on) {
+    var kids = [].slice.call(page.children);
+    if (!on) {
+      page.style.display = ''; page.style.flexDirection = '';
+      kids.forEach(function (k) { k.style.order = ''; });
+      return;
+    }
+    page.style.display = 'flex';
+    page.style.flexDirection = 'column';
+    kids.forEach(function (k, i) { k.style.order = i; });
+    var gratis = document.getElementById('gratis');
+    var stimmen = document.getElementById('rueckkopplung');
+    if (gratis && stimmen) {
+      var a = gratis.style.order, b = stimmen.style.order;
+      gratis.style.order = b; stimmen.style.order = a;
+    }
   }
 
   function mark(which) {
@@ -1022,57 +1069,60 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     marked = which;
     if (which && buttons[which]) buttons[which].classList.add('stim-on');
     clearTimeout(markTimer);
-    if (which) markTimer = setTimeout(function () { mark(null); }, 1400);
+    if (which) markTimer = setTimeout(function () { mark(null); }, 1500);
   }
 
-  function reset() {
-    title.style.transform = '';
-    title.style.opacity = '';
-    mark(null);
-    firedSub = firedSupra = false;
-    lastSysP = null;
-    if (window.orakelFilterStep) window.orakelFilterStep(null);
+  function paintReel(reel, p) {
+    var inner = reel.firstElementChild;
+    if (!inner) return;
+    var text = reel.classList.contains('reel-t');
+    // Das erste Kapitel steht beim ersten Bild fertig da — es traegt das LCP.
+    var enter = reel === first ? 1 : clamp(p / (text ? 0.16 : 0.13));
+    var exit = clamp((p - (text ? 0.60 : 0.74)) / (text ? 0.40 : 0.26));
+
+    var scale, y, o;
+    if (text) {
+      scale = 0.95 + 0.05 * easeOut(enter) + 0.46 * easeOut(exit);
+      y = (1 - easeOut(enter)) * 22 - easeOut(exit) * 46;
+      o = enter * (1 - Math.pow(exit, 1.35));
+      inner.style.setProperty('--glow', (enter * (0.18 + 0.82 * easeOut(exit)) * (1 - exit * 0.35)).toFixed(3));
+    } else {
+      // Grafiken werden nicht skaliert — ein hochgezogener Canvas wird weich.
+      scale = 1;
+      y = (1 - easeOut(enter)) * 26 - easeOut(exit) * 26;
+      o = enter * (1 - Math.pow(exit, 1.6));
+    }
+    inner.style.transform = 'translate3d(0,' + y.toFixed(1) + 'px,0) scale(' + scale.toFixed(3) + ')';
+    inner.style.opacity = o.toFixed(3);
   }
 
   function frame() {
     queued = false;
     if (!window.storyOn) return;
+    var vh = window.innerHeight || 800;
 
-    var y = window.pageYOffset || document.documentElement.scrollTop || 0;
-    var lift = Math.min(1, Math.max(0, y / LIFT_OVER));
-    title.style.transform = 'translate3d(0,' + (-MAX_LIFT * lift).toFixed(1) + 'px,0)';
-    title.style.opacity = (1 - (1 - MIN_OPACITY) * lift).toFixed(3);
+    for (var i = 0; i < reels.length; i++) {
+      var reel = reels[i];
+      var r = reel.getBoundingClientRect();
+      if (r.bottom < -vh || r.top > vh * 2) continue;   // weit weg: nichts tun
+      var span = r.height - vh;
+      var p = span > 0 ? clamp(-r.top / span) : (r.top < 0 ? 1 : 0);
+      paintReel(reel, p);
 
-    var r = stage.getBoundingClientRect();
-    var span = r.height - window.innerHeight;
-    var p = span > 0 ? Math.min(1, Math.max(0, -r.top / span)) : 0;
-
-    // Zurueckgescrollt wird wieder scharf gestellt — wer nochmal hochwischt,
-    // sieht die Sequenz erneut.
-    if (p < SUB_AT - ARM) firedSub = false;
-    if (p < SUPRA_AT - ARM) firedSupra = false;
-
-    if (!firedSub && p >= SUB_AT) {
-      firedSub = true;
-      if (window.orakelFire) window.orakelFire(8);
-      mark(8);
-    }
-    if (!firedSupra && p >= SUPRA_AT) {
-      firedSupra = true;
-      if (window.orakelFire) window.orakelFire(20);
-      mark(20);
-    }
-
-    // Sektion 2: der Scrollweg ist der Zeitschritt der Filtration. Betrag,
-    // nicht Vorzeichen — rueckwaerts wischen laesst den Strom weiterlaufen,
-    // statt Teilchen rueckwaerts aus dem Bild zu schieben.
-    if (sysSection && window.orakelFilterStep) {
-      var rs = sysSection.getBoundingClientRect();
-      var sspan = rs.height - window.innerHeight;
-      var sp = sspan > 0 ? Math.min(1, Math.max(0, -rs.top / sspan)) : (rs.top < 0 ? 1 : 0);
-      if (lastSysP === null) lastSysP = sp;
-      window.orakelFilterStep(Math.abs(sp - lastSysP) * FILTER_SPAN);
-      lastSysP = sp;
+      if (reel === apReel) {
+        // Reize werden ausgeloest, nicht gescrubbt: ein Aktionspotential
+        // dauert 100 ms und wuerde ueber Scrollweg gezogen zur Rampe.
+        if (p < 0.25) firedSub = false;
+        if (p < 0.50) firedSupra = false;
+        if (!firedSub && p >= 0.30) { firedSub = true; if (window.orakelFire) window.orakelFire(8); mark(8); }
+        if (!firedSupra && p >= 0.58) { firedSupra = true; if (window.orakelFire) window.orakelFire(20); mark(20); }
+      } else if (reel === figReel && window.orakelFilterStep) {
+        if (lastFigP === null) lastFigP = p;
+        window.orakelFilterStep(Math.abs(p - lastFigP) * 16);
+        lastFigP = p;
+      } else if (reel === ekgReel) {
+        window.orakelPulseP = p;
+      }
     }
   }
 
@@ -1082,66 +1132,189 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     requestAnimationFrame(frame);
   }
 
+  function clear() {
+    reels.forEach(function (reel) {
+      var inner = reel.firstElementChild;
+      if (!inner) return;
+      inner.style.transform = '';
+      inner.style.opacity = '';
+      inner.style.removeProperty('--glow');
+    });
+    mark(null);
+    firedSub = firedSupra = false;
+    lastFigP = null;
+    window.orakelPulseP = null;
+    if (window.orakelFilterStep) window.orakelFilterStep(null);
+    orderPage(false);
+  }
+
+  /* Sprungmarken selbst rechnen. Die eingebaute Ankerrechnung landet in den
+     Kapiteln daneben; hier ist das Ziel eindeutig: Oberkante minus Kopfzeile. */
+  function jump(e) {
+    if (!window.storyOn) return;
+    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if (!a) return;
+    var id = a.getAttribute('href').slice(1);
+    if (!id) return;
+    var el = document.getElementById(id);
+    if (!el) return;
+    e.preventDefault();
+    var top = el.getBoundingClientRect().top + (window.pageYOffset || 0);
+    var navH = nav ? nav.getBoundingClientRect().height : 58;
+    window.scrollTo(0, Math.max(0, Math.round(top - navH - 10)));
+    if (history.replaceState) history.replaceState(null, '', '#' + id);
+  }
+  document.addEventListener('click', jump);
+
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', function () { syncNav(); onScroll(); }, { passive: true });
+  window.addEventListener('resize', function () { syncNav(); syncFirst(); onScroll(); }, { passive: true });
   window.addEventListener('storychange', function (e) {
-    if (e.detail) { syncNav(); onScroll(); } else { reset(); }
+    if (e.detail) { syncNav(); orderPage(true); syncFirst(); onScroll(); } else { clear(); }
   });
 
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) { en.target.classList.toggle('is-live', en.isIntersecting); });
-    }, { rootMargin: '120px' });
-    io.observe(stage);
-    if (sysSection) io.observe(sysSection);
-  } else {
-    stage.classList.add('is-live');
-    if (sysSection) sysSection.classList.add('is-live');
+    }, { rootMargin: '100px' });
+    reels.forEach(function (r) { io.observe(r); });
+  }
+
+  function syncFirst() {
+    var r = first.getBoundingClientRect();
+    var off = Math.max(0, Math.round(r.top + (window.pageYOffset || 0)));
+    document.documentElement.style.setProperty('--reel1-off', off + 'px');
   }
 
   syncNav();
-  if (window.storyOn) onScroll();
+  if (window.storyOn) { orderPage(true); syncFirst(); onScroll(); }
 })();
 
 /* ══════════════════════════════════════════════════════════════════════════
-   Mobile-Scroll-Story · Sektion 3: der halbe Moment
+   Mobiler Film · die Stimmen als Stapel
+
+   Oberste Karte wird weggewischt, die naechste rueckt nach; die weggewischte
+   geht nach hinten, damit nichts verlorengeht. Senkrecht wischen bleibt
+   Scrollen — die Achse wird bei der ersten Bewegung entschieden.
    ══════════════════════════════════════════════════════════════════════════ */
 (function () {
-  var kicker = document.getElementById('gratisKicker');
-  if (!kicker || !('IntersectionObserver' in window)) return;
-  var io = null, done = false;
+  var track = document.querySelector('.fb-track');
+  if (!track) return;
 
-  function arm() {
-    if (done || io) return;
-    io = new IntersectionObserver(function (entries) {
-      if (!entries[0].isIntersecting) return;
-      done = true;
-      kicker.classList.add('pop');
-      io.disconnect(); io = null;
-    }, { rootMargin: '0px 0px -18% 0px' });
-    io.observe(kicker);
+  var ORDER = ['Hiwa', 'Bad Bunny', 'Alina', 'Pashanim', 'Charlotte', 'Anonym'];
+  var all = [].slice.call(track.querySelectorAll('figure'));
+  function nameOf(fig) {
+    var c = fig.querySelector('figcaption');
+    if (!c) return '';
+    var spans = c.querySelectorAll('span');
+    return spans.length > 1 ? spans[1].textContent.trim() : '';
   }
-  function disarm() {
-    if (io) { io.disconnect(); io = null; }
-    kicker.classList.remove('pop');
-    done = false;
+  var stack = ORDER.map(function (n) {
+    for (var i = 0; i < all.length; i++) if (nameOf(all[i]) === n) return all[i];
+    return null;
+  }).filter(Boolean);
+  all.forEach(function (f) { if (stack.indexOf(f) < 0) stack.push(f); });
+
+  var dots = null, built = false, swiped = 0;
+  var drag = null;
+
+  function render(anim) {
+    stack.forEach(function (fig, i) {
+      fig.style.zIndex = String(90 - i);
+      fig.style.transition = anim ? 'transform 320ms ease, opacity 320ms ease' : 'none';
+      fig.style.transform = 'translate3d(0,' + (i * 9) + 'px,0) scale(' + (1 - i * 0.035).toFixed(3) + ')';
+      fig.style.opacity = i < 3 ? '1' : '0';
+      fig.style.pointerEvents = i === 0 ? 'auto' : 'none';
+    });
+    if (dots) {
+      for (var d = 0; d < dots.children.length; d++) {
+        dots.children[d].classList.toggle('on', d === swiped % dots.children.length);
+      }
+    }
   }
 
-  window.addEventListener('storychange', function (e) { e.detail ? arm() : disarm(); });
-  if (window.storyOn) arm();
+  function fly(dir) {
+    var top = stack[0];
+    top.style.transition = 'transform 260ms ease-in, opacity 260ms ease-in';
+    top.style.transform = 'translate3d(' + (dir * 520) + 'px,-40px,0) rotate(' + (dir * 18) + 'deg)';
+    top.style.opacity = '0';
+    swiped++;
+    setTimeout(function () {
+      stack.push(stack.shift());
+      render(false);
+      requestAnimationFrame(function () { render(true); });
+    }, 240);
+  }
+
+  function onDown(e) {
+    if (!built || e.target.closest('button, a')) return;
+    var top = stack[0];
+    if (!top.contains(e.target)) return;
+    drag = { id: e.pointerId, x: e.clientX, y: e.clientY, axis: null, dx: 0 };
+    top.style.transition = 'none';
+  }
+  function onMove(e) {
+    if (!drag || e.pointerId !== drag.id) return;
+    var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    if (drag.axis === null) {
+      if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+      drag.axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+      if (drag.axis === 'y') { drag = null; render(true); return; }
+    }
+    drag.dx = dx;
+    stack[0].style.transform = 'translate3d(' + dx + 'px,' + (Math.abs(dx) * -0.06) + 'px,0) rotate(' + (dx / 22).toFixed(2) + 'deg)';
+    stack[0].style.opacity = String(Math.max(0.35, 1 - Math.abs(dx) / 460));
+  }
+  function onUp(e) {
+    if (!drag || e.pointerId !== drag.id) return;
+    var dx = drag.dx;
+    drag = null;
+    if (Math.abs(dx) > 88) fly(dx > 0 ? 1 : -1);
+    else render(true);
+  }
+
+  function build() {
+    if (built) return;
+    built = true;
+    track.setAttribute('aria-roledescription', 'carousel');
+    dots = document.createElement('div');
+    dots.className = 'fb-dots';
+    dots.setAttribute('aria-hidden', 'true');
+    for (var i = 0; i < stack.length; i++) dots.appendChild(document.createElement('span'));
+    track.parentNode.insertBefore(dots, track.nextSibling);
+    track.addEventListener('pointerdown', onDown);
+    window.addEventListener('pointermove', onMove, { passive: true });
+    window.addEventListener('pointerup', onUp);
+    window.addEventListener('pointercancel', onUp);
+    render(false);
+  }
+
+  function tear() {
+    if (!built) return;
+    built = false;
+    track.removeAttribute('aria-roledescription');
+    track.removeEventListener('pointerdown', onDown);
+    window.removeEventListener('pointermove', onMove);
+    window.removeEventListener('pointerup', onUp);
+    window.removeEventListener('pointercancel', onUp);
+    if (dots && dots.parentNode) dots.parentNode.removeChild(dots);
+    dots = null;
+    all.forEach(function (f) {
+      f.style.zIndex = f.style.transition = f.style.transform = '';
+      f.style.opacity = f.style.pointerEvents = '';
+    });
+  }
+
+  window.addEventListener('storychange', function (e) { e.detail ? build() : tear(); });
+  if (window.storyOn) build();
 })();
 
 /* ══════════════════════════════════════════════════════════════════════════
-   Mobile-Scroll-Story · Sektion 5: der eine Auftritt der Schlusszeile
-
-   Der Ausgangszustand entsteht erst hier, nicht im Stylesheet: ohne
-   JavaScript soll die Zeile nie unsichtbar sein. Einmal pro Aufruf.
+   Der eine Auftritt der Schlusszeile
    ══════════════════════════════════════════════════════════════════════════ */
 (function () {
   var title = document.getElementById('losTitle');
   if (!title || !('IntersectionObserver' in window)) return;
-  var done = false, io = null;
-
+  var io = null, done = false;
   function arm() {
     if (done || io) return;
     title.classList.add('reveal-init');
@@ -1153,98 +1326,13 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     }, { rootMargin: '0px 0px -12% 0px' });
     io.observe(title);
   }
-
   function disarm() {
     if (io) { io.disconnect(); io = null; }
     title.classList.remove('reveal-init', 'reveal-in');
     done = false;
   }
-
   window.addEventListener('storychange', function (e) { e.detail ? arm() : disarm(); });
   if (window.storyOn) arm();
-})();
-
-/* ══════════════════════════════════════════════════════════════════════════
-   Mobile-Scroll-Story · Sektion 4: die Stimmen als Wischbahn
-
-   Gewischt wird nativ; hier entstehen nur die Punkte darunter und eine feste
-   Bahnhoehe. Die braucht es, weil „Uebersetzen" bei Bad Bunny die laengere
-   Zeile bringt — ohne feste Hoehe wuechse die Bahn beim Umschalten und
-   schoebe alles darunter nach unten.
-   ══════════════════════════════════════════════════════════════════════════ */
-(function () {
-  var section = document.getElementById('rueckkopplung');
-  var track = section && section.querySelector('.fb-track');
-  if (!track) return;
-
-  var cards = [].slice.call(track.querySelectorAll('figure'));
-  var dots = null, queued = false, built = false;
-
-  function measure() {
-    // Beide Fassungen des Bad-Bunny-Zitats messen, die hoehere gewinnt.
-    var quote = document.getElementById('bbQuote');
-    var high = track.getBoundingClientRect().height;
-    if (quote) {
-      var keep = quote.textContent;
-      var other = window.orakelBbOther && window.orakelBbOther();
-      if (other) {
-        quote.textContent = other;
-        high = Math.max(high, track.getBoundingClientRect().height);
-        quote.textContent = keep;
-      }
-    }
-    track.style.minHeight = Math.ceil(high) + 'px';
-  }
-
-  function syncDots() {
-    queued = false;
-    if (!dots) return;
-    var i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth + 20));
-    for (var d = 0; d < dots.children.length; d++) {
-      dots.children[d].classList.toggle('on', d === i);
-    }
-  }
-
-  function onTrackScroll() {
-    if (queued) return;
-    queued = true;
-    requestAnimationFrame(syncDots);
-  }
-
-  function build() {
-    if (built) return;
-    built = true;
-    track.setAttribute('tabindex', '0');
-    track.setAttribute('aria-roledescription', 'carousel');
-    dots = document.createElement('div');
-    dots.className = 'fb-dots';
-    dots.setAttribute('aria-hidden', 'true');
-    for (var i = 0; i < cards.length; i++) dots.appendChild(document.createElement('span'));
-    track.parentNode.insertBefore(dots, track.nextSibling);
-    track.addEventListener('scroll', onTrackScroll, { passive: true });
-    measure();
-    syncDots();
-    // Nochmal, sobald Schriften geladen sind und das Bad-Bunny-Skript seine
-    // zweite Fassung bereitstellt — beides steht beim ersten Messen noch nicht.
-    var remeasure = function () { track.style.minHeight = ''; measure(); };
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(remeasure);
-    window.addEventListener('load', remeasure, { once: true });
-  }
-
-  function tear() {
-    if (!built) return;
-    built = false;
-    track.removeAttribute('tabindex');
-    track.removeAttribute('aria-roledescription');
-    track.style.minHeight = '';
-    track.removeEventListener('scroll', onTrackScroll);
-    if (dots && dots.parentNode) dots.parentNode.removeChild(dots);
-    dots = null;
-  }
-
-  window.addEventListener('storychange', function (e) { e.detail ? build() : tear(); });
-  window.addEventListener('resize', function () { if (built) { track.style.minHeight = ''; measure(); } }, { passive: true });
-  if (window.storyOn) build();
 })();
 
 /* Bad Bunny — Original ⇄ Übersetzung */
