@@ -95,8 +95,8 @@ a:hover { text-decoration: underline; }
 img { display: block; max-width: 100%; }
 
 @keyframes marchDash { to { background-position: 18px 0, 100% -18px, -18px 100%, 0 18px; } }
-/* Ein Ring, der einmal nach aussen laeuft — die Auswahl „feuert". */
-@keyframes segFire {
+/* Ein Ring, der einmal nach aussen laeuft — der Punkt „feuert". */
+@keyframes chipFire {
   0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--app-accent) 60%, transparent); }
   100% { box-shadow: 0 0 0 13px color-mix(in srgb, var(--app-accent) 0%, transparent); }
 }
@@ -232,62 +232,70 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
 /* ── Themenkatalog-Schalter ────────────────────────────────────────────── */
 .blk { border-bottom: 2px solid var(--app-rule); }
 .blk-row { display: flex; gap: 12px 18px; align-items: center; padding: 14px 0; }
+/* Fuellstand statt Kippschalter: der Block zeigt, wie viel von ihm gewaehlt
+   ist — leer, halb, voll. Zusammen mit dem Zaehler daneben ist damit auf
+   einen Blick klar, wo man steht. */
 .sw {
   all: unset; cursor: pointer; flex: none; display: block; position: relative;
-  width: 44px; height: 24px; border: 2px solid var(--app-rule); background: transparent;
+  width: 26px; height: 26px; border: 2px solid var(--app-rule); background: transparent;
+  transition: border-color 140ms ease;
 }
-.sw > span { position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; background: var(--app-rule); transition: left 190ms cubic-bezier(.2,.9,.3,1.4), background 140ms; }
-.sw.on { border-color: var(--app-accent); background: var(--app-accent); animation: segFire 520ms ease-out 1; }
-.sw.on > span { left: 22px; background: var(--app-accent-ink); }
+.sw > span {
+  position: absolute; left: 3px; right: 3px; bottom: 3px; top: 3px;
+  background: var(--app-accent); transform: scaleY(0); transform-origin: bottom;
+  transition: transform 220ms cubic-bezier(.2,.9,.3,1.25);
+}
+.sw.on { border-color: var(--app-accent); }
+.sw.on > span { transform: scaleY(0.42); }
+.sw.all > span { transform: scaleY(1); }
+.sw:focus-visible { outline: 2px solid var(--app-accent); outline-offset: 2px; }
 .blk-btn { all: unset; cursor: pointer; flex: 1 1 auto; display: flex; gap: 12px; align-items: baseline; justify-content: space-between; min-width: 0; }
 .blk-title { font-family: var(--font-heading); font-weight: 800; font-size: 17px; line-height: 24px; color: var(--app-ink); }
 .blk-meta { display: flex; gap: 12px; align-items: baseline; flex: none; }
 .blk-tally { font-size: 12px; letter-spacing: 0.06em; color: var(--app-mute); font-feature-settings: 'tnum' 1; }
 .blk-caret { font-family: var(--font-heading); font-weight: 800; font-size: 13px; color: var(--app-accent); }
-.blk-points { padding: 0 0 16px 58px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 6px 24px; }
+/* Jeder Themenpunkt ist eine eigene Flaeche mit Kante, keine Zeile mit
+   Miniaturschalter mehr — anwaehlbar mit der Fingerkuppe statt mit der
+   Nadel, und der gewaehlte Zustand ist von weitem zu sehen. */
+.blk-points { padding: 2px 0 18px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; }
 .pt {
   all: unset; cursor: pointer; display: flex; gap: 12px; align-items: flex-start;
-  padding: 7px 10px 7px 2px; transition: background 120ms;
+  padding: 13px 15px; border: 2px solid var(--app-rule); background: var(--app-panel);
+  transition: border-color 150ms ease, background 150ms ease;
 }
-@media (hover: hover) { .pt:hover { background: var(--app-panel); } }
-.pt:focus-visible { outline: 2px solid var(--app-accent); outline-offset: -2px; }
-.pt-sw { display: block; width: 34px; height: 18px; flex: none; margin-top: 3px; border: 2px solid var(--app-rule); position: relative; }
-.pt-sw > span { position: absolute; top: 1px; left: 1px; width: 12px; height: 12px; background: var(--app-rule); transition: left 190ms cubic-bezier(.2,.9,.3,1.4), background 140ms; }
-.pt-sw.on { border-color: var(--app-accent); background: var(--app-accent); animation: segFire 520ms ease-out 1; }
-/* Der ganze gewaehlte Punkt bekommt einen Hauch Flaeche und eine Kante */
-.pt:has(.pt-sw.on) { background: color-mix(in srgb, var(--app-accent) 7%, transparent); box-shadow: inset 2px 0 0 var(--app-accent); }
-.pt-sw.on > span { left: 17px; background: var(--app-accent-ink); }
-.pt-nr { display: block; font-size: 12px; letter-spacing: 0.06em; color: var(--app-accent); font-feature-settings: 'tnum' 1; }
-.pt-title { display: block; font-size: 14.5px; line-height: 22px; color: var(--app-ink); margin-top: 2px; }
+@media (hover: hover) { .pt:hover { border-color: color-mix(in srgb, var(--app-accent) 55%, var(--app-rule)); } }
+.pt:focus-visible { outline: 2px solid var(--app-accent); outline-offset: 2px; }
+/* Die Elektrode: leer, bis der Punkt gewaehlt ist */
+.pt-sw { display: block; width: 20px; height: 20px; flex: none; margin-top: 1px; border: 2px solid var(--app-rule); position: relative; transition: border-color 150ms ease; }
+.pt-sw > span {
+  position: absolute; left: 2px; right: 2px; top: 2px; bottom: 2px;
+  background: var(--app-accent); transform: scale(0);
+  transition: transform 190ms cubic-bezier(.2,.9,.3,1.45);
+}
+.pt-sw.on { border-color: var(--app-accent); animation: chipFire 520ms ease-out 1; }
+.pt-sw.on > span { transform: scale(1); }
+.pt:has(.pt-sw.on) {
+  border-color: var(--app-accent);
+  background: color-mix(in srgb, var(--app-accent) 11%, var(--app-panel));
+}
+.pt-nr {
+  display: block; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px; letter-spacing: 0.08em; color: var(--app-mute);
+  font-feature-settings: 'tnum' 1; transition: color 150ms ease;
+}
+.pt:has(.pt-sw.on) .pt-nr { color: var(--app-accent); }
+.pt-title { display: block; font-size: 14.5px; line-height: 22px; color: var(--app-ink); margin-top: 3px; }
 
 /* ── Segmentierte Auswahl (Fragenzahl, Schwierigkeit, Methode) ─────────── */
-.seg { display: inline-flex; gap: 0; border: 2px solid var(--app-rule); flex-wrap: wrap; background: var(--app-panel); }
+.seg { display: inline-flex; gap: 0; border: 2px solid var(--app-rule); flex-wrap: wrap; }
 .seg > button {
-  all: unset; cursor: pointer; padding: 12px 24px; position: relative;
+  all: unset; cursor: pointer; padding: 12px 24px;
   font-family: var(--font-heading); font-weight: 800; font-size: 16px;
-  color: var(--app-mute); border-right: 2px solid var(--app-rule);
-  transition: color 140ms ease, background 140ms ease;
+  color: var(--app-ink); border-right: 2px solid var(--app-rule);
 }
 .seg > button:last-child { border-right: none; }
-/* Ruhezustand: nur eine Grundlinie unter der Schrift, wie ein Kanal, der
-   noch nichts sendet. */
-.seg > button::after {
-  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
-  background: var(--app-accent); transform: scaleX(0); transform-origin: left;
-  transition: transform 220ms ease;
-}
-@media (hover: hover) {
-  .seg > button:hover { color: var(--app-ink); }
-  .seg > button:hover::after { transform: scaleX(1); }
-}
 .seg > button:focus-visible { outline: 2px solid var(--app-accent); outline-offset: -2px; }
-/* Gewaehlt heisst depolarisiert: die Flaeche zuendet und ein Ring laeuft
-   einmal nach aussen. */
-.seg > button.on {
-  background: var(--app-accent); color: var(--app-accent-ink);
-  animation: segFire 560ms ease-out 1;
-}
-.seg > button.on::after { transform: scaleX(0); }
+.seg > button.on { background: var(--app-accent); color: var(--app-accent-ink); }
 .seg.seg-text > button { font-size: 13.5px; padding: 10px 18px; }
 .seg-label { display: block; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--app-mute); margin-bottom: 10px; }
 
@@ -2379,7 +2387,11 @@ function updateGroupUI(gid){
   const cnt=document.getElementById('cnt_'+gid);
   if(cnt)cnt.textContent=sel+'/'+g.subs.length;
   const sw=document.getElementById('sw_'+gid);
-  if(sw)sw.classList.toggle('on',sel>0);
+  if(sw){
+    // leer / teilweise / voll — der Schalter zeigt den Fuellstand des Blocks
+    sw.classList.toggle('on',sel>0);
+    sw.classList.toggle('all',sel>0&&sel===g.subs.length);
+  }
 }
 function selectAllTopics(){
   playTick();
