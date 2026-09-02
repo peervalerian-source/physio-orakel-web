@@ -43,7 +43,7 @@
   --app-accent-soft: var(--color-accent-100);
   /* Physiologisch codiert statt dekorativ: richtig depolarisiert (Lime),
      gerade angekreuzt ist aktiv (Purple), falsch warnt (Korall). */
-  --app-ok: var(--color-accent-2);
+  --app-ok: var(--color-accent);
   --app-active: var(--color-accent-3);
   --app-warn: var(--color-error);
   --app-error: var(--color-error);
@@ -458,11 +458,38 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
 .option-row.checked .opt-cb { border-color: var(--app-active); color: var(--app-active); }
 .opt-label { font-size: 15.5px; line-height: 24px; color: var(--app-ink); }
 .opt-letter { font-family: var(--font-heading); font-weight: 800; font-size: 13px; color: var(--app-accent); margin-right: 8px; }
-.option-row.rv-correct { border-color: var(--app-ok); background: color-mix(in srgb, var(--app-ok) 12%, transparent); }
-.option-row.rv-wrong { border-color: var(--app-error); background: color-mix(in srgb, var(--app-error) 12%, transparent); }
-.option-row.rv-missed { border-color: var(--app-warn); border-style: dashed; }
+/* ── Fragen-Auswertung ─────────────────────────────────────────────────
+   Drei Zustaende, drei Farben, keine gestrichelten Rahmen: neutral grau,
+   richtig tuerkis mit ✓, falsch angekreuzt rot mit ✕. Der Marker steht vor
+   dem Buchstaben, damit der Zustand vor dem Text gelesen wird. */
+#reviewSection .option-row {
+  display: grid; grid-template-columns: 22px minmax(0, 1fr);
+  gap: 12px; align-items: start; cursor: default; margin-bottom: 8px;
+}
+#reviewSection .option-row + .option-row { margin-top: 0; }
+.opt-mark {
+  font-size: 14px; line-height: 24px; text-align: center;
+  font-family: var(--font-heading); font-weight: 800; color: transparent;
+}
+#reviewSection .opt-letter { color: var(--app-mute); margin-right: 10px; }
+/* richtige Loesung — getroffen bekommt zusaetzlich Flaeche */
+#reviewSection .rv-solution,
+#reviewSection .rv-hit { border-color: var(--app-accent); }
+#reviewSection .rv-hit { background: color-mix(in srgb, var(--app-accent) 10%, transparent); }
+#reviewSection .rv-solution .opt-mark,
+#reviewSection .rv-hit .opt-mark,
+#reviewSection .rv-solution .opt-letter,
+#reviewSection .rv-hit .opt-letter { color: var(--app-accent); }
+/* falsch angekreuzt */
+#reviewSection .rv-miss { border-color: var(--app-error); background: color-mix(in srgb, var(--app-error) 10%, transparent); }
+#reviewSection .rv-miss .opt-mark,
+#reviewSection .rv-miss .opt-letter { color: var(--app-error); }
+#reviewSection { max-width: 1100px; }
 
-.feedback-block { border-left: 2px solid var(--app-accent); padding: 12px 0 2px 14px; margin-top: 18px; }
+.feedback-block { border-left: 2px solid var(--app-rule); padding: 12px 0 2px 14px; margin-top: 18px; }
+.feedback-block.fb-full { border-left-color: var(--app-accent); }
+.feedback-block.fb-partial { border-left-color: var(--app-active); }
+.feedback-block.fb-wrong { border-left-color: var(--app-error); }
 .fb-row { display: flex; gap: 12px; align-items: baseline; justify-content: space-between; flex-wrap: wrap; }
 .fb-status { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-family: var(--font-heading); font-weight: 800; }
 .fb-status.full { color: var(--app-ok); }
@@ -3140,16 +3167,15 @@ function buildResult(pct,pts,max,topicScores){
     let optsHtml='';
     q.options.forEach(opt=>{
       const wc=chosen.has(opt.key),ic=correct.has(opt.key);
-      // Der Text bleibt immer Tinte auf Papier — die Wertung traegt der
-      // Rahmen und der Buchstabe. Pastelltoene waren im hellen Modus
-      // praktisch unlesbar.
-      let cls='',lc='var(--app-ink)',lc2='var(--app-mute)',cbVis='hidden',cbC='';
-      if(wc&&ic){cls='rv-correct';lc2='var(--app-ok)';cbVis='visible';cbC='var(--app-ok)'}
-      else if(wc&&!ic){cls='rv-wrong';lc2='var(--app-error)';cbVis='visible';cbC='var(--app-error)'}
-      else if(!wc&&ic){cls='rv-missed';lc2='var(--app-warn)'}
-      optsHtml+=`<div class="option-row ${cls}" style="cursor:default"><div class="opt-cb" style="visibility:${cbVis};color:${cbC};border-color:${cbC||'var(--border3)'}">✓</div><div class="opt-label" style="color:${lc}"><span class="opt-letter" style="color:${lc2}">${opt.key})</span>${opt.text}</div></div>`;
+      // Drei Zustaende: richtige Loesung (getroffen oder nicht), falsch
+      // angekreuzt, sonst neutral. Der Text bleibt immer Tinte — die Wertung
+      // traegt der Rahmen, der Buchstabe und der Marker davor.
+      let cls='',mark='';
+      if(ic){cls=wc?'rv-hit':'rv-solution';mark='✓'}
+      else if(wc){cls='rv-miss';mark='✕'}
+      optsHtml+=`<div class="option-row ${cls}"><span class="opt-mark" aria-hidden="true">${mark}</span><div class="opt-label"><span class="opt-letter">${opt.key.toUpperCase()}</span>${opt.text}</div></div>`;
     });
-    bl.innerHTML=`<div class="q-number">Frage ${i+1} · ${q.topic||''}</div><div class="q-text serif">${q.question}</div><div class="options">${optsHtml}</div><div class="feedback-block" style="margin-top:.85rem"><div class="fb-row"><span class="fb-status ${s.c}">${s.t}</span><span class="fb-score">${score.toFixed(2).replace('.',',')} / 1,00 Pkt.</span></div><div class="fb-explain">${q.explanation||''}</div><button class="btn btn-explain" onclick="deepDive(${i},this,'rv_ddive')">🔬 Erklär mir das</button><div id="rv_ddive${i}"></div></div>`;
+    bl.innerHTML=`<div class="q-number">Frage ${i+1} · ${q.topic||''}</div><div class="q-text serif">${q.question}</div><div class="options">${optsHtml}</div><div class="feedback-block fb-${s.c}" style="margin-top:.85rem"><div class="fb-row"><span class="fb-status ${s.c}">${s.t}</span><span class="fb-score">${score.toFixed(2).replace('.',',')} / 1,00 Pkt.</span></div><div class="fb-explain">${q.explanation||''}</div><button class="btn btn-explain" onclick="deepDive(${i},this,'rv_ddive')">🔬 Erklär mir das</button><div id="rv_ddive${i}"></div></div>`;
     rv.appendChild(bl);
   });
 }
