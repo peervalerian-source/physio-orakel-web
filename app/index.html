@@ -699,28 +699,14 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
       <span style="font-size:13px;color:var(--app-mute)" id="selCountText">noch nichts gewählt</span>
     </div>
 
-    <div style="margin-top:26px">
-      <span class="seg-label">Welche Datenbank?</span>
-      <div class="seg seg-text" id="poolKindSeg">
-        <button type="button" data-pool="allgemein" class="on" onclick="setPoolKind('allgemein')">Physiologie allgemein</button>
-        <button type="button" data-pool="wochentest" onclick="setPoolKind('wochentest')">Wochentest</button>
+    <div style="margin-top:26px;display:flex;gap:20px 34px;flex-wrap:wrap;align-items:flex-start">
+      <div>
+        <span class="seg-label">Welche Datenbank?</span>
+        <div class="seg seg-text" id="poolKindSeg">
+          <button type="button" data-pool="allgemein" class="on" onclick="setPoolKind('allgemein')">Physiologie allgemein</button>
+          <button type="button" data-pool="wochentest" onclick="setPoolKind('wochentest')">Wochentest</button>
+        </div>
       </div>
-      <p style="font-size:12.5px;line-height:20px;color:var(--app-mute);margin:8px 0 0;max-width:60ch" id="poolKindHint"></p>
-    </div>
-
-    <div id="poolStatusWrap" style="margin-top:16px"></div>
-
-    <div id="topicArea" style="margin-top:26px;border-top:2px solid var(--app-rule)"></div>
-
-    <div id="diffSection" style="margin-top:30px">
-      <span class="seg-label">Schwierigkeit</span>
-      <div class="seg seg-text">
-        <button type="button" data-diff="normal" class="on" onclick="selectDiff(this,'normal')">Normal</button>
-        <button type="button" data-diff="hard" onclick="selectDiff(this,'hard')">Hard</button>
-      </div>
-    </div>
-
-    <div style="margin-top:30px;display:flex;gap:24px 40px;flex-wrap:wrap;align-items:flex-end;justify-content:space-between">
       <div>
         <span class="seg-label">Wie viele Fragen?</span>
         <div class="seg" id="countGrid">
@@ -729,10 +715,23 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
           <button type="button" data-cnt="20" onclick="selectCount(this,'20')">20</button>
         </div>
       </div>
-      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-        <span style="font-size:13px;color:var(--app-mute)" id="startHint">Wähle mindestens einen Punkt.</span>
-        <button type="button" class="btn btn-primary btn-large" id="startBtn" onclick="startQuiz()" disabled>Quiz starten</button>
+      <div id="diffSection">
+        <span class="seg-label">Schwierigkeit</span>
+        <div class="seg seg-text">
+          <button type="button" data-diff="normal" class="on" onclick="selectDiff(this,'normal')">Normal</button>
+          <button type="button" data-diff="hard" onclick="selectDiff(this,'hard')">Hard</button>
+        </div>
       </div>
+    </div>
+    <p style="font-size:12.5px;line-height:20px;color:var(--app-mute);margin:10px 0 0;max-width:60ch" id="poolKindHint"></p>
+
+    <div id="poolStatusWrap" style="margin-top:16px"></div>
+
+    <div id="topicArea" style="margin-top:26px;border-top:2px solid var(--app-rule)"></div>
+
+    <div style="margin-top:30px;display:flex;gap:12px 24px;flex-wrap:wrap;align-items:center;justify-content:flex-end">
+      <span style="font-size:13px;color:var(--app-mute)" id="startHint">Wähle mindestens einen Punkt.</span>
+      <button type="button" class="btn btn-primary btn-large" id="startBtn" onclick="startQuiz()" disabled>Quiz starten</button>
     </div>
   </section>
 </div>
