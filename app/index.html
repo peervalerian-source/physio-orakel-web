@@ -95,6 +95,12 @@ a:hover { text-decoration: underline; }
 img { display: block; max-width: 100%; }
 
 @keyframes marchDash { to { background-position: 18px 0, 100% -18px, -18px 100%, 0 18px; } }
+@keyframes msgBreathe {
+  0%   { opacity: 0.55; transform: scale(0.975); }
+  12%  { opacity: 1;    transform: scale(1); }
+  55%  { transform: scale(1.04); }
+  100% { opacity: 1;    transform: scale(1); }
+}
 @keyframes wtCall {
   0%, 100% { background: transparent; }
   50% { background: color-mix(in srgb, var(--color-accent-2) 15%, transparent); }
@@ -112,6 +118,7 @@ img { display: block; max-width: 100%; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .load-title { animation: none !important; }
   .seg > button[data-pool="wochentest"]:not(.on) { animation: none !important; }
   .seg > button[data-pool="wochentest"]:not(.on)::after { animation: none !important; opacity: 1; }
   .dropzone { animation: none !important; }
@@ -341,6 +348,16 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
 /* Der Ladescreen nimmt den ganzen Bildschirm ein */
 .loader-stage { display: flex; flex-direction: column; min-height: calc(100svh - 96px); }
 .loader-box { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
+/* Der Ladetext atmet einmal pro Anzeige: leise auf, langsam groesser,
+   wieder zurueck. Zeilenumbrueche aus dem Text bleiben erhalten. */
+.load-title {
+  white-space: pre-line;
+  transform-origin: left center;
+  animation: msgBreathe 5s ease-in-out 1 both;
+  /* Platz fuer vier Zeilen: sonst huepft die Grafik alle fuenf Sekunden,
+     je nachdem wie lang der Text gerade ist. */
+  min-height: 4.5em;
+}
 .pulse-dot { display: block; width: 12px; height: 12px; background: var(--app-accent); animation: softPulse 1.1s ease-in-out infinite; flex: none; }
 .load-bar { height: 8px; background: var(--app-panel); border: 2px solid var(--app-rule); margin-top: 4px; }
 .load-bar > span { display: block; height: 100%; background: var(--app-accent); width: 0; transition: width 200ms linear; }
@@ -355,7 +372,7 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
      ganze Block steht dafuer mittig im Vollbild. */
   flex: 0 1 auto; min-height: 0; display: flex; align-items: center;
 }
-.loader-svg { display: block; width: 100%; height: auto; max-height: 46svh; }
+.loader-svg { display: block; width: 100%; height: auto; max-height: 37svh; }
 .loader-svg[hidden] { display: none; }
 #ekgLoader text { font-family: var(--font-body); }
 
@@ -770,9 +787,9 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
   <section class="wrap loader-stage" style="max-width:1000px">
     <button type="button" class="btn btn-ghost" onclick="goTo('s1')" style="color:var(--app-ink);font-size:12.5px;margin-bottom:22px;align-self:flex-start">← Abbrechen</button>
     <div class="loader-box" style="border-top:2px solid var(--app-rule);border-bottom:2px solid var(--app-rule);padding:clamp(20px,3vw,36px) 0 clamp(18px,3vw,28px)">
-      <div style="display:flex;gap:14px;align-items:center">
-        <span class="pulse-dot" id="loaderDot"></span>
-        <h1 id="genText" style="font-size:clamp(22px,3vw,34px);line-height:1.08;letter-spacing:-0.02em;color:var(--app-ink)">Generiere Fragen…</h1>
+      <div class="load-head" style="display:flex;gap:14px;align-items:flex-start">
+        <span class="pulse-dot" id="loaderDot" style="margin-top:9px"></span>
+        <h1 id="genText" class="load-title" style="font-size:clamp(19px,2.7vw,30px);line-height:1.2;letter-spacing:-0.02em;color:var(--app-ink)">Antike Prüfungsprotokolle werden aus den Tiefen des Archivs geborgen…</h1>
       </div>
       <div class="ekg-frame">
         <svg id="ekgLoader" class="loader-svg" viewBox="0 0 760 512" xmlns="http://www.w3.org/2000/svg" role="img"
@@ -1315,11 +1332,41 @@ const TOPIC_GROUPS=[
 ];
 
 const LOADING_MSGS=[
-  'Bodenlose Abfrage wird vorbereitet…',
-  'Mocsais Keller wird nach Testfragen abgesucht…',
-  'Server-Zentrum im City-Corner wird gehackt…',
-  'Gottlose Fragen werden generiert…',
-  'Frau Dr. Féher wird für unangenehme Fragen zu Rate gezogen…'
+  "Antike Prüfungsprotokolle werden aus den Tiefen des Archivs geborgen…",
+  "Die letzten brauchbaren Fragen aus dem Jahr 2007 werden rekonstruiert…",
+  "Der Schwierigkeitsgrad wird auf „warum weiß ich das nicht?“ angehoben…",
+  "Fragen werden so formuliert, dass jede Antwort falsch klingt…",
+  "Klausurrelevante Inhalte werden aus nicht klausurrelevanten Inhalten herausgefiltert…",
+  "Letzte faire Frage wird entfernt…",
+  "Fragen werden auf „hätte man wissen können“ optimiert…",
+  "Die letzten Überlebenden des letzten Jahrgangs werden befragt…",
+  "Die Prüfungsfee wurde geweckt. Sie ist schlecht gelaunt…",
+  "Die KI wird mit 14.000 Seiten Skript gefüttert und verliert den Verstand…",
+  "Die Definition von „Grundwissen“ wird neu ausgelegt…",
+  "Das System sucht nach der einen Information, die du gestern noch gelesen hast…",
+  "Wusstest du schon?\nDie Semmelweis existiert seit 1769.\nDu bist nicht der Erste, der hier an seinem Studium verzweifelt.",
+  "Wusstest du schon?\n461 Stufen führen im NET nach oben.\nRunter geht's nach der Prüfung meistens schneller.",
+  "Wusstest du schon? Das NET hat 461 Treppenstufen.\nDas sind 461 Möglichkeiten, vor der Prüfung noch einmal über deine Lebensentscheidungen nachzudenken.",
+  "Wusstest du schon? Das NET ist 89 Meter hoch.\nDein Cortisolspiegel schafft das locker auch.",
+  "Nicht bestandene Prüfungen werden zur Wiederverwendung eingeschmolzen…",
+  "Verlorene Seelen werden nach der richtigen Antwort befragt…",
+  "Die Kartei der bereits gebrochenen Studenten wird aktualisiert…",
+  "Die letzten menschlichen Skrupel bei der Fragenerstellung werden entfernt…",
+  "Die Grenze zwischen Prüfung und Folter wird neu definiert…",
+  "Die Hoffnung auf eine faire Frage wird lokalisiert und eliminiert…",
+  "Überreste von Motivation werden forensisch untersucht…",
+  "Die letzte funktionierende Gehirnzelle wird zur Mitarbeit gezwungen…",
+  "Die akademische Lebenserwartung wird neu berechnet…",
+  "Die Differentialdiagnose lautet: Bestehen oder Untergehen…",
+  "Der Patient ist stabil. Der Student nicht.",
+  "Die Prognose ist vorsichtig formuliert: schlecht…",
+  "Reanimationsmaßnahmen für das Kurzzeitgedächtnis werden eingeleitet…",
+  "Der letzte Rest Selbstvertrauen wird präpariert…",
+  "Die Differentialdiagnose „bestehen“ wird ausgeschlossen…",
+  "Dieser Ladescreen enthält mehr Vorbereitung als dein letzter Lernabend…",
+  "Bitte warten. Deine akademische Zukunft wird gerade ausgewürfelt…",
+  "Der Ladevorgang dauert länger als dein Vorsatz, dieses Semester früher anzufangen…",
+  "Fast fertig. Genau wie du nach der nächsten Prüfung…",
 ];
 
 const GRADE_QUOTES={
@@ -1350,8 +1397,10 @@ const STATS_KEY='physio_orakel_stats';
 const MAX_CONTEXT_CHARS=120000;
 // Wie lange der Ladescreen mindestens steht: beim Poolzug (sofort fertig)
 // und beim KI-Weg, falls die Antwort ungewoehnlich schnell kommt.
-const MIN_LOAD_POOL_MS=8000;
-const MIN_LOAD_API_MS=4500;
+// Zehn Sekunden Ladezeit, zwei Texte zu je fuenf Sekunden.
+const LOAD_MSG_MS=5000;
+const MIN_LOAD_POOL_MS=2*LOAD_MSG_MS;
+const MIN_LOAD_API_MS=2*LOAD_MSG_MS;
 
 // ── State ─────────────────────────────────────────────────────────────────────
 const state={
@@ -1662,9 +1711,16 @@ loadSession();
 // Namen startEKG/stopEKG bleiben, damit alle Aufrufstellen unverändert bleiben.
 let loaderActive=false,loaderPct=0,loaderQuoteIdx=0,loaderQuoteTimer=null,loaderPctTimer=null;
 // Auf dem Ladescreen stehen die Ladetexte — sonst nichts.
+// Der Ladetext steht oben, wo vorher „Generiere N Fragen…" stand. Bei jedem
+// Wechsel wird die Atem-Animation neu angestossen, damit jeder Text seinen
+// eigenen Anlauf bekommt statt in einen laufenden Takt zu fallen.
 function renderLoaderQuote(){
-  const el=document.getElementById('loadingText');
-  if(el&&!loaderError)el.textContent=LOADING_MSGS[loaderQuoteIdx%LOADING_MSGS.length];
+  const el=document.getElementById('genText');
+  if(!el||loaderError)return;
+  el.textContent=LOADING_MSGS[loaderQuoteIdx%LOADING_MSGS.length];
+  el.style.animation='none';
+  void el.offsetWidth;
+  el.style.animation='';
 }
 function setLoadPct(p){
   loaderPct=p;
@@ -1707,15 +1763,14 @@ function startEKG(){
   loaderActive=true;
   clearLoadingError();
   ekgAnim(true);
-  const n=state.examMode?20:parseInt(state.count||'5',10);
-  const gt=document.getElementById('genText');
-  if(gt)gt.textContent='Generiere '+n+' Frage'+(n===1?'':'n')+'…';
   loaderQuoteIdx=Math.floor(Math.random()*LOADING_MSGS.length);
   renderLoaderQuote();
-  setLoadPct(4);
+  setLoadPct(3);
   clearInterval(loaderQuoteTimer);clearInterval(loaderPctTimer);
-  loaderQuoteTimer=setInterval(()=>{loaderQuoteIdx++;renderLoaderQuote()},2600);
-  loaderPctTimer=setInterval(()=>setLoadPct(Math.min(98,loaderPct+4)),180);
+  loaderQuoteTimer=setInterval(()=>{loaderQuoteIdx++;renderLoaderQuote()},LOAD_MSG_MS);
+  // Der Balken ist auf dieselben zehn Sekunden getaktet, damit er nicht
+  // sekundenlang bei 98 % steht.
+  loaderPctTimer=setInterval(()=>setLoadPct(Math.min(98,loaderPct+1.9)),200);
 }
 function stopEKG(){
   if(!loaderActive)return;
@@ -2282,7 +2337,7 @@ async function startRigoOrig(terminNumber){
   goTo('s3');startEKG();
   const lt=document.getElementById('loadingText');
 
-  await new Promise(r=>setTimeout(r,3000));
+  await new Promise(r=>setTimeout(r,MIN_LOAD_POOL_MS));
   state.questions=termin.questions.map((q,i)=>({
     id:i+1,topic:'Termin '+terminNumber,question:q.question,
     options:q.options,correct:q.correct,explanation:q.explanation||''
@@ -2717,7 +2772,7 @@ function showLoadingError(err){
   const info=err&&err.userInfo?err.userInfo:{title:'Das hat nicht geklappt.',detail:(err&&err.message)||''};
   loaderError=true;
   const gt=document.getElementById('genText');
-  if(gt)gt.textContent=info.title;
+  if(gt){gt.textContent=info.title;gt.style.animation='none'}
   const lt=document.getElementById('loadingText');
   if(lt){lt.classList.remove('load-msg');lt.style.cssText='font-size:13px;line-height:20px;color:var(--app-mute);margin-top:12px';lt.textContent=info.detail||''}
   const ld=document.getElementById('loadingDetail');
@@ -2731,6 +2786,8 @@ function showLoadingError(err){
 }
 function clearLoadingError(){
   loaderError=false;
+  const gt=document.getElementById('genText');
+  if(gt)gt.style.animation='';
   const lt=document.getElementById('loadingText');
   if(lt){lt.style.cssText='';lt.classList.add('load-msg');lt.textContent=''}
   const ld=document.getElementById('loadingDetail');
