@@ -11,19 +11,22 @@
 <style>
 /* ══════════════════════════════════════════════════════════════════════════
    Design-System „Modernist" — Tokens. Radius 0, 2px-Regeln.
-   Palette „Neon Physio": Navy traegt, Lime handelt, Cyan zeigt Physiologie.
+   Palette „Clinical Dark / Membrane": Cyan handelt, Lime depolarisiert,
+   Purple repolarisiert, Korall warnt.
    ══════════════════════════════════════════════════════════════════════════ */
 :root {
-  --color-bg: #0B1020;
-  --color-text: #F2F4EA;
-  --color-accent: #C7F36B;
-  --color-accent-2: #54D6E8;
-  --color-error: #FF6B6B;
-  --color-divider: color-mix(in srgb, #8993A8 62%, transparent);
-  --color-neutral-100: #121A2E;
-  --color-accent-100: color-mix(in srgb, #C7F36B 8%, #121A2E);
-  --color-accent-600: #D8F894;
-  --color-accent-700: #C7F36B;
+  --color-bg: #0B1117;
+  --color-text: #E8ECE9;
+  --color-accent: #35D6D0;
+  --color-accent-2: #A7E86B;
+  --color-accent-3: #C56CFF;
+  --color-error: #FF7165;
+  --color-disabled: #4A555A;
+  --color-divider: color-mix(in srgb, #829097 58%, transparent);
+  --color-neutral-100: #111C22;
+  --color-accent-100: color-mix(in srgb, #35D6D0 8%, #111C22);
+  --color-accent-600: #A7E86B;
+  --color-accent-700: #35D6D0;
   --font-heading: "Archivo", system-ui, sans-serif;
   --font-body: "Archivo", system-ui, sans-serif;
 
@@ -32,17 +35,19 @@
   --app-bg: var(--color-bg);
   --app-panel: var(--color-neutral-100);
   --app-ink: var(--color-text);
-  --app-mute: #8993A8;
+  --app-mute: #829097;
   --app-rule: var(--color-divider);
   --app-accent: var(--color-accent);
   --app-accent-2: var(--color-accent-2);
   --app-accent-ink: var(--color-bg);
   --app-accent-soft: var(--color-accent-100);
-  /* Richtig ist ein Hoehepunkt, falsch eine Warnung — beides kommt aus der
-     Palette, statt eigene Gruen- und Rottoene zu erfinden. */
-  --app-ok: var(--color-accent);
+  /* Physiologisch codiert statt dekorativ: richtig depolarisiert (Lime),
+     gerade angekreuzt ist aktiv (Purple), falsch warnt (Korall). */
+  --app-ok: var(--color-accent-2);
+  --app-active: var(--color-accent-3);
   --app-warn: var(--color-error);
   --app-error: var(--color-error);
+  --app-disabled: var(--color-disabled);
 }
 /* Alt-Aliase: die dynamisch erzeugten Markup-Strings (Rangleiter, Ranking,
    Heatmap, Verlauf) benutzen diese Namen. Sie zeigen jetzt auf die App-Tokens,
@@ -108,7 +113,7 @@ img { display: block; max-width: 100%; }
   border: 2px solid transparent; padding: 9px 14px; border-radius: 0;
 }
 .btn:hover { text-decoration: none; }
-.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn:disabled { opacity: 1; cursor: not-allowed; color: var(--app-disabled); border-color: var(--app-disabled); background: transparent; }
 .btn-primary { background: var(--app-accent); color: var(--app-accent-ink); border-color: var(--app-accent); }
 .btn-primary:hover { background: var(--color-accent-600); border-color: var(--color-accent-600); color: var(--app-accent-ink); }
 .btn-secondary { border-color: var(--app-rule); color: var(--app-ink); }
@@ -296,7 +301,7 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
 #ekgLoader text { font-family: var(--font-body); }
 .ekg-muscle   { fill: color-mix(in srgb, var(--app-ink) 7%, var(--app-bg)); stroke: color-mix(in srgb, var(--app-ink) 34%, transparent); }
 .ekg-chamber  { fill: var(--app-accent); stroke: color-mix(in srgb, var(--app-ink) 26%, transparent); }
-.ekg-repol    { fill: var(--app-accent-2); }
+.ekg-repol    { fill: var(--color-accent-3); }
 .ekg-idle     { stroke: color-mix(in srgb, var(--app-ink) 40%, transparent); }
 .ekg-live     { stroke: var(--app-accent); }
 .ekg-node     { fill: var(--app-accent); }
@@ -362,8 +367,8 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
   display: flex; align-items: center; justify-content: center;
   font-size: 11px; color: var(--app-accent); margin-top: 3px;
 }
-.option-row.checked { border-color: var(--app-accent); background: var(--app-accent-soft); }
-.option-row.checked .opt-cb { border-color: var(--app-accent); }
+.option-row.checked { border-color: var(--app-active); background: color-mix(in srgb, var(--app-active) 10%, transparent); }
+.option-row.checked .opt-cb { border-color: var(--app-active); color: var(--app-active); }
 .opt-label { font-size: 15.5px; line-height: 24px; color: var(--app-ink); }
 .opt-letter { font-family: var(--font-heading); font-weight: 800; font-size: 13px; color: var(--app-accent); margin-right: 8px; }
 .option-row.rv-correct { border-color: var(--app-ok); background: color-mix(in srgb, var(--app-ok) 12%, transparent); }
@@ -374,7 +379,7 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
 .fb-row { display: flex; gap: 12px; align-items: baseline; justify-content: space-between; flex-wrap: wrap; }
 .fb-status { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-family: var(--font-heading); font-weight: 800; }
 .fb-status.full { color: var(--app-ok); }
-.fb-status.partial { color: var(--app-accent-2); }
+.fb-status.partial { color: var(--app-active); }
 .fb-status.wrong { color: var(--app-error); }
 .fb-score { font-size: 12px; color: var(--app-mute); font-feature-settings: 'tnum' 1; }
 .fb-explain { font-size: 14.5px; line-height: 24px; color: var(--app-mute); margin-top: 8px; max-width: 62ch; }
@@ -2067,7 +2072,7 @@ async function loadWochentest(){
       state.wtText=data.transcript;
       const meta=data.meta||{};
       const date=meta.date?new Date(meta.date).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'}):'';
-      document.getElementById('wtStatus').innerHTML=`<span style="color:var(--green2,#C7F36B)">●</span> ${meta.title||'Material bereit'}${date?' — aktualisiert am '+date:''} (${meta.size||'?'} KB)`;
+      document.getElementById('wtStatus').innerHTML=`<span style="color:var(--green2,#A7E86B)">●</span> ${meta.title||'Material bereit'}${date?' — aktualisiert am '+date:''} (${meta.size||'?'} KB)`;
       document.getElementById('wtReady').style.display='block';
       document.getElementById('wtEmpty').style.display='none';
       // Show admin button if admin key stored
@@ -2928,7 +2933,7 @@ function launchConfetti(){
   const canvas=document.getElementById('particleCanvas');
   const ctx=canvas.getContext('2d');
   canvas.width=window.innerWidth;canvas.height=window.innerHeight;
-  const colors=['#C7F36B','#54D6E8','#D8F894','#F2F4EA','#8993A8','#FF6B6B','#ffd700'];
+  const colors=['#35D6D0','#A7E86B','#C56CFF','#E8ECE9','#829097','#FF7165','#ffd700'];
   for(let i=0;i<150;i++){
     particles.push({
       x:Math.random()*canvas.width,y:Math.random()*canvas.height*-1,
@@ -3483,8 +3488,8 @@ var digestUntil=0;
     if(paletteCache)return paletteCache;
     var cs=getComputedStyle(document.documentElement);
     paletteCache={
-      accent:cs.getPropertyValue('--app-accent').trim()||'#C7F36B',
-      ink:'242,244,234'
+      accent:cs.getPropertyValue('--app-accent').trim()||'#35D6D0',
+      ink:'232,236,233'
     };
     return paletteCache;
   }

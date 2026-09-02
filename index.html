@@ -11,27 +11,34 @@
 <style>
 /* ── Design-System „Modernist" — Tokens ────────────────────────────────── */
 :root {
-  /* Neon Physio — dunkles Navy traegt die Seite, Lime handelt (Buttons,
-     CTAs, aktive Elemente), Cyan bleibt den physiologischen Akzenten
-     vorbehalten. Nur ein Modus, deshalb keine zweite Wertetafel. */
-  --color-bg: #0B1020;
-  --color-surface: #121A2E;
-  --color-text: #F2F4EA;
-  --color-muted: #8993A8;
-  --color-accent: #C7F36B;
-  --color-accent-2: #54D6E8;
-  --color-error: #FF6B6B;
-  --color-divider: color-mix(in srgb, #8993A8 62%, transparent);
-  --color-neutral-100: #121A2E;
-  /* Akzentflaechen bleiben Navy, nur mit einem Hauch Lime darin — sonst
-     schluckt eine volle Limeflaeche den halben Bildschirm. */
-  --color-accent-100: color-mix(in srgb, #C7F36B 8%, #121A2E);
-  --color-accent-600: #D8F894;
-  --color-accent-700: #C7F36B;
-  /* Lime traegt navyfarbene Schrift mit 14:1 — ein eigener UI-Ton wie beim
-     alten Rot ist hier nicht noetig. */
-  --color-accent-ui: #C7F36B;
-  --color-nav: #121A2E;
+  /* „Clinical Dark / Membrane" — Laborinterface statt Krankenhaus.
+
+     Die Farben sind physiologisch codiert, nicht dekorativ:
+       Cyan   = Signal, Ruhepotential, alles Handelnde (Buttons, CTAs)
+       Lime   = Depolarisation, richtig, aktive Zustaende — sparsam
+       Purple = Repolarisation, „gerade aktiv" — selten
+       Korall = falsch, Warnung
+     Nur ein Modus, deshalb keine zweite Wertetafel. */
+  --color-bg: #0B1117;
+  --color-surface: #111C22;
+  --color-text: #E8ECE9;
+  --color-muted: #829097;
+  --color-accent: #35D6D0;
+  --color-accent-2: #A7E86B;
+  --color-accent-3: #C56CFF;
+  --color-error: #FF7165;
+  --color-disabled: #4A555A;
+  --color-divider: color-mix(in srgb, #829097 58%, transparent);
+  --color-neutral-100: #111C22;
+  /* Akzentflaechen bleiben Petrol mit einem Hauch Cyan — eine volle
+     Cyanflaeche schluckte sonst den halben Bildschirm. */
+  --color-accent-100: color-mix(in srgb, #35D6D0 8%, #111C22);
+  /* Hover depolarisiert: Cyan wird Lime. */
+  --color-accent-600: #A7E86B;
+  --color-accent-700: #35D6D0;
+  /* Cyan traegt dunkle Schrift mit 11:1 — ein eigener UI-Ton ist nicht noetig. */
+  --color-accent-ui: #35D6D0;
+  --color-nav: #111C22;
   --font-heading: "Archivo", system-ui, sans-serif;
   --font-body: "Archivo", system-ui, sans-serif;
   --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
@@ -66,7 +73,10 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
 .btn-primary { background: var(--color-accent-ui); color: var(--color-bg); }
 .btn-primary:hover { background: var(--color-accent-600); color: var(--color-bg); text-decoration: none; }
 .btn-primary:active { background: var(--color-accent-700); }
-.btn-secondary { border-color: var(--color-divider); }
+/* Sekundaer: durchsichtig mit Cyan-Kante */
+.btn-secondary { border-color: var(--color-accent); }
+/* Ein einziges Wort der Ueberschrift leuchtet — mehr nicht. */
+.hl { color: var(--color-accent); text-shadow: 0 0 26px color-mix(in srgb, var(--color-accent) 45%, transparent); }
 @media (hover: hover) { .btn-secondary:hover { background: color-mix(in srgb, var(--color-text) 7%, transparent); color: var(--color-text); text-decoration: none; } }
 .btn-ghost { color: var(--color-accent-700); padding-inline: var(--space-1); }
 @media (hover: hover) { .btn-ghost:hover { background: color-mix(in srgb, var(--color-accent) 10%, transparent); text-decoration: none; } }
@@ -341,7 +351,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     <div class="reel reel-t" id="reelH1"><div class="reel-in">
     <h1 id="heroTitle" style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(34px, 5vw, 64px); line-height: 1.04; letter-spacing: -0.03em; margin: 0 0 0 -0.058em; max-width: 24ch">
       <span style="display: block">Das dritte Semester kommt,</span>
-      <span style="display: block">und mit ihm die Wochentests.</span>
+      <span style="display: block">und mit ihm die <span class="hl">Wochentests</span>.</span>
     </h1>
     </div></div>
 
@@ -360,9 +370,9 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
   <section aria-label="Aktionspotential" style="max-width: 1240px; margin: 0 auto; padding: clamp(22px, 3.5vw, 40px) clamp(20px, 5vw, 72px) 0">
     <div style="position: relative; border-top: 2px solid var(--color-divider); border-bottom: 2px solid var(--color-divider)">
       <canvas id="heroCanvas" class="hero-canvas"></canvas>
-      <div style="position: absolute; right: 0; top: 8px; display: flex; gap: 16px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted); font-feature-settings: 'tnum' 1; pointer-events: none">
+      <div style="position: absolute; right: 0; top: 8px; display: flex; gap: 14px; align-items: baseline; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted); font-feature-settings: 'tnum' 1; pointer-events: none">
         <span>Membranpotential</span>
-        <span id="vmValue" style="color: var(--color-accent-700); text-transform: none; letter-spacing: 0.04em">−70 mV</span>
+        <span id="vmValue" style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: clamp(17px, 4.6vw, 26px); font-weight: 600; line-height: 1; color: var(--color-accent); text-transform: none; letter-spacing: 0.02em; text-shadow: 0 0 22px color-mix(in srgb, var(--color-accent) 40%, transparent)">−70 mV</span>
       </div>
     </div>
     <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 12px">
@@ -576,15 +586,15 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
    ═══════════════════════════════════════════════════════════════════════════ */
 (function () {
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // Feste Palette: Tinte, Lime als Akzent, Cyan fuer die physiologischen
-  // Marker (offene Kanaele, Schwellenpotential, Filtration).
+  // Feste Palette: Cyan zeichnet das Signal (Kurve, Teilchen, EKG), Lime
+  // markiert die Depolarisation (Schwelle, offene Kanaele, Relevantes).
   var accent, INK, ACC, ACCT;
   function readPalette() {
     var cs = getComputedStyle(document.documentElement);
-    accent = cs.getPropertyValue('--color-accent').trim() || '#C7F36B';
-    INK = '242,244,234';
-    ACC = '199,243,107';
-    ACCT = '84,214,232';
+    accent = cs.getPropertyValue('--color-accent').trim() || '#35D6D0';
+    INK = '232,236,233';
+    ACC = '167,232,107';
+    ACCT = '167,232,107';
   }
   readPalette();
   window.orakelRepaint = function () { readPalette(); dims = {}; paint(true); };
