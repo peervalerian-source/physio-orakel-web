@@ -95,6 +95,11 @@ a:hover { text-decoration: underline; }
 img { display: block; max-width: 100%; }
 
 @keyframes marchDash { to { background-position: 18px 0, 100% -18px, -18px 100%, 0 18px; } }
+/* Ein Ring, der einmal nach aussen laeuft — die Auswahl „feuert". */
+@keyframes segFire {
+  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--app-accent) 60%, transparent); }
+  100% { box-shadow: 0 0 0 13px color-mix(in srgb, var(--app-accent) 0%, transparent); }
+}
 @keyframes softPulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) {
@@ -231,8 +236,8 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
   all: unset; cursor: pointer; flex: none; display: block; position: relative;
   width: 44px; height: 24px; border: 2px solid var(--app-rule); background: transparent;
 }
-.sw > span { position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; background: var(--app-rule); transition: left 140ms ease; }
-.sw.on { border-color: var(--app-accent); background: var(--app-accent); }
+.sw > span { position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; background: var(--app-rule); transition: left 190ms cubic-bezier(.2,.9,.3,1.4), background 140ms; }
+.sw.on { border-color: var(--app-accent); background: var(--app-accent); animation: segFire 520ms ease-out 1; }
 .sw.on > span { left: 22px; background: var(--app-accent-ink); }
 .blk-btn { all: unset; cursor: pointer; flex: 1 1 auto; display: flex; gap: 12px; align-items: baseline; justify-content: space-between; min-width: 0; }
 .blk-title { font-family: var(--font-heading); font-weight: 800; font-size: 17px; line-height: 24px; color: var(--app-ink); }
@@ -247,22 +252,42 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
 @media (hover: hover) { .pt:hover { background: var(--app-panel); } }
 .pt:focus-visible { outline: 2px solid var(--app-accent); outline-offset: -2px; }
 .pt-sw { display: block; width: 34px; height: 18px; flex: none; margin-top: 3px; border: 2px solid var(--app-rule); position: relative; }
-.pt-sw > span { position: absolute; top: 1px; left: 1px; width: 12px; height: 12px; background: var(--app-rule); transition: left 130ms ease; }
-.pt-sw.on { border-color: var(--app-accent); background: var(--app-accent); }
+.pt-sw > span { position: absolute; top: 1px; left: 1px; width: 12px; height: 12px; background: var(--app-rule); transition: left 190ms cubic-bezier(.2,.9,.3,1.4), background 140ms; }
+.pt-sw.on { border-color: var(--app-accent); background: var(--app-accent); animation: segFire 520ms ease-out 1; }
+/* Der ganze gewaehlte Punkt bekommt einen Hauch Flaeche und eine Kante */
+.pt:has(.pt-sw.on) { background: color-mix(in srgb, var(--app-accent) 7%, transparent); box-shadow: inset 2px 0 0 var(--app-accent); }
 .pt-sw.on > span { left: 17px; background: var(--app-accent-ink); }
 .pt-nr { display: block; font-size: 12px; letter-spacing: 0.06em; color: var(--app-accent); font-feature-settings: 'tnum' 1; }
 .pt-title { display: block; font-size: 14.5px; line-height: 22px; color: var(--app-ink); margin-top: 2px; }
 
 /* ── Segmentierte Auswahl (Fragenzahl, Schwierigkeit, Methode) ─────────── */
-.seg { display: inline-flex; gap: 0; border: 2px solid var(--app-rule); flex-wrap: wrap; }
+.seg { display: inline-flex; gap: 0; border: 2px solid var(--app-rule); flex-wrap: wrap; background: var(--app-panel); }
 .seg > button {
-  all: unset; cursor: pointer; padding: 12px 24px;
+  all: unset; cursor: pointer; padding: 12px 24px; position: relative;
   font-family: var(--font-heading); font-weight: 800; font-size: 16px;
-  color: var(--app-ink); border-right: 2px solid var(--app-rule);
+  color: var(--app-mute); border-right: 2px solid var(--app-rule);
+  transition: color 140ms ease, background 140ms ease;
 }
 .seg > button:last-child { border-right: none; }
+/* Ruhezustand: nur eine Grundlinie unter der Schrift, wie ein Kanal, der
+   noch nichts sendet. */
+.seg > button::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+  background: var(--app-accent); transform: scaleX(0); transform-origin: left;
+  transition: transform 220ms ease;
+}
+@media (hover: hover) {
+  .seg > button:hover { color: var(--app-ink); }
+  .seg > button:hover::after { transform: scaleX(1); }
+}
 .seg > button:focus-visible { outline: 2px solid var(--app-accent); outline-offset: -2px; }
-.seg > button.on { background: var(--app-accent); color: var(--app-accent-ink); }
+/* Gewaehlt heisst depolarisiert: die Flaeche zuendet und ein Ring laeuft
+   einmal nach aussen. */
+.seg > button.on {
+  background: var(--app-accent); color: var(--app-accent-ink);
+  animation: segFire 560ms ease-out 1;
+}
+.seg > button.on::after { transform: scaleX(0); }
 .seg.seg-text > button { font-size: 13.5px; padding: 10px 18px; }
 .seg-label { display: block; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--app-mute); margin-bottom: 10px; }
 
@@ -286,6 +311,9 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
 .file-row .fr-size { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--app-accent); flex: none; }
 
 /* ── Ladescreen ────────────────────────────────────────────────────────── */
+/* Der Ladescreen nimmt den ganzen Bildschirm ein */
+.loader-stage { display: flex; flex-direction: column; min-height: calc(100svh - 96px); }
+.loader-box { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
 .pulse-dot { display: block; width: 12px; height: 12px; background: var(--app-accent); animation: softPulse 1.1s ease-in-out infinite; flex: none; }
 .load-bar { height: 8px; background: var(--app-panel); border: 2px solid var(--app-rule); margin-top: 4px; }
 .load-bar > span { display: block; height: 100%; background: var(--app-accent); width: 0; transition: width 200ms linear; }
@@ -296,9 +324,24 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
 .ekg-frame {
   margin-top: 22px; border: 2px solid var(--app-rule);
   background: var(--app-bg); padding: 10px clamp(6px, 2vw, 18px);
+  /* Der Rahmen legt sich um die Grafik, statt sich zu strecken — der
+     ganze Block steht dafuer mittig im Vollbild. */
+  flex: 0 1 auto; min-height: 0; display: flex; align-items: center;
 }
-#ekgLoader { display: block; width: 100%; height: auto; }
+.loader-svg { display: block; width: 100%; height: auto; max-height: 46svh; }
+.loader-svg[hidden] { display: none; }
 #ekgLoader text { font-family: var(--font-body); }
+
+/* ── Ladegrafik 2: Abfahrt auf dem EKG ──────────────────────────────────
+   Dieselbe Kurve, andere Lesart. Cyan ist die Piste, Lime faehrt. */
+.ski-slope { fill: color-mix(in srgb, var(--app-accent) 7%, transparent); }
+.ski-piste { stroke: color-mix(in srgb, var(--app-accent) 45%, transparent); }
+.ski-trace { stroke: var(--app-accent); }
+.ski-grid  { stroke: color-mix(in srgb, var(--app-accent) 14%, transparent); }
+.ski-ski   { stroke: var(--color-accent-2); }
+.ski-body  { stroke: var(--color-accent-2); }
+.ski-head  { fill: var(--color-accent-2); }
+.ski-flake { fill: color-mix(in srgb, var(--app-ink) 45%, transparent); }
 .ekg-muscle   { fill: color-mix(in srgb, var(--app-ink) 7%, var(--app-bg)); stroke: color-mix(in srgb, var(--app-ink) 34%, transparent); }
 .ekg-chamber  { fill: var(--app-accent); stroke: color-mix(in srgb, var(--app-ink) 26%, transparent); }
 .ekg-repol    { fill: var(--color-accent-3); }
@@ -697,15 +740,15 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
 
 <!-- ══ S3: Ladescreen ═════════════════════════════════════════════════════ -->
 <div id="s3" class="screen">
-  <section class="wrap" style="max-width:900px">
-    <button type="button" class="btn btn-ghost" onclick="goTo('s1')" style="color:var(--app-ink);font-size:12.5px;margin-bottom:22px">← Abbrechen</button>
-    <div style="border-top:2px solid var(--app-rule);border-bottom:2px solid var(--app-rule);padding:clamp(28px,4vw,44px) 0 clamp(24px,4vw,36px)">
+  <section class="wrap loader-stage" style="max-width:1000px">
+    <button type="button" class="btn btn-ghost" onclick="goTo('s1')" style="color:var(--app-ink);font-size:12.5px;margin-bottom:22px;align-self:flex-start">← Abbrechen</button>
+    <div class="loader-box" style="border-top:2px solid var(--app-rule);border-bottom:2px solid var(--app-rule);padding:clamp(20px,3vw,36px) 0 clamp(18px,3vw,28px)">
       <div style="display:flex;gap:14px;align-items:center">
         <span class="pulse-dot" id="loaderDot"></span>
         <h1 id="genText" style="font-size:clamp(22px,3vw,34px);line-height:1.08;letter-spacing:-0.02em;color:var(--app-ink)">Generiere Fragen…</h1>
       </div>
       <div class="ekg-frame">
-        <svg id="ekgLoader" viewBox="0 0 760 512" xmlns="http://www.w3.org/2000/svg" role="img"
+        <svg id="ekgLoader" class="loader-svg" viewBox="0 0 760 512" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="Ladeanimation: Erregungsleitung des Herzens mit synchroner EKG-Kurve">
           <defs>
             <radialGradient id="ekgGlow" cx="50%" cy="50%" r="50%">
@@ -918,6 +961,49 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
                 <animate attributeName="opacity" dur="3.2s" repeatCount="indefinite"
                   values=".3;.3;1;1;.3;.3" keyTimes="0;.50;.54;.65;.71;1"/></text>
             </g>
+          </g>
+        </svg>
+<svg id="skiLoader" class="loader-svg" viewBox="0 0 760 512" xmlns="http://www.w3.org/2000/svg"
+             xmlns:xlink="http://www.w3.org/1999/xlink" role="img" hidden
+             aria-label="Ladeanimation: eine Figur faehrt auf Skiern eine EKG-Kurve hinunter">
+          <defs>
+            <pattern id="skiGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path class="ski-grid" d="M20 0 L0 0 0 20" fill="none" stroke-width="1"/>
+            </pattern>
+            <path id="skiPath" d="M 0 300 L 18 300 Q 32 282 46 300 L 64 300 L 72 312 L 82 186 L 92 336 L 102 300 L 122 300 Q 140 270 158 300 L 190 300 L 208 300 Q 222 282 236 300 L 254 300 L 262 312 L 272 186 L 282 336 L 292 300 L 312 300 Q 330 270 348 300 L 380 300 L 398 300 Q 412 282 426 300 L 444 300 L 452 312 L 462 186 L 472 336 L 482 300 L 502 300 Q 520 270 538 300 L 570 300 L 588 300 Q 602 282 616 300 L 634 300 L 642 312 L 652 186 L 662 336 L 672 300 L 692 300 Q 710 270 728 300 L 760 300"/>
+          </defs>
+
+          <rect x="0" y="0" width="760" height="512" fill="url(#skiGrid)"/>
+
+          <!-- Der Hang unter der Kurve -->
+          <path class="ski-slope" d="M 0 300 L 18 300 Q 32 282 46 300 L 64 300 L 72 312 L 82 186 L 92 336 L 102 300 L 122 300 Q 140 270 158 300 L 190 300 L 208 300 Q 222 282 236 300 L 254 300 L 262 312 L 272 186 L 282 336 L 292 300 L 312 300 Q 330 270 348 300 L 380 300 L 398 300 Q 412 282 426 300 L 444 300 L 452 312 L 462 186 L 472 336 L 482 300 L 502 300 Q 520 270 538 300 L 570 300 L 588 300 Q 602 282 616 300 L 634 300 L 642 312 L 652 186 L 662 336 L 672 300 L 692 300 Q 710 270 728 300 L 760 300 L 760 512 L 0 512 Z"/>
+          <!-- Die Piste selbst -->
+          <use href="#skiPath" xlink:href="#skiPath" class="ski-piste" fill="none" stroke-width="3"
+               stroke-linejoin="round" stroke-linecap="round"/>
+          <!-- Ein heller Abschnitt laeuft der Figur voraus -->
+          <use href="#skiPath" xlink:href="#skiPath" class="ski-trace" fill="none" stroke-width="3"
+               stroke-linejoin="round" stroke-linecap="round"
+               stroke-dasharray="120 1600" stroke-dashoffset="0">
+            <animate attributeName="stroke-dashoffset" from="0" to="-1720" dur="7s" repeatCount="indefinite"/>
+          </use>
+
+          <circle class="ski-flake" cx="90" cy="-12" r="2.5"><animate attributeName="cy" from="-12" to="524" dur="7.5s" begin="0s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.9;.9;0" dur="7.5s" begin="0s" repeatCount="indefinite"/></circle><circle class="ski-flake" cx="210" cy="-12" r="1.8"><animate attributeName="cy" from="-12" to="524" dur="9.0s" begin="1.2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.9;.9;0" dur="9.0s" begin="1.2s" repeatCount="indefinite"/></circle><circle class="ski-flake" cx="330" cy="-12" r="2.2"><animate attributeName="cy" from="-12" to="524" dur="6.6s" begin="2.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.9;.9;0" dur="6.6s" begin="2.4s" repeatCount="indefinite"/></circle><circle class="ski-flake" cx="470" cy="-12" r="1.6"><animate attributeName="cy" from="-12" to="524" dur="8.4s" begin="0.7s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.9;.9;0" dur="8.4s" begin="0.7s" repeatCount="indefinite"/></circle><circle class="ski-flake" cx="590" cy="-12" r="2.6"><animate attributeName="cy" from="-12" to="524" dur="7.0s" begin="3.1s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.9;.9;0" dur="7.0s" begin="3.1s" repeatCount="indefinite"/></circle><circle class="ski-flake" cx="690" cy="-12" r="1.9"><animate attributeName="cy" from="-12" to="524" dur="9.6s" begin="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.9;.9;0" dur="9.6s" begin="1.8s" repeatCount="indefinite"/></circle>
+
+          <!-- Die Figur: Fuesse auf der Linie, deshalb sitzt alles ueber y=0 -->
+          <g class="ski-figure">
+            <g class="ski-scale" transform="scale(1.7)">
+            <g class="ski-lean">
+              <path class="ski-ski" d="M -13 1 L 15 1 M 15 1 L 20 -3" fill="none" stroke-width="3" stroke-linecap="round"/>
+              <path class="ski-body" d="M -1 -9 L 3 -20 M 3 -20 L 10 -12 M 10 -12 L 13 -1 M 3 -20 L -4 -13 M -4 -13 L -8 -2 M -1 -9 L 6 -2"
+                    fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle class="ski-head" cx="4" cy="-26" r="5"/>
+              <animateTransform attributeName="transform" type="rotate"
+                values="-4;-11;4;-11;-4" keyTimes="0;.28;.42;.56;1" dur="1.75s" repeatCount="indefinite"/>
+            </g>
+            </g>
+            <animateMotion dur="7s" repeatCount="indefinite" rotate="0" calcMode="linear">
+              <mpath href="#skiPath" xlink:href="#skiPath"/>
+            </animateMotion>
           </g>
         </svg>
       </div>
@@ -1562,8 +1648,27 @@ function setLoadPct(p){
 // Ladescreen ist versteckt, bis er dran ist. Deshalb beim Einblenden einmal
 // anstossen. Beim Verlassen NICHT pausieren: danach bekaeme man die Uhr in
 // Chromium nicht wieder in Gang.
+// Zwei Ladegrafiken, die sich abwechseln: Erregungsleitung und Abfahrt.
+let loaderVariant=0;
+function pickLoader(){
+  const all=[document.getElementById('ekgLoader'),document.getElementById('skiLoader')].filter(Boolean);
+  if(!all.length)return null;
+  const active=all[loaderVariant%all.length];
+  loaderVariant++;
+  // Attribut statt Eigenschaft: `hidden` ist auf HTMLElement definiert, ein
+  // SVG-Element nimmt die Zuweisung stumm entgegen, ohne dass CSS greift.
+  all.forEach(svg=>{
+    if(svg===active)svg.removeAttribute('hidden');
+    else svg.setAttribute('hidden','');
+  });
+  return active;
+}
+function activeLoader(){
+  const all=[document.getElementById('ekgLoader'),document.getElementById('skiLoader')].filter(Boolean);
+  return all.find(svg=>!svg.hasAttribute('hidden'))||all[0]||null;
+}
 function ekgAnim(run){
-  const svg=document.getElementById('ekgLoader');
+  const svg=run?pickLoader():activeLoader();
   if(!svg||!svg.pauseAnimations)return;
   const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   try{
