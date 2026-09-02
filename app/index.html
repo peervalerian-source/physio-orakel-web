@@ -480,21 +480,45 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
 .deep-dive h4 { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--app-accent); margin-bottom: 8px; }
 
 /* ── Ergebnis ──────────────────────────────────────────────────────────── */
-.result-center { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
-.score-ring-wrap { position: relative; width: 156px; height: 156px; margin-bottom: 12px; }
-.score-number { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.score-pct { font-family: var(--font-heading); font-weight: 800; font-size: 34px; line-height: 1; font-feature-settings: 'tnum' 1; }
-.score-sublabel { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--app-mute); margin-top: 4px; }
-.grade-display { font-family: var(--font-heading); font-weight: 800; font-size: clamp(38px, 6vw, 64px); line-height: 1; }
-.grade-name { font-family: var(--font-heading); font-weight: 800; font-size: 20px; color: var(--app-ink); }
-.quote { font-size: 15px; line-height: 25px; color: var(--app-mute); margin-top: 10px; max-width: 52ch; }
-.total-pts { font-size: 13px; color: var(--app-mute); margin-top: 6px; font-feature-settings: 'tnum' 1; }
-.bi-item { display: grid; grid-template-columns: minmax(0, 200px) 1fr auto; gap: 14px; align-items: center; padding: 10px 0; border-bottom: 2px solid var(--app-rule); }
-.bi-label { font-size: 13.5px; color: var(--app-ink); overflow: hidden; text-overflow: ellipsis; }
-.bi-bar { height: 8px; background: var(--app-panel); border: 2px solid var(--app-rule); }
+/* ── Auswertung ───────────────────────────────────────────────────────
+   Ein Kopf statt vier Ebenen: links der Score, rechts Note, Punkte und
+   der Kommentar. Alles in einer begrenzten Spalte, damit das Ergebnis
+   nicht ueber die ganze Breite auseinanderfaellt. */
+.result-head {
+  display: grid; grid-template-columns: auto minmax(0, 1fr);
+  gap: 4px 44px; align-items: start;
+  max-width: 1100px; margin-top: 6px;
+  padding-bottom: 26px; border-bottom: 2px solid var(--app-rule);
+}
+.res-score { min-width: 132px; }
+.score-pct {
+  font-family: var(--font-heading); font-weight: 800;
+  font-size: clamp(44px, 7vw, 74px); line-height: 0.95;
+  font-feature-settings: 'tnum' 1; letter-spacing: -0.03em;
+}
+.score-sublabel { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--app-mute); margin-top: 6px; }
+.res-grade-line { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.grade-display { font-family: var(--font-heading); font-weight: 800; font-size: clamp(30px, 4.4vw, 46px); line-height: 1; }
+.grade-sep { font-family: var(--font-heading); font-weight: 800; font-size: 22px; color: var(--app-mute); }
+.grade-name { font-family: var(--font-heading); font-weight: 800; font-size: clamp(18px, 2.4vw, 24px); color: var(--app-ink); }
+.total-pts { font-size: 13px; color: var(--app-mute); margin-top: 8px; font-feature-settings: 'tnum' 1; }
+/* Der Kommentar steht direkt am Ergebnis, auf eigener Flaeche */
+.quote {
+  font-size: 15px; line-height: 25px; color: var(--app-ink);
+  margin: 16px 0 0; max-width: 52ch;
+  background: var(--app-panel); border-left: 2px solid var(--app-accent);
+  padding: 12px 16px;
+}
+.breakdown { max-width: 1100px; }
+/* Beschriftung und Wert in einer Zeile, der Balken darunter ueber die
+   volle Breite — der Wert klebt am Balken statt weit rechts zu stehen. */
+.bi-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 14px; align-items: baseline; padding: 0 0 18px; }
+.bi-label { font-size: 14px; color: var(--app-ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bi-bar { grid-column: 1 / -1; height: 6px; background: color-mix(in srgb, var(--app-ink) 12%, transparent); border: 0; }
 .bi-fill { height: 100%; background: var(--app-accent); transition: width 700ms ease; }
-.bi-pct { font-size: 12px; color: var(--app-mute); font-feature-settings: 'tnum' 1; min-width: 42px; text-align: right; }
+.bi-pct { font-size: 12.5px; color: var(--app-mute); font-feature-settings: 'tnum' 1; text-align: right; }
 .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+.btn-back { margin-top: 14px; padding-inline: 0; }
 .divider { height: 2px; background: var(--app-rule); margin: 32px 0; }
 
 /* ── Modale ────────────────────────────────────────────────────────────── */
@@ -617,8 +641,8 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
   .input { font-size: 16px; }
   .key-panel { padding: 22px 18px 20px; }
   .stats-panel { padding: 24px 16px 56px; }
-  .bi-item { grid-template-columns: minmax(0, 1fr) auto; }
-  .bi-bar { grid-column: 1 / -1; }
+  .result-head { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .bi-label { white-space: normal; }
   .q-text { max-width: none; }
   .options { gap: 12px; }
   .option-row { padding: 14px 14px; }
@@ -1082,36 +1106,34 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
 <div id="s5" class="screen">
   <section class="wrap">
     <span class="kicker">Auswertung</span>
-    <div class="result-center">
-      <div class="score-ring-wrap">
-        <svg viewBox="0 0 156 156" width="156" height="156">
-          <circle cx="78" cy="78" r="66" fill="none" stroke="var(--app-rule)" stroke-width="9"/>
-          <circle cx="78" cy="78" r="66" fill="none" stroke="var(--app-accent)" stroke-width="9"
-            stroke-dasharray="415" stroke-dashoffset="415" id="ringCircle" style="transition:none;transform:rotate(-90deg);transform-origin:78px 78px"/>
-        </svg>
-        <div class="score-number">
-          <div class="score-pct" id="resPct">0%</div>
-          <div class="score-sublabel">Score</div>
-        </div>
+    <div class="result-head">
+      <div class="res-score">
+        <div class="score-pct" id="resPct">0 %</div>
+        <div class="score-sublabel">Score</div>
       </div>
-      <div class="grade-display" id="resGrade">—</div>
-      <div class="grade-name" id="resGradeName">—</div>
-      <div class="quote" id="resQuote"></div>
-      <div class="total-pts" id="resTotalPts"></div>
+      <div class="res-meta">
+        <div class="res-grade-line">
+          <span class="grade-display" id="resGrade">—</span>
+          <span class="grade-sep">·</span>
+          <span class="grade-name" id="resGradeName">—</span>
+        </div>
+        <div class="total-pts" id="resTotalPts"></div>
+        <p class="quote" id="resQuote"></p>
+      </div>
     </div>
     <div class="breakdown" id="breakdown"></div>
     <div class="btn-row">
-      <button type="button" class="btn btn-primary" onclick="goTo('s1')">Zurück zur Startseite</button>
+      <button type="button" class="btn btn-primary" onclick="newRound()" title="Neue Runde mit denselben Einstellungen">Neue Runde · gleiche Einstellungen</button>
       <button type="button" class="btn btn-secondary" onclick="goTo(state.flowMode==='skript'?'sUpload':'s2')">Konfiguration anpassen</button>
-      <button type="button" class="btn btn-secondary" onclick="newRound()" title="Neue Runde mit denselben Einstellungen">Neue Runde · gleiche Einstellungen</button>
     </div>
+    <button type="button" class="btn btn-ghost btn-back" onclick="goTo('s1')">← Zurück zur Startseite</button>
     <div class="divider"></div>
     <div id="reviewSection"></div>
-    <div class="btn-row" style="padding-bottom:40px">
-      <button type="button" class="btn btn-primary" onclick="goTo('s1')">Zurück zur Startseite</button>
+    <div class="btn-row">
+      <button type="button" class="btn btn-primary" onclick="newRound()">Neue Runde · gleiche Einstellungen</button>
       <button type="button" class="btn btn-secondary" onclick="goTo(state.flowMode==='skript'?'sUpload':'s2')">Konfiguration anpassen</button>
-      <button type="button" class="btn btn-secondary" onclick="newRound()">Neue Runde · gleiche Einstellungen</button>
     </div>
+    <button type="button" class="btn btn-ghost btn-back" style="margin-bottom:40px" onclick="goTo('s1')">← Zurück zur Startseite</button>
   </section>
 </div>
 
@@ -3070,6 +3092,20 @@ Thema: ${q.topic||''}`;
 }
 
 // ── Result ────────────────────────────────────────────────────────────────────
+// „1.4" allein sagt niemandem etwas — wenn die Nummer im Themenkatalog steht,
+// kommt ihr Titel dazu.
+let _topicTitles=null;
+function topicLabel(topic){
+  if(!_topicTitles){
+    _topicTitles={};
+    TOPIC_GROUPS.forEach(g=>g.subs.forEach(s=>{_topicTitles[String(s.id).trim()]=s.text}));
+  }
+  const key=String(topic||'').trim();
+  const title=_topicTitles[key];
+  return title?key+' · '+title:(key||'Ohne Thema');
+}
+function escapeHtml(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
 function buildResult(pct,pts,max,topicScores){
   let grade,gname;
   if(pct>=87){grade=5;gname='Sehr gut'}else if(pct>=75){grade=4;gname='Gut'}
@@ -3077,18 +3113,22 @@ function buildResult(pct,pts,max,topicScores){
   else{grade=1;gname='Nicht genügend'}
   const col=grade>=4?'var(--success)':grade===3?'var(--warn)':'var(--red2)';
   const q=GRADE_QUOTES[grade],quote=q[Math.floor(Math.random()*q.length)];
-  document.getElementById('resPct').textContent=pct+'%';
+  document.getElementById('resPct').textContent=pct+' %';
   document.getElementById('resPct').style.color=col;
   document.getElementById('resGrade').textContent=grade;
   document.getElementById('resGrade').style.color=col;
   document.getElementById('resGradeName').textContent=gname;
   document.getElementById('resQuote').textContent=quote;
   document.getElementById('resTotalPts').textContent=pts.toFixed(2).replace('.',',')+' / '+max.toFixed(2).replace('.',',')+' Punkte';
-  const circ=2*Math.PI*66;
-  setTimeout(()=>{const ring=document.getElementById('ringCircle');ring.style.transition='stroke-dashoffset 1.3s cubic-bezier(.4,0,.2,1)';ring.setAttribute('stroke-dasharray',circ);ring.setAttribute('stroke-dashoffset',circ*(1-pct/100));ring.setAttribute('stroke',col)},150);
   const bd=document.getElementById('breakdown');
-  bd.innerHTML='<div class="section-label">Aufschlüsselung nach Thema</div>';
-  Object.entries(topicScores).forEach(([topic,{pts:p,max:m}])=>{const tp=Math.round(p/m*100);const row=document.createElement('div');row.className='bi-item';row.innerHTML=`<div class="bi-label">${topic}</div><div class="bi-bar"><div class="bi-fill" style="width:0%" data-t="${tp}"></div></div><div class="bi-pct">${tp}%</div>`;bd.appendChild(row)});
+  bd.innerHTML='<div class="section-label">Themenbereiche</div>';
+  Object.entries(topicScores).forEach(([topic,{pts:p,max:m}])=>{
+    const tp=Math.round(p/m*100);
+    const row=document.createElement('div');row.className='bi-item';
+    // Beschriftung und Wert in einer Zeile, der Balken darunter.
+    row.innerHTML=`<div class="bi-label">${escapeHtml(topicLabel(topic))}</div><div class="bi-pct">${tp} %</div><div class="bi-bar"><div class="bi-fill" style="width:0%" data-t="${tp}"></div></div>`;
+    bd.appendChild(row);
+  });
   setTimeout(()=>document.querySelectorAll('.bi-fill').forEach(el=>el.style.width=el.dataset.t+'%'),300);
   const rv=document.getElementById('reviewSection');
   rv.innerHTML='<div class="section-label">Fragenübersicht</div>';
@@ -3156,7 +3196,6 @@ function newRound(){
   restoreQuizConfig();
   state.questions=[];state.userAnswers={};state.evaluated=false;state.currentQuestionIndex=0;
   stopExamTimer();stopParticles();updateStreakDisplay(0);
-  const ring=document.getElementById('ringCircle');ring.style.transition='none';ring.setAttribute('stroke-dashoffset','415');
   document.getElementById('evalBtn').textContent='Auswerten';document.getElementById('evalBtn').disabled=false;
   document.getElementById('startBtn').disabled=false;
   if(state.isRigoOrig&&state.rigoOrigTermin){startRigoOrig(state.rigoOrigTermin)}
