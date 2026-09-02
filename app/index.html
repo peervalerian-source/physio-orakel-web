@@ -325,6 +325,21 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
 .seg.seg-text > button { font-size: 13.5px; padding: 10px 18px; }
 .seg-label { display: block; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--app-mute); margin-bottom: 10px; }
 
+/* ── Wochentest: Wochenraster ─────────────────────────────────────────────
+   Der .seg-Streifen traegt 13 Schalter nicht — auf schmalen Schirmen bricht
+   er ausgefranst um. Ein Raster bricht sauber. */
+.wk-weeks { display: grid; grid-template-columns: repeat(auto-fill, minmax(54px, 1fr)); gap: 8px; }
+.wk-weeks > button {
+  all: unset; cursor: pointer; text-align: center; padding: 11px 6px;
+  border: 2px solid var(--app-rule); color: var(--app-ink);
+  font-family: var(--font-heading); font-weight: 800; font-size: 14px;
+  font-feature-settings: 'tnum' 1;
+  transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease;
+}
+.wk-weeks > button:hover { border-color: var(--app-accent); }
+.wk-weeks > button.on { background: var(--app-accent); border-color: var(--app-accent); color: var(--app-accent-ink); }
+.wk-weeks > button:focus-visible { outline: 2px solid var(--app-accent); outline-offset: 2px; }
+
 /* ── Upload ────────────────────────────────────────────────────────────── */
 .dropzone {
   display: block; margin-top: 28px; cursor: pointer; padding: clamp(28px, 5vw, 52px) 28px;
@@ -742,9 +757,9 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
   <section class="wrap">
     <button type="button" class="btn btn-ghost" onclick="goTo('s1')" style="color:var(--app-ink);font-size:12.5px;margin-bottom:22px">← Zurück</button>
     <span class="kicker">Altfragen üben</span>
-    <h1 class="screen-h1">Welche Punkte?</h1>
+    <h1 class="screen-h1" id="s2Title">Welche Punkte?</h1>
 
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;align-items:center">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;align-items:center" id="topicTools">
       <button type="button" class="btn btn-secondary" onclick="selectAllTopics()" style="font-size:12.5px">Alle wählen</button>
       <button type="button" class="btn btn-ghost" onclick="selectNoTopics()" style="color:var(--app-ink);font-size:12.5px">Auswahl leeren</button>
       <span style="font-size:13px;color:var(--app-mute)" id="selCountText">noch nichts gewählt</span>
@@ -764,6 +779,7 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
           <button type="button" data-cnt="5" class="on" onclick="selectCount(this,'5')">5</button>
           <button type="button" data-cnt="10" onclick="selectCount(this,'10')">10</button>
           <button type="button" data-cnt="20" onclick="selectCount(this,'20')">20</button>
+          <button type="button" data-cnt="all" id="cntAllBtn" style="display:none" onclick="selectCount(this,'all')">Alle</button>
         </div>
       </div>
       <div id="diffSection">
@@ -776,13 +792,48 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
     </div>
     <p style="font-size:12.5px;line-height:20px;color:var(--app-mute);margin:10px 0 0;max-width:60ch" id="poolKindHint"></p>
 
+    <!-- Wochentest: statt Themenkatalog wird nach Semester und Testwoche
+         gewaehlt. Sichtbar nur, wenn die Datenbank „Wochentest" laeuft. -->
+    <div id="wkPanel" style="display:none">
+      <div style="margin-top:22px;display:flex;gap:20px 34px;flex-wrap:wrap;align-items:flex-start">
+        <div>
+          <span class="seg-label">Semester</span>
+          <div class="seg seg-text" id="wkSemSeg">
+            <button type="button" data-sem="Herbst" class="on" onclick="wkSetSemester('Herbst')">Herbst · Physio I</button>
+            <button type="button" data-sem="Frühling" onclick="wkSetSemester('Frühling')">Frühling · Physio II</button>
+          </div>
+        </div>
+        <div>
+          <span class="seg-label">Fragenherkunft</span>
+          <div class="seg seg-text" id="wkSourceSeg">
+            <button type="button" data-src="beide" class="on" onclick="wkSetSource('beide')">Beide</button>
+            <button type="button" data-src="umformuliert" onclick="wkSetSource('umformuliert')">Nur Altfragen</button>
+            <button type="button" data-src="neu" onclick="wkSetSource('neu')">Nur neue</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:24px">
+        <span class="seg-label">Testwoche</span>
+        <div class="wk-weeks" id="wkWeekSeg"></div>
+      </div>
+
+      <div style="margin-top:24px">
+        <span class="seg-label">Testfenster</span>
+        <div class="seg seg-text" id="wkWindowSeg"></div>
+        <p style="font-size:12.5px;line-height:20px;color:var(--app-mute);margin:10px 0 0;max-width:64ch" id="wkWindowHint"></p>
+      </div>
+
+      <div id="wkWeekArea" style="margin-top:24px;border-top:2px solid var(--app-rule)"></div>
+    </div>
+
     <div id="poolStatusWrap" style="margin-top:16px"></div>
 
     <div id="topicArea" style="margin-top:26px;border-top:2px solid var(--app-rule)"></div>
 
     <div style="margin-top:30px;display:flex;gap:12px 24px;flex-wrap:wrap;align-items:center;justify-content:flex-end">
       <span style="font-size:13px;color:var(--app-mute)" id="startHint">Wähle mindestens einen Punkt.</span>
-      <button type="button" class="btn btn-primary btn-large" id="startBtn" onclick="startQuiz()" disabled>Quiz starten</button>
+      <button type="button" class="btn btn-primary btn-large" id="startBtn" onclick="startFromConfig()" disabled>Quiz starten</button>
     </div>
   </section>
 </div>
@@ -1221,7 +1272,6 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
           <span class="seg-label">Ziel</span>
           <div class="seg seg-text" id="poolTargetSeg">
             <button type="button" data-target="allgemein" class="on" onclick="setPoolTarget('allgemein')">Physiologie allgemein</button>
-            <button type="button" data-target="wochentest" onclick="setPoolTarget('wochentest')">Wochentest</button>
           </div>
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
@@ -1501,7 +1551,7 @@ const MIN_LOAD_API_MS=2*LOAD_MSG_MS;
 // ── State ─────────────────────────────────────────────────────────────────────
 const state={
   fileText:'',fileName:'',uploadFiles:[],
-  wtText:'',isWochentest:false,flowMode:'',
+  wtText:'',isWochentest:false,isWeekTest:false,flowMode:'',
   poolText:'',poolName:'',parsedPool:[],
   poolKind:'allgemein',
   pools:{allgemein:{text:'',parsed:[],meta:null},wochentest:{text:'',parsed:[],meta:null}},rigoOriginal:[],isRigoOrig:false,rigoOrigTermin:null,
@@ -1893,11 +1943,12 @@ function renderPoolStatus(meta){
 const POOL_LABELS={allgemein:'Physiologie allgemein',wochentest:'Wochentest'};
 const POOL_HINTS={
   allgemein:'Die grosse Sammlung am Vorlesungsstoff entlang.',
-  wochentest:'Fragen im Zuschnitt des kommenden Wochentests.'
+  wochentest:'Nach Testwoche statt nach Themenkatalog: gefragt wird der Stoff der zwei Wochen vor dem Test.'
 };
 async function loadPoolFromServer(){
   if(!hasApiKey)return;
-  await Promise.all(Object.keys(state.pools).map(loadOnePool));
+  // „wochentest" kommt aus wochentest-fragen.json, nicht mehr aus KV.
+  await Promise.all(Object.keys(state.pools).filter(k=>k!=='wochentest').map(loadOnePool));
   applyPoolKind();
 }
 async function loadOnePool(kind){
@@ -1923,7 +1974,27 @@ function applyPoolKind(){
   const hint=document.getElementById('poolKindHint');
   if(hint)hint.textContent=POOL_HINTS[state.poolKind]||'';
   renderPoolStatus(slot.meta);
+  applyPoolKindPanels();
   updateSummary();
+}
+// „Physiologie allgemein" waehlt Themenkatalogpunkte, „Wochentest" waehlt
+// Wochen. Beides auf demselben Screen, aber nie gleichzeitig.
+function applyPoolKindPanels(){
+  const isWk=state.poolKind==='wochentest';
+  const show=(id,on)=>{const el=document.getElementById(id);if(el)el.style.display=on?'':'none'};
+  show('topicTools',!isWk);
+  show('poolStatusWrap',!isWk);
+  show('topicArea',!isWk);
+  show('wkPanel',isWk);
+  const t=document.getElementById('s2Title');
+  if(t)t.textContent=isWk?'Welche Woche wird geprüft?':'Welche Punkte?';
+  const ab=document.getElementById('cntAllBtn');
+  if(ab)ab.style.display=isWk?'':'none';
+  // „Alle" gibt es nur im Wochentest — sonst zurueck auf einen echten Wert.
+  if(!isWk&&state.count==='all'){
+    state.count='10';
+    document.querySelectorAll('[data-cnt]').forEach(c=>c.classList.toggle('on',c.dataset.cnt==='10'));
+  }
 }
 function setPoolKind(kind){
   if(!state.pools[kind])return;
@@ -2426,7 +2497,7 @@ async function startRigoOrig(terminNumber){
   if(!hasApiKey){openKeyModal();return}
   const termin=(state.rigoOriginal||[]).find(t=>t.number===terminNumber);
   if(!termin||!termin.questions.length)return;
-  state.isRigoOrig=true;state.isWochentest=false;state.rigoOrigTermin=terminNumber;
+  state.isRigoOrig=true;state.isWochentest=false;state.isWeekTest=false;state.rigoOrigTermin=terminNumber;
   state.flowMode='rigoorig';state.examMode=false;state.sourceMode='alt';state.altMode='exact';
   state.count=String(termin.questions.length);state.difficulty='normal';
   saveQuizConfig();
@@ -2446,7 +2517,7 @@ async function startRigoOrig(terminNumber){
 async function startWochentest(){
   if(!hasApiKey){openKeyModal();return}
   if(!state.wtText){alert('Kein Wochentest-Material vorhanden.');return}
-  state.isWochentest=true;state.isRigoOrig=false;
+  state.isWochentest=true;state.isRigoOrig=false;state.isWeekTest=false;
   saveQuizConfig();
   const n=10;
   const hard=wtDifficulty==='hard';
@@ -2632,15 +2703,20 @@ function updateSummary(){
     :sel===total?'alle Punkte gewählt'
     :sel===1?'1 Punkt gewählt':sel+' Punkte gewählt';
 
-  const n=state.examMode?20:parseInt(state.count||'5',10);
-  const hint=document.getElementById('startHint');
-  const noPool=state.sourceMode==='alt'&&!(state.parsedPool&&state.parsedPool.length);
-  if(hint)hint.textContent=noPool?('In „'+(POOL_LABELS[state.poolKind]||'')+'“ liegen noch keine Fragen.')
-    :sel===0?'Wähle mindestens einen Punkt.'
-    :sel===total?n+' Fragen aus allen Punkten'
-    :n+' Fragen aus '+(sel===1?'einem Punkt':sel+' Punkten');
-  const sb=document.getElementById('startBtn');
-  if(sb)sb.disabled=sel===0||noPool;
+  const n=state.examMode?20:(parseInt(state.count,10)||5);
+  if(state.poolKind==='wochentest'&&state.flowMode!=='skript'){
+    // Hinweiszeile und Startknopf gehoeren im Wochentest der Wochenauswahl.
+    if(typeof wkRefresh==='function')wkRefresh();
+  }else{
+    const hint=document.getElementById('startHint');
+    const noPool=state.sourceMode==='alt'&&!(state.parsedPool&&state.parsedPool.length);
+    if(hint)hint.textContent=noPool?('In „'+(POOL_LABELS[state.poolKind]||'')+'“ liegen noch keine Fragen.')
+      :sel===0?'Wähle mindestens einen Punkt.'
+      :sel===total?n+' Fragen aus allen Punkten'
+      :n+' Fragen aus '+(sel===1?'einem Punkt':sel+' Punkten');
+    const sb=document.getElementById('startBtn');
+    if(sb)sb.disabled=sel===0||noPool;
+  }
 
   const files=(state.uploadFiles||[]).length;
   const uh=document.getElementById('uploadHint');
@@ -2663,7 +2739,7 @@ function prepareTextForPrompt(text,maxChars=MAX_CONTEXT_CHARS){
 // ── Generate ──────────────────────────────────────────────────────────────────
 async function startQuiz(){
   if(!hasApiKey){openKeyModal();return}
-  state.isWochentest=false;state.isRigoOrig=false;
+  state.isWochentest=false;state.isRigoOrig=false;state.isWeekTest=false;
   saveQuizConfig();
   const _sb=document.getElementById('startBtn');if(_sb)_sb.disabled=true;
   const _ub=document.getElementById('uploadStartBtn');if(_ub)_ub.disabled=true;
@@ -3098,7 +3174,7 @@ async function deepDive(qi,btn,prefix){
 Frage: ${q.question}
 Optionen: ${q.options.map(o=>o.key+') '+o.text).join(' | ')}
 Richtige Antworten: ${(q.correct||[]).join(', ')}
-Kurzerklärung: ${q.explanation||''}
+Kurzerklärung: ${(q.explanation||'').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim()}
 Thema: ${q.topic||''}`;
 
   try{
@@ -3129,7 +3205,11 @@ function topicLabel(topic){
   }
   const key=String(topic||'').trim();
   const title=_topicTitles[key];
-  return title?key+' · '+title:(key||'Ohne Thema');
+  if(title)return key+' · '+title;
+  // Wochentest-Modus: die Themen sind VL-Codes (H01…, F01…).
+  const vl=(typeof wkLectureByCode==='function')?wkLectureByCode(key):null;
+  if(vl)return key+' · '+vl.title;
+  return key||'Ohne Thema';
 }
 function escapeHtml(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 
@@ -3206,7 +3286,7 @@ function buildVariationHint(){
 // Save quiz config before starting so newRound can restore it
 let lastQuizConfig=null;
 function saveQuizConfig(){
-  lastQuizConfig={sourceMode:state.sourceMode,altMode:state.altMode,difficulty:state.difficulty,count:state.count,examMode:state.examMode,selectedSubs:new Set(state.selectedSubs),isWochentest:state.isWochentest};
+  lastQuizConfig={sourceMode:state.sourceMode,altMode:state.altMode,difficulty:state.difficulty,count:state.count,examMode:state.examMode,selectedSubs:new Set(state.selectedSubs),isWochentest:state.isWochentest,isWeekTest:state.isWeekTest};
 }
 function restoreQuizConfig(){
   if(!lastQuizConfig)return;
@@ -3217,6 +3297,7 @@ function restoreQuizConfig(){
   state.examMode=lastQuizConfig.examMode;
   state.selectedSubs=new Set(lastQuizConfig.selectedSubs);
   state.isWochentest=lastQuizConfig.isWochentest;
+  state.isWeekTest=lastQuizConfig.isWeekTest;
 }
 function newRound(){
   restoreQuizConfig();
@@ -3224,7 +3305,8 @@ function newRound(){
   stopExamTimer();stopParticles();updateStreakDisplay(0);
   document.getElementById('evalBtn').textContent='Auswerten';document.getElementById('evalBtn').disabled=false;
   document.getElementById('startBtn').disabled=false;
-  if(state.isRigoOrig&&state.rigoOrigTermin){startRigoOrig(state.rigoOrigTermin)}
+  if(state.isWeekTest){startWeekTest()}
+  else if(state.isRigoOrig&&state.rigoOrigTermin){startRigoOrig(state.rigoOrigTermin)}
   else if(state.isWochentest){startWochentest()}
   else{startQuiz()}
 }
@@ -3892,6 +3974,326 @@ var digestUntil=0;
   window.addEventListener('resize',function(){dims={}},{passive:true});
   requestAnimationFrame(frame);
 })();
+
+
+// ══════════════════════════════════════════════════════════════════════════
+//  Wochentest — Fragen der zwei Wochen vor dem Test
+//  Eigener Namensraum wk*, damit der stillgelegte KI-Wochentest (wt*)
+//  unangetastet bleibt. Das JSON wird unveraendert geladen und erst zur
+//  Laufzeit in das Fragenformat der Engine uebersetzt.
+// ══════════════════════════════════════════════════════════════════════════
+const WK_DATA_URL='wochentest-fragen.json';
+const WK_LETTERS='abcdefghijkl';
+const WK_MIN_WEEK=2,WK_MAX_WEEK=14;
+
+const wk={
+  loading:false,loaded:false,error:'',
+  lectures:[],items:[],byCode:new Map(),
+  semester:'Herbst',week:2,window:'beide',source:'beide',
+  off:new Set()   // abgewaehlte VL-Codes
+};
+
+function wkLectureByCode(code){return wk.byCode.get(String(code||'').trim())||null}
+
+// ── Textwerkzeug ──────────────────────────────────────────────────────────
+function wkNorm(s){
+  return String(s==null?'':s).toLowerCase().replace(/[*_`]/g,' ')
+    .replace(/[^a-z0-9äöüß]+/g,' ').replace(/\s+/g,' ').trim();
+}
+function wkBigrams(s){
+  const n=wkNorm(s),out=new Set();
+  for(let i=0;i<n.length-1;i++)out.add(n.slice(i,i+2));
+  return out;
+}
+// Dice-Koeffizient auf Zeichenbigrammen — fuengt die Faelle ab, in denen die
+// Loesung im Datensatz anders formuliert ist als die zugehoerige Option.
+function wkDice(a,b){
+  const A=wkBigrams(a),B=wkBigrams(b);
+  if(!A.size||!B.size)return 0;
+  let hit=0;A.forEach(x=>{if(B.has(x))hit++});
+  return 2*hit/(A.size+B.size);
+}
+function wkRich(t){
+  return escapeHtml(String(t==null?'':t))
+    .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*([^*]+)\*/g,'<em>$1</em>')
+    .replace(/\n/g,'<br>');
+}
+function wkShuffle(a){
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const t=a[i];a[i]=a[j];a[j]=t}
+  return a;
+}
+
+// ── Laden + Aufbereiten ───────────────────────────────────────────────────
+// Platzhalter statt echter Loesung — solche Fragen sind nicht beantwortbar.
+function wkIsPlaceholder(t){return /originaltext|siehe original/i.test(String(t||''))}
+
+function wkPrepare(q){
+  const lec=wk.byCode.get((q.vl&&q.vl[0])||'');
+  if(!lec)return null;
+  const opts=(q.options||[]).slice();
+  const correct=(q.correct||[]).filter(c=>c&&!wkIsPlaceholder(c));
+  if(!correct.length)return null;
+  const corr=new Set();
+  let appended=0;
+  correct.forEach(c=>{
+    let hit=-1;
+    const n=wkNorm(c);
+    for(let i=0;i<opts.length;i++){if(!corr.has(i)&&wkNorm(opts[i])===n){hit=i;break}}
+    if(hit<0){
+      let best=0,bi=-1;
+      for(let i=0;i<opts.length;i++){
+        if(corr.has(i))continue;
+        const s=wkDice(c,opts[i]);
+        if(s>best){best=s;bi=i}
+      }
+      if(bi>=0&&best>=0.6)hit=bi;
+    }
+    if(hit>=0)corr.add(hit);
+    else{opts.push(c);corr.add(opts.length-1);appended++}
+  });
+  // Zu wenig Optionen, keine Loesung, oder alle Distraktoren verloren
+  // (dann waeren nur noch die richtigen Antworten uebrig).
+  if(opts.length<2||!corr.size)return null;
+  if(appended>0&&corr.size===opts.length)return null;
+  return{
+    code:lec.code,semester:lec.semester,week:lec.week,vlTitle:lec.title,
+    source:q.source||'',block:q.block,blockTitle:q.block_title||'',
+    question:q.question||'',opts:opts,correct:corr,
+    note:q.note||'',extra:q.extra||''
+  };
+}
+
+async function wkLoad(){
+  if(wk.loading||wk.loaded)return;
+  wk.loading=true;wk.error='';
+  try{
+    const res=await fetch(WK_DATA_URL,{cache:'default'});
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const data=await res.json();
+    wk.lectures=Array.isArray(data.lectures)?data.lectures:[];
+    wk.byCode=new Map(wk.lectures.map(l=>[l.code,l]));
+    wk.items=(Array.isArray(data.questions)?data.questions:[]).map(wkPrepare).filter(Boolean);
+    wk.loaded=true;
+  }catch(e){
+    wk.error=(e&&e.message)||'unbekannter Fehler';
+  }
+  wk.loading=false;
+  wkRefresh();
+}
+
+// ── Auswahl ───────────────────────────────────────────────────────────────
+// Testfenster: Wochen N-2 und N-1. In Woche 2 gibt es nur Woche 1.
+function wkWindowWeeks(){
+  const n=wk.week;
+  if(n<=2)return[1];
+  return wk.window==='n2'?[n-2]:wk.window==='n1'?[n-1]:[n-2,n-1];
+}
+function wkLecturesOf(week){
+  return wk.lectures.filter(l=>l.semester===wk.semester&&l.week===week);
+}
+function wkItemsOf(week,ignoreFilters){
+  return wk.items.filter(it=>it.semester===wk.semester&&it.week===week
+    &&(ignoreFilters||(!wk.off.has(it.code)&&(wk.source==='beide'||it.source===wk.source))));
+}
+function wkCountOfCode(code,ignoreSource){
+  return wk.items.filter(it=>it.code===code&&(ignoreSource||wk.source==='beide'||it.source===wk.source)).length;
+}
+function wkPool(){
+  const weeks=wkWindowWeeks();
+  return wk.items.filter(it=>it.semester===wk.semester&&weeks.indexOf(it.week)>=0
+    &&!wk.off.has(it.code)&&(wk.source==='beide'||it.source===wk.source));
+}
+
+function wkSetSemester(sem){
+  if(wk.semester===sem)return;
+  wk.semester=sem;wk.off=new Set();playTick();wkRefresh();
+}
+function wkSetWeek(n){
+  if(wk.week===n)return;
+  wk.week=n;wk.off=new Set();playTick();wkRefresh();
+}
+function wkSetWindow(mode){
+  if(wk.window===mode)return;
+  wk.window=mode;wk.off=new Set();playTick();wkRefresh();
+}
+function wkSetSource(src){
+  if(wk.source===src)return;
+  wk.source=src;playTick();wkRefresh();
+}
+function wkToggleCode(code){
+  wk.off.has(code)?wk.off.delete(code):wk.off.add(code);
+  playTick();wkRefresh();
+}
+function wkToggleWeek(week){
+  const codes=wkLecturesOf(week).map(l=>l.code);
+  const allOn=codes.every(c=>!wk.off.has(c));
+  codes.forEach(c=>{allOn?wk.off.add(c):wk.off.delete(c)});
+  playTick();wkRefresh();
+}
+
+// ── Oberflaeche ───────────────────────────────────────────────────────────
+function wkRenderSegs(){
+  const semSeg=document.getElementById('wkSemSeg');
+  if(semSeg)semSeg.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.sem===wk.semester));
+  const srcSeg=document.getElementById('wkSourceSeg');
+  if(srcSeg)srcSeg.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.src===wk.source));
+  const weekSeg=document.getElementById('wkWeekSeg');
+  if(weekSeg){
+    let h='';
+    for(let n=WK_MIN_WEEK;n<=WK_MAX_WEEK;n++){
+      h+='<button type="button" class="'+(n===wk.week?'on':'')+'" onclick="wkSetWeek('+n+')">'+n+'</button>';
+    }
+    weekSeg.innerHTML=h;
+  }
+
+  const winSeg=document.getElementById('wkWindowSeg'),winHint=document.getElementById('wkWindowHint');
+  if(winSeg){
+    const n=wk.week;
+    if(n<=2){
+      winSeg.innerHTML='<button type="button" class="on">Nur Woche 1</button>';
+      if(winHint)winHint.textContent='Vor Woche 2 liegt nur eine Woche — das Fenster ist damit gesetzt.';
+    }else{
+      const a=n-2,b=n-1;
+      winSeg.innerHTML=
+        '<button type="button" class="'+(wk.window==='beide'?'on':'')+'" onclick="wkSetWindow(\'beide\')">Woche '+a+' + '+b+'</button>'+
+        '<button type="button" class="'+(wk.window==='n2'?'on':'')+'" onclick="wkSetWindow(\'n2\')">Nur Woche '+a+'</button>'+
+        '<button type="button" class="'+(wk.window==='n1'?'on':'')+'" onclick="wkSetWindow(\'n1\')">Nur Woche '+b+'</button>';
+      if(winHint)winHint.textContent='Standard ist das volle Fenster: Woche '+a+' und Woche '+b+'.';
+    }
+  }
+}
+
+function wkRenderWeeks(){
+  const area=document.getElementById('wkWeekArea');
+  if(!area)return;
+  if(!wk.loaded){
+    area.innerHTML='<div style="padding:22px 0;font-size:13.5px;line-height:22px;color:var(--app-mute)">'+
+      (wk.error?'Die Fragen konnten nicht geladen werden ('+escapeHtml(wk.error)+').':'Vorlesungen werden geladen…')+'</div>';
+    return;
+  }
+  let h='';
+  wkWindowWeeks().forEach(week=>{
+    const lecs=wkLecturesOf(week);
+    const total=wkItemsOf(week,true).length;
+    const avail=wkItemsOf(week).length;
+    const on=lecs.filter(l=>!wk.off.has(l.code)).length;
+    const swCls='sw'+(on>0?' on':'')+(on===lecs.length&&lecs.length?' all':'');
+    h+='<div class="blk"><div class="blk-row">'+
+       '<button type="button" class="'+swCls+'" title="Ganze Woche ein-/ausschalten" onclick="wkToggleWeek('+week+')"><span></span></button>'+
+       '<div class="blk-btn" style="cursor:default">'+
+         '<span class="blk-title">Woche '+week+'</span>'+
+         '<span class="blk-meta"><span class="blk-tally">'+(total?avail+' von '+total+' Fragen':'0 Fragen')+'</span></span>'+
+       '</div></div>';
+    if(!lecs.length){
+      h+='<div style="padding:2px 0 18px;font-size:13.5px;line-height:22px;color:var(--app-mute)">Für Woche '+week+' sind keine Vorlesungen hinterlegt.</div>';
+    }else{
+      h+='<div class="blk-points" style="display:grid">';
+      lecs.forEach(l=>{
+        const c=wkCountOfCode(l.code);
+        const cAll=wkCountOfCode(l.code,true);
+        const sel=!wk.off.has(l.code);
+        const meta=cAll===0?'keine Fragen':(c===0?'0 von '+cAll+' Fragen':(c===1?'1 Frage':c+' Fragen'));
+        h+='<button type="button" class="pt" onclick="wkToggleCode(\''+l.code+'\')">'+
+             '<span class="pt-sw'+(sel?' on':'')+'"><span></span></span>'+
+             '<span><span class="pt-nr">'+l.code+' · '+meta+'</span>'+
+             '<span class="pt-title">'+escapeHtml(l.title)+'</span></span></button>';
+      });
+      h+='</div>';
+    }
+    if(total===0){
+      h+='<div style="margin:0 0 18px;padding:12px 14px;border:2px solid var(--app-rule);background:var(--app-panel);font-size:13px;line-height:21px;color:var(--app-mute)">'+
+         'Zu Woche '+week+' ('+wk.semester+') sind noch keine Fragen hinterlegt.</div>';
+    }
+    h+='</div>';
+  });
+  area.innerHTML=h;
+}
+
+function wkRefresh(){
+  if(!document.getElementById('wkPanel'))return;
+  wkRenderSegs();
+  wkRenderWeeks();
+  // Hinweiszeile und Startknopf sind dieselben wie beim Themenkatalog —
+  // der Screen hat nur einen Fuss.
+  const hint=document.getElementById('startHint'),btn=document.getElementById('startBtn');
+  if(!wk.loaded){
+    if(hint)hint.textContent=wk.error?'Wochentest-Fragen nicht verfügbar.':'Wird geladen…';
+    if(btn)btn.disabled=true;
+    return;
+  }
+  const pool=wkPool();
+  const weeks=wkWindowWeeks();
+  const weekTxt=weeks.length>1?'Woche '+weeks.join(' + '):'Woche '+weeks[0];
+  const n=wkCountN(pool.length);
+  if(hint){
+    if(!pool.length){
+      const anyRaw=weeks.some(w=>wkItemsOf(w,true).length>0);
+      hint.textContent=anyRaw?'Kein Treffer — Filter lockern.'
+        :'Zu '+weekTxt+' gibt es noch keine Fragen.';
+    }else{
+      hint.textContent=n+' von '+pool.length+' Fragen · '+weekTxt;
+    }
+  }
+  if(btn)btn.disabled=!pool.length;
+}
+// Die Fragenzahl kommt aus der gemeinsamen Leiste; „Alle" heisst alles,
+// was der Filter hergibt.
+function wkCountN(available){
+  if(state.count==='all')return available;
+  const n=parseInt(state.count,10);
+  return Math.min(isNaN(n)?10:n,available);
+}
+
+// ── Fragen an die Engine uebergeben ───────────────────────────────────────
+function wkToEngine(it,i){
+  const order=wkShuffle(it.opts.map((t,k)=>k));
+  const options=[],correct=[];
+  order.forEach((origIdx,pos)=>{
+    const key=WK_LETTERS[pos];
+    options.push({key:key,text:wkRich(it.opts[origIdx])});
+    if(it.correct.has(origIdx))correct.push(key);
+  });
+  const srcTxt=it.source==='umformuliert'?'Altfrage':it.source==='neu'?'Übungsfrage':'';
+  const head=[srcTxt,it.code+' · '+it.vlTitle,'Woche '+it.week].filter(Boolean).join(' · ');
+  let expl='<span style="display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--app-mute);margin-bottom:6px">'+escapeHtml(head)+'</span>';
+  if(it.note.trim())expl+='<span style="display:block">'+wkRich(it.note.trim())+'</span>';
+  if(it.extra.trim())expl+='<span style="display:block;margin-top:6px;color:var(--app-mute);font-size:12.5px">'+wkRich(it.extra.trim())+'</span>';
+  return{
+    id:i+1,topic:it.code,question:wkRich(it.question),
+    options:options,correct:correct,explanation:expl
+  };
+}
+
+// „Quiz starten" bedient beide Haelften des Konfigurationsscreens.
+function startFromConfig(){
+  if(state.poolKind==='wochentest'&&state.flowMode!=='skript')return startWeekTest();
+  return startQuiz();
+}
+
+async function startWeekTest(){
+  if(!hasApiKey){openKeyModal();return}
+  if(!wk.loaded){wkRefresh();return}
+  const pool=wkPool();
+  if(!pool.length){wkRefresh();return}
+  state.isWeekTest=true;state.isWochentest=false;state.isRigoOrig=false;
+  state.flowMode='altfragen';state.examMode=false;
+  state.sourceMode='alt';state.altMode='exact';state.difficulty='normal';
+  const n=wkCountN(pool.length);
+  saveQuizConfig();
+  const btn=document.getElementById('startBtn');if(btn)btn.disabled=true;
+  goTo('s3');startEKG();
+  // Der Zug ist sofort fertig — der Ladescreen bekommt trotzdem seine Zeit.
+  await new Promise(r=>setTimeout(r,MIN_LOAD_POOL_MS));
+  state.questions=wkShuffle(pool.slice()).slice(0,n).map(wkToEngine);
+  stopEKG();
+  state.userAnswers={};state.evaluated=false;state.currentQuestionIndex=0;state.quizStartTime=Date.now();
+  const eb=document.getElementById('evalBtn');if(eb){eb.textContent='Auswerten';eb.disabled=false}
+  renderQuiz();goTo('s4');startStopwatch();
+  if(btn)btn.disabled=false;
+}
+
+wkLoad();
 
 // ══════════════════════════════════════════════════════════════════════════
 //  Start
