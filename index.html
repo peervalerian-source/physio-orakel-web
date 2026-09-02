@@ -160,107 +160,37 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
   .btn-ghost.btn-mini { padding: 5px 9px; }
 }
 /* ══════════════════════════════════════════════════════════════════════════
-   Mobiler Film — Kapitel statt Textseite
+   Mobil: der Einstieg ist ein Kapitel, der Rest ist die normale Seite
 
-   Jedes Kapitel ist ein .reel: ein hoher Anlauf, in dem ein .reel-in klebt
-   und den Bildschirm fuellt. Das Skript rechnet je Kapitel einen Fortschritt
-   aus und schreibt ausschliesslich transform, opacity und --glow.
+   Nur die Ueberschrift fuellt den Bildschirm und wird beim Scrollen groesser.
+   Danach steht die Seite so da wie am Rechner; es bleiben die milden Sachen:
+   lange Absaetze schreiben sich beim Hereinscrollen, Ueberschriften blenden
+   auf, die Schlussknoepfe huepfen.
 
    Alles haengt an html[data-story]. Ohne JavaScript, auf Desktop und bei
-   reduzierter Bewegung ist ein .reel ein Div ohne Eigenschaften und die
-   Seite steht so da wie immer.
+   reduzierter Bewegung greift hier nichts.
    ══════════════════════════════════════════════════════════════════════════ */
-.m-only { display: none; }
-
 @media (max-width: 700px) {
-  /* Die Kopfzeile liegt ueber allen Kapiteln — der Knopf muss immer da sein */
+  /* Die Kopfzeile liegt ueber dem Einstieg */
   html[data-story] .nav { z-index: 60; }
   html[data-story] .nav-mobile { position: relative; z-index: 55; }
 
-  html[data-story] .m-only { display: block; }
-
-  /* Die Kapitel ueberlappen sich um genau eine Fensterhoehe: das naechste
-     klebt in dem Moment fest, in dem das vorige sich loest. Ohne das lag
-     zwischen zwei Kapiteln jedes Mal ein ganzer Bildschirm Leere, weil das
-     kommende Kapitel noch unter dem Bildrand stand. */
-  html[data-story] .reel { position: relative; height: 172svh; margin-bottom: -100svh; }
-  html[data-story] .reel-t { height: 182svh; }
-  html[data-story] #reelAP { margin-bottom: 0; }
-  /* Das letzte Kapitel zieht sonst die Folgesektion ueber sich — genau das
-     liess die EKG-Grafik mitten im Uebergang erscheinen. */
-  html[data-story] #reelEkg { margin-bottom: 0; }
-
-  /* Ein einziger Grund fuer alle Kapitel. Die Abschnittsflaechen und ihre
-     2px-Kanten wanderten beim Scrollen sichtbar durchs Bild — im Film
-     braucht es sie nicht; danach, ab „Comeback depolarisieren", schon. */
-  html[data-story] #system,
-  html[data-story] #gratis,
-  html[data-story] #rueckkopplung {
-    background: transparent !important;
-    border-top: 0 !important;
-    border-bottom: 0 !important;
-    margin-top: 0 !important;
-  }
-  html[data-story] #system .sys-wrap,
-  html[data-story] #gratis > div,
-  html[data-story] #rueckkopplung > div,
-  html[data-story] #pulsSection { padding-top: 0 !important; padding-bottom: 0 !important; }
-
-  /* Das Aktionspotential ist kein Kapitel mehr: es steht am Ende bei
-     „Alles-oder-nichts gilt für AP" — dort passt es hin. Also zurueck in
-     den ganz normalen Fluss. */
-  html[data-story] #reelAP { height: auto; }
-  html[data-story] #reelAP > .reel-in {
-    position: static;
-    height: auto;
-    padding: 0;
-    isolation: auto;
-    justify-items: stretch;
-  }
-  /* Das erste Bild soll den Rest des Fensters unter der Kopfzeile fuellen,
-     nicht eine volle Fensterhoehe darunter beginnen. */
+  /* ── Der Einstieg ───────────────────────────────────────────────────── */
+  html[data-story] #reelH1 { position: relative; height: 195svh; }
   html[data-story] #reelH1 > .reel-in {
-    height: calc(100svh - var(--reel1-off, 110px));
-    padding-top: 0;
-  }
-  html[data-story] .reel > .reel-in {
     position: sticky;
     top: 0;
-    /* Hoehe statt Mindesthoehe: box-sizing ist border-box, die Polsterung
-       zaehlt also mit. Sonst wird das klebende Kapitel hoeher als das
-       Fenster und rutscht durch, statt zu stehen. */
-    height: 100svh;
+    height: calc(100svh - var(--reel1-off, 110px));
     display: grid;
     align-content: center;
     justify-items: center;
-    padding: calc(var(--nav-h, 58px) + 24px) 18px 44px;
-    /* eigener Stapelkontext, damit der Schein hinter dem Text bleibt und
-       nicht hinter den Abschnittshintergrund rutscht */
+    text-align: center;
+    /* eigener Stapelkontext, damit der Schein hinter der Schrift bleibt */
     isolation: isolate;
+    will-change: transform, opacity;
   }
-  html[data-story] .reel.is-live > .reel-in { will-change: transform, opacity; }
-
-  html[data-story] .reel-t > .reel-in { text-align: center; }
-  html[data-story] .reel-t h1,
-  html[data-story] .reel-t h2,
-  html[data-story] .reel-t p { margin-left: auto; margin-right: auto; max-width: 22ch; }
-  html[data-story] .reel-t #heroTitle { margin-left: auto; max-width: 16ch; }
-  html[data-story] .reel-t .sys-text p,
-  html[data-story] #gratis .reel-t p { max-width: 26ch; }
-  /* Schnipsel: erscheinen nacheinander, gesteuert vom Fortschritt */
-  html[data-story] .frag { opacity: 0; }
-  html[data-story] .word { opacity: 0; }
-
-  /* Im Film traegt die Kopfzeile den Knopf — hier braucht es ihn nicht */
-  html[data-story] .hero-cta { display: none !important; }
-
-  /* Die Schlussknoepfe huepfen abwechselnd */
-  html[data-story] .los-cta .btn { animation: ctaHop 2.4s ease-in-out infinite; }
-  html[data-story] .los-cta .btn:nth-child(2) { animation-delay: 0.8s; }
-  html[data-story] .los-cta .btn:nth-child(3) { animation-delay: 1.6s; }
-
-  /* Der Schein: eine Scheibe hinter der Schrift, die mit ihr waechst */
-  html[data-story] .reel-t > .reel-in::before {
+  /* Der Schein hinter der Schrift, waechst mit ihr */
+  html[data-story] #reelH1 > .reel-in::before {
     content: '';
     position: absolute;
     left: -40%; top: 50%;
@@ -274,109 +204,44 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     pointer-events: none;
     z-index: -1;
   }
+  html[data-story] #reelH1 h1 {
+    font-size: clamp(40px, 12.5vw, 58px);
+    margin-left: auto; margin-right: auto; max-width: 16ch;
+  }
+  /* Die zweite Zeile kommt beim Scrollen dazu */
+  html[data-story] #reelH1 .frag { opacity: 0; }
 
-  /* Schriftgrade fuer den Bildschirm, nicht fuer die Spalte */
-  html[data-story] #reelH1 h1 { font-size: clamp(40px, 12.5vw, 58px); }
-  html[data-story] #reelSub p {
-    font-size: clamp(23px, 6.6vw, 31px); line-height: 1.34; margin: 0;
-    font-family: var(--font-heading); font-weight: 800; letter-spacing: -0.02em;
+  /* Hinweis, dass es weitergeht: eine Spur, in der ein Strich nach unten
+     laeuft. Kein Text, nur Grafik. */
+  html[data-story] .scroll-cue {
+    position: absolute;
+    left: 50%; bottom: 26px;
+    width: 2px; height: 46px;
+    transform: translateX(-50%);
+    background: color-mix(in srgb, var(--color-muted) 40%, transparent);
+    overflow: hidden;
+    opacity: var(--cue, 1);
+    pointer-events: none;
   }
-  html[data-story] .sys-head h2,
-  html[data-story] .fb-head h2,
-  html[data-story] #gratis .reel-t h2 { font-size: clamp(30px, 8.6vw, 42px); }
-  html[data-story] .sys-text p,
-  html[data-story] #gratis .reel-t p { font-size: 18.5px; line-height: 31px; }
-  html[data-story] #fbKicker {
-    font-family: var(--font-heading); font-weight: 800;
-    font-size: clamp(30px, 8.6vw, 42px); line-height: 1.06;
-    letter-spacing: -0.02em; margin: 0 0 18px;
-  }
-
-  /* Die Grafiken fuellen den Bildschirm */
-  html[data-story] .hero-canvas { height: 58svh; }
-  html[data-story] #filterCanvas { height: 54svh !important; }
-  html[data-story] #ecgCanvas { height: 26svh !important; }
-
-  /* #system: Kopf, Grafik, Text — in dieser Reihenfolge */
-  html[data-story] #system .sys-wrap { display: flex; flex-direction: column; }
-  html[data-story] #system .split { display: contents; }
-  html[data-story] #system .sys-head { order: 1; }
-  html[data-story] #system .sys-fig { order: 2; }
-  html[data-story] #system .sys-text { order: 3; }
-  html[data-story] #system .sys-fig { margin-top: 0 !important; }
-
-  /* Der gerade wirkende Reiz zeigt sich am zugehoerigen Knopf */
-  html[data-story] .stim-on { border-color: var(--color-accent); color: var(--color-accent); }
-
-  /* ── Die Stimmen als Story: ganzflaechig, ohne Kasten ────────────────
-     Ein Zitat fuellt das Bild, darunter der Name. Gewischt wird waagrecht,
-     getippt wie bei einer Story: linkes Drittel zurueck, sonst weiter. */
-  html[data-story] #reelCards .fb-track {
-    position: relative;
-    height: var(--stack-h, 52svh);
-    width: 100%;
-  }
-  html[data-story] #reelCards .fb-track > div { display: contents !important; }
-  html[data-story] #reelCards .fb-track figure {
-    position: absolute; left: 0; right: 0; top: 0; bottom: 0;
-    margin: 0;
-    border: 0 !important;
-    background: none;
-    padding: 0 4px;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center;
-    gap: 24px !important;
-    text-align: center;
-    /* senkrecht bleibt Scrollen, waagrecht gehoert uns */
-    touch-action: pan-y;
-  }
-  /* Die Bildkarten tragen Bild und Text in einem Zwischenbehaelter — der
-     wird aufgeloest, damit alle Karten denselben Aufbau haben. */
-  html[data-story] #reelCards .fb-track figure > div { display: contents; }
-  /* Lange Stimmen duerfen kleiner werden, sonst fuellen sie das Bild mit
-     zwoelf Zeilen Grossschrift. */
-  html[data-story] #reelCards .fb-track figure.lang blockquote {
-    font-size: clamp(18px, 5vw, 23px) !important;
-    line-height: 1.3 !important;
-    max-width: 21ch !important;
-  }
-  html[data-story] #reelCards .fb-track blockquote {
-    font-family: var(--font-heading) !important;
-    font-weight: 800;
-    font-size: clamp(21px, 6.2vw, 30px) !important;
-    line-height: 1.24 !important;
-    letter-spacing: -0.02em !important;
-    color: var(--color-text);
-    max-width: 17ch !important;
-    margin: 0 auto !important;
-  }
-  html[data-story] #reelCards .fb-track figcaption {
-    justify-content: center;
-    align-items: center;
-    gap: 10px 12px !important;
-    margin: 0 !important;
-  }
-  html[data-story] #reelCards .fb-track img {
-    width: 104px !important; height: 104px !important;
-    object-fit: cover;
-    border: 2px solid var(--color-accent);
+  html[data-story] .scroll-cue span {
+    position: absolute; left: 0; top: 0;
+    width: 2px; height: 16px;
+    background: var(--color-accent);
+    animation: cueRun 1.9s cubic-bezier(.5,0,.5,1) infinite;
   }
 
-  /* Fortschritt wie bei einer Story: Balken, nicht Punkte */
-  html[data-story] .fb-dots {
-    display: flex; gap: 5px; justify-content: center;
-    /* Breite braucht es, sonst fallen die Balken im zentrierten Raster
-       auf null zusammen. */
-    width: min(100%, 264px);
-    margin: 0 auto 26px;
+  /* ── Milde Animationen im normalen Fluss ────────────────────────────── */
+  html[data-story] .word { opacity: 0; }
+  html[data-story] .soft-in { opacity: 0; transform: translate3d(0, 16px, 0); }
+  html[data-story] .soft-in.is-in {
+    opacity: 1; transform: none;
+    transition: opacity 520ms ease-out, transform 520ms ease-out;
   }
-  html[data-story] .fb-dots span {
-    height: 3px; flex: 1 1 0; max-width: 44px;
-    background: color-mix(in srgb, var(--color-muted) 45%, transparent);
-  }
-  html[data-story] .fb-dots span.on { background: var(--color-accent); }
+
+  /* Die Schlussknoepfe huepfen nacheinander an */
+  html[data-story] .los-cta .btn { animation: ctaHop 2.4s ease-in-out infinite; }
+  html[data-story] .los-cta .btn:nth-child(2) { animation-delay: 0.8s; }
+  html[data-story] .los-cta .btn:nth-child(3) { animation-delay: 1.6s; }
 
   /* Die Schlusszeile bekommt einen einzigen Auftritt */
   html[data-story] #losTitle.reveal-init { opacity: 0; transform: translate3d(0, 14px, 0); }
@@ -384,6 +249,12 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     opacity: 1; transform: none;
     transition: opacity 420ms ease-out, transform 420ms ease-out;
   }
+}
+
+@keyframes cueRun {
+  0%   { transform: translateY(-18px); opacity: 0; }
+  30%  { opacity: 1; }
+  100% { transform: translateY(46px); opacity: 0; }
 }
 
 @media (max-width: 620px) {
@@ -553,7 +424,6 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
   <section id="rueckkopplung" style="background: var(--color-neutral-100); border-bottom: 2px solid var(--color-divider); scroll-margin-top: 80px">
    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(44px, 6vw, 80px) clamp(20px, 5vw, 72px)">
     <div class="fb-head reel reel-t"><div class="reel-in">
-    <p class="m-only" id="fbKicker">Was andere Semmelweis-Studenten sagen</p>
     <h2 style="font-size: clamp(26px, 3.2vw, 38px); line-height: 1.06; letter-spacing: -0.02em; margin: 0 0 12px">Positive Rückkopplung</h2>
     <p style="font-size: 17px; line-height: 29px; margin: 0; max-width: 52ch; color: color-mix(in srgb, var(--color-text) 82%, transparent)">Der einzige Circulus vitiosus, den ich hier haben will.</p>
     </div></div>
@@ -733,7 +603,6 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
 
   var t = 0, frameDt = 1 / 60, last = 0, raf = null;
   var spikes = [], nextAuto = 1.0;
-  var filterStep = 0, filterDriven = false;
   var dims = {}, parts = null, lanes = 0;
   var vis = { hero: true, filter: false, ecg: false, rad: false };
 
@@ -904,10 +773,7 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     var d = dims.filter || (dims.filter = fit(cv)); if (!d) return;
     var ctx = d.ctx, w = d.w, h = d.h;
     if (!parts) parts = seed(w, h);
-    // Im Story-Modus schiebt der Scroll die Teilchen, sonst die Uhr.
-    var dt = filterDriven ? filterStep : frameDt;
-    if (filterDriven) filterStep = 0;
-    var bx = w * 0.42, midY = h / 2;
+    var bx = w * 0.42, midY = h / 2, dt = frameDt;
 
     ctx.clearRect(0, 0, w, h);
     ctx.fillStyle = 'rgba('+INK+',0.18)';
@@ -949,20 +815,18 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     // erst kleiner setzen, und wenn das nicht reicht, untereinander.
     var lt = 'ALLES, WAS DIE UNI DIR VORSETZT';
     var rt = 'WAS FÜR DIE PRÜFUNG RELEVANT IST';
-    var size = window.storyOn ? 15 : 10.5;
+    var size = 10.5;
     var widths = function () {
       ctx.font = "600 " + size + "px Archivo, system-ui, sans-serif";
       return ctx.measureText(lt).width + ctx.measureText(rt).width;
     };
-    if (widths() + 36 > w) { size = window.storyOn ? 12.5 : 9; }
+    if (widths() + 36 > w) { size = 9; }
     var stacked = widths() + 36 > w;
     ctx.font = "600 " + size + "px Archivo, system-ui, sans-serif";
     ctx.fillStyle = 'rgba('+INK+',0.72)';
     ctx.fillText(lt, 12, h - 18);
     ctx.fillStyle = 'rgba('+ACCT+',0.92)';
-    // Uebereinander muessen sie weiter auseinander, sonst beruehren sich die
-    // Zeilen bei der groesseren Schrift im Film.
-    ctx.fillText(rt, w - ctx.measureText(rt).width - 12, stacked ? h - (size * 2 + 12) : h - 18);
+    ctx.fillText(rt, w - ctx.measureText(rt).width - 12, stacked ? h - 32 : h - 18);
     ctx.fillStyle = 'rgba('+INK+',0.72)';
     ctx.fillText('BARRIERE', bx + 10, 18);
   }
@@ -992,11 +856,8 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     var r = cv.getBoundingClientRect();
     var vh = window.innerHeight || 800;
     var p = Math.max(0, Math.min(1, (vh - r.top) / (vh + r.height)));
-    // Im Film klebt der Canvas, seine Lage im Fenster steht dann still —
-    // der Fortschritt kommt deshalb vom Kapitel.
-    if (window.storyOn && window.orakelPulseP != null) p = window.orakelPulseP;
-    // Auf Desktop beruhigt sich der Puls beim Lesen nach unten (124 → 58).
-    // Im Film laeuft er umgekehrt auf 124 hoch und bleibt dort.
+    // Auf Desktop beruhigt sich der Puls beim Lesen nach unten (124 → 58),
+    // auf dem Telefon laeuft er umgekehrt auf 124 hoch.
     var from = window.storyOn ? END_BPM : START_BPM;
     var to = window.storyOn ? START_BPM : END_BPM;
     var bpm = from + (to - from) * (1 - Math.pow(1 - p, 1.7));
@@ -1079,15 +940,6 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     raf = requestAnimationFrame(loop);
   }
 
-  /* Die Story reicht Scrollweg als Zeitschritt herein. null schaltet zurueck
-     auf die Uhr. Gedeckelt, damit eine lange unsichtbare Strecke die Teilchen
-     beim Wiederauftauchen nicht springen laesst. */
-  window.orakelFilterStep = function (d) {
-    if (d === null) { filterDriven = false; filterStep = 0; return; }
-    filterDriven = true;
-    filterStep = Math.min(filterStep + d, 1.2);
-  };
-
   window.orakelFire = function (mv) {
     spikes.push({ t0: t, amp: mv });
     if (reduced) { paintOne('hero', true); return; }
@@ -1120,191 +972,77 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
 })();
 
 /* ══════════════════════════════════════════════════════════════════════════
-   Mobiler Film — ein Rechner fuer alle Kapitel
+   Der Einstieg als Kapitel
 
-   Pro Bild: je Kapitel ein Fortschritt aus seiner Lage im Fenster, daraus
-   transform, opacity und der Schein. Nichts davon loest Layout aus. Die
-   Kapitel, die eine Grafik tragen, geben ihren Fortschritt zusaetzlich an
-   die Zeichenschleife weiter — der Scroll ist dort die Uhr.
+   Die Ueberschrift klebt einen Bildschirm lang, ihre zweite Zeile kommt beim
+   Scrollen dazu, dann waechst das Ganze und loest sich in Lime auf. Danach
+   faengt die normale Seite an.
    ══════════════════════════════════════════════════════════════════════════ */
 (function () {
-  var page = document.getElementById('page');
+  var reel = document.getElementById('reelH1');
   var nav = document.querySelector('.nav');
-  var reels = [].slice.call(document.querySelectorAll('.reel')).filter(function (r) {
-    return r.id !== 'reelAP';   // steht am Ende im normalen Fluss
-  });
-  if (!page || !reels.length) return;
-
-  var figReel = document.querySelector('.sys-fig');
-  var ekgReel = document.getElementById('reelEkg');
-  var first = reels[0];
-
-  var lastFigP = null;
-  var queued = false;
+  if (!reel) return;
+  var inner = reel.firstElementChild;
+  var lines = [].slice.call(inner.querySelectorAll('h1 > span'));
+  var cue = null, queued = false;
 
   function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
-  function esc(t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-
-  /* Ein Textkapitel zerfaellt in Schritte: kurze Zeilen erscheinen als
-     Schnipsel nacheinander, lange Absaetze schreiben sich Wort fuer Wort.
-     Die Schritte teilen sich den Fortschritt nach Gewicht. */
-  function prepare(reel) {
-    if (reel._steps) return;
-    var inner = reel.firstElementChild;
-    var raw = [];
-    [].slice.call(inner.children).forEach(function (el) {
-      if (el.tagName === 'H1' && el.children.length > 1) {
-        [].slice.call(el.children).forEach(function (line) { raw.push({ el: line, type: 'frag' }); });
-        return;
-      }
-      var text = (el.textContent || '').trim();
-      if (el.tagName === 'P' && !el.children.length && text.length > 110) {
-        el._plain = text;
-        el.innerHTML = text.split(/(\s+)/).map(function (t) {
-          return /^\s*$/.test(t) ? t : '<span class="word">' + esc(t) + '</span>';
-        }).join('');
-        raw.push({ el: el, type: 'type', words: [].slice.call(el.querySelectorAll('.word')) });
-        return;
-      }
-      raw.push({ el: el, type: 'frag' });
-    });
-
-    var total = 0;
-    raw.forEach(function (st) { total += st.type === 'type' ? 2.4 : 1; });
-    var span = 0.70, at = 0.03, acc = 0;
-    raw.forEach(function (st, i) {
-      var wgt = st.type === 'type' ? 2.4 : 1;
-      st.t0 = at + span * (acc / total);
-      acc += wgt;
-      st.t1 = at + span * (acc / total);
-      // Das allererste Bild steht sofort — es traegt das LCP.
-      if (reel === first && i === 0) { st.t0 = -1; st.t1 = -0.5; }
-      if (st.type === 'frag') st.el.classList.add('frag');
-    });
-    reel._steps = raw;
-  }
-
-  function unprepare(reel) {
-    if (!reel._steps) return;
-    reel._steps.forEach(function (st) {
-      st.el.classList.remove('frag');
-      st.el.style.opacity = '';
-      st.el.style.transform = '';
-      if (st.type === 'type' && st.el._plain) st.el.textContent = st.el._plain;
-    });
-    reel._steps = null;
-  }
-
-  function paintSteps(reel, p) {
-    var steps = reel._steps;
-    if (!steps) return;
-    for (var i = 0; i < steps.length; i++) {
-      var st = steps[i];
-      var a = clamp((p - st.t0) / Math.max(0.001, st.t1 - st.t0));
-      if (st.type === 'frag') {
-        if (st._a === a) continue;
-        st._a = a;
-        st.el.style.opacity = a.toFixed(3);
-        st.el.style.transform = 'translate3d(0,' + ((1 - a) * 15).toFixed(1) + 'px,0)';
-      } else {
-        var shown = a * st.words.length;
-        for (var w = 0; w < st.words.length; w++) {
-          var o = clamp(shown - w);
-          var el = st.words[w];
-          if (el._o === o) continue;
-          el._o = o;
-          el.style.opacity = o.toFixed(3);
-        }
-      }
-    }
-  }
   function easeOut(v) { return 1 - Math.pow(1 - v, 2); }
 
   function syncNav() {
     var h = nav ? Math.round(nav.getBoundingClientRect().height) : 58;
     document.documentElement.style.setProperty('--nav-h', h + 'px');
   }
-
-  /* Reihenfolge auf dem Telefon: die Stimmen kommen vor „Warum gratis". Als
-     order, nicht im Markup — Desktop soll die Seite unveraendert bekommen. */
-  function orderPage(on) {
-    var kids = [].slice.call(page.children);
-    if (!on) {
-      page.style.display = ''; page.style.flexDirection = '';
-      kids.forEach(function (k) { k.style.order = ''; });
-      return;
-    }
-    page.style.display = 'flex';
-    page.style.flexDirection = 'column';
-    kids.forEach(function (k, i) { k.style.order = i * 10; });
-    var gratis = document.getElementById('gratis');
-    var stimmen = document.getElementById('rueckkopplung');
-    if (gratis && stimmen) {
-      var a = gratis.style.order, b = stimmen.style.order;
-      gratis.style.order = b; stimmen.style.order = a;
-    }
-    // Das Aktionspotential wandert ans Ende, direkt hinter „Alles-oder-nichts
-    // gilt für AP" — dort hat es seinen Satz.
-    var los = document.getElementById('los');
-    var ap = document.getElementById('reelAP');
-    if (los && ap) ap.style.order = String(parseInt(los.style.order, 10) + 5);
+  function syncFirst() {
+    var r = reel.getBoundingClientRect();
+    var off = Math.max(0, Math.round(r.top + (window.pageYOffset || 0)));
+    document.documentElement.style.setProperty('--reel1-off', off + 'px');
   }
 
-  function paintReel(reel, enter, exit) {
-    var inner = reel.firstElementChild;
-    if (!inner) return;
-    var text = reel.classList.contains('reel-t');
-    var scale, o;
-    if (text) {
-      scale = 0.97 + 0.03 * easeOut(enter) + 0.32 * easeOut(exit);
-      o = enter * (1 - Math.pow(exit, 1.25));
-      inner.style.setProperty('--glow', (enter * (0.16 + 0.84 * easeOut(exit)) * (1 - exit * 0.3)).toFixed(3));
-    } else {
-      // Grafiken werden nicht skaliert — ein hochgezogener Canvas wird weich.
-      scale = 1;
-      o = enter * (1 - Math.pow(exit, 1.5));
+  function build() {
+    lines.forEach(function (l, i) { if (i > 0) l.classList.add('frag'); });
+    if (!cue) {
+      cue = document.createElement('div');
+      cue.className = 'scroll-cue';
+      cue.setAttribute('aria-hidden', 'true');
+      cue.appendChild(document.createElement('span'));
+      inner.appendChild(cue);
     }
-    inner.style.transform = 'translate3d(0,0,0) scale(' + scale.toFixed(3) + ')';
-    inner.style.opacity = o.toFixed(3);
+    syncNav(); syncFirst(); frame();
+  }
+
+  function tear() {
+    lines.forEach(function (l) { l.classList.remove('frag'); l.style.opacity = ''; l.style.transform = ''; });
+    inner.style.transform = '';
+    inner.style.opacity = '';
+    inner.style.removeProperty('--glow');
+    inner.style.removeProperty('--cue');
+    if (cue && cue.parentNode) { cue.parentNode.removeChild(cue); cue = null; }
   }
 
   function frame() {
     queued = false;
     if (!window.storyOn) return;
+    var r = reel.getBoundingClientRect();
     var vh = window.innerHeight || 800;
+    var h = r.height;
+    var pinEnd = Math.max(0.34, (h - vh) / h);
+    var p = -r.top / h;
 
-    for (var i = 0; i < reels.length; i++) {
-      var reel = reels[i];
-      var r = reel.getBoundingClientRect();
-      if (r.bottom < -60 || r.top > vh + 60) continue;   // ausserhalb: nichts tun
-      /* Zeitrechnung eines Kapitels, alles auf seine eigene Hoehe bezogen:
-         0 = es klebt fest, pinEnd = es loest sich, 1 = es ist oben draussen.
-         Aufblenden passiert im Stand, nicht auf der Anfahrt — auf der Anfahrt
-         steht der Inhalt noch unter dem Bildrand und man saehe nichts. */
-      var h = r.height;
-      /* Untergrenze, damit ein Kapitel auch dann steht, wenn es kuerzer ist
-         als das Fenster — Querformat, kurze Fenster. Ohne sie faellt der
-         Haltebereich auf null und das Kapitel blendet sofort wieder aus. */
-      var pinEnd = Math.max(0.34, (h - vh) / h);
-      var pRaw = -r.top / h;
-      // Grosszuegig ueberlappend: das naechste Kapitel blendet auf, bevor es
-      // festklebt, das vorige noch bevor es sich loest. Nachgemessen ueber
-      // die ganze Seite bleibt so an keiner Stelle ein leeres Bild stehen.
-      var enter = reel === first ? 1 : clamp((pRaw + 0.14) / 0.20);
-      var hold = clamp((pRaw - 0.06) / Math.max(0.001, pinEnd - 0.06));
-      var exit = clamp((pRaw - pinEnd + 0.04) / 0.24);
-
-      paintReel(reel, enter, exit);
-      if (reel.classList.contains('reel-t')) paintSteps(reel, hold);
-
-      if (reel === figReel && window.orakelFilterStep) {
-        if (lastFigP === null) lastFigP = hold;
-        window.orakelFilterStep(Math.abs(hold - lastFigP) * 16);
-        lastFigP = hold;
-      } else if (reel === ekgReel) {
-        window.orakelPulseP = hold;
-      }
+    // Die zweite Zeile kommt kurz nach dem Antippen des Scrollens
+    for (var i = 1; i < lines.length; i++) {
+      var a = clamp((p - 0.05 - (i - 1) * 0.10) / 0.12);
+      lines[i].style.opacity = a.toFixed(3);
+      lines[i].style.transform = 'translate3d(0,' + ((1 - a) * 14).toFixed(1) + 'px,0)';
     }
+
+    var exit = clamp((p - pinEnd + 0.04) / 0.26);
+    var scale = 1 + 0.34 * easeOut(exit);
+    inner.style.transform = 'translate3d(0,0,0) scale(' + scale.toFixed(3) + ')';
+    inner.style.opacity = (1 - Math.pow(exit, 1.25)).toFixed(3);
+    inner.style.setProperty('--glow', (0.16 + 0.84 * easeOut(exit)).toFixed(3));
+    // Der Hinweis verschwindet, sobald klar ist, dass gescrollt wird
+    inner.style.setProperty('--cue', clamp(1 - p / 0.08).toFixed(3));
   }
 
   function onScroll() {
@@ -1313,23 +1051,8 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
     requestAnimationFrame(frame);
   }
 
-  function clear() {
-    reels.forEach(unprepare);
-    reels.forEach(function (reel) {
-      var inner = reel.firstElementChild;
-      if (!inner) return;
-      inner.style.transform = '';
-      inner.style.opacity = '';
-      inner.style.removeProperty('--glow');
-    });
-    lastFigP = null;
-    window.orakelPulseP = null;
-    if (window.orakelFilterStep) window.orakelFilterStep(null);
-    orderPage(false);
-  }
-
-  /* Sprungmarken selbst rechnen. Die eingebaute Ankerrechnung landet in den
-     Kapiteln daneben; hier ist das Ziel eindeutig: Oberkante minus Kopfzeile. */
+  /* Sprungmarken selbst rechnen: mit dem klebenden Einstieg landet die
+     eingebaute Ankerrechnung mehrere hundert Pixel daneben. */
   function jump(e) {
     if (!window.storyOn) return;
     var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
@@ -1348,196 +1071,102 @@ a { color: var(--color-accent-700); text-decoration: none; text-underline-offset
 
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', function () { syncNav(); syncFirst(); onScroll(); }, { passive: true });
-  window.addEventListener('storychange', function (e) {
-    if (e.detail) { prepAll(); syncNav(); orderPage(true); syncFirst(); onScroll(); } else { clear(); }
-  });
-
-  if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) { en.target.classList.toggle('is-live', en.isIntersecting); });
-    }, { rootMargin: '100px' });
-    reels.forEach(function (r) { io.observe(r); });
-  }
-
-  function syncFirst() {
-    var r = first.getBoundingClientRect();
-    var off = Math.max(0, Math.round(r.top + (window.pageYOffset || 0)));
-    document.documentElement.style.setProperty('--reel1-off', off + 'px');
-  }
-
-  function prepAll() {
-    reels.forEach(function (r) { if (r.classList.contains('reel-t')) prepare(r); });
-  }
-
+  window.addEventListener('storychange', function (e) { e.detail ? build() : tear(); });
   syncNav();
-  if (window.storyOn) { prepAll(); orderPage(true); syncFirst(); onScroll(); }
+  if (window.storyOn) build();
 })();
 
 /* ══════════════════════════════════════════════════════════════════════════
-   Mobiler Film · die Stimmen als Story
+   Milde Animationen im normalen Fluss
 
-   Eine Stimme fuellt das Bild. Waagrecht wischen blaettert weiter, tippen
-   auch: linkes Drittel zurueck, sonst vor. Senkrecht bleibt Scrollen — die
-   Achse wird bei der ersten Bewegung entschieden und erst dann uebernimmt
-   die Geste.
+   Lange Absaetze schreiben sich, waehrend sie ins Bild kommen; Ueberschriften
+   blenden einmal auf. Beides nur auf dem Telefon und nur mit JavaScript —
+   ohne steht alles fertig da.
    ══════════════════════════════════════════════════════════════════════════ */
 (function () {
-  var track = document.querySelector('.fb-track');
-  if (!track) return;
+  var scopes = ['#system .sys-text', '#gratis'];
+  var heads = ['#system h2', '#gratis h2', '#rueckkopplung h2', '#ueber h2'];
+  var typed = [], softs = [], io = null, queued = false, built = false;
 
-  var ORDER = ['Hiwa', 'Bad Bunny', 'Alina', 'Pashanim', 'Charlotte', 'Anonym'];
-  var all = [].slice.call(track.querySelectorAll('figure'));
-  function nameOf(fig) {
-    var c = fig.querySelector('figcaption');
-    if (!c) return '';
-    var spans = c.querySelectorAll('span');
-    return spans.length > 1 ? spans[1].textContent.trim() : '';
-  }
-  var cards = ORDER.map(function (n) {
-    for (var i = 0; i < all.length; i++) if (nameOf(all[i]) === n) return all[i];
-    return null;
-  }).filter(Boolean);
-  all.forEach(function (f) { if (cards.indexOf(f) < 0) cards.push(f); });
-
-  cards.forEach(function (fig) {
-    var q = fig.querySelector('blockquote');
-    if (q && (q.textContent || '').trim().length > 150) fig.classList.add('lang');
-  });
-
-  var idx = 0, dots = null, built = false, drag = null, busy = false;
-
-  function measure() {
-    var h = 0;
-    cards.forEach(function (fig) {
-      var keep = fig.getAttribute('style') || '';
-      fig.style.position = 'relative';
-      fig.style.opacity = '1';
-      fig.style.transform = 'none';
-      fig.style.height = 'auto';
-      h = Math.max(h, fig.getBoundingClientRect().height);
-      fig.setAttribute('style', keep);
-    });
-    var cap = Math.round((window.innerHeight || 800) * 0.58);
-    track.style.setProperty('--stack-h', Math.min(cap, Math.ceil(h) + 8) + 'px');
-  }
-
-  function render(anim) {
-    cards.forEach(function (fig, i) {
-      var on = i === idx;
-      fig.style.zIndex = on ? '20' : '10';
-      fig.style.transition = anim ? 'transform 300ms ease, opacity 260ms ease' : 'none';
-      fig.style.transform = on ? 'translate3d(0,0,0)' : 'translate3d(0,0,0) scale(0.97)';
-      fig.style.opacity = on ? '1' : '0';
-      fig.style.pointerEvents = on ? 'auto' : 'none';
-    });
-    if (dots) {
-      for (var d = 0; d < dots.children.length; d++) {
-        dots.children[d].classList.toggle('on', d === idx);
-      }
-    }
-  }
-
-  function step(dir) {
-    if (busy) return;
-    busy = true;
-    var out = cards[idx];
-    out.style.transition = 'transform 240ms ease-in, opacity 200ms ease-in';
-    out.style.transform = 'translate3d(' + (dir * 420) + 'px,0,0) rotate(' + (dir * 6) + 'deg)';
-    out.style.opacity = '0';
-
-    idx = (idx - dir + cards.length) % cards.length;   // nach links wischen = weiter
-    var into = cards[idx];
-    into.style.transition = 'none';
-    into.style.zIndex = '20';
-    into.style.transform = 'translate3d(' + (-dir * 90) + 'px,0,0)';
-    into.style.opacity = '0';
-    requestAnimationFrame(function () {
-      into.style.transition = 'transform 320ms cubic-bezier(.2,.8,.3,1), opacity 260ms ease-out';
-      into.style.transform = 'translate3d(0,0,0)';
-      into.style.opacity = '1';
-    });
-    if (dots) {
-      for (var d = 0; d < dots.children.length; d++) {
-        dots.children[d].classList.toggle('on', d === idx);
-      }
-    }
-    setTimeout(function () { busy = false; render(false); }, 340);
-  }
-
-  function onDown(e) {
-    if (!built || busy || (e.target.closest && e.target.closest('button, a'))) return;
-    var top = cards[idx];
-    if (!top.contains(e.target)) return;
-    drag = { id: e.pointerId, x: e.clientX, y: e.clientY, axis: null, dx: 0, t: 1 };
-    top.style.transition = 'none';
-  }
-  function onMove(e) {
-    if (!drag || e.pointerId !== drag.id) return;
-    var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
-    if (drag.axis === null) {
-      if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
-      drag.axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
-      if (drag.axis === 'y') { drag = null; render(true); return; }
-      cards[idx].style.touchAction = 'none';
-    }
-    drag.dx = dx;
-    cards[idx].style.transform = 'translate3d(' + dx + 'px,0,0) rotate(' + (dx / 30).toFixed(2) + 'deg)';
-    cards[idx].style.opacity = String(Math.max(0.3, 1 - Math.abs(dx) / 420));
-  }
-  function onUp(e) {
-    if (!drag || e.pointerId !== drag.id) return;
-    var dx = drag.dx, axis = drag.axis, x = e.clientX;
-    drag = null;
-    cards[idx].style.touchAction = '';
-    if (axis === 'x' && Math.abs(dx) > 70) { step(dx > 0 ? 1 : -1); return; }
-    if (axis === null) {
-      // Tippen wie in einer Story
-      var r = track.getBoundingClientRect();
-      step(x - r.left < r.width * 0.33 ? 1 : -1);
-      return;
-    }
-    render(true);
-  }
+  function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+  function esc(t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
   function build() {
     if (built) return;
     built = true;
-    track.setAttribute('aria-roledescription', 'carousel');
-    dots = document.createElement('div');
-    dots.className = 'fb-dots';
-    dots.setAttribute('aria-hidden', 'true');
-    for (var i = 0; i < cards.length; i++) dots.appendChild(document.createElement('span'));
-    track.parentNode.insertBefore(dots, track);
-    track.addEventListener('pointerdown', onDown);
-    window.addEventListener('pointermove', onMove, { passive: true });
-    window.addEventListener('pointerup', onUp);
-    window.addEventListener('pointercancel', onUp);
-    render(false);
-    measure();
-    var again = function () { measure(); render(false); };
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(again);
-    window.addEventListener('load', again, { once: true });
-    window.addEventListener('resize', function () { if (built) again(); }, { passive: true });
+
+    scopes.forEach(function (sel) {
+      var root = document.querySelector(sel);
+      if (!root) return;
+      [].slice.call(root.querySelectorAll('p')).forEach(function (el) {
+        var text = (el.textContent || '').trim();
+        if (el.children.length || text.length < 110) return;
+        el._plain = text;
+        el.innerHTML = text.split(/(\s+)/).map(function (t) {
+          return /^\s*$/.test(t) ? t : '<span class="word">' + esc(t) + '</span>';
+        }).join('');
+        typed.push({ el: el, words: [].slice.call(el.querySelectorAll('.word')) });
+      });
+    });
+
+    heads.forEach(function (sel) {
+      var el = document.querySelector(sel);
+      if (!el) return;
+      el.classList.add('soft-in');
+      softs.push(el);
+    });
+    if (softs.length && 'IntersectionObserver' in window) {
+      io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          en.target.classList.add('is-in');
+          io.unobserve(en.target);
+        });
+      }, { rootMargin: '0px 0px -12% 0px' });
+      softs.forEach(function (el) { io.observe(el); });
+    }
+    frame();
   }
 
   function tear() {
     if (!built) return;
     built = false;
-    idx = 0;
-    track.removeAttribute('aria-roledescription');
-    track.removeEventListener('pointerdown', onDown);
-    window.removeEventListener('pointermove', onMove);
-    window.removeEventListener('pointerup', onUp);
-    window.removeEventListener('pointercancel', onUp);
-    if (dots && dots.parentNode) dots.parentNode.removeChild(dots);
-    dots = null;
-    track.style.removeProperty('--stack-h');
-    all.forEach(function (f) {
-      f.style.zIndex = f.style.transition = f.style.transform = '';
-      f.style.opacity = f.style.pointerEvents = f.style.touchAction = '';
-    });
+    typed.forEach(function (t) { if (t.el._plain) t.el.textContent = t.el._plain; });
+    typed = [];
+    if (io) { io.disconnect(); io = null; }
+    softs.forEach(function (el) { el.classList.remove('soft-in', 'is-in'); });
+    softs = [];
   }
 
+  function frame() {
+    queued = false;
+    if (!window.storyOn) return;
+    var vh = window.innerHeight || 800;
+    for (var i = 0; i < typed.length; i++) {
+      var t = typed[i];
+      var r = t.el.getBoundingClientRect();
+      if (r.bottom < -40 || r.top > vh + 40) continue;
+      // Geschrieben wird, waehrend der Absatz von unten ins Bild kommt.
+      var p = clamp((vh * 0.88 - r.top) / (r.height + vh * 0.22));
+      var shown = p * t.words.length;
+      for (var w = 0; w < t.words.length; w++) {
+        var o = clamp(shown - w);
+        var el = t.words[w];
+        if (el._o === o) continue;
+        el._o = o;
+        el.style.opacity = o.toFixed(3);
+      }
+    }
+  }
+
+  function onScroll() {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(frame);
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
   window.addEventListener('storychange', function (e) { e.detail ? build() : tear(); });
   if (window.storyOn) build();
 })();
