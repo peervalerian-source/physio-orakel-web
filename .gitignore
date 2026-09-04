@@ -2,3 +2,4 @@
 pool-import.txt
 node_modules/
 *.log
+.wrangler/

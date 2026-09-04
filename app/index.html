@@ -811,6 +811,13 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
             <button type="button" data-src="neu" onclick="wkSetSource('neu')">Nur neue</button>
           </div>
         </div>
+        <div>
+          <span class="seg-label">Fragen ohne Lösung</span>
+          <div class="seg seg-text" id="wkUnsolvedSeg">
+            <button type="button" data-uns="0" class="on" onclick="wkSetUnsolved(false)">Ausblenden</button>
+            <button type="button" data-uns="1" onclick="wkSetUnsolved(true)">Mitnehmen</button>
+          </div>
+        </div>
       </div>
 
       <div style="margin-top:24px">
@@ -3072,7 +3079,9 @@ function updateProgress(){
   document.getElementById('progressText').textContent=done+' / '+total;
 }
 
-function calcScore(correct,chosen){let r=0,w=0;chosen.forEach(k=>{correct.has(k)?r++:w++});return Math.max(0,(r-w)/correct.size)}
+// Ohne hinterlegte Loesung gibt es nichts zu rechnen — die Frage wird an
+// den Aufrufstellen aus der Wertung genommen.
+function calcScore(correct,chosen){if(!correct.size)return 0;let r=0,w=0;chosen.forEach(k=>{correct.has(k)?r++:w++});return Math.max(0,(r-w)/correct.size)}
 
 function runEvaluate(){
   if(state.evaluated)return;
@@ -3080,13 +3089,19 @@ function runEvaluate(){
   stopExamTimer();stopStopwatch();
   // In exam mode, show all questions
   if(state.examMode)state.questions.forEach((_,i)=>{document.getElementById('q'+i).style.display=''});
-  let totalPts=0;const topicScores={};
+  let totalPts=0,scorable=0;const topicScores={};
   state.questions.forEach((q,i)=>{
     const correct=new Set(q.correct||[]),chosen=state.userAnswers[i]||new Set();
-    const score=calcScore(correct,chosen);totalPts+=score;
-    const topic=q.topic||'Sonstige';
-    if(!topicScores[topic])topicScores[topic]={pts:0,max:0};
-    topicScores[topic].pts+=score;topicScores[topic].max+=1;
+    // Zu manchen Altfragen ist keine Loesung ueberliefert. Sie werden
+    // gezeigt, aber weder gutgeschrieben noch angerechnet.
+    const rated=correct.size>0;
+    const score=calcScore(correct,chosen);
+    if(rated){
+      totalPts+=score;scorable++;
+      const topic=q.topic||'Sonstige';
+      if(!topicScores[topic])topicScores[topic]={pts:0,max:0};
+      topicScores[topic].pts+=score;topicScores[topic].max+=1;
+    }
     document.getElementById('opts'+i).querySelectorAll('.option-row').forEach(row=>{
       const k=row.dataset.key,wc=chosen.has(k),ic=correct.has(k);
       row.onclick=null;row.style.cursor='default';
@@ -3094,12 +3109,12 @@ function runEvaluate(){
       else if(wc&&!ic)row.classList.add('rv-wrong');
       else if(!wc&&ic)row.classList.add('rv-missed');
     });
-    const s=score>=0.99?{t:'Vollständig',c:'full'}:score>0?{t:'Teilweise',c:'partial'}:{t:'Falsch',c:'wrong'};
+    const s=!rated?{t:'Ohne Lösung',c:''}:score>=0.99?{t:'Vollständig',c:'full'}:score>0?{t:'Teilweise',c:'partial'}:{t:'Falsch',c:'wrong'};
     const fb=document.createElement('div');fb.className='feedback-block';
-    fb.innerHTML=`<div class="fb-row"><span class="fb-status ${s.c}">${s.t}</span><span class="fb-score">${score.toFixed(2).replace('.',',')} / 1,00 Pkt.</span></div><div class="fb-explain">${q.explanation||''}</div><button class="btn btn-explain" onclick="deepDive(${i},this,'ddive')">🔬 Erklär mir das</button><div id="ddive${i}"></div>`;
+    fb.innerHTML=`<div class="fb-row"><span class="fb-status ${s.c}">${s.t}</span><span class="fb-score">${rated?score.toFixed(2).replace('.',',')+' / 1,00 Pkt.':'nicht gewertet'}</span></div><div class="fb-explain">${q.explanation||''}</div><button class="btn btn-explain" onclick="deepDive(${i},this,'ddive')">🔬 Erklär mir das</button><div id="ddive${i}"></div>`;
     document.getElementById('q'+i).appendChild(fb);
   });
-  const pct=Math.round(totalPts/state.questions.length*100);
+  const pct=scorable?Math.round(totalPts/scorable*100):0;
   // Genau ein Ton fuer die ganze Auswertung — die Tonhoehe traegt das
   // Ergebnis. Beförderungs- und Achievement-Toene bleiben dabei stumm,
   // sonst waeren es wieder mehrere.
@@ -3126,8 +3141,8 @@ function runEvaluate(){
   }
   const xpResult=addXP(xpGain);
   // Save session
-  buildResult(pct,totalPts,state.questions.length,topicScores);
-  saveSessionStats(pct,totalPts,state.questions.length,topicScores);
+  buildResult(pct,totalPts,scorable,topicScores);
+  saveSessionStats(pct,totalPts,scorable,topicScores);
   // Update streaks in stats
   const stats=loadStats();
   if(!stats.bestStreak||streak>stats.bestStreak)stats.bestStreak=streak;
@@ -3242,7 +3257,8 @@ function buildResult(pct,pts,max,topicScores){
   state.questions.forEach((q,i)=>{
     const correct=new Set(q.correct||[]),chosen=state.userAnswers[i]||new Set();
     const score=calcScore(correct,chosen);
-    const s=score>=0.99?{t:'Vollständig',c:'full'}:score>0?{t:'Teilweise',c:'partial'}:{t:'Falsch',c:'wrong'};
+    const rated=correct.size>0;
+    const s=!rated?{t:'Ohne Lösung',c:''}:score>=0.99?{t:'Vollständig',c:'full'}:score>0?{t:'Teilweise',c:'partial'}:{t:'Falsch',c:'wrong'};
     const bl=document.createElement('div');bl.className='question-block';bl.style.marginBottom='1.1rem';
     let optsHtml='';
     q.options.forEach(opt=>{
@@ -3255,7 +3271,7 @@ function buildResult(pct,pts,max,topicScores){
       else if(wc){cls='rv-miss';mark='✕'}
       optsHtml+=`<div class="option-row ${cls}"><span class="opt-mark" aria-hidden="true">${mark}</span><div class="opt-label"><span class="opt-letter">${opt.key.toUpperCase()}</span>${opt.text}</div></div>`;
     });
-    bl.innerHTML=`<div class="q-number">Frage ${i+1} · ${q.topic||''}</div><div class="q-text serif">${q.question}</div><div class="options">${optsHtml}</div><div class="feedback-block fb-${s.c}" style="margin-top:.85rem"><div class="fb-row"><span class="fb-status ${s.c}">${s.t}</span><span class="fb-score">${score.toFixed(2).replace('.',',')} / 1,00 Pkt.</span></div><div class="fb-explain">${q.explanation||''}</div><button class="btn btn-explain" onclick="deepDive(${i},this,'rv_ddive')">🔬 Erklär mir das</button><div id="rv_ddive${i}"></div></div>`;
+    bl.innerHTML=`<div class="q-number">Frage ${i+1} · ${q.topic||''}</div><div class="q-text serif">${q.question}</div><div class="options">${optsHtml}</div><div class="feedback-block fb-${s.c}" style="margin-top:.85rem"><div class="fb-row"><span class="fb-status ${s.c}">${s.t}</span><span class="fb-score">${rated?score.toFixed(2).replace('.',',')+' / 1,00 Pkt.':'nicht gewertet'}</span></div><div class="fb-explain">${q.explanation||''}</div><button class="btn btn-explain" onclick="deepDive(${i},this,'rv_ddive')">🔬 Erklär mir das</button><div id="rv_ddive${i}"></div></div>`;
     rv.appendChild(bl);
   });
 }
@@ -3982,14 +3998,17 @@ var digestUntil=0;
 //  unangetastet bleibt. Das JSON wird unveraendert geladen und erst zur
 //  Laufzeit in das Fragenformat der Engine uebersetzt.
 // ══════════════════════════════════════════════════════════════════════════
-const WK_DATA_URL='wochentest-fragen.json';
+// Mehrere Dateien, ein Bestand: jede wird unveraendert geladen und beim
+// Zusammenfuehren nur addiert — keine Datei ueberschreibt die andere.
+const WK_DATA_URLS=['wochentest-fragen.json','wochentest-fragen-physio1.json'];
 const WK_LETTERS='abcdefghijkl';
 const WK_MIN_WEEK=2,WK_MAX_WEEK=14;
 
 const wk={
   loading:false,loaded:false,error:'',
-  lectures:[],items:[],byCode:new Map(),
+  lectures:[],items:[],byCode:new Map(),blocks:new Map(),
   semester:'Herbst',week:2,window:'beide',source:'beide',
+  unsolved:false,  // Fragen ohne hinterlegte Loesung mitnehmen?
   off:new Set()   // abgewaehlte VL-Codes
 };
 
@@ -4033,7 +4052,6 @@ function wkPrepare(q){
   if(!lec)return null;
   const opts=(q.options||[]).slice();
   const correct=(q.correct||[]).filter(c=>c&&!wkIsPlaceholder(c));
-  if(!correct.length)return null;
   const corr=new Set();
   let appended=0;
   correct.forEach(c=>{
@@ -4054,12 +4072,15 @@ function wkPrepare(q){
   });
   // Zu wenig Optionen, keine Loesung, oder alle Distraktoren verloren
   // (dann waeren nur noch die richtigen Antworten uebrig).
-  if(opts.length<2||!corr.size)return null;
+  if(opts.length<2)return null;
   if(appended>0&&corr.size===opts.length)return null;
   return{
     code:lec.code,semester:lec.semester,week:lec.week,vlTitle:lec.title,
     source:q.source||'',block:q.block,blockTitle:q.block_title||'',
     question:q.question||'',opts:opts,correct:corr,
+    // Zu manchen Altfragen ist keine Loesung ueberliefert. Sie bleiben im
+    // Bestand, werden aber nur auf ausdruecklichen Wunsch gestellt.
+    noSolution:corr.size===0,
     note:q.note||'',extra:q.extra||''
   };
 }
@@ -4068,12 +4089,33 @@ async function wkLoad(){
   if(wk.loading||wk.loaded)return;
   wk.loading=true;wk.error='';
   try{
-    const res=await fetch(WK_DATA_URL,{cache:'default'});
-    if(!res.ok)throw new Error('HTTP '+res.status);
-    const data=await res.json();
-    wk.lectures=Array.isArray(data.lectures)?data.lectures:[];
-    wk.byCode=new Map(wk.lectures.map(l=>[l.code,l]));
-    wk.items=(Array.isArray(data.questions)?data.questions:[]).map(wkPrepare).filter(Boolean);
+    const sets=await Promise.all(WK_DATA_URLS.map(async url=>{
+      const res=await fetch(url,{cache:'default'});
+      if(!res.ok)throw new Error(url+': HTTP '+res.status);
+      return res.json();
+    }));
+    // Vorlesungen: bekannte Codes behalten ihren Eintrag, es wird nur die
+    // Fragenzahl aufaddiert. Neue Codes kommen dazu.
+    sets.forEach(data=>{
+      (Array.isArray(data.lectures)?data.lectures:[]).forEach(l=>{
+        const known=wk.byCode.get(l.code);
+        if(known)known.n_questions=(known.n_questions||0)+(l.n_questions||0);
+        else{const copy=Object.assign({},l);wk.lectures.push(copy);wk.byCode.set(copy.code,copy)}
+      });
+    });
+    // Themenbloecke aus allen Dateien in ein Register.
+    sets.forEach(data=>{
+      (Array.isArray(data.blocks)?data.blocks:[]).forEach(b=>{
+        if(!wk.blocks.has(b.block))wk.blocks.set(b.block,{title:b.block_title||'',vl:b.vl||[]});
+      });
+    });
+    // Fragen anhaengen, in der Reihenfolge der Dateien.
+    sets.forEach(data=>{
+      (Array.isArray(data.questions)?data.questions:[]).forEach(q=>{
+        const item=wkPrepare(q);
+        if(item)wk.items.push(item);
+      });
+    });
     wk.loaded=true;
   }catch(e){
     wk.error=(e&&e.message)||'unbekannter Fehler';
@@ -4092,17 +4134,27 @@ function wkWindowWeeks(){
 function wkLecturesOf(week){
   return wk.lectures.filter(l=>l.semester===wk.semester&&l.week===week);
 }
+// Ohne hinterlegte Loesung ist eine Frage nicht auswertbar — sie zaehlt
+// nur mit, wenn der Schalter es erlaubt.
+function wkUsable(it){return wk.unsolved||!it.noSolution}
 function wkItemsOf(week,ignoreFilters){
-  return wk.items.filter(it=>it.semester===wk.semester&&it.week===week
+  return wk.items.filter(it=>it.semester===wk.semester&&it.week===week&&wkUsable(it)
     &&(ignoreFilters||(!wk.off.has(it.code)&&(wk.source==='beide'||it.source===wk.source))));
 }
 function wkCountOfCode(code,ignoreSource){
-  return wk.items.filter(it=>it.code===code&&(ignoreSource||wk.source==='beide'||it.source===wk.source)).length;
+  return wk.items.filter(it=>it.code===code&&wkUsable(it)
+    &&(ignoreSource||wk.source==='beide'||it.source===wk.source)).length;
 }
 function wkPool(){
   const weeks=wkWindowWeeks();
-  return wk.items.filter(it=>it.semester===wk.semester&&weeks.indexOf(it.week)>=0
+  return wk.items.filter(it=>it.semester===wk.semester&&weeks.indexOf(it.week)>=0&&wkUsable(it)
     &&!wk.off.has(it.code)&&(wk.source==='beide'||it.source===wk.source));
+}
+// Wie viele Fragen im Fenster liegen nur an der fehlenden Loesung.
+function wkUnsolvedInWindow(){
+  const weeks=wkWindowWeeks();
+  return wk.items.filter(it=>it.noSolution&&it.semester===wk.semester&&weeks.indexOf(it.week)>=0
+    &&!wk.off.has(it.code)&&(wk.source==='beide'||it.source===wk.source)).length;
 }
 
 function wkSetSemester(sem){
@@ -4121,6 +4173,10 @@ function wkSetSource(src){
   if(wk.source===src)return;
   wk.source=src;playTick();wkRefresh();
 }
+function wkSetUnsolved(on){
+  if(wk.unsolved===on)return;
+  wk.unsolved=on;playTick();wkRefresh();
+}
 function wkToggleCode(code){
   wk.off.has(code)?wk.off.delete(code):wk.off.add(code);
   playTick();wkRefresh();
@@ -4138,6 +4194,8 @@ function wkRenderSegs(){
   if(semSeg)semSeg.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.sem===wk.semester));
   const srcSeg=document.getElementById('wkSourceSeg');
   if(srcSeg)srcSeg.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.src===wk.source));
+  const unsSeg=document.getElementById('wkUnsolvedSeg');
+  if(unsSeg)unsSeg.querySelectorAll('button').forEach(b=>b.classList.toggle('on',(b.dataset.uns==='1')===wk.unsolved));
   const weekSeg=document.getElementById('wkWeekSeg');
   if(weekSeg){
     let h='';
@@ -4232,7 +4290,12 @@ function wkRefresh(){
       hint.textContent=anyRaw?'Kein Treffer — Filter lockern.'
         :'Zu '+weekTxt+' gibt es noch keine Fragen.';
     }else{
-      hint.textContent=n+' von '+pool.length+' Fragen · '+weekTxt;
+      let txt=n+' von '+pool.length+' Fragen · '+weekTxt;
+      if(!wk.unsolved){
+        const u=wkUnsolvedInWindow();
+        if(u)txt+=' · '+u+(u===1?' Frage ohne Lösung ausgeblendet':' Fragen ohne Lösung ausgeblendet');
+      }
+      hint.textContent=txt;
     }
   }
   if(btn)btn.disabled=!pool.length;
@@ -4255,8 +4318,11 @@ function wkToEngine(it,i){
     if(it.correct.has(origIdx))correct.push(key);
   });
   const srcTxt=it.source==='umformuliert'?'Altfrage':it.source==='neu'?'Übungsfrage':'';
-  const head=[srcTxt,it.code+' · '+it.vlTitle,'Woche '+it.week].filter(Boolean).join(' · ');
+  const blk=wk.blocks.get(it.block);
+  const blkTxt=(blk&&blk.title)||it.blockTitle||'';
+  const head=[srcTxt,it.code+' · '+it.vlTitle,'Woche '+it.week,blkTxt].filter(Boolean).join(' · ');
   let expl='<span style="display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--app-mute);margin-bottom:6px">'+escapeHtml(head)+'</span>';
+  if(it.noSolution)expl+='<span style="display:block;color:var(--app-accent)">Zu dieser Frage ist keine Lösung überliefert — sie wird nicht gewertet.</span>';
   if(it.note.trim())expl+='<span style="display:block">'+wkRich(it.note.trim())+'</span>';
   if(it.extra.trim())expl+='<span style="display:block;margin-top:6px;color:var(--app-mute);font-size:12.5px">'+wkRich(it.extra.trim())+'</span>';
   return{
