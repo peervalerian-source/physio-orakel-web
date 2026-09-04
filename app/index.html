@@ -323,7 +323,95 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
   background: var(--color-accent-2); animation: wtBlink 1.9s ease-in-out infinite;
 }
 .seg.seg-text > button { font-size: 13.5px; padding: 10px 18px; }
-.seg-label { display: block; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--app-mute); margin-bottom: 10px; }
+.seg-label { display: block; font-family: var(--font-heading); font-weight: 800; font-size: 13px; line-height: 18px; letter-spacing: 0; color: var(--app-ink); margin-bottom: 9px; }
+.seg-label .sl-note { display: block; font-family: var(--font-body); font-weight: 400; font-size: 12px; line-height: 17px; color: var(--app-mute); margin-top: 2px; }
+
+/* ── Konfiguration: Gruppen statt Rahmen ──────────────────────────────────
+   Der Screen stellt zwei Fragen — welche Pruefung, und wie soll der Test
+   aussehen. Die Trennung traegt eine Ueberschrift und Abstand, keine Box. */
+.cfg-group { margin-top: clamp(26px, 3.4vw, 38px); }
+.cfg-group + .cfg-group { margin-top: clamp(24px, 3vw, 34px); }
+.cfg-title { font-family: var(--font-heading); font-weight: 800; font-size: clamp(17px, 1.7vw, 20px); line-height: 26px; letter-spacing: -0.01em; color: var(--app-ink); margin: 0; }
+.cfg-sub { font-size: 13.5px; line-height: 21px; color: var(--app-mute); margin: 4px 0 0; max-width: 62ch; }
+.cfg-row { margin-top: 16px; display: flex; gap: 18px 32px; flex-wrap: wrap; align-items: flex-start; }
+
+/* Ergebnis der Wochenwahl — die wichtigste Zeile des Screens. */
+.wk-window { margin-top: 16px; display: flex; gap: 8px 20px; flex-wrap: wrap; align-items: baseline; }
+.wk-window-line { font-family: var(--font-heading); font-weight: 800; font-size: 16px; line-height: 24px; color: var(--app-ink); }
+.wk-window-line b { color: var(--app-accent); font-weight: 800; }
+.wk-window-opts { display: flex; gap: 14px; flex-wrap: wrap; }
+.wk-window-opts > button {
+  all: unset; cursor: pointer; font-size: 13px; line-height: 20px; color: var(--app-mute);
+  border-bottom: 2px solid transparent; transition: color 150ms ease, border-color 150ms ease;
+}
+.wk-window-opts > button:hover { color: var(--app-ink); }
+.wk-window-opts > button.on { color: var(--app-accent); border-bottom-color: var(--app-accent); }
+.wk-window-opts > button:focus-visible { outline: 2px solid var(--app-accent); outline-offset: 3px; }
+
+/* ── Wochen und Vorlesungen: Flaechen und Abstand statt Kaesten ───────────
+   Eine Haarlinie unter der Wochenzeile, darunter Zeilen ohne eigenen
+   Rahmen. Die Auswahl traegt ein Balken links, nicht ein Kasten aussen. */
+.wk-week { margin-top: 26px; }
+.wk-week-head { display: flex; gap: 12px 16px; align-items: baseline; padding-bottom: 10px; border-bottom: 2px solid var(--app-rule); }
+.wk-week-name { all: unset; cursor: pointer; font-family: var(--font-heading); font-weight: 800; font-size: 19px; line-height: 26px; letter-spacing: -0.01em; color: var(--app-ink); }
+.wk-week-name:hover { color: var(--app-accent); }
+.wk-week-name:focus-visible { outline: 2px solid var(--app-accent); outline-offset: 3px; }
+.wk-week-tally { margin-left: auto; font-size: 13px; color: var(--app-mute); font-feature-settings: 'tnum' 1; }
+.wk-vls { display: grid; gap: 2px; margin-top: 4px; }
+.wk-vl {
+  all: unset; cursor: pointer; display: grid;
+  grid-template-columns: 16px 58px minmax(0, 1fr) auto; gap: 0 14px; align-items: baseline;
+  padding: 13px 14px 13px 10px; border-left: 2px solid transparent;
+  transition: background-color 150ms ease, border-color 150ms ease, opacity 150ms ease;
+}
+.wk-vl { background: color-mix(in srgb, var(--app-panel) 60%, transparent); }
+.wk-vl:hover { background: var(--app-accent-soft); }
+.wk-vl:focus-visible { outline: 2px solid var(--app-accent); outline-offset: -2px; }
+.wk-vl.on { border-left-color: var(--app-accent); }
+.wk-vl.off { opacity: 0.4; }
+.wk-vl-box { width: 13px; height: 13px; border: 2px solid var(--app-mute); align-self: center; position: relative; transition: border-color 150ms ease; }
+.wk-vl.on .wk-vl-box { border-color: var(--app-accent); background: var(--app-accent); }
+.wk-vl-code { font-family: var(--font-heading); font-weight: 800; font-size: 13px; line-height: 21px; color: var(--app-accent); font-feature-settings: 'tnum' 1; }
+.wk-vl.off .wk-vl-code { color: var(--app-mute); }
+.wk-vl-title { font-size: 14.5px; line-height: 21px; color: var(--app-ink); }
+.wk-vl-badge { font-size: 12px; line-height: 21px; color: var(--app-mute); font-feature-settings: 'tnum' 1; white-space: nowrap; }
+.wk-vl-badge.empty { color: var(--app-disabled); }
+.wk-empty { padding: 14px 0 2px 10px; font-size: 13.5px; line-height: 22px; color: var(--app-mute); max-width: 60ch; }
+.wk-empty b { display: block; font-family: var(--font-heading); font-weight: 800; color: var(--app-ink); }
+@media (max-width: 620px) {
+  .wk-vl { grid-template-columns: 16px minmax(0, 1fr) auto; row-gap: 2px; }
+  .wk-vl-code { grid-column: 2; }
+  .wk-vl-title { grid-column: 2; }
+  .wk-vl-badge { grid-column: 3; grid-row: 1; }
+}
+
+/* ── Startleiste: klebt unten, traegt den Zustand und die Aktion ──────────*/
+.cfg-foot {
+  position: sticky; bottom: 0; z-index: 5;
+  margin-top: clamp(28px, 4vw, 44px);
+  padding: 15px 0 18px;
+  background: var(--app-bg);
+  border-top: 2px solid var(--app-rule);
+  display: flex; gap: 12px 24px; flex-wrap: wrap; align-items: center; justify-content: space-between;
+}
+/* Der Stoff darf nicht an der Leiste abgeschnitten wirken — darueber
+   verlaeuft er weich in den Grund. */
+.cfg-foot::before {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 100%; height: 30px;
+  background: linear-gradient(to top, var(--app-bg), transparent); pointer-events: none;
+}
+#s2 .wrap { padding-bottom: 0; }
+.cfg-foot-status { font-size: 14px; line-height: 21px; color: var(--app-ink); min-width: 0; }
+.cfg-foot-status .cfs-sub { display: block; font-size: 12.5px; line-height: 19px; color: var(--app-mute); margin-top: 2px; }
+.cfg-foot .btn-primary { font-size: 15.5px; padding: 14px 26px; }
+/* Auf schmalen Schirmen frisst die Leiste sonst ein Viertel des Bildes:
+   dort traegt sie nur noch die Kernzeile. */
+@media (max-width: 620px) {
+  .cfg-foot { padding: 11px 0 13px; gap: 10px 14px; }
+  .cfg-foot-status { font-size: 13.5px; line-height: 20px; }
+  .cfg-foot-status .cfs-sub { display: none; }
+  .cfg-foot .btn-primary { font-size: 14.5px; padding: 12px 18px; }
+}
 
 /* ── Wochentest: Wochenraster ─────────────────────────────────────────────
    Der .seg-Streifen traegt 13 Schalter nicht — auf schmalen Schirmen bricht
@@ -337,7 +425,10 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
   transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease;
 }
 .wk-weeks > button:hover { border-color: var(--app-accent); }
-.wk-weeks > button.on { background: var(--app-accent); border-color: var(--app-accent); color: var(--app-accent-ink); }
+.wk-weeks > button.on {
+  background: var(--app-accent); border-color: var(--app-accent); color: var(--app-accent-ink);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--app-accent) 18%, transparent);
+}
 .wk-weeks > button:focus-visible { outline: 2px solid var(--app-accent); outline-offset: 2px; }
 
 /* ── Upload ────────────────────────────────────────────────────────────── */
@@ -752,58 +843,55 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
   </div>
 </div>
 
-<!-- ══ S2: Konfiguration (Altfragen) ══════════════════════════════════════ -->
+<!-- ══ S2: Konfiguration (Altfragen) ══════════════════════════════════════
+     Zwei Fragen, zwei Gruppen: welche Pruefung, und wie soll der Test
+     zusammengestellt sein. Darunter der Stoff, unten die Startleiste.
+     ══════════════════════════════════════════════════════════════════════ -->
 <div id="s2" class="screen">
   <section class="wrap">
     <button type="button" class="btn btn-ghost" onclick="goTo('s1')" style="color:var(--app-ink);font-size:12.5px;margin-bottom:22px">← Zurück</button>
     <span class="kicker">Altfragen üben</span>
     <h1 class="screen-h1" id="s2Title">Welche Punkte?</h1>
+    <p class="cfg-sub" id="s2Sub" style="margin-top:14px;font-size:15px;line-height:24px"></p>
 
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;align-items:center" id="topicTools">
-      <button type="button" class="btn btn-secondary" onclick="selectAllTopics()" style="font-size:12.5px">Alle wählen</button>
-      <button type="button" class="btn btn-ghost" onclick="selectNoTopics()" style="color:var(--app-ink);font-size:12.5px">Auswahl leeren</button>
-      <span style="font-size:13px;color:var(--app-mute)" id="selCountText">noch nichts gewählt</span>
-    </div>
-
-    <div style="margin-top:26px;display:flex;gap:20px 34px;flex-wrap:wrap;align-items:flex-start">
-      <div>
-        <span class="seg-label">Welche Datenbank?</span>
-        <div class="seg seg-text" id="poolKindSeg">
-          <button type="button" data-pool="allgemein" class="on" onclick="setPoolKind('allgemein')">Physiologie allgemein</button>
-          <button type="button" data-pool="wochentest" onclick="setPoolKind('wochentest')">Wochentest</button>
-        </div>
-      </div>
-      <div>
-        <span class="seg-label">Wie viele Fragen?</span>
-        <div class="seg" id="countGrid">
-          <button type="button" data-cnt="5" class="on" onclick="selectCount(this,'5')">5</button>
-          <button type="button" data-cnt="10" onclick="selectCount(this,'10')">10</button>
-          <button type="button" data-cnt="20" onclick="selectCount(this,'20')">20</button>
-          <button type="button" data-cnt="all" id="cntAllBtn" style="display:none" onclick="selectCount(this,'all')">Alle</button>
-        </div>
-      </div>
-      <div id="diffSection">
-        <span class="seg-label">Schwierigkeit</span>
-        <div class="seg seg-text">
-          <button type="button" data-diff="normal" class="on" onclick="selectDiff(this,'normal')">Normal</button>
-          <button type="button" data-diff="hard" onclick="selectDiff(this,'hard')">Hard</button>
-        </div>
-      </div>
-    </div>
-    <p style="font-size:12.5px;line-height:20px;color:var(--app-mute);margin:10px 0 0;max-width:60ch" id="poolKindHint"></p>
-
-    <!-- Wochentest: statt Themenkatalog wird nach Semester und Testwoche
-         gewaehlt. Sichtbar nur, wenn die Datenbank „Wochentest" laeuft. -->
-    <div id="wkPanel" style="display:none">
-      <div style="margin-top:22px;display:flex;gap:20px 34px;flex-wrap:wrap;align-items:flex-start">
+    <!-- ── Gruppe 1: Prüfung ───────────────────────────────────────────── -->
+    <div class="cfg-group">
+      <h2 class="cfg-title">Prüfung</h2>
+      <p class="cfg-sub" id="poolKindHint"></p>
+      <div class="cfg-row">
         <div>
+          <span class="seg-label">Datenbank</span>
+          <div class="seg seg-text" id="poolKindSeg">
+            <button type="button" data-pool="allgemein" class="on" onclick="setPoolKind('allgemein')">Physiologie allgemein</button>
+            <button type="button" data-pool="wochentest" onclick="setPoolKind('wochentest')">Wochentest</button>
+          </div>
+        </div>
+        <div id="wkSemWrap" style="display:none">
           <span class="seg-label">Semester</span>
           <div class="seg seg-text" id="wkSemSeg">
             <button type="button" data-sem="Herbst" class="on" onclick="wkSetSemester('Herbst')">Herbst · Physio I</button>
             <button type="button" data-sem="Frühling" onclick="wkSetSemester('Frühling')">Frühling · Physio II</button>
           </div>
         </div>
+      </div>
+      <div id="poolStatusWrap" style="margin-top:16px"></div>
+    </div>
+
+    <!-- ── Gruppe 2: Test zusammenstellen ──────────────────────────────── -->
+    <div class="cfg-group">
+      <h2 class="cfg-title">Test zusammenstellen</h2>
+      <p class="cfg-sub">Umfang und Herkunft der Fragen.</p>
+      <div class="cfg-row">
         <div>
+          <span class="seg-label">Fragenanzahl</span>
+          <div class="seg" id="countGrid">
+            <button type="button" data-cnt="5" class="on" onclick="selectCount(this,'5')">5</button>
+            <button type="button" data-cnt="10" onclick="selectCount(this,'10')">10</button>
+            <button type="button" data-cnt="20" onclick="selectCount(this,'20')">20</button>
+            <button type="button" data-cnt="all" id="cntAllBtn" style="display:none" onclick="selectCount(this,'all')">Alle</button>
+          </div>
+        </div>
+        <div id="wkSourceWrap" style="display:none">
           <span class="seg-label">Fragenherkunft</span>
           <div class="seg seg-text" id="wkSourceSeg">
             <button type="button" data-src="beide" class="on" onclick="wkSetSource('beide')">Beide</button>
@@ -811,36 +899,54 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
             <button type="button" data-src="neu" onclick="wkSetSource('neu')">Nur neue</button>
           </div>
         </div>
-        <div>
+        <div id="wkUnsolvedWrap" style="display:none">
           <span class="seg-label">Fragen ohne Lösung</span>
           <div class="seg seg-text" id="wkUnsolvedSeg">
             <button type="button" data-uns="0" class="on" onclick="wkSetUnsolved(false)">Ausblenden</button>
             <button type="button" data-uns="1" onclick="wkSetUnsolved(true)">Mitnehmen</button>
           </div>
         </div>
+        <div id="diffSection">
+          <span class="seg-label">Schwierigkeit</span>
+          <div class="seg seg-text">
+            <button type="button" data-diff="normal" class="on" onclick="selectDiff(this,'normal')">Normal</button>
+            <button type="button" data-diff="hard" onclick="selectDiff(this,'hard')">Hard</button>
+          </div>
+        </div>
       </div>
-
-      <div style="margin-top:24px">
-        <span class="seg-label">Testwoche</span>
-        <div class="wk-weeks" id="wkWeekSeg"></div>
-      </div>
-
-      <div style="margin-top:24px">
-        <span class="seg-label">Testfenster</span>
-        <div class="seg seg-text" id="wkWindowSeg"></div>
-        <p style="font-size:12.5px;line-height:20px;color:var(--app-mute);margin:10px 0 0;max-width:64ch" id="wkWindowHint"></p>
-      </div>
-
-      <div id="wkWeekArea" style="margin-top:24px;border-top:2px solid var(--app-rule)"></div>
     </div>
 
-    <div id="poolStatusWrap" style="margin-top:16px"></div>
+    <!-- ── Gruppe 3a: Prüfungswoche (nur Wochentest) ───────────────────── -->
+    <div class="cfg-group" id="wkWeekGroup" style="display:none">
+      <h2 class="cfg-title">Prüfungswoche</h2>
+      <p class="cfg-sub">Welche Testwoche simulierst du?</p>
+      <div class="wk-weeks" id="wkWeekSeg" style="margin-top:16px"></div>
+      <div class="wk-window">
+        <span class="wk-window-line" id="wkWindowHint"></span>
+        <span class="wk-window-opts" id="wkWindowSeg"></span>
+      </div>
+    </div>
 
-    <div id="topicArea" style="margin-top:26px;border-top:2px solid var(--app-rule)"></div>
+    <!-- ── Gruppe 3b: Stoff ────────────────────────────────────────────── -->
+    <div class="cfg-group" id="wkStoffGroup" style="display:none">
+      <h2 class="cfg-title">Stoff</h2>
+      <p class="cfg-sub">Einzelne Vorlesungen kannst du abwählen.</p>
+      <div id="wkWeekArea"></div>
+    </div>
 
-    <div style="margin-top:30px;display:flex;gap:12px 24px;flex-wrap:wrap;align-items:center;justify-content:flex-end">
-      <span style="font-size:13px;color:var(--app-mute)" id="startHint">Wähle mindestens einen Punkt.</span>
-      <button type="button" class="btn btn-primary btn-large" id="startBtn" onclick="startFromConfig()" disabled>Quiz starten</button>
+    <div class="cfg-group" id="topicGroup">
+      <h2 class="cfg-title">Themenkatalog</h2>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;align-items:center" id="topicTools">
+        <button type="button" class="btn btn-secondary" onclick="selectAllTopics()" style="font-size:12.5px">Alle wählen</button>
+        <button type="button" class="btn btn-ghost" onclick="selectNoTopics()" style="color:var(--app-ink);font-size:12.5px">Auswahl leeren</button>
+        <span style="font-size:13px;color:var(--app-mute)" id="selCountText">noch nichts gewählt</span>
+      </div>
+      <div id="topicArea" style="margin-top:18px;border-top:2px solid var(--app-rule)"></div>
+    </div>
+
+    <div class="cfg-foot">
+      <span class="cfg-foot-status" id="startHint">Wähle mindestens einen Punkt.</span>
+      <button type="button" class="btn btn-primary btn-large" id="startBtn" onclick="startFromConfig()" disabled>Quiz starten <span aria-hidden="true">→</span></button>
     </div>
   </section>
 </div>
@@ -1937,7 +2043,8 @@ function renderPoolStatus(meta){
   const wrap=document.getElementById('poolStatusWrap');
   if(!wrap)return;
   if(!meta||!state.poolText){
-    wrap.innerHTML='<p style="font-size:13px;line-height:21px;color:var(--app-accent);margin:0">In „'+(POOL_LABELS[state.poolKind]||'diesem Bestand')+'" liegen noch keine Fragen.</p>';
+    // Die Startleiste sagt es schon — hier nicht doppelt.
+    wrap.innerHTML='';
     return;
   }
   const date=meta.date?new Date(meta.date).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'}):'';
@@ -1950,7 +2057,7 @@ function renderPoolStatus(meta){
 const POOL_LABELS={allgemein:'Physiologie allgemein',wochentest:'Wochentest'};
 const POOL_HINTS={
   allgemein:'Die grosse Sammlung am Vorlesungsstoff entlang.',
-  wochentest:'Nach Testwoche statt nach Themenkatalog: gefragt wird der Stoff der zwei Wochen vor dem Test.'
+  wochentest:'Fragen der Wochentests, nach Vorlesungswoche geordnet.'
 };
 async function loadPoolFromServer(){
   if(!hasApiKey)return;
@@ -1989,12 +2096,20 @@ function applyPoolKind(){
 function applyPoolKindPanels(){
   const isWk=state.poolKind==='wochentest';
   const show=(id,on)=>{const el=document.getElementById(id);if(el)el.style.display=on?'':'none'};
-  show('topicTools',!isWk);
+  show('topicGroup',!isWk);
   show('poolStatusWrap',!isWk);
-  show('topicArea',!isWk);
-  show('wkPanel',isWk);
+  show('diffSection',!isWk&&state.sourceMode!=='alt');
+  show('wkSemWrap',isWk);
+  show('wkSourceWrap',isWk);
+  show('wkUnsolvedWrap',isWk);
+  show('wkWeekGroup',isWk);
+  show('wkStoffGroup',isWk);
   const t=document.getElementById('s2Title');
-  if(t)t.textContent=isWk?'Welche Woche wird geprüft?':'Welche Punkte?';
+  if(t)t.textContent=isWk?'Wochentest zusammenstellen':'Welche Punkte?';
+  const sub=document.getElementById('s2Sub');
+  if(sub)sub.textContent=isWk
+    ?'Du wählst die Testwoche — gefragt wird der Stoff der zwei Wochen davor.'
+    :'Themenkatalogpunkte wählen, Umfang festlegen, los.';
   const ab=document.getElementById('cntAllBtn');
   if(ab)ab.style.display=isWk?'':'none';
   // „Alle" gibt es nur im Wochentest — sonst zurueck auf einen echten Wert.
@@ -2559,7 +2674,7 @@ function setSourceMode(mode){
 // zu variieren, also auch keinen Schwierigkeitsgrad.
 function updateDiffVisibility(){
   const sec=document.getElementById('diffSection');
-  if(sec)sec.style.display=state.sourceMode==='alt'?'none':'';
+  if(sec)sec.style.display=(state.sourceMode==='alt'||state.poolKind==='wochentest')?'none':'';
 }
 
 // ── Themenkatalog: Blockschalter + Einzelpunkte ───────────────────────────────
@@ -2714,15 +2829,13 @@ function updateSummary(){
   if(state.poolKind==='wochentest'&&state.flowMode!=='skript'){
     // Hinweiszeile und Startknopf gehoeren im Wochentest der Wochenauswahl.
     if(typeof wkRefresh==='function')wkRefresh();
-  }else{
-    const hint=document.getElementById('startHint');
+  }else if(typeof cfgFoot==='function'){
     const noPool=state.sourceMode==='alt'&&!(state.parsedPool&&state.parsedPool.length);
-    if(hint)hint.textContent=noPool?('In „'+(POOL_LABELS[state.poolKind]||'')+'“ liegen noch keine Fragen.')
-      :sel===0?'Wähle mindestens einen Punkt.'
-      :sel===total?n+' Fragen aus allen Punkten'
-      :n+' Fragen aus '+(sel===1?'einem Punkt':sel+' Punkten');
-    const sb=document.getElementById('startBtn');
-    if(sb)sb.disabled=sel===0||noPool;
+    if(noPool)cfgFoot('In „'+(POOL_LABELS[state.poolKind]||'')+'“ liegen noch keine Fragen.',
+                      'Wähle die andere Datenbank.',true);
+    else if(sel===0)cfgFoot('Noch nichts gewählt','Wähle mindestens einen Themenkatalogpunkt.',true);
+    else cfgFoot(n+(n===1?' Frage':' Fragen')+' · '+(sel===total?'alle Punkte':sel===1?'ein Punkt':sel+' Punkte'),
+                 wkDuration(n),false);
   }
 
   const files=(state.uploadFiles||[]).length;
@@ -4205,29 +4318,35 @@ function wkRenderSegs(){
     weekSeg.innerHTML=h;
   }
 
+  // Das Ergebnis der Wochenwahl steht als Satz da, die Einschraenkung
+  // daneben als stille Textwahl — kein zweiter Kasten.
   const winSeg=document.getElementById('wkWindowSeg'),winHint=document.getElementById('wkWindowHint');
+  const n=wk.week;
+  if(winHint)winHint.innerHTML='Geprüft wird der Stoff aus <b>'+escapeHtml(wkWindowLabel())+'</b>';
   if(winSeg){
-    const n=wk.week;
     if(n<=2){
-      winSeg.innerHTML='<button type="button" class="on">Nur Woche 1</button>';
-      if(winHint)winHint.textContent='Vor Woche 2 liegt nur eine Woche — das Fenster ist damit gesetzt.';
+      winSeg.innerHTML='';
     }else{
       const a=n-2,b=n-1;
       winSeg.innerHTML=
-        '<button type="button" class="'+(wk.window==='beide'?'on':'')+'" onclick="wkSetWindow(\'beide\')">Woche '+a+' + '+b+'</button>'+
+        '<button type="button" class="'+(wk.window==='beide'?'on':'')+'" onclick="wkSetWindow(\'beide\')">Beide Wochen</button>'+
         '<button type="button" class="'+(wk.window==='n2'?'on':'')+'" onclick="wkSetWindow(\'n2\')">Nur Woche '+a+'</button>'+
         '<button type="button" class="'+(wk.window==='n1'?'on':'')+'" onclick="wkSetWindow(\'n1\')">Nur Woche '+b+'</button>';
-      if(winHint)winHint.textContent='Standard ist das volle Fenster: Woche '+a+' und Woche '+b+'.';
     }
   }
+}
+// „Woche 1 + 2" bzw. „Woche 3" — einmal formuliert, mehrfach gebraucht.
+function wkWindowLabel(){
+  const weeks=wkWindowWeeks();
+  return weeks.length>1?'Woche '+weeks.join(' + '):'Woche '+weeks[0];
 }
 
 function wkRenderWeeks(){
   const area=document.getElementById('wkWeekArea');
   if(!area)return;
   if(!wk.loaded){
-    area.innerHTML='<div style="padding:22px 0;font-size:13.5px;line-height:22px;color:var(--app-mute)">'+
-      (wk.error?'Die Fragen konnten nicht geladen werden ('+escapeHtml(wk.error)+').':'Vorlesungen werden geladen…')+'</div>';
+    area.innerHTML='<p class="cfg-sub" style="margin-top:18px">'+
+      (wk.error?'Die Fragen konnten nicht geladen werden ('+escapeHtml(wk.error)+').':'Vorlesungen werden geladen…')+'</p>';
     return;
   }
   let h='';
@@ -4236,69 +4355,78 @@ function wkRenderWeeks(){
     const total=wkItemsOf(week,true).length;
     const avail=wkItemsOf(week).length;
     const on=lecs.filter(l=>!wk.off.has(l.code)).length;
-    const swCls='sw'+(on>0?' on':'')+(on===lecs.length&&lecs.length?' all':'');
-    h+='<div class="blk"><div class="blk-row">'+
-       '<button type="button" class="'+swCls+'" title="Ganze Woche ein-/ausschalten" onclick="wkToggleWeek('+week+')"><span></span></button>'+
-       '<div class="blk-btn" style="cursor:default">'+
-         '<span class="blk-title">Woche '+week+'</span>'+
-         '<span class="blk-meta"><span class="blk-tally">'+(total?avail+' von '+total+' Fragen':'0 Fragen')+'</span></span>'+
-       '</div></div>';
+    const tally=total===0?'Keine Fragen'
+      :avail===total?(total===1?'1 Frage':total+' Fragen')
+      :avail+' von '+total+' Fragen';
+    h+='<div class="wk-week"><div class="wk-week-head">'+
+       '<button type="button" class="wk-week-name" title="Ganze Woche ein- oder ausschalten" onclick="wkToggleWeek('+week+')">Woche '+week+'</button>'+
+       '<span class="wk-week-tally">'+tally+'</span></div>';
     if(!lecs.length){
-      h+='<div style="padding:2px 0 18px;font-size:13.5px;line-height:22px;color:var(--app-mute)">Für Woche '+week+' sind keine Vorlesungen hinterlegt.</div>';
+      h+='<p class="wk-empty"><b>Keine Vorlesungen hinterlegt.</b>Für Woche '+week+' liegt noch kein Stoff vor.</p>';
+    }else if(total===0){
+      h+='<p class="wk-empty"><b>Noch keine Altfragen vorhanden.</b>Diese Woche wird bei der aktuellen Auswahl nicht berücksichtigt.</p>';
     }else{
-      h+='<div class="blk-points" style="display:grid">';
+      h+='<div class="wk-vls">';
       lecs.forEach(l=>{
         const c=wkCountOfCode(l.code);
         const cAll=wkCountOfCode(l.code,true);
         const sel=!wk.off.has(l.code);
-        const meta=cAll===0?'keine Fragen':(c===0?'0 von '+cAll+' Fragen':(c===1?'1 Frage':c+' Fragen'));
-        h+='<button type="button" class="pt" onclick="wkToggleCode(\''+l.code+'\')">'+
-             '<span class="pt-sw'+(sel?' on':'')+'"><span></span></span>'+
-             '<span><span class="pt-nr">'+l.code+' · '+meta+'</span>'+
-             '<span class="pt-title">'+escapeHtml(l.title)+'</span></span></button>';
+        const badge=cAll===0?'Keine Fragen'
+          :c===0?'0 von '+cAll
+          :c===1?'1 Frage':c+' Fragen';
+        h+='<button type="button" class="wk-vl '+(sel?'on':'off')+'" onclick="wkToggleCode(\''+l.code+'\')" aria-pressed="'+sel+'">'+
+             '<span class="wk-vl-box"></span>'+
+             '<span class="wk-vl-code">'+l.code+'</span>'+
+             '<span class="wk-vl-title">'+escapeHtml(l.title)+'</span>'+
+             '<span class="wk-vl-badge'+(cAll===0?' empty':'')+'">'+badge+'</span></button>';
       });
       h+='</div>';
-    }
-    if(total===0){
-      h+='<div style="margin:0 0 18px;padding:12px 14px;border:2px solid var(--app-rule);background:var(--app-panel);font-size:13px;line-height:21px;color:var(--app-mute)">'+
-         'Zu Woche '+week+' ('+wk.semester+') sind noch keine Fragen hinterlegt.</div>';
     }
     h+='</div>';
   });
   area.innerHTML=h;
 }
 
+// Grobe Hausnummer: eine Mehrfachauswahlfrage kostet rund 45 Sekunden.
+function wkDuration(n){
+  const min=Math.max(1,Math.round(n*0.75));
+  if(min<60)return'ca. '+min+' Min.';
+  const h=Math.floor(min/60),r=min%60;
+  return'ca. '+h+' Std.'+(r?' '+r+' Min.':'');
+}
+// Die Startleiste traegt zwei Zeilen: was passiert, und was das heisst.
+function cfgFoot(main,sub,disabled){
+  const el=document.getElementById('startHint');
+  if(el)el.innerHTML=escapeHtml(main)+(sub?'<span class="cfs-sub">'+escapeHtml(sub)+'</span>':'');
+  const btn=document.getElementById('startBtn');
+  if(btn)btn.disabled=!!disabled;
+}
+
 function wkRefresh(){
-  if(!document.getElementById('wkPanel'))return;
+  if(!document.getElementById('wkWeekArea'))return;
   wkRenderSegs();
   wkRenderWeeks();
-  // Hinweiszeile und Startknopf sind dieselben wie beim Themenkatalog —
-  // der Screen hat nur einen Fuss.
-  const hint=document.getElementById('startHint'),btn=document.getElementById('startBtn');
   if(!wk.loaded){
-    if(hint)hint.textContent=wk.error?'Wochentest-Fragen nicht verfügbar.':'Wird geladen…';
-    if(btn)btn.disabled=true;
+    cfgFoot(wk.error?'Wochentest-Fragen nicht verfügbar.':'Fragen werden geladen…',
+            wk.error?'Bitte die Seite neu laden.':'',true);
     return;
   }
   const pool=wkPool();
-  const weeks=wkWindowWeeks();
-  const weekTxt=weeks.length>1?'Woche '+weeks.join(' + '):'Woche '+weeks[0];
-  const n=wkCountN(pool.length);
-  if(hint){
-    if(!pool.length){
-      const anyRaw=weeks.some(w=>wkItemsOf(w,true).length>0);
-      hint.textContent=anyRaw?'Kein Treffer — Filter lockern.'
-        :'Zu '+weekTxt+' gibt es noch keine Fragen.';
-    }else{
-      let txt=n+' von '+pool.length+' Fragen · '+weekTxt;
-      if(!wk.unsolved){
-        const u=wkUnsolvedInWindow();
-        if(u)txt+=' · '+u+(u===1?' Frage ohne Lösung ausgeblendet':' Fragen ohne Lösung ausgeblendet');
-      }
-      hint.textContent=txt;
-    }
+  const weekTxt=wkWindowLabel();
+  if(!pool.length){
+    const anyRaw=wkWindowWeeks().some(w=>wkItemsOf(w,true).length>0);
+    cfgFoot(anyRaw?'Kein Treffer':'Keine Fragen zu '+weekTxt,
+            anyRaw?'Die Filter schliessen alles aus — Herkunft oder Vorlesungen wieder öffnen.'
+                  :'Für dieses Testfenster ist noch nichts hinterlegt.',true);
+    return;
   }
-  if(btn)btn.disabled=!pool.length;
+  const n=wkCountN(pool.length);
+  const parts=[wkDuration(n),'aus '+pool.length+' verfügbaren'];
+  if(!wk.unsolved){
+    const u=wkUnsolvedInWindow();
+    if(u)parts.push(u+(u===1?' Frage ohne Lösung ausgeblendet':' Fragen ohne Lösung ausgeblendet'));
+  }
+  cfgFoot(n+(n===1?' Frage':' Fragen')+' · '+weekTxt, parts.join(' · '), false);
 }
 // Die Fragenzahl kommt aus der gemeinsamen Leiste; „Alle" heisst alles,
 // was der Filter hergibt.
