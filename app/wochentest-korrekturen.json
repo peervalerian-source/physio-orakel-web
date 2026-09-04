@@ -1,0 +1,157 @@
+{
+ "U-123": {
+  "correct": ["Estradiol", "FSH-Rezeptor", "Inhibin"],
+  "note": "[Lösung fachlich ergänzt – kein Moodle-Lösungsfeld in der Vorlage] (17-OH-Progesteron: Thekazellen)"
+ },
+ "U-W-010": {
+  "correct": ["Saccharose"],
+  "options": ["markierte Glukose", "Saccharose", "markierte Kaliumionen", "Evans-Blau"],
+  "note": "[Lösung aus vollständigem Duplikat W-003 übernommen; abgeschnittene Optionen ergänzt]",
+  "duplicate_of": "W-003"
+ },
+ "U-W-259": {
+  "correct": ["Die Ca-Reabsorption kann im distalen Tubulus reguliert werden."],
+  "options": ["Etwa 15% der filtrierten Na-Menge werden im proximalen Tubulus resorbiert.", "Die Na-Resorption im aufsteigenden Segment der Henle-Schleife unterliegt der Regulation durch ANP.", "Die Ca-Reabsorption kann im distalen Tubulus reguliert werden.", "Die Osmolarität der Tubulusflüssigkeit kann bis zum Ende des Sammelrohrs auf bis zu 10 mosmol/l absinken."],
+  "note": "[Lösung aus vollständigem Duplikat W-250 übernommen; abgeschnittene Optionen ergänzt]",
+  "duplicate_of": "W-250"
+ },
+ "U-W-261": {
+  "correct": ["10 l"],
+  "options": ["100 ml", "Die vorliegenden Daten reichen zur Beantwortung dieser Frage nicht aus.", "1 l", "10 l"],
+  "note": "[Lösung aus vollständigem Duplikat W-005 übernommen; abgeschnittene Optionen ergänzt]",
+  "duplicate_of": "W-005"
+ },
+ "U-W-264": {
+  "correct": ["Der Transport über Carrier-Proteine ist sättigbar.", "Es gibt Membranproteine, die in der Lage sind, hydrophobe Moleküle aktiv durch die Membran zu befördern."],
+  "options": ["Der Transport über Carrier-Proteine ist sättigbar.", "Durch einen geöffneten Ca2+-Kanal werden Ca2+-Ionen langsamer transportiert als durch eine aktive Ca2+-Pumpe.", "Es gibt Membranproteine, die in der Lage sind, hydrophobe Moleküle aktiv durch die Membran zu befördern.", "Transport-ATPasen sind sekundär-aktive Transporter."],
+  "note": "[Lösung fachlich ergänzt – kein Moodle-Lösungsfeld in der Vorlage]"
+ },
+ "U-W-270": {
+  "correct": ["Primär aktive Transporter sind zugleich Enzyme.", "Durch Aquaporine wird eine Diffusion vermittelt.", "Der Cl-/HCO3- Austauscher arbeitet elektroneutral."],
+  "options": ["Primär aktive Transporter sind zugleich Enzyme.", "Durch Aquaporine wird eine Diffusion vermittelt.", "Die Ca2+-ATPase der Plasmamembran pumpt Ionen in die Zelle hinein.", "Der Cl-/HCO3- Austauscher arbeitet elektroneutral."],
+  "note": "[Lösung fachlich ergänzt – kein Moodle-Lösungsfeld in der Vorlage]"
+ },
+ "U-W-271": {
+  "correct": ["Über GLUT-Transporter erfolgt eine fazilitierte Diffusion.", "Im Darm ist die Glukoseabsorption an Na+ gekoppelt."],
+  "options": ["Die Aufnahme von Glukose in die Zellen ist stets Insulin-abhängig.", "Über GLUT-Transporter erfolgt eine fazilitierte Diffusion.", "In Epithelzellen erfolgt der Glukosetransport über die Basalmembran durch den SGLT.", "Im Darm ist die Glukoseabsorption an Na+ gekoppelt."],
+  "note": "[Lösung fachlich ergänzt – kein Moodle-Lösungsfeld in der Vorlage]"
+ },
+ "U-W-272": {
+  "correct": ["Verglichen mit derjenigen der Ionen ist die osmotische Konzentration der Proteine im Blutplasma vernachlässigbar.", "Die Gesamtproteinkonzentration im Blutplasma beträgt 60-80 g/l.", "Im Zytoplasma sind mehr Proteine enthalten als im Interstitium."],
+  "options": ["Im Interstitium sind mehr Proteine enthalten als im Blutplasma.", "Verglichen mit derjenigen der Ionen ist die osmotische Konzentration der Proteine im Blutplasma vernachlässigbar.", "Die Gesamtproteinkonzentration im Blutplasma beträgt 60-80 g/l.", "Im Zytoplasma sind mehr Proteine enthalten als im Interstitium."],
+  "note": "[Lösung fachlich ergänzt – kein Moodle-Lösungsfeld in der Vorlage]"
+ },
+ "U-W-273": {
+  "correct": ["Das Erythrozytenvolumen bleibt in einer 145 mM NaCl-Lösung unverändert.", "Eine 50 mM KCl-Lösung hat eine osmotische Konzentration von 100 mosmol/l."],
+  "options": ["Das Erythrozytenvolumen bleibt in einer 145 mM NaCl-Lösung unverändert.", "Eine hypotone Lösung ist stets hyposmotisch.", "Die osmotischen Konzentrationen einer 150 mM Glycerinlösung und einer 300 mM Glucoselösung sind gleich.", "Eine 50 mM KCl-Lösung hat eine osmotische Konzentration von 100 mosmol/l."],
+  "note": "[Lösung fachlich ergänzt – kein Moodle-Lösungsfeld in der Vorlage]"
+ },
+ "U-W-274": {
+  "correct": ["SGLT", "Na/K-ATPase", "Spannungsabhängiger Na+-Kanal"],
+  "options": ["SGLT", "GLUT-2", "Na/K-ATPase", "Spannungsabhängiger Na+-Kanal"],
+  "note": "[Lösung fachlich ergänzt – kein Moodle-Lösungsfeld in der Vorlage]"
+ },
+ "U-W-275": {
+  "correct": ["Na+", "Cl-", "Ca2+"],
+  "options": ["Na+", "Cl-", "Ca2+", "K+"],
+  "note": "[Lösung fachlich ergänzt – kein Moodle-Lösungsfeld in der Vorlage]"
+ },
+ "U-W-276": {
+  "correct": ["Extrazellulärraum → 2", "Intrazellulärraum → 1", "Blutplasma → 4", "Interstitium → 3"],
+  "options": ["Extrazellulärraum: ___", "Intrazellulärraum: ___", "Blutplasma: ___", "Interstitium: ___"],
+  "note": "[Lösung fachlich ergänzt – kein Moodle-Lösungsfeld in der Vorlage]"
+ },
+ "U-W-277": {
+  "correct": ["Ein Kationenstrom in die Zelle führt zur Depolarisation der Plasmamembran."],
+  "options": ["Bei Glyzinrezeptoren handelt es sich um Kationenkanäle.", "Sie sind stets kationenselektiv.", "Nikotinische Ach-Rezeptoren sind selektiv für Na+.", "Ein Kationenstrom in die Zelle führt zur Depolarisation der Plasmamembran."],
+  "note": "[Lösung fachlich ergänzt – kein Moodle-Lösungsfeld in der Vorlage]"
+ },
+ "U-W-278": {
+  "correct": ["Ein Rezeptor bindet seine Liganden meist mit hoher Spezifität.", "Die Bindung von Liganden an Rezeptoren ist sättigbar."],
+  "options": ["Ein Rezeptor bindet seine Liganden meist mit hoher Spezifität.", "Über den Rezeptor ruft ein Agonist keine biologische Reaktion/Antwort hervor.", "Häufig ist die Bindung eines Agonisten irreversibel.", "Die Bindung von Liganden an Rezeptoren ist sättigbar."],
+  "note": "[Lösung fachlich ergänzt – kein Moodle-Lösungsfeld in der Vorlage]"
+ },
+ "U-W-279": {
+  "correct": ["Bei einer juxtakrinen Wirkung liegt der Ligand zellgebunden vor.", "Bei endokriner Wirkungsweise treten die Liganden stets in der Blutbahn auf."],
+  "options": ["Bei einer juxtakrinen Wirkung liegt der Ligand zellgebunden vor.", "Bei parakrinen Wirkungen handelt es sich bei den Liganden meist um Neurotransmitter.", "Liganden mit parakriner Wirkung besitzen stets Plasmamembranrezeptoren.", "Bei endokriner Wirkungsweise treten die Liganden stets in der Blutbahn auf."],
+  "note": "[Lösung fachlich ergänzt – kein Moodle-Lösungsfeld in der Vorlage]"
+ },
+ "U-W-280": {
+  "correct": ["Die primär aktiven Transporter fungieren zugleich als Enzyme.", "Aquaporine vermitteln einen Diffusionsvorgang.", "Der Cl-/HCO3- Austauscher arbeitet elektroneutral."],
+  "options": ["Die primär aktiven Transporter fungieren zugleich als Enzyme.", "Aquaporine vermitteln einen Diffusionsvorgang.", "Die Plasmamembran-Ca2+-ATPase befördert Ionen in die Zelle hinein.", "Der Cl-/HCO3- Austauscher arbeitet elektroneutral."],
+  "note": "[Lösung fachlich ergänzt – kein Moodle-Lösungsfeld in der Vorlage]"
+ },
+ "U-W-281": {
+  "correct": ["Im Vergleich zur osmotischen Konzentration der Ionen ist diejenige der Proteine im Blutplasma vernachlässigbar.", "Im Blutplasma liegt die Gesamtproteinkonzentration bei 60-80 g/l.", "Das Zytoplasma weist einen höheren Proteingehalt auf als das Interstitium."],
+  "options": ["Das Interstitium weist einen höheren Proteingehalt auf als das Blutplasma.", "Im Vergleich zur osmotischen Konzentration der Ionen ist diejenige der Proteine im Blutplasma vernachlässigbar.", "Im Blutplasma liegt die Gesamtproteinkonzentration bei 60-80 g/l.", "Das Zytoplasma weist einen höheren Proteingehalt auf als das Interstitium."],
+  "note": "[Lösung fachlich ergänzt – kein Moodle-Lösungsfeld in der Vorlage]"
+ },
+ "U-W-320": {
+  "correct": ["In Ruhe ist die arterio-venöse O2-Differenz im Herzen am höchsten", "Bei körperlicher Belastung nimmt die Koronarzirkulation nahezu proportional zum Anstieg des Herzzeitvolumens zu", "Ihre Intensität wird stark durch mechanische Faktoren bestimmt"],
+  "options": ["In Ruhe ist die arterio-venöse O2-Differenz im Herzen am höchsten", "Bei körperlicher Belastung nimmt die Koronarzirkulation nahezu proportional zum Anstieg des Herzzeitvolumens zu", "Antagonisten am Beta-1-Rezeptor beeinflussen die Herzdurchblutung nicht", "Ihre Intensität wird stark durch mechanische Faktoren bestimmt"],
+  "note": "[Lösung fachlich ergänzt – kein Moodle-Lösungsfeld in der Vorlage]"
+ },
+ "U-W-321": {
+  "correct": ["Während der isovolumetrischen Kontraktion der Ventrikel kann der linke Koronarfluss auf 0 abfallen", "Adenosin ist ein wichtiger Faktor bei seiner Regulation"],
+  "options": ["Sie sinkt, wenn die Herzfrequenz von 70 / min auf 110 / min ansteigt", "Während der isovolumetrischen Kontraktion der Ventrikel kann der linke Koronarfluss auf 0 abfallen", "In einem denervierten Herzen geht die Fähigkeit zur Regulation der Koronardurchblutung verloren", "Adenosin ist ein wichtiger Faktor bei seiner Regulation"],
+  "note": "[Lösung fachlich ergänzt – kein Moodle-Lösungsfeld in der Vorlage]"
+ },
+ "U-W-322": {
+  "correct": ["Sie nimmt an der Pressorantwort teil", "Über die Pfortader bekommt die Leber ungefähr dreimal so viel Blut wie über die Leberarterie", "Sie ist bei der Umverteilung des Kreislaufs von großer Bedeutung"],
+  "options": ["Sie nimmt an der Pressorantwort teil", "Während Muskelarbeit bleibt die Durchblutung praktisch gleich", "Eine Blockade des Alpha-1-Rezeptors beeinflusst den Blutfluss nicht", "Über die Pfortader bekommt die Leber ungefähr dreimal so viel Blut wie über die Leberarterie", "Sie ist bei der Umverteilung des Kreislaufs von großer Bedeutung"],
+  "note": "[Lösung fachlich ergänzt – kein Moodle-Lösungsfeld in der Vorlage]"
+ },
+ "U-W-323": {
+  "correct": ["AVDO2 in Ruhe in Koronararterien: 130 ml / l", "Koronarfluss in Ruhe: 250 ml / min", "Blutversorgung der Skelettmuskulatur in Ruhe: 800-1200 ml / min", "Leberdurchblutung: 1600 ml / min"],
+  "options": ["AVDO2 in Ruhe in Koronararterien: 130 ml / l", "Koronarfluss in Ruhe: 250 ml / min", "Blutversorgung der Skelettmuskulatur in Ruhe: 800-1200 ml / min", "Skelettmuskulatur AVDO2 bei maximaler Belastung: 200 ml / l", "Leberdurchblutung: 1600 ml / min"],
+  "note": "[Lösung fachlich ergänzt – kein Moodle-Lösungsfeld in der Vorlage] (Option „Leberdurchblutung 1600 ml/min“ und „AVDO2 200 ml/l“ lehrbuchabhängig ⚠ prüfen)"
+ },
+ "U-W-324": {
+  "correct": ["Bei ihrer Regulation sind Stoffwechselfaktoren von großer Bedeutung", "Der venöse Rückfluss wird durch rhythmische Muskelkontraktionen gefördert", "Bei Muskelarbeit kann der Ruhewert auf das 20-30-fache ansteigen"],
+  "options": ["Die sympathische Innervation der Skelettmuskelgefäße hat einen konstanten Tonus", "Bei ihrer Regulation sind Stoffwechselfaktoren von großer Bedeutung", "Der venöse Rückfluss wird durch rhythmische Muskelkontraktionen gefördert", "Bei Muskelarbeit kann der Ruhewert auf das 20-30-fache ansteigen"],
+  "note": "[Lösung fachlich ergänzt – kein Moodle-Lösungsfeld in der Vorlage]"
+ },
+ "U-W-325": {
+  "correct": ["Bei normaler Ruheatmung geschieht die Ausatmung passiv", "Als Totraum bezeichnet man u.a. jene Lungenabschnitte, die belüftet werden, aber nicht am Gasaustausch beteiligt sind.", "Der alveoläre pO2 hängt vom äußeren pO2 ab"],
+  "options": ["Bei normaler Ruheatmung geschieht die Ausatmung passiv", "Als Totraum bezeichnet man u.a. jene Lungenabschnitte, die belüftet werden, aber nicht am Gasaustausch beteiligt sind.", "Die funktionelle Residualkapazität ist jenes Volumen, das nach maximaler Exspiration in der Lunge verbleibt", "Der alveoläre pO2 hängt vom äußeren pO2 ab"],
+  "note": "[Lösung aus vollständigem Duplikat übernommen (Moodle-Lösungsfeld auf Seite 137)]"
+ },
+ "U-W-326": {
+  "correct": ["In der Mitte der Einatmung liegt der intrapulmonale Druck unter dem atmosphärischen Druck", "Der intrapleurale Druck lässt sich im Oesophagus messen"],
+  "options": ["Beim gesunden Menschen kann der intrapleurale Druck niemals positiv werden", "In der Mitte der Einatmung liegt der intrapulmonale Druck unter dem atmosphärischen Druck", "Der intrapleurale Druck lässt sich im Oesophagus messen", "Das Surfactant leistet einen wesentlichen Beitrag zur Retraktionstendenz der Lunge"],
+  "note": "[Lösung fachlich ergänzt – kein Moodle-Lösungsfeld in der Vorlage]"
+ },
+ "U-W-327": {
+  "correct": ["Bei gesunden jungen Menschen beträgt das FEV1/VC mehr als 70%", "Am Ende einer ruhigen Ausatmung zeigt der Thorax eine Tendenz zur Ausdehnung"],
+  "options": ["In Atemruhelage liegt der intraalveoläre Druck über dem atmosphärischen Druck", "Bei gesunden jungen Menschen beträgt das FEV1/VC mehr als 70%", "Am Ende einer ruhigen Ausatmung zeigt der Thorax eine Tendenz zur Ausdehnung", "Die Vitalkapazität ergibt sich als Summe aus funktioneller Residualkapazität, Atemzugvolumen und inspiratorischem Reservevolumen"],
+  "note": "[Lösung fachlich ergänzt – kein Moodle-Lösungsfeld in der Vorlage]"
+ },
+ "U-W-348": {
+  "correct": ["Die Ca-Reabsorption kann im distalen Tubulus reguliert werden."],
+  "options": ["Etwa 15% der filtrierten Na-Menge werden im proximalen Tubulus resorbiert.", "Die Na-Resorption im aufsteigenden Segment der Henle-Schleife unterliegt der Regulation durch ANP.", "Die Ca-Reabsorption kann im distalen Tubulus reguliert werden.", "Die Osmolarität der Tubulusflüssigkeit kann bis zum Ende des Sammelrohrs auf bis zu 10 mosmol/l absinken."],
+  "note": "[Lösung aus vollständigem Duplikat W-250 übernommen; abgeschnittene Optionen ergänzt]",
+  "duplicate_of": "W-250"
+ },
+ "U-W-370": {
+  "correct": ["Der carrier-vermittelte Transport ist sättigbar.", "Es existieren Membranproteine, die hydrophile Moleküle aktiv durch die Membran befördern können."],
+  "options": ["Der carrier-vermittelte Transport ist sättigbar.", "Ein offener Ca2+-Kanal befördert Ca2+-Ionen langsamer als eine aktive Ca2+-Pumpe.", "Es existieren Membranproteine, die hydrophile Moleküle aktiv durch die Membran befördern können.", "Bei den Transport-ATPasen handelt es sich um sekundär-aktive Transporter."],
+  "note": "[Lösung fachlich ergänzt – kein Moodle-Lösungsfeld in der Vorlage]"
+ },
+ "U-W-400": {
+  "correct": ["Die Gerinnung wird durch es gefördert", "Die Thrombozytenaktivation wird durch es gefördert", "Heparin hemmt es", "Für seine Synthese ist Vitamin K erforderlich"],
+  "options": ["Die Gerinnung wird durch es gefördert", "Die Thrombozytenaktivation wird durch es gefördert", "Heparin hemmt es", "Für seine Synthese ist Vitamin K erforderlich"],
+  "note": "[Lösung fachlich ergänzt – kein Moodle-Lösungsfeld in der Vorlage] (alle vier Aussagen fachlich richtig; Heparin hemmt Thrombin indirekt über Antithrombin III)"
+ },
+ "U-W-007": {
+  "action": "remove",
+  "note": "Fragment ohne Optionen (nur Stamm sichtbar); vollständige Version existiert unter anderer Nummer"
+ },
+ "U-W-239": {
+  "action": "remove",
+  "note": "Fragment ohne Optionen (nur Stamm sichtbar); vollständige Version existiert unter anderer Nummer"
+ },
+ "U-W-442": {
+  "action": "remove",
+  "note": "Fragment ohne Optionen (nur Stamm sichtbar); vollständige Version existiert unter anderer Nummer"
+ }
+}

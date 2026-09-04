@@ -2101,7 +2101,7 @@ function applyPoolKindPanels(){
   show('diffSection',!isWk&&state.sourceMode!=='alt');
   show('wkSemWrap',isWk);
   show('wkSourceWrap',isWk);
-  show('wkUnsolvedWrap',isWk);
+  show('wkUnsolvedWrap',isWk&&wk.items.some(it=>it.noSolution));
   show('wkWeekGroup',isWk);
   show('wkStoffGroup',isWk);
   const t=document.getElementById('s2Title');
@@ -4114,6 +4114,9 @@ var digestUntil=0;
 // Mehrere Dateien, ein Bestand: jede wird unveraendert geladen und beim
 // Zusammenfuehren nur addiert — keine Datei ueberschreibt die andere.
 const WK_DATA_URLS=['wochentest-fragen.json','wochentest-fragen-physio1.json'];
+// Nachtraege zu einzelnen Fragen — nach id. Die Quelldateien bleiben so,
+// wie sie erzeugt wurden; korrigiert wird beim Laden.
+const WK_PATCH_URL='wochentest-korrekturen.json';
 const WK_LETTERS='abcdefghijkl';
 const WK_MIN_WEEK=2,WK_MAX_WEEK=14;
 
@@ -4187,6 +4190,9 @@ function wkPrepare(q){
   // (dann waeren nur noch die richtigen Antworten uebrig).
   if(opts.length<2)return null;
   if(appended>0&&corr.size===opts.length)return null;
+  // Zuordnungs- und Ausfuellfragen: jede Option ist eine Leerstelle. Als
+  // Mehrfachauswahl waeren sie ein Freischein — jedes Kreuz sitzt richtig.
+  if(opts.every(o=>/_{3,}/.test(o)))return null;
   return{
     code:lec.code,semester:lec.semester,week:lec.week,vlTitle:lec.title,
     source:q.source||'',block:q.block,blockTitle:q.block_title||'',
@@ -4196,6 +4202,19 @@ function wkPrepare(q){
     noSolution:corr.size===0,
     note:q.note||'',extra:q.extra||''
   };
+}
+
+// Nachtrag auf eine einzelne Frage legen. null heisst: streichen.
+function wkApplyPatch(q,patch){
+  const p=patch&&patch[q.id];
+  if(!p)return q;
+  if(p.action==='remove')return null;
+  const out=Object.assign({},q);
+  if(Array.isArray(p.options))out.options=p.options;
+  if(Array.isArray(p.correct))out.correct=p.correct;
+  if(typeof p.note==='string')out.note=p.note;
+  if(typeof p.extra==='string')out.extra=p.extra;
+  return out;
 }
 
 async function wkLoad(){
@@ -4222,10 +4241,18 @@ async function wkLoad(){
         if(!wk.blocks.has(b.block))wk.blocks.set(b.block,{title:b.block_title||'',vl:b.vl||[]});
       });
     });
+    // Korrekturen holen — fehlen sie, laeuft alles unveraendert weiter.
+    let patch={};
+    try{
+      const pr=await fetch(WK_PATCH_URL,{cache:'default'});
+      if(pr.ok)patch=await pr.json()||{};
+    }catch(e){}
     // Fragen anhaengen, in der Reihenfolge der Dateien.
     sets.forEach(data=>{
       (Array.isArray(data.questions)?data.questions:[]).forEach(q=>{
-        const item=wkPrepare(q);
+        const fixed=wkApplyPatch(q,patch);
+        if(!fixed)return;
+        const item=wkPrepare(fixed);
         if(item)wk.items.push(item);
       });
     });
@@ -4309,6 +4336,9 @@ function wkRenderSegs(){
   if(srcSeg)srcSeg.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.src===wk.source));
   const unsSeg=document.getElementById('wkUnsolvedSeg');
   if(unsSeg)unsSeg.querySelectorAll('button').forEach(b=>b.classList.toggle('on',(b.dataset.uns==='1')===wk.unsolved));
+  // Sind alle Loesungen nachgetragen, hat der Schalter nichts zu schalten.
+  const unsWrap=document.getElementById('wkUnsolvedWrap');
+  if(unsWrap)unsWrap.style.display=wk.items.some(it=>it.noSolution)?'':'none';
   const weekSeg=document.getElementById('wkWeekSeg');
   if(weekSeg){
     let h='';
