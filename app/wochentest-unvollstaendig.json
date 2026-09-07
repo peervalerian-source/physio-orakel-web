@@ -1,0 +1,613 @@
+[
+ {
+  "id": "U-109",
+  "grund": "keine Optionen überliefert",
+  "datei": "wochentest-fragen.json",
+  "vl": [
+   "F11",
+   "F12"
+  ],
+  "vl_title": "Hormonale Steuerung des Intermediärstoffwechsels 1",
+  "source": "umformuliert",
+  "question": "Welche der nachfolgenden Prozesse zählen zu den Insulinwirkungen?\n*(Glukagon als Gegenspieler)*",
+  "options": [],
+  "correct": [
+   "Lipidspeicherung in Form von TG im Fettgewebe",
+   "Geförderte Glukoseaufnahme in die Zellen"
+  ],
+  "note": "",
+  "extra": ""
+ },
+ {
+  "id": "U-49",
+  "grund": "keine Optionen überliefert",
+  "datei": "wochentest-fragen.json",
+  "vl": [
+   "F17",
+   "F16"
+  ],
+  "vl_title": "Hormonale Steuerung der reproduktiven Funktionen 3",
+  "source": "umformuliert",
+  "question": "Welche Veränderungen sind (kausal!) von Bedeutung für den Beginn der Menstruationsblutung?\n*(Identisch mit Frage 1 – häufig wiederholte Prüfungsfrage!)*",
+  "options": [],
+  "correct": [
+   "Abnahme der LH-Rezeptoraktivität",
+   "Abfall der Progesteronkonzentration",
+   "Erhöhte Freisetzung von PGF2-Alpha"
+  ],
+  "note": "",
+  "extra": ""
+ },
+ {
+  "id": "U-233",
+  "grund": "Lösung im Screenshot nicht sichtbar",
+  "datei": "wochentest-fragen.json",
+  "vl": [
+   "F06",
+   "F07"
+  ],
+  "vl_title": "Nebennierenrinde 1",
+  "source": "umformuliert",
+  "question": "Welche der nachstehenden Aussagen zum CYP11B1-Defekt sind typischerweise zutreffend?",
+  "options": [
+   "Der arterielle Mitteldruck ist stark erniedrigt.",
+   "Die ACTH-Produktion ist gesteigert.",
+   "Ein Salzverlust ist charakteristisch.",
+   "Die Cortisolsekretion ist nicht vorhanden."
+  ],
+  "correct": [
+   "*(Lösung im Screenshot nicht sichtbar)*"
+  ],
+  "note": "",
+  "extra": "*Quelle: Endokrino_Altfrage_12.png*"
+ },
+ {
+  "id": "U-331",
+  "grund": "Lösungsfeld abgeschnitten, Lösung unsicher",
+  "datei": "wochentest-fragen.json",
+  "vl": [
+   "H37"
+  ],
+  "vl_title": "Gastrointestinale Funktionen 2",
+  "source": "umformuliert",
+  "question": "Welche Aussagen zu den Gallensalzen sind korrekt?",
+  "options": [
+   "Die Reabsorption sekundärer Gallensalze findet im distalen Kolon statt.",
+   "Gallensäuren werden von Hepatozyten mittels aktiven Transports in die Gallenkanälchen abgegeben.",
+   "Die Konjugation primärer Gallensalze erfolgt in Gallengangepithelzellen.",
+   "Konjugierte Gallensäuren weisen eine bessere Wasserlöslichkeit auf"
+  ],
+  "correct": [
+   "Konjugierte Gallensäuren weisen eine bessere Wasserlöslichkeit auf",
+   "Gallensäuren werden von Hepatozyten mittels aktiven Transports in die Gallenkanälchen abgegeben. *(Lösungsfeld im Screenshot abgeschnitten – Rest unsicher)*"
+  ],
+  "note": "",
+  "extra": "*Quelle: GiTrakt_Altfrage_03.png* · *Variante von Frage 330*"
+ },
+ {
+  "id": "U-W-002",
+  "grund": "Lückentext statt Optionen („Antwort: ___\")",
+  "datei": "wochentest-fragen-physio1.json",
+  "vl": [
+   "H01"
+  ],
+  "vl_title": "Einführung; Inneres Milieu, Flüssigkeitsräume",
+  "source": "umformuliert",
+  "question": "Freie extrazelluläre Ca2+-Konzentration unter physiologischen Bedingungen (mM):",
+  "options": [
+   "Antwort: ___"
+  ],
+  "correct": [
+   "1,25"
+  ],
+  "note": "",
+  "extra": "Original-Fundstellen: Seiten 2, 169, 234, 235; Vorkommen: 4"
+ },
+ {
+  "id": "U-W-007",
+  "grund": "Optionen abgeschnitten",
+  "datei": "wochentest-fragen-physio1.json",
+  "vl": [
+   "H01"
+  ],
+  "vl_title": "Einführung; Inneres Milieu, Flüssigkeitsräume",
+  "source": "umformuliert",
+  "question": "Welche Aussagen zu den Flüssigkeitsräumen sind zutreffend?",
+  "options": [
+   "[ABGESCHNITTEN]"
+  ],
+  "correct": [],
+  "note": "",
+  "extra": "Original-Fundstellen: Seiten 4; Vorkommen: 1"
+ },
+ {
+  "id": "U-W-008",
+  "grund": "Lückentext statt Optionen („Antwort: ___\")",
+  "datei": "wochentest-fragen-physio1.json",
+  "vl": [
+   "H01"
+  ],
+  "vl_title": "Einführung; Inneres Milieu, Flüssigkeitsräume",
+  "source": "umformuliert",
+  "question": "Extrazelluläre HCO3- (Bicarbonat)-Konzentration unter physiologischen Bedingungen (mM):",
+  "options": [
+   "Antwort: ___"
+  ],
+  "correct": [
+   "24"
+  ],
+  "note": "",
+  "extra": "Original-Fundstellen: Seiten 5, 171, 234; Vorkommen: 3"
+ },
+ {
+  "id": "U-W-121",
+  "grund": "Lückentext statt Optionen („Antwort: ___\")",
+  "datei": "wochentest-fragen-physio1.json",
+  "vl": [
+   "H18"
+  ],
+  "vl_title": "Elektrokardiographie [I/K]",
+  "source": "umformuliert",
+  "question": "In einer EKG-Aufzeichnung beträgt der mittlere RR-Abstand 750 ms und das QT-Intervall 400 ms. Welche Dauer (in ms) hat die elektrische Diastole?",
+  "options": [
+   "Antwort: ___"
+  ],
+  "correct": [
+   "350 ms"
+  ],
+  "note": "",
+  "extra": "Original-Fundstellen: Seiten 78; Vorkommen: 1"
+ },
+ {
+  "id": "U-W-122",
+  "grund": "Zuordnungsfrage, jede Option eine Leerstelle",
+  "datei": "wochentest-fragen-physio1.json",
+  "vl": [
+   "H15",
+   "H17"
+  ],
+  "vl_title": "Physiologie des Herzens 2 (Kammerfunktion)",
+  "source": "umformuliert",
+  "question": "Wie ändern sich die folgenden Parameter? (nimmt zu/nimmt ab / bleibt gleich)",
+  "options": [
+   "Schlagvolumen, wenn der venöse Rückstrom sinkt → ___",
+   "Herzzeitvolumen bei positiv inotroper Wirkung → ___",
+   "Die Amplitude der QRS-Gruppe bei sympatischer Reizung → ___",
+   "Das Volumen der linken Kammer während der Anspannungsphase → ___"
+  ],
+  "correct": [
+   "Schlagvolumen, wenn der venöse Rückstrom sinkt → nimmt ab",
+   "Herzzeitvolumen bei positiv inotroper Wirkung → nimmt zu",
+   "Die Amplitude der QRS-Gruppe bei sympatischer Reizung → bleibt gleich",
+   "Das Volumen der linken Kammer während der Anspannungsphase → bleibt gleich"
+  ],
+  "note": "",
+  "extra": "Original-Fundstellen: Seiten 78; Vorkommen: 1"
+ },
+ {
+  "id": "U-W-128",
+  "grund": "eine Option unleserlich",
+  "datei": "wochentest-fragen-physio1.json",
+  "vl": [
+   "H16"
+  ],
+  "vl_title": "Physiologie des Herzens 3 (Herzzyklus)",
+  "source": "umformuliert",
+  "question": "Was gilt für den Herzzyklus?",
+  "options": [
+   "In der schnellen Austreibungsphase übt das Herz einen Saugeffekt auf die großen Venen aus.",
+   "Bei Ruhefrequenz dauert die Diastole ungefähr doppelt so lange wie die Systole.",
+   "Ein erhöhter diastolischer Aortendruck verlängert die isovolumetrische Kontraktion der Ventrikel.",
+   "Zum Zeitpunkt des zweiten Herztons beträgt der Druck in der Aorta ca. [UNLESERLICH] mmHg."
+  ],
+  "correct": [
+   "Bei Ruhefrequenz dauert die Diastole ungefähr doppelt so lange wie die Systole.",
+   "Ein erhöhter diastolischer Aortendruck verlängert die isovolumetrische Kontraktion der Ventrikel.",
+   "In der schnellen Austreibungsphase übt das Herz einen Saugeffekt auf die großen Venen aus."
+  ],
+  "note": "",
+  "extra": "Original-Fundstellen: Seiten 81; Vorkommen: 1"
+ },
+ {
+  "id": "U-W-129",
+  "grund": "eine Option unleserlich",
+  "datei": "wochentest-fragen-physio1.json",
+  "vl": [
+   "H18",
+   "H16"
+  ],
+  "vl_title": "Elektrokardiographie [I/K]",
+  "source": "umformuliert",
+  "question": "Welche der Werte liegen im physiologischen Normalbereich?",
+  "options": [
+   "Der Zeitabstand zwischen 2 R Wellen bei 120/min Frequenz: 0,8 s",
+   "Ejektionsfraktion: ≥55%",
+   "Die Zeitdauer der elektrischen Diastole bei 75/min Frequenz: [UNLESERLICH] s",
+   "Die Zeitdauer der QRS-Gruppe: 0,08–0,12 s"
+  ],
+  "correct": [
+   "Die Zeitdauer der QRS-Gruppe: 0,08–0,12 s",
+   "Ejektionsfraktion: ≥55%"
+  ],
+  "note": "",
+  "extra": "Original-Fundstellen: Seiten 86; Vorkommen: 1"
+ },
+ {
+  "id": "U-W-177",
+  "grund": "eine Option unleserlich",
+  "datei": "wochentest-fragen-physio1.json",
+  "vl": [
+   "H30"
+  ],
+  "vl_title": "Atemphysiologie 3",
+  "source": "umformuliert",
+  "question": "Welche der folgenden Aussagen zum Sauerstofftransport sind typischerweise richtig?",
+  "options": [
+   "Bei einem PO2 von 25 mmHg beträgt die Hämoglobinsättigung [UNLESERLICH]%",
+   "Bei einem PO2 von 40 mmHg beträgt die Hämoglobinsättigung 75%",
+   "Bei einem PO2 von 150 mmHg beträgt die Hämoglobinsättigung 175%",
+   "Bei einem PO2 von 150 mmHg liegt die O2-Konzentration des Blutes bei ca. 300 ml/l",
+   "Bei einem PO2 von 27 mmHg ist die O2-Sättigung des fetalen Hämoglobins höher als die des Hämoglobins im mütterlichen Blut"
+  ],
+  "correct": [
+   "Bei einem PO2 von 40 mmHg beträgt die Hämoglobinsättigung 75%",
+   "Bei einem PO2 von 27 mmHg ist die O2-Sättigung des fetalen Hämoglobins höher als die des Hämoglobins im mütterlichen Blut"
+  ],
+  "note": "",
+  "extra": "Original-Fundstellen: Seiten 116; Vorkommen: 1"
+ },
+ {
+  "id": "U-W-239",
+  "grund": "Optionen abgeschnitten",
+  "datei": "wochentest-fragen-physio1.json",
+  "vl": [
+   "H31"
+  ],
+  "vl_title": "Atemphysiologie 4 (Lungenkreislauf)",
+  "source": "umformuliert",
+  "question": "Was trifft auf den Lungenkreislauf zu?",
+  "options": [
+   "[ABGESCHNITTEN]"
+  ],
+  "correct": [],
+  "note": "",
+  "extra": "Original-Fundstellen: Seiten 155; Vorkommen: 1"
+ },
+ {
+  "id": "U-W-262",
+  "grund": "eine Option unleserlich (NaI/NaCl?)",
+  "datei": "wochentest-fragen-physio1.json",
+  "vl": [
+   "H01"
+  ],
+  "vl_title": "Einführung; Inneres Milieu, Flüssigkeitsräume",
+  "source": "umformuliert",
+  "question": "Welche Lösung hat eine osmotische Konzentration, die annähernd der des Blutplasmas entspricht (+/-20%)?",
+  "options": [
+   "300 mM Glucose",
+   "140 mM NaI [UNLESERLICH: evtl. NaCl]",
+   "interstitielle Flüssigkeit",
+   "250 mM K2SO4",
+   "290 mM Harnstoff"
+  ],
+  "correct": [
+   "290 mM Harnstoff",
+   "140 mM NaI [UNLESERLICH: evtl. NaCl]",
+   "300 mM Glucose",
+   "interstitielle Flüssigkeit"
+  ],
+  "note": "",
+  "extra": "Original-Fundstellen: Seiten 170; Vorkommen: 1"
+ },
+ {
+  "id": "U-W-272",
+  "grund": "Fragestamm nicht sichtbar",
+  "datei": "wochentest-fragen-physio1.json",
+  "vl": [
+   "H01"
+  ],
+  "vl_title": "Einführung; Inneres Milieu, Flüssigkeitsräume",
+  "source": "umformuliert",
+  "question": "[ABGESCHNITTEN] (Fragestamm nicht sichtbar; Thema: Proteinverteilung in den Flüssigkeitsräumen)",
+  "options": [
+   "Im Interstitium sind mehr Proteine enthalten als im Blutplasma.",
+   "Verglichen mit derjenigen der Ionen ist die osmotische Konzentration der Proteine im Blutplasma vernachlässigbar.",
+   "Die Gesamtproteinkonzentration im Blutplasma beträgt 60-80 g/l.",
+   "Im Zytoplasma sind mehr Proteine enthalten als im Interstitium."
+  ],
+  "correct": [],
+  "note": "",
+  "extra": "Original-Fundstellen: Seiten 174; Vorkommen: 1"
+ },
+ {
+  "id": "U-W-276",
+  "grund": "Zuordnungsfrage, jede Option eine Leerstelle",
+  "datei": "wochentest-fragen-physio1.json",
+  "vl": [
+   "H01"
+  ],
+  "vl_title": "Einführung; Inneres Milieu, Flüssigkeitsräume",
+  "source": "umformuliert",
+  "question": "Weisen Sie den jeweiligen Flüssigkeitsräumen die passenden Zahlen zu. Größtes Volumen: 1, kleinstes Volumen: 4",
+  "options": [
+   "Extrazellulärraum: ___",
+   "Intrazellulärraum: ___",
+   "Blutplasma: ___",
+   "Interstitium: ___"
+  ],
+  "correct": [],
+  "note": "",
+  "extra": "Original-Fundstellen: Seiten 174, 185; Vorkommen: 2"
+ },
+ {
+  "id": "U-W-295",
+  "grund": "Lückentext statt Optionen („Antwort: ___\")",
+  "datei": "wochentest-fragen-physio1.json",
+  "vl": [
+   "H08"
+  ],
+  "vl_title": "Ruhemembranpotential, Ionenkanäle",
+  "source": "umformuliert",
+  "question": "Eine künstliche Membran trennt zwei Lösungen voneinander. Die beiden Lösungen sind wie folgt zusammengesetzt:\nintrazelluläre Seite: 1 mM CaCl2\nextrazelluläre Seite (0 mV Seite): 100 mM CaCl2\nWelches Potential (Betrag und Vorzeichen + oder - ; in mV) stellt sich auf der intrazellulären Seite ein, wenn die Membran ausschließlich für Kationen durchlässig ist? Gehen Sie bitte von vollständiger Dissoziation und 37 °C aus!",
+  "options": [
+   "Antwort: ___"
+  ],
+  "correct": [
+   "-61"
+  ],
+  "note": "",
+  "extra": "Original-Fundstellen: Seiten 190; Vorkommen: 1"
+ },
+ {
+  "id": "U-W-372",
+  "grund": "eine Option unleserlich",
+  "datei": "wochentest-fragen-physio1.json",
+  "vl": [
+   "H01"
+  ],
+  "vl_title": "Einführung; Inneres Milieu, Flüssigkeitsräume",
+  "source": "umformuliert",
+  "question": "Einem Versuchstier wird eine Infusionslösung mit 1 g Polysaccharid verabreicht. Nach der Infusion liegt die Polysaccharidkonzentration im Blutplasma bei 1 g/l. Wie groß ist das extrazelluläre Volumen?",
+  "options": [
+   "100 ml",
+   "[UNLESERLICH] ml",
+   "1 l",
+   "10 l"
+  ],
+  "correct": [
+   "[UNLESERLICH]"
+  ],
+  "note": "",
+  "extra": "Original-Fundstellen: Seiten 234; Vorkommen: 1"
+ },
+ {
+  "id": "U-W-391",
+  "grund": "Zuordnungsfrage, jede Option eine Leerstelle",
+  "datei": "wochentest-fragen-physio1.json",
+  "vl": [
+   "H01"
+  ],
+  "vl_title": "Einführung; Inneres Milieu, Flüssigkeitsräume",
+  "source": "umformuliert",
+  "question": "Wählen Sie unter den Optionen denjenigen Wert, der dem normalen Nüchtern-Ruhebereich (bei jungen Erwachsenen) am ehesten entspricht! Achten Sie dabei auch auf die Maßeinheit! (Zuordnungsfrage mit Dropdown)",
+  "options": [
+   "Blutplasma [Cl-]: ___",
+   "Citoplasma [K+]: ___",
+   "Zytoplasma frei [Ca2+]: ___",
+   "Blutplasma [Glukose]: ___",
+   "Blutplasma [K+]: ___"
+  ],
+  "correct": [
+   "Blutplasma [Cl-] → 0,1 M",
+   "Citoplasma [K+] → 145 mM",
+   "Zytoplasma frei [Ca2+] → 100 nM",
+   "Blutplasma [Glukose] → 4,5 mM",
+   "Blutplasma [K+] → 4,5 mM"
+  ],
+  "note": "",
+  "extra": "Original-Fundstellen: Seiten 247; Vorkommen: 1"
+ },
+ {
+  "id": "U-W-442",
+  "grund": "Optionen abgeschnitten",
+  "datei": "wochentest-fragen-physio1.json",
+  "vl": [
+   "H28"
+  ],
+  "vl_title": "Atemphysiologie 1",
+  "source": "umformuliert",
+  "question": "Typische Auswirkungen einer Verengung der Trachea:",
+  "options": [
+   "[ABGESCHNITTEN] (Stamm am unteren Seitenrand von p-272; Optionen nicht sichtbar, Überlappungsseite p-273 zeigt einen anderen Test – vollständige Version dieser Frage siehe FRAGE 34-1, Seite 271)"
+  ],
+  "correct": [],
+  "note": "",
+  "extra": "Original-Fundstellen: Seiten 272; Vorkommen: 1"
+ },
+ {
+  "id": "U-W-446",
+  "grund": "Fragestamm und Optionen unleserlich",
+  "datei": "wochentest-fragen-physio1.json",
+  "vl": [
+   "H28"
+  ],
+  "vl_title": "Atemphysiologie 1",
+  "source": "umformuliert",
+  "question": "Welche der folgenden Druckwerte sind [UNLESERLICH] der dynamischen Einatmung? (Screenshot auf Seite 275 sehr klein)",
+  "options": [
+   "Intrapleuraler Druck bei maximaler Amplitude der [UNLESERLICH]",
+   "Intrapleuraler Druck bei maximaler Amplitude der [UNLESERLICH]",
+   "Intrapleuraler Druck bei Ende der Einatmung",
+   "Intrapulmonaler Druck bei Ende der Einatmung"
+  ],
+  "correct": [
+   "[UNLESERLICH] (Lösungsfeld vorhanden, aber zu klein: „Intrapleuraler Druck bei maximaler Amplitude der …, Intrapleuraler Druck am Ende der Einatmung …\")"
+  ],
+  "note": "",
+  "extra": "Original-Fundstellen: Seiten 274; Vorkommen: 1"
+ },
+ {
+  "id": "N-WN-01-20",
+  "grund": "Lückentext statt Optionen („Antwort: ___\")",
+  "datei": "wochentest-fragen-physio1.json",
+  "vl": [
+   "H01"
+  ],
+  "vl_title": "Einführung; Inneres Milieu, Flüssigkeitsräume",
+  "source": "neu",
+  "question": "Physiologische Blutplasma-Na+-Konzentration (mM):",
+  "options": [
+   "Antwort: ___"
+  ],
+  "correct": [
+   "140"
+  ],
+  "note": "Neu – angelehnt an Frage W-002, W-008, W-266",
+  "extra": ""
+ },
+ {
+  "id": "N-WN-05-20",
+  "grund": "Lückentext statt Optionen („Antwort: ___\")",
+  "datei": "wochentest-fragen-physio1.json",
+  "vl": [
+   "H08"
+  ],
+  "vl_title": "Ruhemembranpotential, Ionenkanäle",
+  "source": "neu",
+  "question": "Zwei Lösungen sind durch eine künstliche Membran geteilt. Die Zusammensetzung der zwei Lösungen ist:\nintrazelluläre Seite: 100 mM KCl\nextrazelluläre Seite (0 mV Seite): 10 mM KCl\nWie groß (und + oder - ; in mV) ist das entstehende Potential auf der intrazellulären Seite, wenn die Membran ausschließlich für Anionen permeabel ist? Rechnen Sie bitte mit vollständiger Dissoziation und bei 37 °C!",
+  "options": [
+   "Antwort: ___"
+  ],
+  "correct": [
+   "+61"
+  ],
+  "note": "Neu – angelehnt an Frage W-295",
+  "extra": ""
+ },
+ {
+  "id": "N-WN-09-12",
+  "grund": "Zuordnungsfrage, jede Option eine Leerstelle",
+  "datei": "wochentest-fragen-physio1.json",
+  "vl": [
+   "H15"
+  ],
+  "vl_title": "Physiologie des Herzens 2 (Kammerfunktion)",
+  "source": "neu",
+  "question": "Bei einem gesunden Probanden werden ein enddiastolisches Volumen von 140 ml, ein endsystolisches Volumen von 56 ml und eine Herzfrequenz von 70/min gemessen. Berechnen Sie:",
+  "options": [
+   "Schlagvolumen → ___",
+   "Ejektionsfraktion → ___",
+   "Herzzeitvolumen → ___"
+  ],
+  "correct": [
+   "Schlagvolumen → 84 ml",
+   "Ejektionsfraktion → 0,6 (60 %)",
+   "Herzzeitvolumen → 5,88 L/min (ca. 5,9 L/min)"
+  ],
+  "note": "Neu – angelehnt an Frage W-090, W-092, W-122",
+  "extra": ""
+ },
+ {
+  "id": "N-WN-09-20",
+  "grund": "Zuordnungsfrage, jede Option eine Leerstelle",
+  "datei": "wochentest-fragen-physio1.json",
+  "vl": [
+   "H15"
+  ],
+  "vl_title": "Physiologie des Herzens 2 (Kammerfunktion)",
+  "source": "neu",
+  "question": "Wie verändern sich die folgenden Parameter bei sympathischer Reizung des Herzens? (nimmt zu / nimmt ab / bleibt gleich)",
+  "options": [
+   "Endsystolisches Volumen der linken Kammer → ___",
+   "Dauer des PQ-Intervalls → ___",
+   "Steilheit der spontanen diastolischen Depolarisation im Sinusknoten → ___",
+   "Schlagvolumen bei unveränderter Vorlast → ___",
+   "Dauer der Kammersystole → ___"
+  ],
+  "correct": [
+   "Endsystolisches Volumen der linken Kammer → nimmt ab",
+   "Dauer des PQ-Intervalls → nimmt ab",
+   "Steilheit der spontanen diastolischen Depolarisation im Sinusknoten → nimmt zu",
+   "Schlagvolumen bei unveränderter Vorlast → nimmt zu",
+   "Dauer der Kammersystole → nimmt ab"
+  ],
+  "note": "Neu – angelehnt an Frage W-122, W-109, W-407",
+  "extra": ""
+ },
+ {
+  "id": "N-WN-10-10",
+  "grund": "Lückentext statt Optionen („Antwort: ___\")",
+  "datei": "wochentest-fragen-physio1.json",
+  "vl": [
+   "H18"
+  ],
+  "vl_title": "Elektrokardiographie [I/K]",
+  "source": "neu",
+  "question": "Die Herzfrequenz beträgt 100/min, das QT-Intervall 320 ms. Wie lange dauert die elektrische Diastole (in ms)?",
+  "options": [
+   "Antwort: ___"
+  ],
+  "correct": [
+   "280 ms"
+  ],
+  "note": "Neu – angelehnt an Frage W-121, W-105",
+  "extra": ""
+ },
+ {
+  "id": "N-WN-11-08",
+  "grund": "Lückentext statt Optionen („Antwort: ___\")",
+  "datei": "wochentest-fragen-physio1.json",
+  "vl": [
+   "H19"
+  ],
+  "vl_title": "Kreislaufphysiologie 1 (Übersicht)",
+  "source": "neu",
+  "question": "Bei einem Patienten wird ein Blutdruck von 130/85 mmHg gemessen. Wie groß ist der (näherungsweise berechnete) mittlere arterielle Druck? (Antwort in mmHg)",
+  "options": [
+   "Antwort: ___"
+  ],
+  "correct": [
+   "Antwort: 100 mmHg"
+  ],
+  "note": "Neu – angelehnt an Frage W-137, W-311, W-314",
+  "extra": ""
+ },
+ {
+  "id": "N-WN-11-12",
+  "grund": "Lückentext statt Optionen („Antwort: ___\")",
+  "datei": "wochentest-fragen-physio1.json",
+  "vl": [
+   "H20"
+  ],
+  "vl_title": "Kreislaufphysiologie 2 (Hämodynamik, arterielles System)",
+  "source": "neu",
+  "question": "Der Radius eines Gefäßes wird bei sonst unveränderten Bedingungen (laminare Strömung, gleiche Viskosität, gleiche Länge) halbiert. Um welchen Faktor steigt der Strömungswiderstand (Hagen-Poiseuille)?",
+  "options": [
+   "Antwort: ___"
+  ],
+  "correct": [
+   "Antwort: 16"
+  ],
+  "note": "Neu – angelehnt an Frage W-312, W-140",
+  "extra": ""
+ },
+ {
+  "id": "N-WN-13-15",
+  "grund": "Lückentext statt Optionen („Antwort: ___\")",
+  "datei": "wochentest-fragen-physio1.json",
+  "vl": [
+   "H28"
+  ],
+  "vl_title": "Atemphysiologie 1",
+  "source": "neu",
+  "question": "Helium-Verdünnungsmethode: Ein Spirometer enthält 5 l Gasgemisch mit 10% Helium. Der Proband atmet in Atemruhelage (FRC) an das geschlossene System angeschlossen, bis sich die Helium-Konzentration bei 6,25% einstellt (Helium wird nicht resorbiert). Wie groß ist die funktionelle Residualkapazität (in Litern)?",
+  "options": [
+   "Antwort: ___"
+  ],
+  "correct": [
+   "3 l (0,10 × 5 l = 0,0625 × (5 l + FRC) → FRC = 3 l)"
+  ],
+  "note": "Neu – angelehnt an Frage W-175, W-186, W-193",
+  "extra": ""
+ }
+]

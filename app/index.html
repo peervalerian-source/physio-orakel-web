@@ -4416,6 +4416,10 @@ const WK_DATA_URLS=['wochentest-fragen.json','wochentest-fragen-physio1.json'];
 // Nachtraege zu einzelnen Fragen — nach id. Die Quelldateien bleiben so,
 // wie sie erzeugt wurden; korrigiert wird beim Laden.
 const WK_PATCH_URL='wochentest-korrekturen.json';
+// Unvollstaendig ueberlieferte Fragen (abgeschnitten, unleserlich, Luecken-
+// text statt Optionen). Bleiben gesammelt, bis sie repariert sind — im
+// Wochentest kommen sie nicht vor.
+const WK_INCOMPLETE_URL='wochentest-unvollstaendig.json';
 const WK_LETTERS='abcdefghijkl';
 const WK_MIN_WEEK=2,WK_MAX_WEEK=14;
 
@@ -4509,6 +4513,7 @@ function wkApplyPatch(q,patch){
   if(!p)return q;
   if(p.action==='remove')return null;
   const out=Object.assign({},q);
+  if(typeof p.question==='string')out.question=p.question;
   if(Array.isArray(p.options))out.options=p.options;
   if(Array.isArray(p.correct))out.correct=p.correct;
   if(typeof p.note==='string')out.note=p.note;
@@ -4549,9 +4554,15 @@ async function wkLoad(){
       const pr=await fetch(WK_PATCH_URL,{cache:'default'});
       if(pr.ok)patch=await pr.json()||{};
     }catch(e){}
+    const skip=new Set();
+    try{
+      const ir=await fetch(WK_INCOMPLETE_URL,{cache:'default'});
+      if(ir.ok){const list=await ir.json();(Array.isArray(list)?list:[]).forEach(e=>{if(e&&e.id)skip.add(e.id)})}
+    }catch(e){}
     // Fragen anhaengen, in der Reihenfolge der Dateien.
     sets.forEach(data=>{
       (Array.isArray(data.questions)?data.questions:[]).forEach(q=>{
+        if(skip.has(q.id))return;
         const fixed=wkApplyPatch(q,patch);
         if(!fixed)return;
         const item=wkPrepare(fixed);
