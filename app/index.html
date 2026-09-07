@@ -652,6 +652,15 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
 .bi-pct { font-size: 12.5px; color: var(--app-mute); font-feature-settings: 'tnum' 1; text-align: right; }
 .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
 .btn-back { margin-top: 14px; padding-inline: 0; }
+/* Der Rueckweg soll ins Auge fallen: Schrift wie ein normaler Knopf,
+   Rahmen in Tinte, beim Hover Akzent. */
+.btn-return {
+  font-size: 15px; padding: 10px 16px 10px 12px; color: var(--app-ink);
+  border-color: color-mix(in srgb, var(--app-ink) 55%, transparent);
+  margin-bottom: 24px;
+}
+.btn-return:hover { border-color: var(--app-accent); color: var(--app-accent); }
+.btn-return .arr { font-size: 17px; line-height: 1; }
 .divider { height: 2px; background: var(--app-rule); margin: 32px 0; }
 
 /* ── Modale ────────────────────────────────────────────────────────────── */
@@ -851,7 +860,7 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
      ══════════════════════════════════════════════════════════════════════ -->
 <div id="s2" class="screen">
   <section class="wrap">
-    <button type="button" class="btn btn-ghost" onclick="goTo('s1')" style="color:var(--app-ink);font-size:12.5px;margin-bottom:22px">← Zurück</button>
+    <button type="button" class="btn btn-return" onclick="goTo('s1')"><span class="arr" aria-hidden="true">←</span> Zurück zur Startseite</button>
     <span class="kicker">Altfragen üben</span>
     <h1 class="screen-h1" id="s2Title">Welche Punkte?</h1>
     <p class="cfg-sub" id="s2Sub" style="margin-top:14px;font-size:15px;line-height:24px"></p>
@@ -956,7 +965,7 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
 <!-- ══ S-Upload: Eigene Unterlagen ════════════════════════════════════════ -->
 <div id="sUpload" class="screen">
   <section class="wrap">
-    <button type="button" class="btn btn-ghost" onclick="goTo('s1')" style="color:var(--app-ink);font-size:12.5px;margin-bottom:22px">← Zurück</button>
+    <button type="button" class="btn btn-return" onclick="goTo('s1')"><span class="arr" aria-hidden="true">←</span> Zurück zur Startseite</button>
     <span class="kicker">Aus eigenen Unterlagen</span>
     <h1 class="screen-h1">Wirf dein PDF rein.</h1>
     <p style="font-size:15.5px;line-height:26px;color:var(--app-mute);margin:16px 0 0;max-width:52ch">Skript, Mitschrift, Folien deiner Lerngruppe — was du hast. Das Orakel liest es und baut Fragen daraus. Nichts davon wird veröffentlicht.</p>
@@ -1319,14 +1328,14 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
       <button type="button" class="btn btn-primary" onclick="newRound()" title="Neue Runde mit denselben Einstellungen">Neue Runde · gleiche Einstellungen</button>
       <button type="button" class="btn btn-secondary" onclick="goTo(state.flowMode==='skript'?'sUpload':'s2')">Konfiguration anpassen</button>
     </div>
-    <button type="button" class="btn btn-ghost btn-back" onclick="goTo('s1')">← Zurück zur Startseite</button>
+    <button type="button" class="btn btn-return btn-back" onclick="goTo('s1')"><span class="arr" aria-hidden="true">←</span> Zurück zur Startseite</button>
     <div class="divider"></div>
     <div id="reviewSection"></div>
     <div class="btn-row">
       <button type="button" class="btn btn-primary" onclick="newRound()">Neue Runde · gleiche Einstellungen</button>
       <button type="button" class="btn btn-secondary" onclick="goTo(state.flowMode==='skript'?'sUpload':'s2')">Konfiguration anpassen</button>
     </div>
-    <button type="button" class="btn btn-ghost btn-back" style="margin-bottom:40px" onclick="goTo('s1')">← Zurück zur Startseite</button>
+    <button type="button" class="btn btn-return btn-back" style="margin-bottom:40px" onclick="goTo('s1')"><span class="arr" aria-hidden="true">←</span> Zurück zur Startseite</button>
   </section>
 </div>
 
@@ -4794,8 +4803,16 @@ function wkToEngine(it,i){
   const head=[srcTxt,it.code+' · '+it.vlTitle,'Woche '+it.week,blkTxt].filter(Boolean).join(' · ');
   let expl='<span style="display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--app-mute);margin-bottom:6px">'+escapeHtml(head)+'</span>';
   if(it.noSolution)expl+='<span style="display:block;color:var(--app-accent)">Zu dieser Frage ist keine Lösung überliefert — sie wird nicht gewertet.</span>';
-  if(it.note.trim())expl+='<span style="display:block">'+wkRich(it.note.trim())+'</span>';
-  if(it.extra.trim())expl+='<span style="display:block;margin-top:6px;color:var(--app-mute);font-size:12.5px">'+wkRich(it.extra.trim())+'</span>';
+  // Herkunft (Quelle, Fundstellen, Screenshot-Namen, Korrekturvermerke)
+  // bleibt in den Daten, aber nur der Betreiber sieht sie. Nutzer bekommen
+  // allein „Altfrage" bzw. „Neu – angelehnt an Frage …".
+  const note=it.note.trim(),extra=it.extra.trim();
+  if(wkShowProvenance()){
+    if(note)expl+='<span style="display:block">'+wkRich(note)+'</span>';
+    if(extra)expl+='<span style="display:block;margin-top:6px;color:var(--app-mute);font-size:12.5px">'+wkRich(extra)+'</span>';
+  }else if(/^Neu\s*[–-]/.test(note)){
+    expl+='<span style="display:block">'+wkRich(note)+'</span>';
+  }
   return{
     id:i+1,qid:it.qid,topic:it.code,question:wkRich(it.question),
     options:options,correct:correct,explanation:expl
@@ -4807,6 +4824,9 @@ function startFromConfig(){
   if(state.poolKind==='wochentest'&&state.flowMode!=='skript')return startWeekTest();
   return startQuiz();
 }
+
+// Der Betreiber hat den Admin-Key im Browser — er darf die Herkunft sehen.
+function wkShowProvenance(){try{return !!localStorage.getItem(ADMIN_KEY_STORE)}catch{return false}}
 
 async function startWeekTest(){
   if(!hasApiKey){openKeyModal();return}
