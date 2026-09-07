@@ -1347,6 +1347,23 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
       <input class="input" type="text" id="loginUser" placeholder="Username oder Email" autocomplete="username">
       <input class="input" type="password" id="loginPass" placeholder="Passwort" autocomplete="current-password">
       <button type="button" class="btn btn-primary btn-block" onclick="doLogin()">Anmelden</button>
+      <button type="button" class="btn-link" onclick="setAuthTab('reset')" style="justify-self:start;margin-top:2px">Passwort vergessen?</button>
+    </div>
+
+    <!-- Passwort vergessen: erst Anfrage, dann Code + neues Passwort -->
+    <div id="authFormReset" style="display:none;gap:10px;margin-top:14px">
+      <div id="resetStep1" style="display:grid;gap:10px">
+        <input class="input" type="text" id="resetIdent" placeholder="Username oder Email" autocomplete="username">
+        <button type="button" class="btn btn-primary btn-block" onclick="requestReset()" id="resetReqBtn">Code anfordern</button>
+        <button type="button" class="btn-link" onclick="showResetStep(2)" style="justify-self:start">Ich habe schon einen Code</button>
+      </div>
+      <div id="resetStep2" style="display:none;gap:10px">
+        <input class="input" type="text" id="resetCode" placeholder="Code (8 Zeichen)" autocomplete="one-time-code" spellcheck="false" style="text-transform:uppercase;letter-spacing:.12em">
+        <input class="input" type="password" id="resetPass" placeholder="Neues Passwort (mind. 6 Zeichen)" autocomplete="new-password">
+        <button type="button" class="btn btn-primary btn-block" onclick="confirmReset()" id="resetConfBtn">Passwort setzen</button>
+        <button type="button" class="btn-link" onclick="showResetStep(1)" style="justify-self:start">Noch keinen Code</button>
+      </div>
+      <button type="button" class="btn-link" onclick="setAuthTab('login')" style="justify-self:start">← Zurück zur Anmeldung</button>
     </div>
 
     <div id="authFormRegister" style="display:none;gap:10px;margin-top:14px">
@@ -1359,6 +1376,23 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
     </div>
 
     <div class="key-status" id="authStatus" style="margin-top:14px"></div>
+  </div>
+</div>
+
+<!-- ══ Passwort aendern ══════════════════════════════════════════════════ -->
+<div class="key-overlay" id="pwOverlay">
+  <div class="key-backdrop" onclick="closePwModal()"></div>
+  <div class="key-panel" style="max-width:420px">
+    <button type="button" class="modal-close" onclick="closePwModal()" title="Schließen">✕</button>
+    <span class="kicker">Konto</span>
+    <div class="key-panel-title">Passwort ändern</div>
+    <div style="display:grid;gap:10px;margin-top:14px">
+      <input class="input" type="password" id="pwOld" placeholder="Altes Passwort" autocomplete="current-password">
+      <input class="input" type="password" id="pwNew" placeholder="Neues Passwort (mind. 6 Zeichen)" autocomplete="new-password">
+      <input class="input" type="password" id="pwNew2" placeholder="Neues Passwort wiederholen" autocomplete="new-password">
+      <button type="button" class="btn btn-primary btn-block" onclick="changePassword()" id="pwBtn">Speichern</button>
+    </div>
+    <div class="key-status" id="pwStatus" style="margin-top:12px"></div>
   </div>
 </div>
 
@@ -1473,7 +1507,17 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
         </div>
       </div>
       <div id="codeAdminStatus" style="font-size:13px;color:var(--app-mute);margin:12px 0"></div>
-      <div id="codeList" style="display:grid;gap:8px;max-height:36vh;overflow:auto"></div>
+      <div id="codeList" style="display:grid;gap:8px;max-height:26vh;overflow:auto"></div>
+
+      <div style="margin-top:18px;padding-top:14px;border-top:2px solid var(--app-rule)">
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <span class="seg-label" style="margin:0">Passwort-Anfragen</span>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="loadResets()" style="margin-left:auto">Laden</button>
+        </div>
+        <div class="key-panel-sub" style="margin-top:6px">Wer „Passwort vergessen" klickt, landet hier. Den Code schickst du der Person, er gilt 30 Minuten.</div>
+        <div id="resetAdminStatus" style="font-size:13px;color:var(--app-mute);margin:10px 0"></div>
+        <div id="resetList" style="display:grid;gap:8px;max-height:22vh;overflow:auto"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -1772,13 +1816,82 @@ let currentUser=null;
 function openKeyModal(){document.getElementById('authOverlay').classList.add('active')}
 function closeKeyModal(){document.getElementById('authOverlay').classList.remove('active')}
 function setAuthTab(tab){
-  document.getElementById('authTabLogin').className='ssw'+(tab==='login'?' active':'');
+  document.getElementById('authTabLogin').className='ssw'+(tab==='login'||tab==='reset'?' active':'');
   document.getElementById('authTabRegister').className='ssw'+(tab==='register'?' active':'');
-  document.getElementById('authFormLogin').style.display=tab==='login'?'block':'none';
-  document.getElementById('authFormRegister').style.display=tab==='register'?'block':'none';
-  document.getElementById('authTitle').textContent=tab==='login'?'Anmelden':'Account erstellen';
-  document.getElementById('authSub').textContent=tab==='login'?'Username und Passwort genügen':'Username, Email, Passwort + dein Zugangscode';
+  document.getElementById('authFormLogin').style.display=tab==='login'?'grid':'none';
+  document.getElementById('authFormRegister').style.display=tab==='register'?'grid':'none';
+  document.getElementById('authFormReset').style.display=tab==='reset'?'grid':'none';
+  const titles={login:'Anmelden',register:'Account erstellen',reset:'Passwort vergessen'};
+  const subs={login:'Username und Passwort genügen',register:'Username, Email, Passwort + dein Zugangscode',reset:'Du bekommst einen Code, damit setzt du ein neues Passwort.'};
+  document.getElementById('authTitle').textContent=titles[tab]||titles.login;
+  document.getElementById('authSub').textContent=subs[tab]||subs.login;
   document.getElementById('authStatus').textContent='';
+  if(tab==='reset')showResetStep(1);
+}
+function showResetStep(n){
+  document.getElementById('resetStep1').style.display=n===1?'grid':'none';
+  document.getElementById('resetStep2').style.display=n===2?'grid':'none';
+  document.getElementById('authStatus').textContent='';
+  setTimeout(()=>{const el=document.getElementById(n===1?'resetIdent':'resetCode');if(el)el.focus()},50);
+}
+// Der Server antwortet absichtlich immer gleich — ob es das Konto gibt,
+// erfaehrt man hier nicht. Was er sagt: ob der Code per Mail kommt oder
+// vom Betreiber.
+async function requestReset(){
+  const ident=document.getElementById('resetIdent').value.trim();
+  if(!ident){showAuthStatus('Username oder Email eintragen','var(--app-error)');return}
+  const btn=document.getElementById('resetReqBtn');btn.disabled=true;
+  showAuthStatus('Anfrage läuft…','var(--app-mute)');
+  try{
+    const res=await fetch(WORKER_URL+'/auth/reset/request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({identifier:ident})});
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.error||'Fehler');
+    showAuthStatus(data.channel==='mail'
+      ?'Wenn es dieses Konto gibt, ist der Code jetzt unterwegs — schau ins Postfach (auch Spam). Er gilt 30 Minuten.'
+      :'Wenn es dieses Konto gibt, liegt die Anfrage jetzt bei mir — schreib mir kurz, ich schick dir den Code. Er gilt 30 Minuten.','var(--app-ok)');
+    showResetStep(2);
+    document.getElementById('authStatus').style.display='';
+  }catch(e){showAuthStatus(e.message,'var(--app-error)')}
+  btn.disabled=false;
+}
+async function confirmReset(){
+  const code=document.getElementById('resetCode').value.trim().toUpperCase();
+  const password=document.getElementById('resetPass').value;
+  if(code.length<8||!password){showAuthStatus('Code und neues Passwort eintragen','var(--app-error)');return}
+  const btn=document.getElementById('resetConfBtn');btn.disabled=true;
+  showAuthStatus('Wird gesetzt…','var(--app-mute)');
+  try{
+    const res=await fetch(WORKER_URL+'/auth/reset/confirm',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code,password})});
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.error||'Fehler');
+    document.getElementById('resetCode').value='';document.getElementById('resetPass').value='';
+    onAuthSuccess(data,'');
+  }catch(e){showAuthStatus(e.message,'var(--app-error)')}
+  btn.disabled=false;
+}
+function openPwModal(){
+  ['pwOld','pwNew','pwNew2'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
+  const st=document.getElementById('pwStatus');if(st)st.textContent='';
+  document.getElementById('pwOverlay').classList.add('active');
+  setTimeout(()=>{const el=document.getElementById('pwOld');if(el)el.focus()},50);
+}
+function closePwModal(){document.getElementById('pwOverlay').classList.remove('active')}
+async function changePassword(){
+  const o=document.getElementById('pwOld').value,n=document.getElementById('pwNew').value,n2=document.getElementById('pwNew2').value;
+  const st=document.getElementById('pwStatus'),btn=document.getElementById('pwBtn');
+  const say=(t,c)=>{st.style.color=c;st.textContent=t};
+  if(!o||!n){say('Beide Felder ausfüllen','var(--app-error)');return}
+  if(n.length<6){say('Neues Passwort: mind. 6 Zeichen','var(--app-error)');return}
+  if(n!==n2){say('Die Wiederholung stimmt nicht überein','var(--app-error)');return}
+  btn.disabled=true;say('Wird gespeichert…','var(--app-mute)');
+  try{
+    const res=await fetch(WORKER_URL+'/auth/change-password',{method:'POST',headers:authHeaders({'Content-Type':'application/json'}),body:JSON.stringify({oldPassword:o,newPassword:n})});
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.error||'Fehler');
+    say('Gespeichert.','var(--app-ok)');
+    setTimeout(closePwModal,800);
+  }catch(e){say(e.message,'var(--app-error)')}
+  btn.disabled=false;
 }
 function showAuthStatus(msg,color){const el=document.getElementById('authStatus');el.textContent=msg;el.style.color=color}
 
@@ -1951,6 +2064,7 @@ function updateUserBadge(){
         </div>
       </div>
       <button onclick="openLadderFromMenu()" style="width:100%;padding:14px 16px;background:transparent;border:none;color:var(--ink);text-align:left;font-family:inherit;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:all .15s;border-bottom:1px solid var(--rule)" onmouseover="this.style.background='var(--ink)';this.style.color='var(--paper)'" onmouseout="this.style.background='transparent';this.style.color='var(--ink)'">→ Karriereleiter &amp; Fortschritt</button>
+      <button onclick="toggleUserMenu();openPwModal()" style="width:100%;padding:14px 16px;background:transparent;border:none;color:var(--ink);text-align:left;font-family:inherit;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:all .15s;border-bottom:1px solid var(--rule)" onmouseover="this.style.background='var(--ink)';this.style.color='var(--paper)'" onmouseout="this.style.background='transparent';this.style.color='var(--ink)'">→ Passwort ändern</button>
       <button id="umLogout" onclick="confirmLogout()" style="width:100%;padding:14px 16px;background:transparent;border:none;color:var(--ink);text-align:left;font-family:inherit;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:all .15s;border-bottom:1px solid var(--rule)" onmouseover="this.style.background='var(--swiss-red)';this.style.color='var(--paper)'" onmouseout="this.style.background='transparent';this.style.color='var(--ink)'">→ Abmelden</button>
       <button onclick="toggleUserMenu()" style="width:100%;padding:10px 16px;background:transparent;border:none;color:var(--mid);text-align:left;font-family:inherit;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;cursor:pointer">Schließen</button>
     `;
@@ -2386,7 +2500,7 @@ function setAdminTab(tab){
   });
   if(tab==='pool')setPoolTarget(poolUploadTarget);
   if(tab==='wt')loadWochentestAdminHint();
-  if(tab==='codes'&&adminKey())loadCodes();
+  if(tab==='codes'&&adminKey()){loadCodes();loadResets()}
   if(tab==='fb'&&adminKey())loadFeedback();
 }
 function loadWochentestAdminHint(){
@@ -2716,6 +2830,33 @@ async function sendFeedback(){
     if(st){st.style.color='var(--app-error)';st.textContent=e.message||'Konnte nicht gesendet werden.'}
     if(sb){sb.disabled=false;sb.textContent='Erneut senden'}
   }
+}
+
+// Admin: offene Passwort-Anfragen
+async function loadResets(){
+  const key=adminKey(),st=document.getElementById('resetAdminStatus'),el=document.getElementById('resetList');
+  if(!key||!el)return;
+  try{
+    const res=await fetch(WORKER_URL+'/admin/resets',{headers:{'X-Admin-Key':key}});
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.error||'Fehler '+res.status);
+    const items=data.items||[];
+    if(st)st.textContent=items.length?items.length+' offen':'Keine offenen Anfragen.';
+    el.innerHTML=items.map(i=>{
+      const mins=Math.max(0,Math.round((i.expiresAt-Date.now())/60000));
+      return '<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;border:2px solid var(--app-rule);padding:9px 12px;background:var(--app-panel);font-size:12.5px">'+
+        '<span style="font-family:var(--font-heading);font-weight:800;color:var(--app-ink)">'+escapeHtml(i.username)+'</span>'+
+        '<span style="color:var(--app-mute)">'+escapeHtml(i.email||'')+'</span>'+
+        '<code style="margin-left:auto;font-size:15px;letter-spacing:.14em;color:var(--app-accent)">'+escapeHtml(i.code)+'</code>'+
+        '<span style="color:var(--app-mute)">noch '+mins+' Min.</span>'+
+        '<button type="button" class="btn btn-secondary btn-sm" onclick="navigator.clipboard.writeText(\''+i.code+'\')">Kopieren</button>'+
+        '<button type="button" class="btn btn-secondary btn-sm" onclick="deleteReset(\''+i.code+'\')">Verwerfen</button></div>';
+    }).join('');
+  }catch(e){if(st)st.textContent='Fehler: '+e.message}
+}
+async function deleteReset(code){
+  const key=adminKey();if(!key)return;
+  try{await fetch(WORKER_URL+'/admin/resets',{method:'DELETE',headers:{'Content-Type':'application/json','X-Admin-Key':key},body:JSON.stringify({code})});loadResets()}catch{}
 }
 
 // Admin-Seite: lesen, abhaken, loeschen, exportieren
