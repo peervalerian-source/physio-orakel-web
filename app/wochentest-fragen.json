@@ -143,28 +143,28 @@
   {
    "code": "H21",
    "semester": "Herbst",
+   "week": 7,
+   "title": "Echokardiographie [I/K] [DM]",
+   "n_questions": 0
+  },
+  {
+   "code": "H22",
+   "semester": "Herbst",
    "week": 8,
    "title": "Kreislaufphysiologie 3 (Mikrozirkulation, venöses System)",
    "n_questions": 7
   },
   {
-   "code": "H22",
+   "code": "H23",
    "semester": "Herbst",
    "week": 8,
    "title": "Kreislaufregulation 1",
    "n_questions": 12
   },
   {
-   "code": "H23",
-   "semester": "Herbst",
-   "week": 8,
-   "title": "Echokardiographie [I/K] [DM]",
-   "n_questions": 0
-  },
-  {
    "code": "H24",
    "semester": "Herbst",
-   "week": 9,
+   "week": 8,
    "title": "Kreislaufregulation 2",
    "n_questions": 1
   },
@@ -185,135 +185,196 @@
   {
    "code": "H27",
    "semester": "Herbst",
+   "week": 9,
+   "title": "Zusammenspiel Herz–Gefäßsystem (Theorie, Klinik)",
+   "n_questions": 0
+  },
+  {
+   "code": "H28",
+   "semester": "Herbst",
    "week": 10,
    "title": "Atemphysiologie 1",
    "n_questions": 3
   },
   {
-   "code": "H28",
+   "code": "H29",
    "semester": "Herbst",
    "week": 10,
    "title": "Atemphysiologie 2",
    "n_questions": 6
   },
   {
-   "code": "H29",
+   "code": "H30",
    "semester": "Herbst",
    "week": 10,
    "title": "Atemphysiologie 3",
    "n_questions": 10
   },
   {
-   "code": "H30",
+   "code": "H31",
    "semester": "Herbst",
    "week": 11,
    "title": "Atemphysiologie 4 (Lungenkreislauf)",
    "n_questions": 6
   },
   {
-   "code": "H31",
-   "semester": "Herbst",
-   "week": 11,
-   "title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
-   "n_questions": 5
-  },
-  {
    "code": "H32",
    "semester": "Herbst",
    "week": 11,
-   "title": "Nierenphysiologie 2",
-   "n_questions": 0
+   "title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
+   "n_questions": 2
   },
   {
    "code": "H33",
    "semester": "Herbst",
-   "week": 12,
-   "title": "Nierenphysiologie 3",
+   "week": 11,
+   "title": "Anpassung des kardiorespiratorischen Systems 1 [DM]",
    "n_questions": 1
   },
   {
    "code": "H34",
    "semester": "Herbst",
    "week": 12,
-   "title": "Nierenphysiologie 4",
-   "n_questions": 2
+   "title": "Anpassung des kardiorespiratorischen Systems 2 [I/K] [DM]",
+   "n_questions": 0
   },
   {
    "code": "H35",
    "semester": "Herbst",
    "week": 12,
-   "title": "Säure-Basen-Haushalt 1 [I/K]",
-   "n_questions": 2
+   "title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
+   "n_questions": 14
   },
   {
    "code": "H36",
    "semester": "Herbst",
-   "week": 13,
-   "title": "Säure-Basen-Haushalt 2 [I/K]",
-   "n_questions": 5
+   "week": 12,
+   "title": "Hämostase (Forts.) + Gastrointestinale Funktionen 1",
+   "n_questions": 23
   },
   {
    "code": "H37",
    "semester": "Herbst",
    "week": 13,
-   "title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
-   "n_questions": 14
+   "title": "Gastrointestinale Funktionen 2",
+   "n_questions": 17
   },
   {
    "code": "H38",
    "semester": "Herbst",
    "week": 13,
-   "title": "Anpassung des kardiorespiratorischen Systems 1 [DM]",
-   "n_questions": 1
+   "title": "Gastrointestinale Funktionen 3",
+   "n_questions": 14
   },
   {
    "code": "H39",
    "semester": "Herbst",
-   "week": 14,
-   "title": "Anpassung des kardiorespiratorischen Systems 2 [I/K] [DM]",
-   "n_questions": 0
+   "week": 13,
+   "title": "Gastrointestinale Funktionen 4",
+   "n_questions": 12
   },
   {
    "code": "H40",
+   "semester": "Herbst",
+   "week": 14,
+   "title": "Energiehaushalt, Ernährung",
+   "n_questions": 23
+  },
+  {
+   "code": "H41",
    "semester": "Herbst",
    "week": 14,
    "title": "Prüfungskonsultation",
    "n_questions": 0
   },
   {
-   "code": "H41",
+   "code": "H42",
    "semester": "Herbst",
    "week": 14,
    "title": "Wettbewerbsprüfung",
    "n_questions": 0
   },
   {
+   "code": "H_ARCHIV_H31",
+   "semester": "Herbst",
+   "week": 11,
+   "title": "Nierenphysiologie 1 (Herbst 2025/26)",
+   "n_questions": 3,
+   "inactive": true,
+   "code_alt": "H31"
+  },
+  {
+   "code": "H_ARCHIV_H32",
+   "semester": "Herbst",
+   "week": 11,
+   "title": "Nierenphysiologie 2 (Herbst 2025/26)",
+   "n_questions": 0,
+   "inactive": true,
+   "code_alt": "H32"
+  },
+  {
+   "code": "H_ARCHIV_H33",
+   "semester": "Herbst",
+   "week": 12,
+   "title": "Nierenphysiologie 3 (Herbst 2025/26)",
+   "n_questions": 1,
+   "inactive": true,
+   "code_alt": "H33"
+  },
+  {
+   "code": "H_ARCHIV_H34",
+   "semester": "Herbst",
+   "week": 12,
+   "title": "Nierenphysiologie 4 (Herbst 2025/26)",
+   "n_questions": 2,
+   "inactive": true,
+   "code_alt": "H34"
+  },
+  {
+   "code": "H_ARCHIV_H35",
+   "semester": "Herbst",
+   "week": 12,
+   "title": "Säure-Basen-Haushalt 1 [I/K] (Herbst 2025/26)",
+   "n_questions": 2,
+   "inactive": true,
+   "code_alt": "H35"
+  },
+  {
+   "code": "H_ARCHIV_H36",
+   "semester": "Herbst",
+   "week": 13,
+   "title": "Säure-Basen-Haushalt 2 [I/K] (Herbst 2025/26)",
+   "n_questions": 5,
+   "inactive": true,
+   "code_alt": "H36"
+  },
+  {
    "code": "F01",
    "semester": "Frühling",
    "week": 1,
    "title": "Gastrointestinale Funktionen 1",
-   "n_questions": 15
+   "n_questions": 0
   },
   {
    "code": "F02",
    "semester": "Frühling",
    "week": 1,
    "title": "Gastrointestinale Funktionen 2",
-   "n_questions": 25
+   "n_questions": 0
   },
   {
    "code": "F03",
    "semester": "Frühling",
    "week": 1,
    "title": "Gastrointestinale Funktionen 3",
-   "n_questions": 19
+   "n_questions": 0
   },
   {
    "code": "F04",
    "semester": "Frühling",
    "week": 2,
    "title": "Gastrointestinale Funktionen 4; Einführung in die medizinische Endokrinologie [I/K]",
-   "n_questions": 16
+   "n_questions": 9
   },
   {
    "code": "F05",
@@ -369,14 +430,14 @@
    "semester": "Frühling",
    "week": 4,
    "title": "Hormonale Steuerung des Intermediärstoffwechsels 2",
-   "n_questions": 6
+   "n_questions": 3
   },
   {
    "code": "F13",
    "semester": "Frühling",
    "week": 5,
    "title": "Hormonale Steuerung des Intermediärstoffwechsels 3",
-   "n_questions": 4
+   "n_questions": 0
   },
   {
    "code": "F14",
@@ -418,7 +479,7 @@
    "semester": "Frühling",
    "week": 7,
    "title": "Neurovegetative Regulationen 1 (Energieumsatz)",
-   "n_questions": 10
+   "n_questions": 0
   },
   {
    "code": "F20",
@@ -551,7 +612,7 @@
    "semester": "Frühling",
    "week": 14,
    "title": "Neurovegetative Regulationen 4 (Temperaturregulation)",
-   "n_questions": 6
+   "n_questions": 0
   },
   {
    "code": "F39",
@@ -4371,12 +4432,12 @@
    "id": "U-117b",
    "orig_nr": "117",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 7,
+   "semester": "Herbst",
+   "week": 14,
    "vl": [
-    "F19"
+    "H40"
    ],
-   "vl_title": "Neurovegetative Regulationen 1 (Energieumsatz)",
+   "vl_title": "Energiehaushalt, Ernährung",
    "block": 10,
    "block_title": "ENERGIESTOFFWECHSEL, KALORIMETRIE & THERMOREGULATION",
    "question": "Welche Aussagen treffen zu?",
@@ -4391,18 +4452,19 @@
     "Der respiratorische Quotient (RQ) entspricht dem Verhältnis von CO₂-Produktion zu O₂-Verbrauch."
    ],
    "note": "",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F19"
   },
   {
    "id": "U-118",
    "orig_nr": "118",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 7,
+   "semester": "Herbst",
+   "week": 14,
    "vl": [
-    "F19"
+    "H40"
    ],
-   "vl_title": "Neurovegetative Regulationen 1 (Energieumsatz)",
+   "vl_title": "Energiehaushalt, Ernährung",
    "block": 10,
    "block_title": "ENERGIESTOFFWECHSEL, KALORIMETRIE & THERMOREGULATION",
    "question": "Für das metabolische Äquivalent (MET) gilt:",
@@ -4418,18 +4480,19 @@
     "Es kann auch durch rein intellektuelle Arbeit gesteigert werden."
    ],
    "note": "",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F19"
   },
   {
    "id": "U-167",
    "orig_nr": "167",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 7,
+   "semester": "Herbst",
+   "week": 14,
    "vl": [
-    "F19"
+    "H40"
    ],
-   "vl_title": "Neurovegetative Regulationen 1 (Energieumsatz)",
+   "vl_title": "Energiehaushalt, Ernährung",
    "block": 10,
    "block_title": "ENERGIESTOFFWECHSEL, KALORIMETRIE & THERMOREGULATION",
    "question": "Welche Messverfahren eignen sich zur Bestimmung des Energieumsatzes?",
@@ -4445,18 +4508,19 @@
     "Indirekte Kalorimetrie"
    ],
    "note": "",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F19"
   },
   {
    "id": "U-224",
    "orig_nr": "224",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 4,
+   "semester": "Herbst",
+   "week": 14,
    "vl": [
-    "F12"
+    "H40"
    ],
-   "vl_title": "Hormonale Steuerung des Intermediärstoffwechsels 2",
+   "vl_title": "Energiehaushalt, Ernährung",
    "block": 10,
    "block_title": "ENERGIESTOFFWECHSEL, KALORIMETRIE & THERMOREGULATION",
    "question": "Welche der nachfolgenden Aussagen treffen zu?",
@@ -4472,18 +4536,19 @@
     "Glukokortikoide unterstützen das Auffüllen der schnell mobilisierbaren Speicher."
    ],
    "note": "",
-   "extra": "*Quelle: Endokrino_Altfrage_01.png*"
+   "extra": "*Quelle: Endokrino_Altfrage_01.png*",
+   "lecture_alt": "F12"
   },
   {
    "id": "U-296",
    "orig_nr": "296",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 5,
+   "semester": "Herbst",
+   "week": 14,
    "vl": [
-    "F13"
+    "H40"
    ],
-   "vl_title": "Hormonale Steuerung des Intermediärstoffwechsels 3",
+   "vl_title": "Energiehaushalt, Ernährung",
    "block": 10,
    "block_title": "ENERGIESTOFFWECHSEL, KALORIMETRIE & THERMOREGULATION",
    "question": "Welche Aussage/Aussagen ist/sind zutreffend? (Themenbereich: Integration von Stoffwechselprozessen im Nüchternzustand) Im Nüchternzustand ..:",
@@ -4500,19 +4565,20 @@
     "ist die Lipolyse im Fettgewebe erhöht, was zum Teil auf den abgesunkenen Insulinspiegel zurückgeht."
    ],
    "note": "",
-   "extra": "*Quelle: Repro_Altfrage_01.png*"
+   "extra": "*Quelle: Repro_Altfrage_01.png*",
+   "lecture_alt": "F13"
   },
   {
    "id": "U-R1-02",
    "orig_nr": "R1-02",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 5,
+   "semester": "Herbst",
+   "week": 14,
    "vl": [
-    "F13",
+    "H40",
     "F20"
    ],
-   "vl_title": "Hormonale Steuerung des Intermediärstoffwechsels 3",
+   "vl_title": "Energiehaushalt, Ernährung",
    "block": 10,
    "block_title": "ENERGIESTOFFWECHSEL, KALORIMETRIE & THERMOREGULATION",
    "question": "Welche der nachstehenden Faktoren/Vorgänge haben eine fettmobilisierende Wirkung?",
@@ -4530,18 +4596,19 @@
     "Gabe von hohen GH-Dosen"
    ],
    "note": "",
-   "extra": "*Quelle: Rigorosum 2024, Termin 1 (21.05.2024), Nr. 02*"
+   "extra": "*Quelle: Rigorosum 2024, Termin 1 (21.05.2024), Nr. 02*",
+   "lecture_alt": "F13"
   },
   {
    "id": "U-R2-02",
    "orig_nr": "R2-02",
    "source": "umformuliert",
-   "semester": "Frühling",
+   "semester": "Herbst",
    "week": 14,
    "vl": [
-    "F38"
+    "H40"
    ],
-   "vl_title": "Neurovegetative Regulationen 4 (Temperaturregulation)",
+   "vl_title": "Energiehaushalt, Ernährung",
    "block": 10,
    "block_title": "ENERGIESTOFFWECHSEL, KALORIMETRIE & THERMOREGULATION",
    "question": "Die Wärmebilanz des Organismus wird bestimmt durch:",
@@ -4560,18 +4627,19 @@
     "Wärmeabgabe über Strahlung"
    ],
    "note": "",
-   "extra": "*Quelle: Rigorosum 2024, Termin 2 (22.05./18.06./21.06.2024), Nr. 02*"
+   "extra": "*Quelle: Rigorosum 2024, Termin 2 (22.05./18.06./21.06.2024), Nr. 02*",
+   "lecture_alt": "F38"
   },
   {
    "id": "U-R4-14",
    "orig_nr": "R4-14",
    "source": "umformuliert",
-   "semester": "Frühling",
+   "semester": "Herbst",
    "week": 14,
    "vl": [
-    "F38"
+    "H40"
    ],
-   "vl_title": "Neurovegetative Regulationen 4 (Temperaturregulation)",
+   "vl_title": "Energiehaushalt, Ernährung",
    "block": 10,
    "block_title": "ENERGIESTOFFWECHSEL, KALORIMETRIE & THERMOREGULATION",
    "question": "Welche der nachstehenden Faktoren begünstigen das Fieber?",
@@ -4588,7 +4656,8 @@
     "PGE2"
    ],
    "note": "",
-   "extra": "*Quelle: Rigorosum 2024, Termin 4 (31.05.2024), Nr. 14*"
+   "extra": "*Quelle: Rigorosum 2024, Termin 4 (31.05.2024), Nr. 14*",
+   "lecture_alt": "F38"
   },
   {
    "id": "U-116",
@@ -5787,13 +5856,13 @@
    "id": "U-209",
    "orig_nr": "209",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 12,
    "vl": [
-    "F01",
+    "H36",
     "F04"
    ],
-   "vl_title": "Gastrointestinale Funktionen 1",
+   "vl_title": "Hämostase (Forts.) + Gastrointestinale Funktionen 1",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche Aussagen zu den Wirkungen der vegetativen Nerven sind zutreffend?",
@@ -5809,16 +5878,17 @@
     "Eine Aktivierung des Sympathikus reduziert die Gesamtdurchblutung des Darmtrakts."
    ],
    "note": "",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F01"
   },
   {
    "id": "U-210",
    "orig_nr": "210",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F02"
+    "H37"
    ],
    "vl_title": "Gastrointestinale Funktionen 2",
    "block": 19,
@@ -5835,19 +5905,20 @@
     "Sekretin regt die Gangzellen zur Abgabe einer bikarbonatreichen Lösung an."
    ],
    "note": "",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F02"
   },
   {
    "id": "U-211",
    "orig_nr": "211",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 2,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F04",
+    "H39",
     "F01"
    ],
-   "vl_title": "Gastrointestinale Funktionen 4; Einführung in die medizinische Endokrinologie [I/K]",
+   "vl_title": "Gastrointestinale Funktionen 4",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Was trifft sowohl auf den Dickdarm als auch auf den Dünndarm zu?",
@@ -5863,19 +5934,20 @@
     "In der Tiefe der Krypten befinden sich Stammzellen."
    ],
    "note": "",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F04"
   },
   {
    "id": "U-212",
    "orig_nr": "212",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F01",
+    "H39",
     "F04"
    ],
-   "vl_title": "Gastrointestinale Funktionen 1",
+   "vl_title": "Gastrointestinale Funktionen 4",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche Aussagen zur Motilität des Dünndarms sind zutreffend?",
@@ -5891,18 +5963,19 @@
     "Der wandernde myoelektrische Motorkomplex (MMK) nimmt seinen Anfang im Antrum des Magens."
    ],
    "note": "",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F01"
   },
   {
    "id": "U-213",
    "orig_nr": "213",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 12,
    "vl": [
-    "F01"
+    "H36"
    ],
-   "vl_title": "Gastrointestinale Funktionen 1",
+   "vl_title": "Hämostase (Forts.) + Gastrointestinale Funktionen 1",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche Aussagen sind zutreffend?",
@@ -5917,18 +5990,19 @@
     "Die Speichelsekretion beträgt pro Tag etwa 1000 ml."
    ],
    "note": "",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F01"
   },
   {
    "id": "U-214",
    "orig_nr": "214",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F03"
+    "H37"
    ],
-   "vl_title": "Gastrointestinale Funktionen 3",
+   "vl_title": "Gastrointestinale Funktionen 2",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Hinsichtlich der Verdauung und Aufnahme von Lipiden sind die folgenden Aussagen zutreffend:",
@@ -5944,16 +6018,17 @@
     "Die Fettverdauung ist ohne Gallensalze stark beeinträchtigt."
    ],
    "note": "",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F03"
   },
   {
    "id": "U-215",
    "orig_nr": "215",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F03"
+    "H38"
    ],
    "vl_title": "Gastrointestinale Funktionen 3",
    "block": 19,
@@ -5970,18 +6045,19 @@
     "Die Aufnahme geschieht durch Endozytose."
    ],
    "note": "",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F03"
   },
   {
    "id": "U-216",
    "orig_nr": "216",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 12,
    "vl": [
-    "F02"
+    "H36"
    ],
-   "vl_title": "Gastrointestinale Funktionen 2",
+   "vl_title": "Hämostase (Forts.) + Gastrointestinale Funktionen 1",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Eine Hemmung der Magensäuresekretion bewirken:",
@@ -5998,18 +6074,19 @@
     "Ein saurer pH im Duodenum"
    ],
    "note": "",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F02"
   },
   {
    "id": "U-240",
    "orig_nr": "240",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 12,
    "vl": [
-    "F02"
+    "H36"
    ],
-   "vl_title": "Gastrointestinale Funktionen 2",
+   "vl_title": "Hämostase (Forts.) + Gastrointestinale Funktionen 1",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche Aussagen zur Magensaftsekretion sind zutreffend?",
@@ -6025,18 +6102,19 @@
     "Der luminale pH-Wert kann während der Verdauung unter pH 2.0 absinken."
    ],
    "note": "",
-   "extra": "*Quelle: Endokrino_Altfrage_19.png* · *Hinweis: Thema Magensaftsekretion (nicht Endokrinologie)*"
+   "extra": "*Quelle: Endokrino_Altfrage_19.png* · *Hinweis: Thema Magensaftsekretion (nicht Endokrinologie)*",
+   "lecture_alt": "F02"
   },
   {
    "id": "U-245",
    "orig_nr": "245",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 12,
    "vl": [
-    "F03"
+    "H36"
    ],
-   "vl_title": "Gastrointestinale Funktionen 3",
+   "vl_title": "Hämostase (Forts.) + Gastrointestinale Funktionen 1",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche Aussagen sind zutreffend?",
@@ -6053,16 +6131,17 @@
     "Der Aminosäuretransport durch die luminale Membran ist typischerweise ein sekundär aktiver Transportvorgang."
    ],
    "note": "",
-   "extra": "*Quelle: Endokrino_Altfrage_35.png* · *Hinweis: identisch mit Altfrage_37; Thema GI, nicht Endokrinologie*"
+   "extra": "*Quelle: Endokrino_Altfrage_35.png* · *Hinweis: identisch mit Altfrage_37; Thema GI, nicht Endokrinologie*",
+   "lecture_alt": "F03"
   },
   {
    "id": "U-246",
    "orig_nr": "246",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F03"
+    "H38"
    ],
    "vl_title": "Gastrointestinale Funktionen 3",
    "block": 19,
@@ -6079,16 +6158,17 @@
     "Ein Mangel kann irreversible neuronale Schäden hervorrufen."
    ],
    "note": "",
-   "extra": "*Quelle: Endokrino_Altfrage_38.png* · *Hinweis: Thema GI, nicht Endokrinologie*"
+   "extra": "*Quelle: Endokrino_Altfrage_38.png* · *Hinweis: Thema GI, nicht Endokrinologie*",
+   "lecture_alt": "F03"
   },
   {
    "id": "U-247",
    "orig_nr": "247",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F03"
+    "H38"
    ],
    "vl_title": "Gastrointestinale Funktionen 3",
    "block": 19,
@@ -6106,16 +6186,17 @@
     "In der Darmschleimhaut wird Eisen als Ferritin gespeichert."
    ],
    "note": "",
-   "extra": "*Quelle: Endokrino_Altfrage_39.png* · *Hinweis: Fragetext teilweise durch Emoji verdeckt; Thema GI, nicht Endokrinologie*"
+   "extra": "*Quelle: Endokrino_Altfrage_39.png* · *Hinweis: Fragetext teilweise durch Emoji verdeckt; Thema GI, nicht Endokrinologie*",
+   "lecture_alt": "F03"
   },
   {
    "id": "U-248",
    "orig_nr": "248",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F03"
+    "H38"
    ],
    "vl_title": "Gastrointestinale Funktionen 3",
    "block": 19,
@@ -6133,16 +6214,17 @@
     "Bei der oralen Rehydrationstherapie wird grundsätzlich zuckerhaltiges Salzwasser getrunken."
    ],
    "note": "",
-   "extra": "*Quelle: Endokrino_Altfrage_40.png* · *Hinweis: Thema GI, nicht Endokrinologie*"
+   "extra": "*Quelle: Endokrino_Altfrage_40.png* · *Hinweis: Thema GI, nicht Endokrinologie*",
+   "lecture_alt": "F03"
   },
   {
    "id": "U-250",
    "orig_nr": "250",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F03"
+    "H38"
    ],
    "vl_title": "Gastrointestinale Funktionen 3",
    "block": 19,
@@ -6160,16 +6242,17 @@
     "Eine Entfernung des Ileums kann einen Fettstuhl bewirken."
    ],
    "note": "",
-   "extra": "*Quelle: Endokrino_Altfrage_42.png* · *Hinweis: Thema GI, nicht Endokrinologie*"
+   "extra": "*Quelle: Endokrino_Altfrage_42.png* · *Hinweis: Thema GI, nicht Endokrinologie*",
+   "lecture_alt": "F03"
   },
   {
    "id": "U-264",
    "orig_nr": "264",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F03"
+    "H38"
    ],
    "vl_title": "Gastrointestinale Funktionen 3",
    "block": 19,
@@ -6187,16 +6270,17 @@
     "Im Rahmen der oralen Rehydrationstherapie wird grundsätzlich zuckerhaltiges Salzwasser getrunken."
    ],
    "note": "",
-   "extra": "*Quelle: Endokrino_Altfrage_59.png*"
+   "extra": "*Quelle: Endokrino_Altfrage_59.png*",
+   "lecture_alt": "F03"
   },
   {
    "id": "U-267",
    "orig_nr": "267",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F02"
+    "H37"
    ],
    "vl_title": "Gastrointestinale Funktionen 2",
    "block": 19,
@@ -6216,16 +6300,17 @@
     "Trypsininhibitoren"
    ],
    "note": "",
-   "extra": "*Quelle: Endokrino_Altfrage_63.png*"
+   "extra": "*Quelle: Endokrino_Altfrage_63.png*",
+   "lecture_alt": "F02"
   },
   {
    "id": "U-270",
    "orig_nr": "270",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F03"
+    "H38"
    ],
    "vl_title": "Gastrointestinale Funktionen 3",
    "block": 19,
@@ -6245,18 +6330,19 @@
     "Die Resorption des B12-Intrinsic Faktor Komplexes findet im Ileum statt"
    ],
    "note": "",
-   "extra": "*Quelle: Endokrino_Altfrage_66.png*"
+   "extra": "*Quelle: Endokrino_Altfrage_66.png*",
+   "lecture_alt": "F03"
   },
   {
    "id": "U-272",
    "orig_nr": "272",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 12,
    "vl": [
-    "F01"
+    "H36"
    ],
-   "vl_title": "Gastrointestinale Funktionen 1",
+   "vl_title": "Hämostase (Forts.) + Gastrointestinale Funktionen 1",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche Aussagen zur Speichelsekretion sind zutreffend?",
@@ -6274,16 +6360,17 @@
     "Sie stellt einen Schutzmechanismus gegen pH-Abweichungen dar"
    ],
    "note": "",
-   "extra": "*Quelle: Endokrino_Altfrage_68.png*"
+   "extra": "*Quelle: Endokrino_Altfrage_68.png*",
+   "lecture_alt": "F01"
   },
   {
    "id": "U-273",
    "orig_nr": "273",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F02"
+    "H37"
    ],
    "vl_title": "Gastrointestinale Funktionen 2",
    "block": 19,
@@ -6302,18 +6389,19 @@
     "Secundäre Gallensäuren werden von Hepatozyten reabsorbiert."
    ],
    "note": "",
-   "extra": "*Quelle: Endokrino_Altfrage_69.png*"
+   "extra": "*Quelle: Endokrino_Altfrage_69.png*",
+   "lecture_alt": "F02"
   },
   {
    "id": "U-275",
    "orig_nr": "275",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 12,
    "vl": [
-    "F02"
+    "H36"
    ],
-   "vl_title": "Gastrointestinale Funktionen 2",
+   "vl_title": "Hämostase (Forts.) + Gastrointestinale Funktionen 1",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Von welchen Zellen wird im Magen HCl gebildet?",
@@ -6330,19 +6418,20 @@
     "Von Zellen, die in der luminalen Plasmamembran die H+/K+ Pumpe exprimieren"
    ],
    "note": "",
-   "extra": "*Quelle: Endokrino_Altfrage_71.png*"
+   "extra": "*Quelle: Endokrino_Altfrage_71.png*",
+   "lecture_alt": "F02"
   },
   {
    "id": "U-316",
    "orig_nr": "316",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 12,
    "vl": [
-    "F01",
+    "H36",
     "F04"
    ],
-   "vl_title": "Gastrointestinale Funktionen 1",
+   "vl_title": "Hämostase (Forts.) + Gastrointestinale Funktionen 1",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche Aussagen zu den Wirkungen der vegetativen Nerven sind korrekt?",
@@ -6360,18 +6449,19 @@
     "Die allgemeine Durchblutung des Darmtrakts wird durch Aktivierung des Sympathikus reduziert."
    ],
    "note": "",
-   "extra": "*Quelle: GiTrakt_Altfrage_01.png* · *Variante von Frage 209*"
+   "extra": "*Quelle: GiTrakt_Altfrage_01.png* · *Variante von Frage 209*",
+   "lecture_alt": "F01"
   },
   {
    "id": "U-317",
    "orig_nr": "317",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 12,
    "vl": [
-    "F03"
+    "H36"
    ],
-   "vl_title": "Gastrointestinale Funktionen 3",
+   "vl_title": "Hämostase (Forts.) + Gastrointestinale Funktionen 1",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche Aussagen sind korrekt?",
@@ -6386,16 +6476,17 @@
     "Die Freisetzung von Pepsinogen erfolgt aus Hauptzellen."
    ],
    "note": "",
-   "extra": "*Quelle: GiTrakt_Altfrage_01.png*"
+   "extra": "*Quelle: GiTrakt_Altfrage_01.png*",
+   "lecture_alt": "F03"
   },
   {
    "id": "U-318",
    "orig_nr": "318",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F03"
+    "H38"
    ],
    "vl_title": "Gastrointestinale Funktionen 3",
    "block": 19,
@@ -6413,19 +6504,20 @@
     "Eisen wird als Ferritin in der Darmschleimhaut gespeichert."
    ],
    "note": "",
-   "extra": "*Quelle: GiTrakt_Altfrage_02.png*"
+   "extra": "*Quelle: GiTrakt_Altfrage_02.png*",
+   "lecture_alt": "F03"
   },
   {
    "id": "U-319",
    "orig_nr": "319",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 12,
    "vl": [
-    "F01",
+    "H36",
     "F02"
    ],
-   "vl_title": "Gastrointestinale Funktionen 1",
+   "vl_title": "Hämostase (Forts.) + Gastrointestinale Funktionen 1",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche Aussagen sind zutreffend?",
@@ -6440,18 +6532,19 @@
     "Im Zäkum ist die Keimkonzentration höher als im Ileum"
    ],
    "note": "",
-   "extra": "*Quelle: GiTrakt_Altfrage_02.png*"
+   "extra": "*Quelle: GiTrakt_Altfrage_02.png*",
+   "lecture_alt": "F01"
   },
   {
    "id": "U-320",
    "orig_nr": "320",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F01"
+    "H39"
    ],
-   "vl_title": "Gastrointestinale Funktionen 1",
+   "vl_title": "Gastrointestinale Funktionen 4",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche Aussagen zum Erbrechen sind zutreffend?",
@@ -6466,16 +6559,17 @@
     "Im Magen und in der Speiseröhre entstehen beim Erbrechen antiperistaltische Wellen."
    ],
    "note": "",
-   "extra": "*Quelle: GiTrakt_Altfrage_04.png*"
+   "extra": "*Quelle: GiTrakt_Altfrage_04.png*",
+   "lecture_alt": "F01"
   },
   {
    "id": "U-321",
    "orig_nr": "321",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F02"
+    "H37"
    ],
    "vl_title": "Gastrointestinale Funktionen 2",
    "block": 19,
@@ -6493,18 +6587,19 @@
     "Bei einer hepatischen Gelbsucht ist der Spiegel der Leberenzyme im Blutserum hoch."
    ],
    "note": "",
-   "extra": "*Quelle: GiTrakt_Altfrage_05.png*"
+   "extra": "*Quelle: GiTrakt_Altfrage_05.png*",
+   "lecture_alt": "F02"
   },
   {
    "id": "U-322",
    "orig_nr": "322",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 2,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F04"
+    "H39"
    ],
-   "vl_title": "Gastrointestinale Funktionen 4; Einführung in die medizinische Endokrinologie [I/K]",
+   "vl_title": "Gastrointestinale Funktionen 4",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche Aussagen zu Stuhlentleerung und Kontinenz sind zutreffend?",
@@ -6520,18 +6615,19 @@
     "Für die Kontinenz sind Kortex- und Hirnstammfunktion unverzichtbar."
    ],
    "note": "",
-   "extra": "*Quelle: GiTrakt_Altfrage_06.png*"
+   "extra": "*Quelle: GiTrakt_Altfrage_06.png*",
+   "lecture_alt": "F04"
   },
   {
    "id": "U-323",
    "orig_nr": "323",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 12,
    "vl": [
-    "F02"
+    "H36"
    ],
-   "vl_title": "Gastrointestinale Funktionen 2",
+   "vl_title": "Hämostase (Forts.) + Gastrointestinale Funktionen 1",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche Aussagen zur Magensaftsekretion sind korrekt?",
@@ -6547,18 +6643,19 @@
     "Die Somatostatinsekretion in der Magenwand kann durch luminale Wasserstoffionen stimuliert werden."
    ],
    "note": "",
-   "extra": "*Quelle: GiTrakt_Altfrage_07.png*"
+   "extra": "*Quelle: GiTrakt_Altfrage_07.png*",
+   "lecture_alt": "F02"
   },
   {
    "id": "U-324",
    "orig_nr": "324",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 12,
    "vl": [
-    "F02"
+    "H36"
    ],
-   "vl_title": "Gastrointestinale Funktionen 2",
+   "vl_title": "Hämostase (Forts.) + Gastrointestinale Funktionen 1",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche Aussagen zur Sekretion des Magensaftes sind zutreffend?",
@@ -6573,18 +6670,19 @@
     "Auf ECL Zellen werden Rezeptoren für Gastrin exprimiert."
    ],
    "note": "",
-   "extra": "*Quelle: GiTrakt_Altfrage_16.png*"
+   "extra": "*Quelle: GiTrakt_Altfrage_16.png*",
+   "lecture_alt": "F02"
   },
   {
    "id": "U-325",
    "orig_nr": "325",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 12,
    "vl": [
-    "F01"
+    "H36"
    ],
-   "vl_title": "Gastrointestinale Funktionen 1",
+   "vl_title": "Hämostase (Forts.) + Gastrointestinale Funktionen 1",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche Aussagen sind zutreffend?",
@@ -6600,18 +6698,19 @@
     "Die Muskelbewegungen in der pharyngealen Phase des Schluckakts laufen reflektorisch und unwillkürlich ab."
    ],
    "note": "",
-   "extra": "*Quelle: GiTrakt_Altfrage_18.png*"
+   "extra": "*Quelle: GiTrakt_Altfrage_18.png*",
+   "lecture_alt": "F01"
   },
   {
    "id": "U-326",
    "orig_nr": "326",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 2,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F04"
+    "H39"
    ],
-   "vl_title": "Gastrointestinale Funktionen 4; Einführung in die medizinische Endokrinologie [I/K]",
+   "vl_title": "Gastrointestinale Funktionen 4",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche Aussagen zu Stuhlentleerung und Kontinenz sind korrekt?",
@@ -6626,16 +6725,17 @@
     "Für die Kontinenz sind Kortex- und Hirnstammfunktion unerlässlich."
    ],
    "note": "",
-   "extra": "*Quelle: GiTrakt_Altfrage_19.png*"
+   "extra": "*Quelle: GiTrakt_Altfrage_19.png*",
+   "lecture_alt": "F04"
   },
   {
    "id": "U-327",
    "orig_nr": "327",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F02"
+    "H37"
    ],
    "vl_title": "Gastrointestinale Funktionen 2",
    "block": 19,
@@ -6653,19 +6753,20 @@
     "Beim hepatischen Ikterus lässt sich Bilirubin auch im Urin nachweisen."
    ],
    "note": "",
-   "extra": "*Quelle: GiTrakt_Altfrage_20.png*"
+   "extra": "*Quelle: GiTrakt_Altfrage_20.png*",
+   "lecture_alt": "F02"
   },
   {
    "id": "U-328",
    "orig_nr": "328",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 2,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F04",
+    "H39",
     "F01"
    ],
-   "vl_title": "Gastrointestinale Funktionen 4; Einführung in die medizinische Endokrinologie [I/K]",
+   "vl_title": "Gastrointestinale Funktionen 4",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Was trifft sowohl auf den Dickdarm als auch auf den Dünndarm zu?",
@@ -6681,18 +6782,19 @@
     "Stamzellen liegen in der Tiefe der Krypten."
    ],
    "note": "",
-   "extra": "*Quelle: GiTrakt_Altfrage_21.png* · *Variante von Frage 211*"
+   "extra": "*Quelle: GiTrakt_Altfrage_21.png* · *Variante von Frage 211*",
+   "lecture_alt": "F04"
   },
   {
    "id": "U-329",
    "orig_nr": "329",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 12,
    "vl": [
-    "F01"
+    "H36"
    ],
-   "vl_title": "Gastrointestinale Funktionen 1",
+   "vl_title": "Hämostase (Forts.) + Gastrointestinale Funktionen 1",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche Aussagen sind korrekt?",
@@ -6707,16 +6809,17 @@
     "Die Osmolalität des Speichels liegt meistens unter der des Blutplasmas."
    ],
    "note": "",
-   "extra": "*Quelle: GiTrakt_Altfrage_22.png* · *Variante von Frage 213*"
+   "extra": "*Quelle: GiTrakt_Altfrage_22.png* · *Variante von Frage 213*",
+   "lecture_alt": "F01"
   },
   {
    "id": "U-330",
    "orig_nr": "330",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F02"
+    "H37"
    ],
    "vl_title": "Gastrointestinale Funktionen 2",
    "block": 19,
@@ -6733,16 +6836,17 @@
     "In der Blasengalle ist die Konzentration der Gallensalze viel höher als in der Lebergalle."
    ],
    "note": "",
-   "extra": "*Quelle: GiTrakt_Altfrage_24.png*"
+   "extra": "*Quelle: GiTrakt_Altfrage_24.png*",
+   "lecture_alt": "F02"
   },
   {
    "id": "U-331",
    "orig_nr": "331",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F02"
+    "H37"
    ],
    "vl_title": "Gastrointestinale Funktionen 2",
    "block": 19,
@@ -6759,18 +6863,19 @@
     "Gallensäuren werden von Hepatozyten mittels aktiven Transports in die Gallenkanälchen abgegeben. *(Lösungsfeld im Screenshot abgeschnitten – Rest unsicher)*"
    ],
    "note": "",
-   "extra": "*Quelle: GiTrakt_Altfrage_03.png* · *Variante von Frage 330*"
+   "extra": "*Quelle: GiTrakt_Altfrage_03.png* · *Variante von Frage 330*",
+   "lecture_alt": "F02"
   },
   {
    "id": "U-R1-09",
    "orig_nr": "R1-09",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F03"
+    "H39"
    ],
-   "vl_title": "Gastrointestinale Funktionen 3",
+   "vl_title": "Gastrointestinale Funktionen 4",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche der nachstehenden Aussagen zur Kohlenhydratverdauung sind zutreffend?",
@@ -6785,18 +6890,19 @@
     "Lactose wird von Enzymen gespalten, die an die Bürstensaumoberfläche der Dünndarmepithelzellen gebunden sind."
    ],
    "note": "",
-   "extra": "*Quelle: Rigorosum 2024, Termin 1 (21.05.2024), Nr. 09*"
+   "extra": "*Quelle: Rigorosum 2024, Termin 1 (21.05.2024), Nr. 09*",
+   "lecture_alt": "F03"
   },
   {
    "id": "U-R1-11",
    "orig_nr": "R1-11",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 12,
    "vl": [
-    "F01"
+    "H36"
    ],
-   "vl_title": "Gastrointestinale Funktionen 1",
+   "vl_title": "Hämostase (Forts.) + Gastrointestinale Funktionen 1",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche der nachstehenden Aussagen zur Magenfunktion sind zutreffend?",
@@ -6812,16 +6918,17 @@
     "Der N. Vagus verstärkt über cholinerge Übertragung die Kraft der Kontraktionswellen im distalen Magen."
    ],
    "note": "",
-   "extra": "*Quelle: Rigorosum 2024, Termin 1 (21.05.2024), Nr. 11*"
+   "extra": "*Quelle: Rigorosum 2024, Termin 1 (21.05.2024), Nr. 11*",
+   "lecture_alt": "F01"
   },
   {
    "id": "U-R2-12",
    "orig_nr": "R2-12",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F03",
+    "H38",
     "F02"
    ],
    "vl_title": "Gastrointestinale Funktionen 3",
@@ -6840,16 +6947,17 @@
     "Manche Dipeptidasen befinden sich in der Bürstensaummembran."
    ],
    "note": "",
-   "extra": "*Quelle: Rigorosum 2024, Termin 2 (22.05./18.06./21.06.2024), Nr. 12*"
+   "extra": "*Quelle: Rigorosum 2024, Termin 2 (22.05./18.06./21.06.2024), Nr. 12*",
+   "lecture_alt": "F03"
   },
   {
    "id": "U-R2-15",
    "orig_nr": "R2-15",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F02",
+    "H37",
     "F04"
    ],
    "vl_title": "Gastrointestinale Funktionen 2",
@@ -6866,16 +6974,17 @@
     "Es steigert die Enzymsekretion der Pankreasazinuszellen."
    ],
    "note": "",
-   "extra": "*Quelle: Rigorosum 2024, Termin 2 (22.05./18.06./21.06.2024), Nr. 15*"
+   "extra": "*Quelle: Rigorosum 2024, Termin 2 (22.05./18.06./21.06.2024), Nr. 15*",
+   "lecture_alt": "F02"
   },
   {
    "id": "U-R3-11",
    "orig_nr": "R3-11",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F02"
+    "H37"
    ],
    "vl_title": "Gastrointestinale Funktionen 2",
    "block": 19,
@@ -6894,16 +7003,17 @@
     "In der Gallenblase kann die Galle bis auf 10% ihres ursprünglichen Volumens eingedickt werden."
    ],
    "note": "",
-   "extra": "*Quelle: Rigorosum 2024, Termin 3 (24.05./28.05.2024), Nr. 11*"
+   "extra": "*Quelle: Rigorosum 2024, Termin 3 (24.05./28.05.2024), Nr. 11*",
+   "lecture_alt": "F02"
   },
   {
    "id": "U-R3-20",
    "orig_nr": "R3-20",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F03"
+    "H38"
    ],
    "vl_title": "Gastrointestinale Funktionen 3",
    "block": 19,
@@ -6922,18 +7032,19 @@
     "GLUT2 ist ein passiver, Na+-unabhängiger Carrier."
    ],
    "note": "",
-   "extra": "*Quelle: Rigorosum 2024, Termin 3 (24.05./28.05.2024), Nr. 20*"
+   "extra": "*Quelle: Rigorosum 2024, Termin 3 (24.05./28.05.2024), Nr. 20*",
+   "lecture_alt": "F03"
   },
   {
    "id": "U-R4-10",
    "orig_nr": "R4-10",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 12,
    "vl": [
-    "F02"
+    "H36"
    ],
-   "vl_title": "Gastrointestinale Funktionen 2",
+   "vl_title": "Hämostase (Forts.) + Gastrointestinale Funktionen 1",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche der nachstehenden Aussagen über das Gastrin sind zutreffend?",
@@ -6950,18 +7061,19 @@
     "Es bewirkt eine Histaminfreisetzung aus den ECL-Zellen der Magenwand."
    ],
    "note": "",
-   "extra": "*Quelle: Rigorosum 2024, Termin 4 (31.05.2024), Nr. 10*"
+   "extra": "*Quelle: Rigorosum 2024, Termin 4 (31.05.2024), Nr. 10*",
+   "lecture_alt": "F02"
   },
   {
    "id": "U-R4-18",
    "orig_nr": "R4-18",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 12,
    "vl": [
-    "F01"
+    "H36"
    ],
-   "vl_title": "Gastrointestinale Funktionen 1",
+   "vl_title": "Hämostase (Forts.) + Gastrointestinale Funktionen 1",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche der nachstehenden Vorgänge laufen beim Schluckakt ab?",
@@ -6980,16 +7092,17 @@
     "Der weiche Gaumen wird angehoben."
    ],
    "note": "",
-   "extra": "*Quelle: Rigorosum 2024, Termin 4 (31.05.2024), Nr. 18*"
+   "extra": "*Quelle: Rigorosum 2024, Termin 4 (31.05.2024), Nr. 18*",
+   "lecture_alt": "F01"
   },
   {
    "id": "U-R5-04",
    "orig_nr": "R5-04",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F02"
+    "H37"
    ],
    "vl_title": "Gastrointestinale Funktionen 2",
    "block": 19,
@@ -7008,18 +7121,19 @@
     "Der Pankreassaft enthält im Normalfall nur Proenzyme."
    ],
    "note": "",
-   "extra": "*Quelle: Rigorosum 2024, Termin 5 (04.06.2024), Nr. 04*"
+   "extra": "*Quelle: Rigorosum 2024, Termin 5 (04.06.2024), Nr. 04*",
+   "lecture_alt": "F02"
   },
   {
    "id": "U-R5-09",
    "orig_nr": "R5-09",
    "source": "umformuliert",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 12,
    "vl": [
-    "F02"
+    "H36"
    ],
-   "vl_title": "Gastrointestinale Funktionen 2",
+   "vl_title": "Hämostase (Forts.) + Gastrointestinale Funktionen 1",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche der nachstehenden Aussagen über die G-Zellen sind zutreffend?",
@@ -7038,7 +7152,8 @@
     "Somatostatin hemmt ihre Funktion."
    ],
    "note": "",
-   "extra": "*Quelle: Rigorosum 2024, Termin 5 (04.06.2024), Nr. 09*"
+   "extra": "*Quelle: Rigorosum 2024, Termin 5 (04.06.2024), Nr. 09*",
+   "lecture_alt": "F02"
   },
   {
    "id": "U-205",
@@ -7099,8 +7214,8 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H33",
-    "H34"
+    "H_ARCHIV_H33",
+    "H_ARCHIV_H34"
    ],
    "vl_title": "Nierenphysiologie 3",
    "block": 20,
@@ -7153,7 +7268,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 20,
@@ -7180,7 +7295,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 20,
@@ -7207,7 +7322,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 20,
@@ -8243,7 +8358,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H21"
+    "H22"
    ],
    "vl_title": "Kreislaufphysiologie 3 (Mikrozirkulation, venöses System)",
    "block": 26,
@@ -8269,7 +8384,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H30"
+    "H31"
    ],
    "vl_title": "Atemphysiologie 4 (Lungenkreislauf)",
    "block": 26,
@@ -8296,8 +8411,8 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22",
-    "H27"
+    "H23",
+    "H28"
    ],
    "vl_title": "Kreislaufregulation 1",
    "block": 26,
@@ -8323,7 +8438,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H21"
+    "H22"
    ],
    "vl_title": "Kreislaufphysiologie 3 (Mikrozirkulation, venöses System)",
    "block": 26,
@@ -8350,7 +8465,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 1",
    "block": 26,
@@ -8376,7 +8491,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22",
+    "H23",
     "H26"
    ],
    "vl_title": "Kreislaufregulation 1",
@@ -8404,7 +8519,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 1",
    "block": 26,
@@ -8430,7 +8545,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H30"
+    "H31"
    ],
    "vl_title": "Atemphysiologie 4 (Lungenkreislauf)",
    "block": 26,
@@ -8457,7 +8572,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H30"
+    "H31"
    ],
    "vl_title": "Atemphysiologie 4 (Lungenkreislauf)",
    "block": 26,
@@ -8484,7 +8599,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 1",
    "block": 26,
@@ -8513,7 +8628,7 @@
    "semester": "Herbst",
    "week": 13,
    "vl": [
-    "H36"
+    "H_ARCHIV_H36"
    ],
    "vl_title": "Säure-Basen-Haushalt 2 [I/K]",
    "block": 27,
@@ -8542,8 +8657,8 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27",
-    "H28"
+    "H28",
+    "H29"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 27,
@@ -8570,7 +8685,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H28"
+    "H29"
    ],
    "vl_title": "Atemphysiologie 2",
    "block": 27,
@@ -8597,7 +8712,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 27,
@@ -8624,8 +8739,8 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H28",
-    "H38"
+    "H29",
+    "H33"
    ],
    "vl_title": "Atemphysiologie 2",
    "block": 27,
@@ -8652,8 +8767,8 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H28",
-    "H38"
+    "H29",
+    "H33"
    ],
    "vl_title": "Atemphysiologie 2",
    "block": 27,
@@ -8683,7 +8798,7 @@
    "semester": "Herbst",
    "week": 13,
    "vl": [
-    "H36"
+    "H_ARCHIV_H36"
    ],
    "vl_title": "Säure-Basen-Haushalt 2 [I/K]",
    "block": 27,
@@ -8713,7 +8828,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H28"
+    "H29"
    ],
    "vl_title": "Atemphysiologie 2",
    "block": 27,
@@ -8741,7 +8856,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 27,
@@ -8766,9 +8881,9 @@
    "orig_nr": "R1-10",
    "source": "umformuliert",
    "semester": "Herbst",
-   "week": 13,
+   "week": 12,
    "vl": [
-    "H37"
+    "H35"
    ],
    "vl_title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
    "block": 28,
@@ -8792,9 +8907,9 @@
    "orig_nr": "R2-03",
    "source": "umformuliert",
    "semester": "Herbst",
-   "week": 13,
+   "week": 12,
    "vl": [
-    "H37"
+    "H35"
    ],
    "vl_title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
    "block": 28,
@@ -8819,9 +8934,9 @@
    "orig_nr": "R3-09",
    "source": "umformuliert",
    "semester": "Herbst",
-   "week": 13,
+   "week": 12,
    "vl": [
-    "H37"
+    "H35"
    ],
    "vl_title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
    "block": 28,
@@ -8846,9 +8961,9 @@
    "orig_nr": "R4-07",
    "source": "umformuliert",
    "semester": "Herbst",
-   "week": 13,
+   "week": 12,
    "vl": [
-    "H37"
+    "H35"
    ],
    "vl_title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
    "block": 28,
@@ -13620,12 +13735,12 @@
    "id": "N-502",
    "orig_nr": "502",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 7,
+   "semester": "Herbst",
+   "week": 14,
    "vl": [
-    "F19"
+    "H40"
    ],
-   "vl_title": "Neurovegetative Regulationen 1 (Energieumsatz)",
+   "vl_title": "Energiehaushalt, Ernährung",
    "block": 10,
    "block_title": "ENERGIESTOFFWECHSEL, KALORIMETRIE & THERMOREGULATION",
    "question": "Welche Behauptungen über den respiratorischen Quotienten (RQ) sind richtig?",
@@ -13641,18 +13756,19 @@
     "Bei gemischter Kost liegt der RQ typischerweise bei etwa 0,85."
    ],
    "note": "Neu – angelehnt an Frage 117",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F19"
   },
   {
    "id": "N-503",
    "orig_nr": "503",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 7,
+   "semester": "Herbst",
+   "week": 14,
    "vl": [
-    "F19"
+    "H40"
    ],
-   "vl_title": "Neurovegetative Regulationen 1 (Energieumsatz)",
+   "vl_title": "Energiehaushalt, Ernährung",
    "block": 10,
    "block_title": "ENERGIESTOFFWECHSEL, KALORIMETRIE & THERMOREGULATION",
    "question": "Was trifft auf die Kalorimetrie zu?",
@@ -13668,18 +13784,19 @@
     "Das kalorische Äquivalent von O₂ liegt bei gemischter Kost bei etwa 20 kJ pro Liter O₂."
    ],
    "note": "Neu – angelehnt an Frage 117, 167",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F19"
   },
   {
    "id": "N-504",
    "orig_nr": "504",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 7,
+   "semester": "Herbst",
+   "week": 14,
    "vl": [
-    "F19"
+    "H40"
    ],
-   "vl_title": "Neurovegetative Regulationen 1 (Energieumsatz)",
+   "vl_title": "Energiehaushalt, Ernährung",
    "block": 10,
    "block_title": "ENERGIESTOFFWECHSEL, KALORIMETRIE & THERMOREGULATION",
    "question": "Welche der folgenden Aussagen über die Brennwerte der Nährstoffe sind zutreffend?",
@@ -13695,18 +13812,19 @@
     "Der physiologische Brennwert von Protein ist niedriger als sein physikalischer Brennwert, weil Harnstoff als unvollständig oxidiertes Endprodukt ausgeschieden wird."
    ],
    "note": "Neu – angelehnt an Frage 117",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F19"
   },
   {
    "id": "N-505",
    "orig_nr": "505",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 7,
+   "semester": "Herbst",
+   "week": 14,
    "vl": [
-    "F19"
+    "H40"
    ],
-   "vl_title": "Neurovegetative Regulationen 1 (Energieumsatz)",
+   "vl_title": "Energiehaushalt, Ernährung",
    "block": 10,
    "block_title": "ENERGIESTOFFWECHSEL, KALORIMETRIE & THERMOREGULATION",
    "question": "Was trifft auf das metabolische Äquivalent (MET) zu?",
@@ -13722,18 +13840,19 @@
     "1 MET entspricht etwa 1 kcal (4,2 kJ) pro kg Körpergewicht und Stunde."
    ],
    "note": "Neu – angelehnt an Frage 118",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F19"
   },
   {
    "id": "N-506",
    "orig_nr": "506",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 7,
+   "semester": "Herbst",
+   "week": 14,
    "vl": [
-    "F19"
+    "H40"
    ],
-   "vl_title": "Neurovegetative Regulationen 1 (Energieumsatz)",
+   "vl_title": "Energiehaushalt, Ernährung",
    "block": 10,
    "block_title": "ENERGIESTOFFWECHSEL, KALORIMETRIE & THERMOREGULATION",
    "question": "Welche der folgenden Aussagen über den Grundumsatz sind zutreffend?",
@@ -13751,18 +13870,19 @@
     "Hyperthyreose erhöht den Grundumsatz."
    ],
    "note": "",
-   "extra": "*Neu – angelehnt an Frage 118, 167*\n\n⚠ prüfen: Option „etwa 7000 kJ/Tag“ gilt für einen ~70-kg-Mann; Lehrbücher nennen je nach Referenzperson 6000–8000 kJ/Tag (Frauen ca. 6000 kJ)."
+   "extra": "*Neu – angelehnt an Frage 118, 167*\n\n⚠ prüfen: Option „etwa 7000 kJ/Tag“ gilt für einen ~70-kg-Mann; Lehrbücher nennen je nach Referenzperson 6000–8000 kJ/Tag (Frauen ca. 6000 kJ).",
+   "lecture_alt": "F19"
   },
   {
    "id": "N-507",
    "orig_nr": "507",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 7,
+   "semester": "Herbst",
+   "week": 14,
    "vl": [
-    "F19"
+    "H40"
    ],
-   "vl_title": "Neurovegetative Regulationen 1 (Energieumsatz)",
+   "vl_title": "Energiehaushalt, Ernährung",
    "block": 10,
    "block_title": "ENERGIESTOFFWECHSEL, KALORIMETRIE & THERMOREGULATION",
    "question": "Welche Größen werden bei der indirekten Kalorimetrie gemessen bzw. zur Berechnung herangezogen?",
@@ -13779,18 +13899,19 @@
     "Stickstoffausscheidung im Harn (zur Abschätzung des Proteinumsatzes)"
    ],
    "note": "Neu – angelehnt an Frage 167 / 178",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F19"
   },
   {
    "id": "N-508",
    "orig_nr": "508",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 7,
+   "semester": "Herbst",
+   "week": 14,
    "vl": [
-    "F19"
+    "H40"
    ],
-   "vl_title": "Neurovegetative Regulationen 1 (Energieumsatz)",
+   "vl_title": "Energiehaushalt, Ernährung",
    "block": 10,
    "block_title": "ENERGIESTOFFWECHSEL, KALORIMETRIE & THERMOREGULATION",
    "question": "Welche Faktoren erhöhen den Energieumsatz?",
@@ -13807,19 +13928,20 @@
     "Kälteexposition"
    ],
    "note": "Neu – angelehnt an Frage 117, 167 / 178",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F19"
   },
   {
    "id": "N-509",
    "orig_nr": "509",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 4,
+   "semester": "Herbst",
+   "week": 14,
    "vl": [
-    "F12",
+    "H40",
     "F19"
    ],
-   "vl_title": "Hormonale Steuerung des Intermediärstoffwechsels 2",
+   "vl_title": "Energiehaushalt, Ernährung",
    "block": 10,
    "block_title": "ENERGIESTOFFWECHSEL, KALORIMETRIE & THERMOREGULATION",
    "question": "Welche Behauptungen sind richtig?",
@@ -13835,19 +13957,20 @@
     "Schilddrüsenhormone steigern den Grundumsatz."
    ],
    "note": "Neu – angelehnt an Frage 224",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F12"
   },
   {
    "id": "N-510",
    "orig_nr": "510",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 4,
+   "semester": "Herbst",
+   "week": 14,
    "vl": [
-    "F12",
+    "H40",
     "F05"
    ],
-   "vl_title": "Hormonale Steuerung des Intermediärstoffwechsels 2",
+   "vl_title": "Energiehaushalt, Ernährung",
    "block": 10,
    "block_title": "ENERGIESTOFFWECHSEL, KALORIMETRIE & THERMOREGULATION",
    "question": "Was trifft auf das Wachstumshormon (GH) im Stoffwechsel zu?",
@@ -13863,18 +13986,19 @@
     "Die Wirkungen von IGF-1 sind insulinähnlich."
    ],
    "note": "Neu – angelehnt an Frage 224, 296",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F12"
   },
   {
    "id": "N-511",
    "orig_nr": "511",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 5,
+   "semester": "Herbst",
+   "week": 14,
    "vl": [
-    "F13"
+    "H40"
    ],
-   "vl_title": "Hormonale Steuerung des Intermediärstoffwechsels 3",
+   "vl_title": "Energiehaushalt, Ernährung",
    "block": 10,
    "block_title": "ENERGIESTOFFWECHSEL, KALORIMETRIE & THERMOREGULATION",
    "question": "Welche Aussage/Aussagen ist/sind richtig? Im Nüchternzustand ..:",
@@ -13892,18 +14016,19 @@
     "kann das Gehirn nach längerem Fasten einen Großteil seines Energiebedarfs aus Ketonkörpern decken."
    ],
    "note": "",
-   "extra": "*Neu – angelehnt an Frage 296*\n\n⚠ prüfen: Option „Glykogenreserven der Leber nach etwa 24 Stunden weitgehend erschöpft“ – Lehrbücher geben 12–24 h (teils bis 48 h) an; Zahlenwert lehrbuchabhängig."
+   "extra": "*Neu – angelehnt an Frage 296*\n\n⚠ prüfen: Option „Glykogenreserven der Leber nach etwa 24 Stunden weitgehend erschöpft“ – Lehrbücher geben 12–24 h (teils bis 48 h) an; Zahlenwert lehrbuchabhängig.",
+   "lecture_alt": "F13"
   },
   {
    "id": "N-512",
    "orig_nr": "512",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 5,
+   "semester": "Herbst",
+   "week": 14,
    "vl": [
-    "F13"
+    "H40"
    ],
-   "vl_title": "Hormonale Steuerung des Intermediärstoffwechsels 3",
+   "vl_title": "Energiehaushalt, Ernährung",
    "block": 10,
    "block_title": "ENERGIESTOFFWECHSEL, KALORIMETRIE & THERMOREGULATION",
    "question": "Welche der folgenden Stoffe dienen im Fasten als Substrate der hepatischen Glukoneogenese?",
@@ -13919,18 +14044,19 @@
     "Glycerin aus der Lipolyse des Fettgewebes"
    ],
    "note": "Neu – angelehnt an Frage 296",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F13"
   },
   {
    "id": "N-513",
    "orig_nr": "513",
    "source": "neu",
-   "semester": "Frühling",
+   "semester": "Herbst",
    "week": 14,
    "vl": [
-    "F38"
+    "H40"
    ],
-   "vl_title": "Neurovegetative Regulationen 4 (Temperaturregulation)",
+   "vl_title": "Energiehaushalt, Ernährung",
    "block": 10,
    "block_title": "ENERGIESTOFFWECHSEL, KALORIMETRIE & THERMOREGULATION",
    "question": "Welche der folgenden Aussagen über die Wärmeabgabe des Körpers sind zutreffend?",
@@ -13946,18 +14072,19 @@
     "Bei hoher Luftfeuchtigkeit ist die Wärmeabgabe durch Verdunstung eingeschränkt."
    ],
    "note": "Neu – angelehnt an Frage 117 (Erweiterung Thermoregulation)",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F38"
   },
   {
    "id": "N-514",
    "orig_nr": "514",
    "source": "neu",
-   "semester": "Frühling",
+   "semester": "Herbst",
    "week": 14,
    "vl": [
-    "F38"
+    "H40"
    ],
-   "vl_title": "Neurovegetative Regulationen 4 (Temperaturregulation)",
+   "vl_title": "Energiehaushalt, Ernährung",
    "block": 10,
    "block_title": "ENERGIESTOFFWECHSEL, KALORIMETRIE & THERMOREGULATION",
    "question": "Merkmale des braunen Fettgewebes:",
@@ -13975,18 +14102,19 @@
     "Ist die wichtigste Quelle der zitterfreien Wärmebildung beim Neugeborenen."
    ],
    "note": "Neu – angelehnt an Frage 224 (Erweiterung Thermoregulation)",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F38"
   },
   {
    "id": "N-515",
    "orig_nr": "515",
    "source": "neu",
-   "semester": "Frühling",
+   "semester": "Herbst",
    "week": 14,
    "vl": [
-    "F38"
+    "H40"
    ],
-   "vl_title": "Neurovegetative Regulationen 4 (Temperaturregulation)",
+   "vl_title": "Energiehaushalt, Ernährung",
    "block": 10,
    "block_title": "ENERGIESTOFFWECHSEL, KALORIMETRIE & THERMOREGULATION",
    "question": "Welche der folgenden Aussagen über die Regulation der Körpertemperatur sind zutreffend?",
@@ -14004,18 +14132,19 @@
     "Die Körperkerntemperatur zeigt einen zirkadianen Rhythmus mit Minimum in den frühen Morgenstunden."
    ],
    "note": "Neu – angelehnt an Frage 118 (Erweiterung Thermoregulation)",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F38"
   },
   {
    "id": "N-516",
    "orig_nr": "516",
    "source": "neu",
-   "semester": "Frühling",
+   "semester": "Herbst",
    "week": 14,
    "vl": [
-    "F38"
+    "H40"
    ],
-   "vl_title": "Neurovegetative Regulationen 4 (Temperaturregulation)",
+   "vl_title": "Energiehaushalt, Ernährung",
    "block": 10,
    "block_title": "ENERGIESTOFFWECHSEL, KALORIMETRIE & THERMOREGULATION",
    "question": "In welchen Fällen handelt es sich um physiologische Reaktionen des Körpers auf Kälteexposition?",
@@ -14031,7 +14160,8 @@
     "Steigerung der Wärmebildung im braunen Fettgewebe"
    ],
    "note": "Neu – angelehnt an Frage 167 / 178 (Erweiterung Thermoregulation)",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F38"
   },
   {
    "id": "N-517",
@@ -17117,13 +17247,13 @@
    "id": "N-627",
    "orig_nr": "627",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 12,
    "vl": [
-    "F01",
+    "H36",
     "F04"
    ],
-   "vl_title": "Gastrointestinale Funktionen 1",
+   "vl_title": "Hämostase (Forts.) + Gastrointestinale Funktionen 1",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche Aussagen sind über die vegetative Innervation des Magen-Darm-Trakts richtig?",
@@ -17140,16 +17270,17 @@
     "Die rezeptive Relaxation des Magenfundus wird über vagale, NO/VIP-freisetzende Neurone vermittelt."
    ],
    "note": "Neu – angelehnt an Frage 209, 316",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F01"
   },
   {
    "id": "N-628",
    "orig_nr": "628",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F02"
+    "H37"
    ],
    "vl_title": "Gastrointestinale Funktionen 2",
    "block": 19,
@@ -17168,16 +17299,17 @@
     "Trypsinogen wird im Duodenum durch die Enteropeptidase (Enterokinase) des Bürstensaums aktiviert."
    ],
    "note": "Neu – angelehnt an Frage 210",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F02"
   },
   {
    "id": "N-629",
    "orig_nr": "629",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F02"
+    "H37"
    ],
    "vl_title": "Gastrointestinale Funktionen 2",
    "block": 19,
@@ -17195,18 +17327,19 @@
     "Pankreaslipase"
    ],
    "note": "Neu – angelehnt an Frage 267",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F02"
   },
   {
    "id": "N-630",
    "orig_nr": "630",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 2,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F04"
+    "H39"
    ],
-   "vl_title": "Gastrointestinale Funktionen 4; Einführung in die medizinische Endokrinologie [I/K]",
+   "vl_title": "Gastrointestinale Funktionen 4",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche Aussagen sind über das enterische Nervensystem richtig?",
@@ -17224,18 +17357,19 @@
     "Interstitielle Cajal-Zellen erzeugen die langsamen Wellen (slow waves) der glatten Darmmuskulatur."
    ],
    "note": "Neu – angelehnt an Frage 212",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F04"
   },
   {
    "id": "N-631",
    "orig_nr": "631",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F01"
+    "H39"
    ],
-   "vl_title": "Gastrointestinale Funktionen 1",
+   "vl_title": "Gastrointestinale Funktionen 4",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Was trifft auf den wandernden myoelektrischen Motorkomplex (MMK) zu?",
@@ -17252,18 +17386,19 @@
     "Motilin stimuliert seinen Beginn."
    ],
    "note": "",
-   "extra": "*Neu – angelehnt an Frage 212*\n\n⚠ prüfen: Option „Ein Zyklus dauert ungefähr 90–120 Minuten“ – Lehrbücher geben teils ~90 min (Guyton, Silbernagl „ca. 1,5 h“), teils 90–120 min (Boron) an; Zahlenwert mit Schwankungsbreite."
+   "extra": "*Neu – angelehnt an Frage 212*\n\n⚠ prüfen: Option „Ein Zyklus dauert ungefähr 90–120 Minuten“ – Lehrbücher geben teils ~90 min (Guyton, Silbernagl „ca. 1,5 h“), teils 90–120 min (Boron) an; Zahlenwert mit Schwankungsbreite.",
+   "lecture_alt": "F01"
   },
   {
    "id": "N-632",
    "orig_nr": "632",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 2,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F04"
+    "H39"
    ],
-   "vl_title": "Gastrointestinale Funktionen 4; Einführung in die medizinische Endokrinologie [I/K]",
+   "vl_title": "Gastrointestinale Funktionen 4",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche Aussagen gelten nur für den Dickdarm, nicht aber für den Dünndarm?",
@@ -17280,18 +17415,19 @@
     "Fehlen von Zotten"
    ],
    "note": "Neu – angelehnt an Frage 211, 328",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F04"
   },
   {
    "id": "N-633",
    "orig_nr": "633",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 12,
    "vl": [
-    "F01"
+    "H36"
    ],
-   "vl_title": "Gastrointestinale Funktionen 1",
+   "vl_title": "Hämostase (Forts.) + Gastrointestinale Funktionen 1",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche Aussagen über die Speichelsekretion sind richtig?",
@@ -17309,19 +17445,20 @@
     "Der Parasympathikus fördert ein dünnflüssiges Sekret mit hohem Volumen."
    ],
    "note": "Neu – angelehnt an Frage 213, 329, 272",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F01"
   },
   {
    "id": "N-634",
    "orig_nr": "634",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F03",
+    "H37",
     "F02"
    ],
-   "vl_title": "Gastrointestinale Funktionen 3",
+   "vl_title": "Gastrointestinale Funktionen 2",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "In welchen Fällen ist typischerweise mit einer Steatorrhoe (Fettstuhl) zu rechnen?",
@@ -17338,16 +17475,17 @@
     "Resektion des terminalen Ileums"
    ],
    "note": "Neu – angelehnt an Frage 250, 214",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F03"
   },
   {
    "id": "N-635",
    "orig_nr": "635",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F03",
+    "H38",
     "F02"
    ],
    "vl_title": "Gastrointestinale Funktionen 3",
@@ -17367,18 +17505,19 @@
     "Nach einer Gastrektomie ist eine Substitution von Vitamin B12 erforderlich."
    ],
    "note": "Neu – angelehnt an Frage 215, 246, 270",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F03"
   },
   {
    "id": "N-636",
    "orig_nr": "636",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 12,
    "vl": [
-    "F02"
+    "H36"
    ],
-   "vl_title": "Gastrointestinale Funktionen 2",
+   "vl_title": "Hämostase (Forts.) + Gastrointestinale Funktionen 1",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche der folgenden Substanzen steigert die Magensäuresekretion?",
@@ -17392,18 +17531,19 @@
     "Histamin"
    ],
    "note": "Neu – angelehnt an Frage 216",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F02"
   },
   {
    "id": "N-637",
    "orig_nr": "637",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 12,
    "vl": [
-    "F02"
+    "H36"
    ],
-   "vl_title": "Gastrointestinale Funktionen 2",
+   "vl_title": "Hämostase (Forts.) + Gastrointestinale Funktionen 1",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche Aussagen sind über die Belegzellen (Parietalzellen) richtig?",
@@ -17419,18 +17559,19 @@
     "Für jedes sezernierte H+ wird basolateral ein HCO3- an das Blut abgegeben („alkalische Flut“)."
    ],
    "note": "Neu – angelehnt an Frage 275, 240",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F02"
   },
   {
    "id": "N-638",
    "orig_nr": "638",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 12,
    "vl": [
-    "F02"
+    "H36"
    ],
-   "vl_title": "Gastrointestinale Funktionen 2",
+   "vl_title": "Hämostase (Forts.) + Gastrointestinale Funktionen 1",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche Aussagen über die Regulation der Magensaftsekretion sind richtig?",
@@ -17448,16 +17589,17 @@
     "In der kephalen Phase wird die Sekretion über den Nervus vagus ausgelöst."
    ],
    "note": "Neu – angelehnt an Frage 323, 324",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F02"
   },
   {
    "id": "N-639",
    "orig_nr": "639",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F03"
+    "H38"
    ],
    "vl_title": "Gastrointestinale Funktionen 3",
    "block": 19,
@@ -17476,16 +17618,17 @@
     "Di- und Tripeptide können über den H+-abhängigen Transporter PepT1 resorbiert werden."
    ],
    "note": "Neu – angelehnt an Frage 245, 317",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F03"
   },
   {
    "id": "N-640",
    "orig_nr": "640",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F03"
+    "H38"
    ],
    "vl_title": "Gastrointestinale Funktionen 3",
    "block": 19,
@@ -17504,16 +17647,17 @@
     "Transferrin ist das Transportprotein für Eisen im Blutplasma."
    ],
    "note": "Neu – angelehnt an Frage 247, 318",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F03"
   },
   {
    "id": "N-641",
    "orig_nr": "641",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F03",
+    "H38",
     "F04"
    ],
    "vl_title": "Gastrointestinale Funktionen 3",
@@ -17534,16 +17678,17 @@
     "Der Na+/Glukose-Kotransport bleibt bei Cholera funktionsfähig."
    ],
    "note": "Neu – angelehnt an Frage 248, 264",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F03"
   },
   {
    "id": "N-642",
    "orig_nr": "642",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F02"
+    "H37"
    ],
    "vl_title": "Gastrointestinale Funktionen 2",
    "block": 19,
@@ -17561,16 +17706,17 @@
     "Die Rückresorption der Gallensäuren im terminalen Ileum erfolgt Na+-abhängig aktiv."
    ],
    "note": "",
-   "extra": "*Neu – angelehnt an Frage 273, 331*\n\n⚠ prüfen: Option „Der Gallensäurepool wird während einer Mahlzeit mehrfach rezirkuliert“ – Lehrbücher nennen 2–3 Umläufe pro Mahlzeit bzw. 6–10 pro Tag; „mehrfach“ ist korrekt, aber der Zahlenwert variiert je nach Lehrbuch."
+   "extra": "*Neu – angelehnt an Frage 273, 331*\n\n⚠ prüfen: Option „Der Gallensäurepool wird während einer Mahlzeit mehrfach rezirkuliert“ – Lehrbücher nennen 2–3 Umläufe pro Mahlzeit bzw. 6–10 pro Tag; „mehrfach“ ist korrekt, aber der Zahlenwert variiert je nach Lehrbuch.",
+   "lecture_alt": "F02"
   },
   {
    "id": "N-643",
    "orig_nr": "643",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F02"
+    "H37"
    ],
    "vl_title": "Gastrointestinale Funktionen 2",
    "block": 19,
@@ -17588,16 +17734,17 @@
     "Sekretin steigert die Bikarbonat- und Wassersekretion der Gallengangepithelzellen."
    ],
    "note": "Neu – angelehnt an Frage 330",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F02"
   },
   {
    "id": "N-644",
    "orig_nr": "644",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F02"
+    "H37"
    ],
    "vl_title": "Gastrointestinale Funktionen 2",
    "block": 19,
@@ -17614,18 +17761,19 @@
     "Unkonjugiertes Bilirubin wird im Blut an Albumin gebunden transportiert."
    ],
    "note": "Neu – angelehnt an Frage 321, 327",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F02"
   },
   {
    "id": "N-645",
    "orig_nr": "645",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 1,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F01"
+    "H39"
    ],
-   "vl_title": "Gastrointestinale Funktionen 1",
+   "vl_title": "Gastrointestinale Funktionen 4",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche Aussagen sind über das Erbrechen richtig?",
@@ -17641,18 +17789,19 @@
     "Anhaltendes Erbrechen führt typischerweise zu einer Hypokaliämie."
    ],
    "note": "Neu – angelehnt an Frage 320",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F01"
   },
   {
    "id": "N-646",
    "orig_nr": "646",
    "source": "neu",
-   "semester": "Frühling",
-   "week": 2,
+   "semester": "Herbst",
+   "week": 13,
    "vl": [
-    "F04"
+    "H39"
    ],
-   "vl_title": "Gastrointestinale Funktionen 4; Einführung in die medizinische Endokrinologie [I/K]",
+   "vl_title": "Gastrointestinale Funktionen 4",
    "block": 19,
    "block_title": "MAGEN-DARM-TRAKT",
    "question": "Welche Aussagen über Kontinenz und Defäkation sind richtig?",
@@ -17667,7 +17816,8 @@
     "Der Defäkationsreflex wird über das sakrale Rückenmark (S2–S4) vermittelt."
    ],
    "note": "Neu – angelehnt an Frage 322, 326",
-   "extra": ""
+   "extra": "",
+   "lecture_alt": "F04"
   },
   {
    "id": "N-647",
@@ -17866,7 +18016,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H34",
+    "H_ARCHIV_H34",
     "F37"
    ],
    "vl_title": "Nierenphysiologie 4",
@@ -17894,7 +18044,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H34"
+    "H_ARCHIV_H34"
    ],
    "vl_title": "Nierenphysiologie 4",
    "block": 20,
@@ -20222,7 +20372,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H21"
+    "H22"
    ],
    "vl_title": "Kreislaufphysiologie 3 (Mikrozirkulation, venöses System)",
    "block": 26,
@@ -20249,7 +20399,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H21"
+    "H22"
    ],
    "vl_title": "Kreislaufphysiologie 3 (Mikrozirkulation, venöses System)",
    "block": 26,
@@ -20275,7 +20425,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H21"
+    "H22"
    ],
    "vl_title": "Kreislaufphysiologie 3 (Mikrozirkulation, venöses System)",
    "block": 26,
@@ -20304,7 +20454,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H30"
+    "H31"
    ],
    "vl_title": "Atemphysiologie 4 (Lungenkreislauf)",
    "block": 26,
@@ -20331,7 +20481,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H30"
+    "H31"
    ],
    "vl_title": "Atemphysiologie 4 (Lungenkreislauf)",
    "block": 26,
@@ -20358,7 +20508,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H30"
+    "H31"
    ],
    "vl_title": "Atemphysiologie 4 (Lungenkreislauf)",
    "block": 26,
@@ -20387,7 +20537,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 1",
    "block": 26,
@@ -20414,7 +20564,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 1",
    "block": 26,
@@ -20441,7 +20591,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H21"
+    "H22"
    ],
    "vl_title": "Kreislaufphysiologie 3 (Mikrozirkulation, venöses System)",
    "block": 26,
@@ -20470,7 +20620,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H21"
+    "H22"
    ],
    "vl_title": "Kreislaufphysiologie 3 (Mikrozirkulation, venöses System)",
    "block": 26,
@@ -20497,7 +20647,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 1",
    "block": 26,
@@ -20524,10 +20674,10 @@
    "orig_nr": "750",
    "source": "neu",
    "semester": "Herbst",
-   "week": 9,
+   "week": 8,
    "vl": [
     "H24",
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 2",
    "block": 26,
@@ -20554,7 +20704,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22",
+    "H23",
     "H24"
    ],
    "vl_title": "Kreislaufregulation 1",
@@ -20584,7 +20734,7 @@
    "week": 9,
    "vl": [
     "H26",
-    "H22"
+    "H23"
    ],
    "vl_title": "Coronar-, Leber- und Pfortaderkreislauf",
    "block": 26,
@@ -20609,7 +20759,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 1",
    "block": 26,
@@ -20636,7 +20786,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 1",
    "block": 26,
@@ -20663,7 +20813,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 1",
    "block": 26,
@@ -20718,7 +20868,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 27,
@@ -20746,8 +20896,8 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27",
-    "H28"
+    "H28",
+    "H29"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 27,
@@ -20775,7 +20925,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H28"
+    "H29"
    ],
    "vl_title": "Atemphysiologie 2",
    "block": 27,
@@ -20803,7 +20953,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H28"
+    "H29"
    ],
    "vl_title": "Atemphysiologie 2",
    "block": 27,
@@ -20831,8 +20981,8 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29",
-    "H38"
+    "H30",
+    "H33"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 27,
@@ -20860,7 +21010,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 27,
@@ -20888,7 +21038,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 27,
@@ -20917,7 +21067,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 27,
@@ -20945,7 +21095,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 27,
@@ -20973,7 +21123,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 27,
@@ -21001,7 +21151,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 27,
@@ -21029,7 +21179,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 27,
@@ -21057,7 +21207,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H32"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 27,
@@ -21085,8 +21235,8 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31",
-    "H38"
+    "H32",
+    "H33"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 27,
@@ -21113,9 +21263,9 @@
    "orig_nr": "771",
    "source": "neu",
    "semester": "Herbst",
-   "week": 13,
+   "week": 11,
    "vl": [
-    "H38",
+    "H33",
     "H06"
    ],
    "vl_title": "Anpassung des kardiorespiratorischen Systems 1 [DM]",
@@ -21144,7 +21294,7 @@
    "semester": "Herbst",
    "week": 13,
    "vl": [
-    "H36"
+    "H_ARCHIV_H36"
    ],
    "vl_title": "Säure-Basen-Haushalt 2 [I/K]",
    "block": 27,
@@ -21172,7 +21322,7 @@
    "semester": "Herbst",
    "week": 13,
    "vl": [
-    "H36"
+    "H_ARCHIV_H36"
    ],
    "vl_title": "Säure-Basen-Haushalt 2 [I/K]",
    "block": 27,
@@ -21198,7 +21348,7 @@
    "semester": "Herbst",
    "week": 13,
    "vl": [
-    "H36"
+    "H_ARCHIV_H36"
    ],
    "vl_title": "Säure-Basen-Haushalt 2 [I/K]",
    "block": 27,
@@ -21226,8 +21376,8 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H35",
-    "H36"
+    "H_ARCHIV_H35",
+    "H_ARCHIV_H36"
    ],
    "vl_title": "Säure-Basen-Haushalt 1 [I/K]",
    "block": 27,
@@ -21256,7 +21406,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H35"
+    "H_ARCHIV_H35"
    ],
    "vl_title": "Säure-Basen-Haushalt 1 [I/K]",
    "block": 27,
@@ -21283,9 +21433,9 @@
    "orig_nr": "777",
    "source": "neu",
    "semester": "Herbst",
-   "week": 13,
+   "week": 12,
    "vl": [
-    "H37"
+    "H35"
    ],
    "vl_title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
    "block": 28,
@@ -21311,9 +21461,9 @@
    "orig_nr": "778",
    "source": "neu",
    "semester": "Herbst",
-   "week": 13,
+   "week": 12,
    "vl": [
-    "H37"
+    "H35"
    ],
    "vl_title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
    "block": 28,
@@ -21340,9 +21490,9 @@
    "orig_nr": "779",
    "source": "neu",
    "semester": "Herbst",
-   "week": 13,
+   "week": 12,
    "vl": [
-    "H37"
+    "H35"
    ],
    "vl_title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
    "block": 28,
@@ -21368,9 +21518,9 @@
    "orig_nr": "780",
    "source": "neu",
    "semester": "Herbst",
-   "week": 13,
+   "week": 12,
    "vl": [
-    "H37"
+    "H35"
    ],
    "vl_title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
    "block": 28,
@@ -21396,9 +21546,9 @@
    "orig_nr": "781",
    "source": "neu",
    "semester": "Herbst",
-   "week": 13,
+   "week": 12,
    "vl": [
-    "H37"
+    "H35"
    ],
    "vl_title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
    "block": 28,
@@ -21424,9 +21574,9 @@
    "orig_nr": "782",
    "source": "neu",
    "semester": "Herbst",
-   "week": 13,
+   "week": 12,
    "vl": [
-    "H37"
+    "H35"
    ],
    "vl_title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
    "block": 28,
@@ -21453,9 +21603,9 @@
    "orig_nr": "783",
    "source": "neu",
    "semester": "Herbst",
-   "week": 13,
+   "week": 12,
    "vl": [
-    "H37"
+    "H35"
    ],
    "vl_title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
    "block": 28,
@@ -21481,9 +21631,9 @@
    "orig_nr": "784",
    "source": "neu",
    "semester": "Herbst",
-   "week": 13,
+   "week": 12,
    "vl": [
-    "H37"
+    "H35"
    ],
    "vl_title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
    "block": 28,
@@ -21509,9 +21659,9 @@
    "orig_nr": "785",
    "source": "neu",
    "semester": "Herbst",
-   "week": 13,
+   "week": 12,
    "vl": [
-    "H37"
+    "H35"
    ],
    "vl_title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
    "block": 28,
@@ -21538,9 +21688,9 @@
    "orig_nr": "786",
    "source": "neu",
    "semester": "Herbst",
-   "week": 13,
+   "week": 12,
    "vl": [
-    "H37"
+    "H35"
    ],
    "vl_title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
    "block": 28,

@@ -27,3 +27,6 @@ pool-import.txt
 # Node/Logs, falls lokal vorhanden
 node_modules/
 *.log
+
+# Datenbackups — nicht ausliefern
+backups/

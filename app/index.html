@@ -4464,7 +4464,7 @@ function wkIsPlaceholder(t){return /originaltext|siehe original/i.test(String(t|
 
 function wkPrepare(q){
   const lec=wk.byCode.get((q.vl&&q.vl[0])||'');
-  if(!lec)return null;
+  if(!lec||lec.inactive)return null;
   const opts=(q.options||[]).slice();
   const correct=(q.correct||[]).filter(c=>c&&!wkIsPlaceholder(c));
   const corr=new Set();
@@ -4531,7 +4531,10 @@ async function wkLoad(){
       (Array.isArray(data.lectures)?data.lectures:[]).forEach(l=>{
         const known=wk.byCode.get(l.code);
         if(known)known.n_questions=(known.n_questions||0)+(l.n_questions||0);
-        else{const copy=Object.assign({},l);wk.lectures.push(copy);wk.byCode.set(copy.code,copy)}
+        else{const copy=Object.assign({},l);wk.byCode.set(copy.code,copy);
+          // Archivierte Vorlesungen (Stoff, der aus dem Semester gefallen ist)
+          // bleiben bekannt, aber tauchen in keiner Woche auf.
+          if(!copy.inactive)wk.lectures.push(copy)}
       });
     });
     // Themenbloecke aus allen Dateien in ein Register.

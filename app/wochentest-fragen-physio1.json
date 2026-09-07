@@ -143,28 +143,28 @@
   {
    "code": "H21",
    "semester": "Herbst",
+   "week": 7,
+   "title": "Echokardiographie [I/K] [DM]",
+   "n_questions": 6
+  },
+  {
+   "code": "H22",
+   "semester": "Herbst",
    "week": 8,
    "title": "Kreislaufphysiologie 3 (Mikrozirkulation, venöses System)",
    "n_questions": 14
   },
   {
-   "code": "H22",
+   "code": "H23",
    "semester": "Herbst",
    "week": 8,
    "title": "Kreislaufregulation 1",
    "n_questions": 17
   },
   {
-   "code": "H23",
-   "semester": "Herbst",
-   "week": 8,
-   "title": "Echokardiographie [I/K] [DM]",
-   "n_questions": 6
-  },
-  {
    "code": "H24",
    "semester": "Herbst",
-   "week": 9,
+   "week": 8,
    "title": "Kreislaufregulation 2",
    "n_questions": 15
   },
@@ -185,107 +185,168 @@
   {
    "code": "H27",
    "semester": "Herbst",
+   "week": 9,
+   "title": "Zusammenspiel Herz–Gefäßsystem (Theorie, Klinik)",
+   "n_questions": 0
+  },
+  {
+   "code": "H28",
+   "semester": "Herbst",
    "week": 10,
    "title": "Atemphysiologie 1",
    "n_questions": 60
   },
   {
-   "code": "H28",
+   "code": "H29",
    "semester": "Herbst",
    "week": 10,
    "title": "Atemphysiologie 2",
    "n_questions": 16
   },
   {
-   "code": "H29",
+   "code": "H30",
    "semester": "Herbst",
    "week": 10,
    "title": "Atemphysiologie 3",
    "n_questions": 30
   },
   {
-   "code": "H30",
+   "code": "H31",
    "semester": "Herbst",
    "week": 11,
    "title": "Atemphysiologie 4 (Lungenkreislauf)",
    "n_questions": 8
   },
   {
-   "code": "H31",
-   "semester": "Herbst",
-   "week": 11,
-   "title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
-   "n_questions": 48
-  },
-  {
    "code": "H32",
    "semester": "Herbst",
    "week": 11,
-   "title": "Nierenphysiologie 2",
-   "n_questions": 11
+   "title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
+   "n_questions": 14
   },
   {
    "code": "H33",
    "semester": "Herbst",
-   "week": 12,
-   "title": "Nierenphysiologie 3",
-   "n_questions": 11
+   "week": 11,
+   "title": "Anpassung des kardiorespiratorischen Systems 1 [DM]",
+   "n_questions": 7
   },
   {
    "code": "H34",
    "semester": "Herbst",
    "week": 12,
-   "title": "Nierenphysiologie 4",
-   "n_questions": 8
+   "title": "Anpassung des kardiorespiratorischen Systems 2 [I/K] [DM]",
+   "n_questions": 0
   },
   {
    "code": "H35",
    "semester": "Herbst",
    "week": 12,
-   "title": "Säure-Basen-Haushalt 1 [I/K]",
-   "n_questions": 14
+   "title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
+   "n_questions": 10
   },
   {
    "code": "H36",
    "semester": "Herbst",
-   "week": 13,
-   "title": "Säure-Basen-Haushalt 2 [I/K]",
+   "week": 12,
+   "title": "Hämostase (Forts.) + Gastrointestinale Funktionen 1",
    "n_questions": 0
   },
   {
    "code": "H37",
    "semester": "Herbst",
    "week": 13,
-   "title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
-   "n_questions": 10
+   "title": "Gastrointestinale Funktionen 2",
+   "n_questions": 0
   },
   {
    "code": "H38",
    "semester": "Herbst",
    "week": 13,
-   "title": "Anpassung des kardiorespiratorischen Systems 1 [DM]",
-   "n_questions": 7
+   "title": "Gastrointestinale Funktionen 3",
+   "n_questions": 0
   },
   {
    "code": "H39",
    "semester": "Herbst",
-   "week": 14,
-   "title": "Anpassung des kardiorespiratorischen Systems 2 [I/K] [DM]",
+   "week": 13,
+   "title": "Gastrointestinale Funktionen 4",
    "n_questions": 0
   },
   {
    "code": "H40",
    "semester": "Herbst",
    "week": 14,
-   "title": "Prüfungskonsultation",
+   "title": "Energiehaushalt, Ernährung",
    "n_questions": 0
   },
   {
    "code": "H41",
    "semester": "Herbst",
    "week": 14,
+   "title": "Prüfungskonsultation",
+   "n_questions": 0
+  },
+  {
+   "code": "H42",
+   "semester": "Herbst",
+   "week": 14,
    "title": "Wettbewerbsprüfung",
    "n_questions": 0
+  },
+  {
+   "code": "H_ARCHIV_H31",
+   "semester": "Herbst",
+   "week": 11,
+   "title": "Nierenphysiologie 1 (Herbst 2025/26)",
+   "n_questions": 34,
+   "inactive": true,
+   "code_alt": "H31"
+  },
+  {
+   "code": "H_ARCHIV_H32",
+   "semester": "Herbst",
+   "week": 11,
+   "title": "Nierenphysiologie 2 (Herbst 2025/26)",
+   "n_questions": 11,
+   "inactive": true,
+   "code_alt": "H32"
+  },
+  {
+   "code": "H_ARCHIV_H33",
+   "semester": "Herbst",
+   "week": 12,
+   "title": "Nierenphysiologie 3 (Herbst 2025/26)",
+   "n_questions": 11,
+   "inactive": true,
+   "code_alt": "H33"
+  },
+  {
+   "code": "H_ARCHIV_H34",
+   "semester": "Herbst",
+   "week": 12,
+   "title": "Nierenphysiologie 4 (Herbst 2025/26)",
+   "n_questions": 8,
+   "inactive": true,
+   "code_alt": "H34"
+  },
+  {
+   "code": "H_ARCHIV_H35",
+   "semester": "Herbst",
+   "week": 12,
+   "title": "Säure-Basen-Haushalt 1 [I/K] (Herbst 2025/26)",
+   "n_questions": 14,
+   "inactive": true,
+   "code_alt": "H35"
+  },
+  {
+   "code": "H_ARCHIV_H36",
+   "semester": "Herbst",
+   "week": 13,
+   "title": "Säure-Basen-Haushalt 2 [I/K] (Herbst 2025/26)",
+   "n_questions": 0,
+   "inactive": true,
+   "code_alt": "H36"
   }
  ],
  "blocks": [
@@ -365,7 +426,7 @@
    "block_title": "EKG & ECHOKARDIOGRAPHIE",
    "vl": [
     "H18",
-    "H23"
+    "H21"
    ]
   },
   {
@@ -374,14 +435,14 @@
    "vl": [
     "H19",
     "H20",
-    "H21"
+    "H22"
    ]
   },
   {
    "block": 112,
    "block_title": "KREISLAUFREGULATION & ORGANDURCHBLUTUNG",
    "vl": [
-    "H22",
+    "H23",
     "H24",
     "H25",
     "H26"
@@ -391,43 +452,43 @@
    "block": 113,
    "block_title": "ATEMMECHANIK & LUNGENVOLUMINA",
    "vl": [
-    "H27"
+    "H28"
    ]
   },
   {
    "block": 114,
    "block_title": "GASAUSTAUSCH, GASTRANSPORT & LUNGENKREISLAUF",
    "vl": [
-    "H28",
     "H29",
-    "H30"
+    "H30",
+    "H31"
    ]
   },
   {
    "block": 115,
    "block_title": "ATMUNGSREGULATION & NIERENPHYSIOLOGIE",
    "vl": [
-    "H31",
     "H32",
-    "H33",
-    "H34"
+    "H_ARCHIV_H32",
+    "H_ARCHIV_H33",
+    "H_ARCHIV_H34"
    ]
   },
   {
    "block": 116,
    "block_title": "SÄURE-BASEN-HAUSHALT",
    "vl": [
-    "H35",
-    "H36"
+    "H_ARCHIV_H35",
+    "H_ARCHIV_H36"
    ]
   },
   {
    "block": 117,
    "block_title": "HÄMOSTASE & KARDIORESPIRATORISCHE ANPASSUNG",
    "vl": [
-    "H37",
-    "H38",
-    "H39"
+    "H35",
+    "H33",
+    "H34"
    ]
   }
  ],
@@ -2946,9 +3007,9 @@
    "orig_nr": "W-096",
    "source": "umformuliert",
    "semester": "Herbst",
-   "week": 8,
+   "week": 7,
    "vl": [
-    "H23"
+    "H21"
    ],
    "vl_title": "Echokardiographie [I/K] [DM]",
    "block": 110,
@@ -3111,9 +3172,9 @@
    "orig_nr": "W-102",
    "source": "umformuliert",
    "semester": "Herbst",
-   "week": 8,
+   "week": 7,
    "vl": [
-    "H23"
+    "H21"
    ],
    "vl_title": "Echokardiographie [I/K] [DM]",
    "block": 110,
@@ -3916,7 +3977,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H21"
+    "H22"
    ],
    "vl_title": "Kreislaufphysiologie 3 (Mikrozirkulation, venöses System)",
    "block": 111,
@@ -3969,7 +4030,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H21"
+    "H22"
    ],
    "vl_title": "Kreislaufphysiologie 3 (Mikrozirkulation, venöses System)",
    "block": 111,
@@ -4079,7 +4140,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H21"
+    "H22"
    ],
    "vl_title": "Kreislaufphysiologie 3 (Mikrozirkulation, venöses System)",
    "block": 111,
@@ -4159,7 +4220,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 1",
    "block": 112,
@@ -4184,7 +4245,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 1",
    "block": 112,
@@ -4208,10 +4269,10 @@
    "orig_nr": "W-143",
    "source": "umformuliert",
    "semester": "Herbst",
-   "week": 9,
+   "week": 8,
    "vl": [
     "H24",
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 2",
    "block": 112,
@@ -4235,7 +4296,7 @@
    "orig_nr": "W-144",
    "source": "umformuliert",
    "semester": "Herbst",
-   "week": 9,
+   "week": 8,
    "vl": [
     "H24"
    ],
@@ -4263,7 +4324,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 1",
    "block": 112,
@@ -4291,7 +4352,7 @@
    "week": 6,
    "vl": [
     "H17",
-    "H22"
+    "H23"
    ],
    "vl_title": "Physiologie des Herzens 4 (Regulation der Kontraktion)",
    "block": 109,
@@ -4317,7 +4378,7 @@
    "orig_nr": "W-147",
    "source": "umformuliert",
    "semester": "Herbst",
-   "week": 9,
+   "week": 8,
    "vl": [
     "H24"
    ],
@@ -4371,7 +4432,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 1",
    "block": 112,
@@ -4399,7 +4460,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 1",
    "block": 112,
@@ -4423,7 +4484,7 @@
    "orig_nr": "W-151",
    "source": "umformuliert",
    "semester": "Herbst",
-   "week": 9,
+   "week": 8,
    "vl": [
     "H24"
    ],
@@ -4452,7 +4513,7 @@
    "week": 9,
    "vl": [
     "H26",
-    "H38"
+    "H33"
    ],
    "vl_title": "Coronar-, Leber- und Pfortaderkreislauf",
    "block": 112,
@@ -4477,7 +4538,7 @@
    "orig_nr": "W-153",
    "source": "umformuliert",
    "semester": "Herbst",
-   "week": 9,
+   "week": 8,
    "vl": [
     "H24"
    ],
@@ -4666,7 +4727,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 1",
    "block": 112,
@@ -4717,9 +4778,9 @@
    "orig_nr": "W-162",
    "source": "umformuliert",
    "semester": "Herbst",
-   "week": 13,
+   "week": 11,
    "vl": [
-    "H38",
+    "H33",
     "H26"
    ],
    "vl_title": "Anpassung des kardiorespiratorischen Systems 1 [DM]",
@@ -4824,7 +4885,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22",
+    "H23",
     "H25"
    ],
    "vl_title": "Kreislaufregulation 1",
@@ -4902,7 +4963,7 @@
    "orig_nr": "W-169",
    "source": "umformuliert",
    "semester": "Herbst",
-   "week": 9,
+   "week": 8,
    "vl": [
     "H24"
    ],
@@ -4957,7 +5018,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -4985,7 +5046,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -5013,7 +5074,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -5040,7 +5101,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -5066,7 +5127,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -5093,7 +5154,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -5120,7 +5181,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -5147,8 +5208,8 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H28",
-    "H31"
+    "H29",
+    "H32"
    ],
    "vl_title": "Atemphysiologie 2",
    "block": 114,
@@ -5175,7 +5236,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H28"
+    "H29"
    ],
    "vl_title": "Atemphysiologie 2",
    "block": 114,
@@ -5203,8 +5264,8 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27",
-    "H28"
+    "H28",
+    "H29"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -5232,7 +5293,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -5259,7 +5320,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -5284,7 +5345,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -5312,7 +5373,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -5338,8 +5399,8 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29",
-    "H28"
+    "H30",
+    "H29"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -5365,7 +5426,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -5391,7 +5452,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -5419,7 +5480,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H28"
+    "H29"
    ],
    "vl_title": "Atemphysiologie 2",
    "block": 114,
@@ -5446,7 +5507,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -5473,7 +5534,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -5500,7 +5561,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H28"
+    "H29"
    ],
    "vl_title": "Atemphysiologie 2",
    "block": 114,
@@ -5529,8 +5590,8 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27",
-    "H28"
+    "H28",
+    "H29"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -5558,7 +5619,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -5585,7 +5646,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -5617,7 +5678,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -5646,7 +5707,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -5675,7 +5736,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -5701,7 +5762,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -5728,7 +5789,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -5757,7 +5818,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -5783,7 +5844,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -5811,7 +5872,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -5865,7 +5926,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H28"
+    "H29"
    ],
    "vl_title": "Atemphysiologie 2",
    "block": 114,
@@ -5892,8 +5953,8 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27",
-    "H28"
+    "H28",
+    "H29"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -5919,7 +5980,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -5945,7 +6006,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -5971,7 +6032,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H30"
+    "H31"
    ],
    "vl_title": "Atemphysiologie 4 (Lungenkreislauf)",
    "block": 114,
@@ -5997,7 +6058,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H32"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -6023,7 +6084,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -6051,7 +6112,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H32"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -6077,7 +6138,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -6104,7 +6165,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -6132,7 +6193,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -6157,7 +6218,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -6183,8 +6244,8 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H30",
-    "H29"
+    "H31",
+    "H30"
    ],
    "vl_title": "Atemphysiologie 4 (Lungenkreislauf)",
    "block": 114,
@@ -6211,7 +6272,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H32"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -6237,7 +6298,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -6264,7 +6325,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H32"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -6291,7 +6352,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -6317,7 +6378,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -6344,7 +6405,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H28"
+    "H29"
    ],
    "vl_title": "Atemphysiologie 2",
    "block": 114,
@@ -6371,7 +6432,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H28"
+    "H29"
    ],
    "vl_title": "Atemphysiologie 2",
    "block": 114,
@@ -6398,7 +6459,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -6424,7 +6485,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -6449,7 +6510,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -6476,7 +6537,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H32"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -6500,10 +6561,10 @@
    "orig_nr": "W-228",
    "source": "umformuliert",
    "semester": "Herbst",
-   "week": 13,
+   "week": 11,
    "vl": [
-    "H38",
-    "H31"
+    "H33",
+    "H32"
    ],
    "vl_title": "Anpassung des kardiorespiratorischen Systems 1 [DM]",
    "block": 117,
@@ -6529,7 +6590,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -6555,7 +6616,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -6584,7 +6645,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H32"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -6611,7 +6672,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H30"
+    "H31"
    ],
    "vl_title": "Atemphysiologie 4 (Lungenkreislauf)",
    "block": 114,
@@ -6637,7 +6698,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -6662,7 +6723,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H28"
+    "H29"
    ],
    "vl_title": "Atemphysiologie 2",
    "block": 114,
@@ -6687,10 +6748,10 @@
    "orig_nr": "W-235",
    "source": "umformuliert",
    "semester": "Herbst",
-   "week": 13,
+   "week": 11,
    "vl": [
-    "H38",
-    "H31"
+    "H33",
+    "H32"
    ],
    "vl_title": "Anpassung des kardiorespiratorischen Systems 1 [DM]",
    "block": 117,
@@ -6717,7 +6778,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H32"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -6744,7 +6805,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -6771,7 +6832,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -6798,7 +6859,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H30"
+    "H31"
    ],
    "vl_title": "Atemphysiologie 4 (Lungenkreislauf)",
    "block": 114,
@@ -6818,7 +6879,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H32"
+    "H_ARCHIV_H32"
    ],
    "vl_title": "Nierenphysiologie 2",
    "block": 115,
@@ -6845,7 +6906,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -6873,7 +6934,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -6900,7 +6961,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -6927,7 +6988,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H32"
+    "H_ARCHIV_H32"
    ],
    "vl_title": "Nierenphysiologie 2",
    "block": 115,
@@ -6953,8 +7014,8 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H32",
-    "H33"
+    "H_ARCHIV_H32",
+    "H_ARCHIV_H33"
    ],
    "vl_title": "Nierenphysiologie 2",
    "block": 115,
@@ -6979,7 +7040,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H32"
+    "H_ARCHIV_H32"
    ],
    "vl_title": "Nierenphysiologie 2",
    "block": 115,
@@ -7006,7 +7067,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H35"
+    "H_ARCHIV_H35"
    ],
    "vl_title": "Säure-Basen-Haushalt 1 [I/K]",
    "block": 116,
@@ -7032,7 +7093,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H34",
+    "H_ARCHIV_H34",
     "H24"
    ],
    "vl_title": "Nierenphysiologie 4",
@@ -7059,7 +7120,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H33"
+    "H_ARCHIV_H33"
    ],
    "vl_title": "Nierenphysiologie 3",
    "block": 115,
@@ -7086,7 +7147,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H33"
+    "H_ARCHIV_H33"
    ],
    "vl_title": "Nierenphysiologie 3",
    "block": 115,
@@ -7111,8 +7172,8 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H33",
-    "H34"
+    "H_ARCHIV_H33",
+    "H_ARCHIV_H34"
    ],
    "vl_title": "Nierenphysiologie 3",
    "block": 115,
@@ -7138,7 +7199,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H34"
+    "H_ARCHIV_H34"
    ],
    "vl_title": "Nierenphysiologie 4",
    "block": 115,
@@ -7164,7 +7225,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H35"
+    "H_ARCHIV_H35"
    ],
    "vl_title": "Säure-Basen-Haushalt 1 [I/K]",
    "block": 116,
@@ -7190,7 +7251,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -7216,7 +7277,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -7242,7 +7303,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H33"
+    "H_ARCHIV_H33"
    ],
    "vl_title": "Nierenphysiologie 3",
    "block": 115,
@@ -7267,7 +7328,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H35"
+    "H_ARCHIV_H35"
    ],
    "vl_title": "Säure-Basen-Haushalt 1 [I/K]",
    "block": 116,
@@ -7294,7 +7355,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H32"
+    "H_ARCHIV_H32"
    ],
    "vl_title": "Nierenphysiologie 2",
    "block": 115,
@@ -7320,7 +7381,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H33"
+    "H_ARCHIV_H33"
    ],
    "vl_title": "Nierenphysiologie 3",
    "block": 115,
@@ -8218,9 +8279,9 @@
    "orig_nr": "W-294",
    "source": "umformuliert",
    "semester": "Herbst",
-   "week": 13,
+   "week": 12,
    "vl": [
-    "H37"
+    "H35"
    ],
    "vl_title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
    "block": 117,
@@ -8514,9 +8575,9 @@
    "orig_nr": "W-305",
    "source": "umformuliert",
    "semester": "Herbst",
-   "week": 13,
+   "week": 12,
    "vl": [
-    "H37"
+    "H35"
    ],
    "vl_title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
    "block": 117,
@@ -8892,9 +8953,9 @@
    "orig_nr": "W-319",
    "source": "umformuliert",
    "semester": "Herbst",
-   "week": 8,
+   "week": 7,
    "vl": [
-    "H23"
+    "H21"
    ],
    "vl_title": "Echokardiographie [I/K] [DM]",
    "block": 110,
@@ -9038,7 +9099,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -9061,7 +9122,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -9084,7 +9145,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -9135,8 +9196,8 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27",
-    "H28"
+    "H28",
+    "H29"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -9220,7 +9281,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -9249,7 +9310,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -9332,8 +9393,8 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27",
-    "H28"
+    "H28",
+    "H29"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -9386,7 +9447,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -9440,7 +9501,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -9464,9 +9525,9 @@
    "orig_nr": "W-341",
    "source": "umformuliert",
    "semester": "Herbst",
-   "week": 13,
+   "week": 11,
    "vl": [
-    "H38",
+    "H33",
     "H26"
    ],
    "vl_title": "Anpassung des kardiorespiratorischen Systems 1 [DM]",
@@ -9492,7 +9553,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -9545,7 +9606,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -9572,7 +9633,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -9599,7 +9660,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -9627,7 +9688,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H35"
+    "H_ARCHIV_H35"
    ],
    "vl_title": "Säure-Basen-Haushalt 1 [I/K]",
    "block": 116,
@@ -9653,7 +9714,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H32"
+    "H_ARCHIV_H32"
    ],
    "vl_title": "Nierenphysiologie 2",
    "block": 115,
@@ -9676,8 +9737,8 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H32",
-    "H35"
+    "H_ARCHIV_H32",
+    "H_ARCHIV_H35"
    ],
    "vl_title": "Nierenphysiologie 2",
    "block": 115,
@@ -9704,8 +9765,8 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H33",
-    "H32"
+    "H_ARCHIV_H33",
+    "H_ARCHIV_H32"
    ],
    "vl_title": "Nierenphysiologie 3",
    "block": 115,
@@ -9731,7 +9792,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H33"
+    "H_ARCHIV_H33"
    ],
    "vl_title": "Nierenphysiologie 3",
    "block": 115,
@@ -9758,7 +9819,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H34"
+    "H_ARCHIV_H34"
    ],
    "vl_title": "Nierenphysiologie 4",
    "block": 115,
@@ -9784,7 +9845,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -9811,7 +9872,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H32"
+    "H_ARCHIV_H32"
    ],
    "vl_title": "Nierenphysiologie 2",
    "block": 115,
@@ -9837,7 +9898,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -9863,7 +9924,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H32"
+    "H_ARCHIV_H32"
    ],
    "vl_title": "Nierenphysiologie 2",
    "block": 115,
@@ -9891,7 +9952,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H34",
+    "H_ARCHIV_H34",
     "H24"
    ],
    "vl_title": "Nierenphysiologie 4",
@@ -9918,8 +9979,8 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31",
-    "H34"
+    "H_ARCHIV_H31",
+    "H_ARCHIV_H34"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -9945,7 +10006,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -9971,7 +10032,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H33"
+    "H_ARCHIV_H33"
    ],
    "vl_title": "Nierenphysiologie 3",
    "block": 115,
@@ -9996,7 +10057,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -10022,7 +10083,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -10049,7 +10110,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H34"
+    "H_ARCHIV_H34"
    ],
    "vl_title": "Nierenphysiologie 4",
    "block": 115,
@@ -10075,7 +10136,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -10102,7 +10163,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -10128,7 +10189,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -10153,7 +10214,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H34"
+    "H_ARCHIV_H34"
    ],
    "vl_title": "Nierenphysiologie 4",
    "block": 115,
@@ -10177,10 +10238,10 @@
    "orig_nr": "W-368",
    "source": "umformuliert",
    "semester": "Herbst",
-   "week": 9,
+   "week": 8,
    "vl": [
     "H24",
-    "H34"
+    "H_ARCHIV_H34"
    ],
    "vl_title": "Kreislaufregulation 2",
    "block": 112,
@@ -11026,9 +11087,9 @@
    "orig_nr": "W-400",
    "source": "umformuliert",
    "semester": "Herbst",
-   "week": 13,
+   "week": 12,
    "vl": [
-    "H37"
+    "H35"
    ],
    "vl_title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
    "block": 117,
@@ -11403,7 +11464,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H21",
+    "H22",
     "H19"
    ],
    "vl_title": "Kreislaufphysiologie 3 (Mikrozirkulation, venöses System)",
@@ -11429,7 +11490,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 1",
    "block": 112,
@@ -11455,7 +11516,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H21"
+    "H22"
    ],
    "vl_title": "Kreislaufphysiologie 3 (Mikrozirkulation, venöses System)",
    "block": 111,
@@ -11482,7 +11543,7 @@
    "orig_nr": "W-417",
    "source": "umformuliert",
    "semester": "Herbst",
-   "week": 9,
+   "week": 8,
    "vl": [
     "H24"
    ],
@@ -11509,7 +11570,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H21"
+    "H22"
    ],
    "vl_title": "Kreislaufphysiologie 3 (Mikrozirkulation, venöses System)",
    "block": 111,
@@ -11534,7 +11595,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H21"
+    "H22"
    ],
    "vl_title": "Kreislaufphysiologie 3 (Mikrozirkulation, venöses System)",
    "block": 111,
@@ -11560,7 +11621,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 1",
    "block": 112,
@@ -11613,7 +11674,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 1",
    "block": 112,
@@ -11639,7 +11700,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H21"
+    "H22"
    ],
    "vl_title": "Kreislaufphysiologie 3 (Mikrozirkulation, venöses System)",
    "block": 111,
@@ -11692,7 +11753,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22",
+    "H23",
     "H26"
    ],
    "vl_title": "Kreislaufregulation 1",
@@ -11720,7 +11781,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 1",
    "block": 112,
@@ -11745,7 +11806,7 @@
    "orig_nr": "W-427",
    "source": "umformuliert",
    "semester": "Herbst",
-   "week": 9,
+   "week": 8,
    "vl": [
     "H24"
    ],
@@ -11771,7 +11832,7 @@
    "orig_nr": "W-428",
    "source": "umformuliert",
    "semester": "Herbst",
-   "week": 9,
+   "week": 8,
    "vl": [
     "H24",
     "H25"
@@ -11800,7 +11861,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 1",
    "block": 112,
@@ -11827,7 +11888,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H21"
+    "H22"
    ],
    "vl_title": "Kreislaufphysiologie 3 (Mikrozirkulation, venöses System)",
    "block": 111,
@@ -11853,7 +11914,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H32"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -11882,7 +11943,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -11909,7 +11970,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -11937,7 +11998,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -11963,7 +12024,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H30"
+    "H31"
    ],
    "vl_title": "Atemphysiologie 4 (Lungenkreislauf)",
    "block": 114,
@@ -11990,7 +12051,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -12019,7 +12080,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -12046,7 +12107,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -12074,7 +12135,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -12102,7 +12163,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H32"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -12130,7 +12191,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -12157,7 +12218,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -12177,7 +12238,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -12202,7 +12263,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H28"
+    "H29"
    ],
    "vl_title": "Atemphysiologie 2",
    "block": 114,
@@ -12229,7 +12290,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -12256,7 +12317,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -16601,9 +16662,9 @@
    "orig_nr": "WN-10-13",
    "source": "neu",
    "semester": "Herbst",
-   "week": 8,
+   "week": 7,
    "vl": [
-    "H23"
+    "H21"
    ],
    "vl_title": "Echokardiographie [I/K] [DM]",
    "block": 110,
@@ -16627,9 +16688,9 @@
    "orig_nr": "WN-10-14",
    "source": "neu",
    "semester": "Herbst",
-   "week": 8,
+   "week": 7,
    "vl": [
-    "H23"
+    "H21"
    ],
    "vl_title": "Echokardiographie [I/K] [DM]",
    "block": 110,
@@ -16654,9 +16715,9 @@
    "orig_nr": "WN-10-15",
    "source": "neu",
    "semester": "Herbst",
-   "week": 8,
+   "week": 7,
    "vl": [
-    "H23"
+    "H21"
    ],
    "vl_title": "Echokardiographie [I/K] [DM]",
    "block": 110,
@@ -16683,7 +16744,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H21"
+    "H22"
    ],
    "vl_title": "Kreislaufphysiologie 3 (Mikrozirkulation, venöses System)",
    "block": 111,
@@ -16764,7 +16825,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H21"
+    "H22"
    ],
    "vl_title": "Kreislaufphysiologie 3 (Mikrozirkulation, venöses System)",
    "block": 111,
@@ -17129,7 +17190,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H21"
+    "H22"
    ],
    "vl_title": "Kreislaufphysiologie 3 (Mikrozirkulation, venöses System)",
    "block": 111,
@@ -17156,7 +17217,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H21"
+    "H22"
    ],
    "vl_title": "Kreislaufphysiologie 3 (Mikrozirkulation, venöses System)",
    "block": 111,
@@ -17184,7 +17245,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H21"
+    "H22"
    ],
    "vl_title": "Kreislaufphysiologie 3 (Mikrozirkulation, venöses System)",
    "block": 111,
@@ -17211,7 +17272,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 1",
    "block": 112,
@@ -17238,7 +17299,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 1",
    "block": 112,
@@ -17265,7 +17326,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 1",
    "block": 112,
@@ -17290,7 +17351,7 @@
    "orig_nr": "WN-12-04",
    "source": "neu",
    "semester": "Herbst",
-   "week": 9,
+   "week": 8,
    "vl": [
     "H24"
    ],
@@ -17316,7 +17377,7 @@
    "orig_nr": "WN-12-05",
    "source": "neu",
    "semester": "Herbst",
-   "week": 9,
+   "week": 8,
    "vl": [
     "H24"
    ],
@@ -17344,7 +17405,7 @@
    "semester": "Herbst",
    "week": 8,
    "vl": [
-    "H22"
+    "H23"
    ],
    "vl_title": "Kreislaufregulation 1",
    "block": 112,
@@ -17369,7 +17430,7 @@
    "orig_nr": "WN-12-07",
    "source": "neu",
    "semester": "Herbst",
-   "week": 9,
+   "week": 8,
    "vl": [
     "H24"
    ],
@@ -17396,7 +17457,7 @@
    "orig_nr": "WN-12-08",
    "source": "neu",
    "semester": "Herbst",
-   "week": 9,
+   "week": 8,
    "vl": [
     "H24"
    ],
@@ -17422,7 +17483,7 @@
    "orig_nr": "WN-12-09",
    "source": "neu",
    "semester": "Herbst",
-   "week": 9,
+   "week": 8,
    "vl": [
     "H24"
    ],
@@ -17748,7 +17809,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -17776,7 +17837,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -17804,7 +17865,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -17831,7 +17892,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -17858,7 +17919,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -17885,7 +17946,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -17913,7 +17974,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -17940,7 +18001,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -17968,7 +18029,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -17996,7 +18057,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -18023,7 +18084,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -18051,7 +18112,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -18079,7 +18140,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -18108,7 +18169,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -18135,7 +18196,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -18157,7 +18218,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -18185,7 +18246,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -18213,7 +18274,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -18240,7 +18301,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -18268,7 +18329,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H27"
+    "H28"
    ],
    "vl_title": "Atemphysiologie 1",
    "block": 113,
@@ -18297,7 +18358,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -18323,7 +18384,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -18351,7 +18412,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -18379,7 +18440,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -18404,7 +18465,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -18430,7 +18491,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H28"
+    "H29"
    ],
    "vl_title": "Atemphysiologie 2",
    "block": 114,
@@ -18458,7 +18519,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H28"
+    "H29"
    ],
    "vl_title": "Atemphysiologie 2",
    "block": 114,
@@ -18484,7 +18545,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H28"
+    "H29"
    ],
    "vl_title": "Atemphysiologie 2",
    "block": 114,
@@ -18511,7 +18572,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H28"
+    "H29"
    ],
    "vl_title": "Atemphysiologie 2",
    "block": 114,
@@ -18537,7 +18598,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -18565,7 +18626,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -18592,7 +18653,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -18618,7 +18679,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -18645,7 +18706,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H29"
+    "H30"
    ],
    "vl_title": "Atemphysiologie 3",
    "block": 114,
@@ -18672,7 +18733,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H30"
+    "H31"
    ],
    "vl_title": "Atemphysiologie 4 (Lungenkreislauf)",
    "block": 114,
@@ -18699,7 +18760,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H30"
+    "H31"
    ],
    "vl_title": "Atemphysiologie 4 (Lungenkreislauf)",
    "block": 114,
@@ -18726,7 +18787,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H30"
+    "H31"
    ],
    "vl_title": "Atemphysiologie 4 (Lungenkreislauf)",
    "block": 114,
@@ -18753,7 +18814,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H28"
+    "H29"
    ],
    "vl_title": "Atemphysiologie 2",
    "block": 114,
@@ -18780,7 +18841,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H28"
+    "H29"
    ],
    "vl_title": "Atemphysiologie 2",
    "block": 114,
@@ -18807,7 +18868,7 @@
    "semester": "Herbst",
    "week": 10,
    "vl": [
-    "H28"
+    "H29"
    ],
    "vl_title": "Atemphysiologie 2",
    "block": 114,
@@ -18834,7 +18895,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H32"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -18860,7 +18921,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H32"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -18887,7 +18948,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H32"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -18913,7 +18974,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H32"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -18940,7 +19001,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H32"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -18966,7 +19027,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -18995,7 +19056,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -19022,7 +19083,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -19050,7 +19111,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -19076,7 +19137,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -19103,7 +19164,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -19129,7 +19190,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -19158,7 +19219,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H32"
+    "H_ARCHIV_H32"
    ],
    "vl_title": "Nierenphysiologie 2",
    "block": 115,
@@ -19187,7 +19248,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H32"
+    "H_ARCHIV_H32"
    ],
    "vl_title": "Nierenphysiologie 2",
    "block": 115,
@@ -19214,7 +19275,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H33"
+    "H_ARCHIV_H33"
    ],
    "vl_title": "Nierenphysiologie 3",
    "block": 115,
@@ -19241,7 +19302,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H33"
+    "H_ARCHIV_H33"
    ],
    "vl_title": "Nierenphysiologie 3",
    "block": 115,
@@ -19268,7 +19329,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H33"
+    "H_ARCHIV_H33"
    ],
    "vl_title": "Nierenphysiologie 3",
    "block": 115,
@@ -19295,7 +19356,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H34"
+    "H_ARCHIV_H34"
    ],
    "vl_title": "Nierenphysiologie 4",
    "block": 115,
@@ -19322,7 +19383,7 @@
    "semester": "Herbst",
    "week": 11,
    "vl": [
-    "H31"
+    "H_ARCHIV_H31"
    ],
    "vl_title": "Atemphysiologie 5 (Atmungsregulation); Nierenphysiologie 1",
    "block": 115,
@@ -19349,7 +19410,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H34"
+    "H_ARCHIV_H34"
    ],
    "vl_title": "Nierenphysiologie 4",
    "block": 115,
@@ -19377,7 +19438,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H35"
+    "H_ARCHIV_H35"
    ],
    "vl_title": "Säure-Basen-Haushalt 1 [I/K]",
    "block": 116,
@@ -19403,7 +19464,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H35"
+    "H_ARCHIV_H35"
    ],
    "vl_title": "Säure-Basen-Haushalt 1 [I/K]",
    "block": 116,
@@ -19430,7 +19491,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H35"
+    "H_ARCHIV_H35"
    ],
    "vl_title": "Säure-Basen-Haushalt 1 [I/K]",
    "block": 116,
@@ -19456,7 +19517,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H35"
+    "H_ARCHIV_H35"
    ],
    "vl_title": "Säure-Basen-Haushalt 1 [I/K]",
    "block": 116,
@@ -19484,7 +19545,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H35"
+    "H_ARCHIV_H35"
    ],
    "vl_title": "Säure-Basen-Haushalt 1 [I/K]",
    "block": 116,
@@ -19511,7 +19572,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H35"
+    "H_ARCHIV_H35"
    ],
    "vl_title": "Säure-Basen-Haushalt 1 [I/K]",
    "block": 116,
@@ -19537,7 +19598,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H35"
+    "H_ARCHIV_H35"
    ],
    "vl_title": "Säure-Basen-Haushalt 1 [I/K]",
    "block": 116,
@@ -19564,7 +19625,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H35"
+    "H_ARCHIV_H35"
    ],
    "vl_title": "Säure-Basen-Haushalt 1 [I/K]",
    "block": 116,
@@ -19591,7 +19652,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H35"
+    "H_ARCHIV_H35"
    ],
    "vl_title": "Säure-Basen-Haushalt 1 [I/K]",
    "block": 116,
@@ -19618,7 +19679,7 @@
    "semester": "Herbst",
    "week": 12,
    "vl": [
-    "H35"
+    "H_ARCHIV_H35"
    ],
    "vl_title": "Säure-Basen-Haushalt 1 [I/K]",
    "block": 116,
@@ -19643,9 +19704,9 @@
    "orig_nr": "WN-17-01",
    "source": "neu",
    "semester": "Herbst",
-   "week": 13,
+   "week": 12,
    "vl": [
-    "H37"
+    "H35"
    ],
    "vl_title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
    "block": 117,
@@ -19670,9 +19731,9 @@
    "orig_nr": "WN-17-02",
    "source": "neu",
    "semester": "Herbst",
-   "week": 13,
+   "week": 12,
    "vl": [
-    "H37"
+    "H35"
    ],
    "vl_title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
    "block": 117,
@@ -19699,9 +19760,9 @@
    "orig_nr": "WN-17-03",
    "source": "neu",
    "semester": "Herbst",
-   "week": 13,
+   "week": 12,
    "vl": [
-    "H37"
+    "H35"
    ],
    "vl_title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
    "block": 117,
@@ -19726,9 +19787,9 @@
    "orig_nr": "WN-17-04",
    "source": "neu",
    "semester": "Herbst",
-   "week": 13,
+   "week": 12,
    "vl": [
-    "H37"
+    "H35"
    ],
    "vl_title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
    "block": 117,
@@ -19753,9 +19814,9 @@
    "orig_nr": "WN-17-05",
    "source": "neu",
    "semester": "Herbst",
-   "week": 13,
+   "week": 12,
    "vl": [
-    "H37"
+    "H35"
    ],
    "vl_title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
    "block": 117,
@@ -19782,9 +19843,9 @@
    "orig_nr": "WN-17-06",
    "source": "neu",
    "semester": "Herbst",
-   "week": 13,
+   "week": 12,
    "vl": [
-    "H37"
+    "H35"
    ],
    "vl_title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
    "block": 117,
@@ -19809,9 +19870,9 @@
    "orig_nr": "WN-17-07",
    "source": "neu",
    "semester": "Herbst",
-   "week": 13,
+   "week": 12,
    "vl": [
-    "H37"
+    "H35"
    ],
    "vl_title": "Physiologie des Blutes 3 (Hämostase) [I/K]",
    "block": 117,
@@ -19836,9 +19897,9 @@
    "orig_nr": "WN-17-08",
    "source": "neu",
    "semester": "Herbst",
-   "week": 13,
+   "week": 11,
    "vl": [
-    "H38"
+    "H33"
    ],
    "vl_title": "Anpassung des kardiorespiratorischen Systems 1 [DM]",
    "block": 117,
@@ -19863,9 +19924,9 @@
    "orig_nr": "WN-17-09",
    "source": "neu",
    "semester": "Herbst",
-   "week": 13,
+   "week": 11,
    "vl": [
-    "H38"
+    "H33"
    ],
    "vl_title": "Anpassung des kardiorespiratorischen Systems 1 [DM]",
    "block": 117,
@@ -19890,9 +19951,9 @@
    "orig_nr": "WN-17-10",
    "source": "neu",
    "semester": "Herbst",
-   "week": 13,
+   "week": 11,
    "vl": [
-    "H38"
+    "H33"
    ],
    "vl_title": "Anpassung des kardiorespiratorischen Systems 1 [DM]",
    "block": 117,
