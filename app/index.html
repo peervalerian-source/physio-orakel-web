@@ -1507,17 +1507,8 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
         </div>
       </div>
       <div id="codeAdminStatus" style="font-size:13px;color:var(--app-mute);margin:12px 0"></div>
-      <div id="codeList" style="display:grid;gap:8px;max-height:26vh;overflow:auto"></div>
+      <div id="codeList" style="display:grid;gap:8px;max-height:36vh;overflow:auto"></div>
 
-      <div style="margin-top:18px;padding-top:14px;border-top:2px solid var(--app-rule)">
-        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-          <span class="seg-label" style="margin:0">Passwort-Anfragen</span>
-          <button type="button" class="btn btn-secondary btn-sm" onclick="loadResets()" style="margin-left:auto">Laden</button>
-        </div>
-        <div class="key-panel-sub" style="margin-top:6px">Wer „Passwort vergessen" klickt, landet hier. Den Code schickst du der Person, er gilt 30 Minuten.</div>
-        <div id="resetAdminStatus" style="font-size:13px;color:var(--app-mute);margin:10px 0"></div>
-        <div id="resetList" style="display:grid;gap:8px;max-height:22vh;overflow:auto"></div>
-      </div>
     </div>
   </div>
 </div>
@@ -2500,7 +2491,7 @@ function setAdminTab(tab){
   });
   if(tab==='pool')setPoolTarget(poolUploadTarget);
   if(tab==='wt')loadWochentestAdminHint();
-  if(tab==='codes'&&adminKey()){loadCodes();loadResets()}
+  if(tab==='codes'&&adminKey())loadCodes();
   if(tab==='fb'&&adminKey())loadFeedback();
 }
 function loadWochentestAdminHint(){
@@ -2830,33 +2821,6 @@ async function sendFeedback(){
     if(st){st.style.color='var(--app-error)';st.textContent=e.message||'Konnte nicht gesendet werden.'}
     if(sb){sb.disabled=false;sb.textContent='Erneut senden'}
   }
-}
-
-// Admin: offene Passwort-Anfragen
-async function loadResets(){
-  const key=adminKey(),st=document.getElementById('resetAdminStatus'),el=document.getElementById('resetList');
-  if(!key||!el)return;
-  try{
-    const res=await fetch(WORKER_URL+'/admin/resets',{headers:{'X-Admin-Key':key}});
-    const data=await res.json();
-    if(!res.ok)throw new Error(data.error||'Fehler '+res.status);
-    const items=data.items||[];
-    if(st)st.textContent=items.length?items.length+' offen':'Keine offenen Anfragen.';
-    el.innerHTML=items.map(i=>{
-      const mins=Math.max(0,Math.round((i.expiresAt-Date.now())/60000));
-      return '<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;border:2px solid var(--app-rule);padding:9px 12px;background:var(--app-panel);font-size:12.5px">'+
-        '<span style="font-family:var(--font-heading);font-weight:800;color:var(--app-ink)">'+escapeHtml(i.username)+'</span>'+
-        '<span style="color:var(--app-mute)">'+escapeHtml(i.email||'')+'</span>'+
-        '<code style="margin-left:auto;font-size:15px;letter-spacing:.14em;color:var(--app-accent)">'+escapeHtml(i.code)+'</code>'+
-        '<span style="color:var(--app-mute)">noch '+mins+' Min.</span>'+
-        '<button type="button" class="btn btn-secondary btn-sm" onclick="navigator.clipboard.writeText(\''+i.code+'\')">Kopieren</button>'+
-        '<button type="button" class="btn btn-secondary btn-sm" onclick="deleteReset(\''+i.code+'\')">Verwerfen</button></div>';
-    }).join('');
-  }catch(e){if(st)st.textContent='Fehler: '+e.message}
-}
-async function deleteReset(code){
-  const key=adminKey();if(!key)return;
-  try{await fetch(WORKER_URL+'/admin/resets',{method:'DELETE',headers:{'Content-Type':'application/json','X-Admin-Key':key},body:JSON.stringify({code})});loadResets()}catch{}
 }
 
 // Admin-Seite: lesen, abhaken, loeschen, exportieren
