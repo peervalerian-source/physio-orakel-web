@@ -839,6 +839,8 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
     <p id="homeRankLine">Noch nicht angemeldet.</p>
   </div>
   <div style="max-width:1100px;margin:0 auto;padding:0 clamp(16px,4vw,56px) 40px;display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap">
+    <button type="button" class="btn-link" onclick="openFeedback('frage')">Altfrage einreichen</button>
+    <button type="button" class="btn-link" onclick="openFeedback('sonstiges')">Feedback</button>
     <button type="button" class="btn-link" onclick="openAdmin()">admin</button>
   </div>
 </div>
@@ -1360,6 +1362,29 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
   </div>
 </div>
 
+<!-- ══ Rueckmeldung: Fehler melden, Altfrage einreichen ══════════════════ -->
+<div class="key-overlay" id="feedbackOverlay">
+  <div class="key-backdrop" onclick="closeFeedback()"></div>
+  <div class="key-panel" style="max-width:560px">
+    <button type="button" class="modal-close" onclick="closeFeedback()" title="Schließen">✕</button>
+    <span class="kicker">Rückmeldung</span>
+    <div class="key-panel-title" id="fbTitle">Fehler melden</div>
+    <div class="key-panel-sub" id="fbSub">Was stimmt nicht? Falsche Lösung, Tippfehler, unklare Frage — alles hilft.</div>
+    <div class="seg seg-text" id="fbKindSeg" style="margin-top:12px;width:100%">
+      <button type="button" data-kind="fehler" class="on" onclick="setFeedbackKind('fehler')">Fehler in einer Frage</button>
+      <button type="button" data-kind="frage" onclick="setFeedbackKind('frage')">Altfrage einreichen</button>
+      <button type="button" data-kind="sonstiges" onclick="setFeedbackKind('sonstiges')">Sonstiges</button>
+    </div>
+    <div id="fbContext" style="display:none;margin-top:12px;padding:10px 13px;border-left:2px solid var(--app-accent);background:var(--app-panel);font-size:12.5px;line-height:19px;color:var(--app-mute)"></div>
+    <textarea class="input" id="fbText" style="margin-top:12px;min-height:150px" placeholder="…"></textarea>
+    <div class="key-status" id="fbStatus" style="margin-top:10px"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:6px">
+      <button type="button" class="btn btn-secondary" onclick="closeFeedback()">Abbrechen</button>
+      <button type="button" class="btn btn-primary" id="fbSendBtn" onclick="sendFeedback()">Absenden</button>
+    </div>
+  </div>
+</div>
+
 <!-- ══ Admin ═══════════════════════════════════════════════════════════════
      Ein Fenster, drei Bereiche. Der Admin-Key steht oben und gilt fuer alle.
      ══════════════════════════════════════════════════════════════════════ -->
@@ -1375,6 +1400,19 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
       <button type="button" data-tab="pool" class="on" onclick="setAdminTab('pool')">Altfragen</button>
       <button type="button" data-tab="wt" onclick="setAdminTab('wt')">Material</button>
       <button type="button" data-tab="codes" onclick="setAdminTab('codes')">Codes</button>
+      <button type="button" data-tab="fb" onclick="setAdminTab('fb')">Meldungen</button>
+    </div>
+
+    <!-- Rueckmeldungen -->
+    <div class="admin-panel" id="adminPanelFb" style="display:none;margin-top:16px">
+      <div class="key-panel-sub" style="margin-top:0">Fehlermeldungen und eingereichte Altfragen der Nutzer.</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;align-items:center">
+        <button type="button" class="btn btn-secondary" onclick="loadFeedback()">Liste laden</button>
+        <button type="button" class="btn btn-secondary" onclick="exportFeedback()">Als JSON kopieren</button>
+        <label style="font-size:12.5px;color:var(--app-mute);display:flex;gap:6px;align-items:center;margin-left:auto"><input type="checkbox" id="fbShowDone" onchange="renderFeedbackList()"> erledigte zeigen</label>
+      </div>
+      <div id="fbAdminStatus" style="font-size:13px;color:var(--app-mute);margin:12px 0"></div>
+      <div id="fbList" style="display:grid;gap:10px;max-height:46vh;overflow:auto"></div>
     </div>
 
     <!-- Altfragenpool -->
@@ -2018,15 +2056,31 @@ function ekgAnim(run){
     else if(run){svg.setCurrentTime(0);svg.unpauseAnimations()}
   }catch{}
 }
+// Bisher: zufaelliger Einstieg, dann der Reihe nach. Ueber viele Runden
+// gleichverteilt, fuehlt sich aber nach Wiederholung an, weil derselbe
+// Text schnell wiederkommen kann. Ein gemischter Stapel zeigt jeden Text
+// einmal, bevor irgendeiner zum zweiten Mal drankommt.
+const LOADER_DECK_KEY='physio_orakel_loader_deck';
+function loaderDeckNext(){
+  let deck=null;
+  try{deck=JSON.parse(localStorage.getItem(LOADER_DECK_KEY)||'null')}catch{}
+  if(!Array.isArray(deck)||!deck.length||deck.some(i=>i>=LOADING_MSGS.length)){
+    deck=LOADING_MSGS.map((_,i)=>i);
+    for(let i=deck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const t=deck[i];deck[i]=deck[j];deck[j]=t}
+  }
+  const idx=deck.shift();
+  try{localStorage.setItem(LOADER_DECK_KEY,JSON.stringify(deck))}catch{}
+  return idx;
+}
 function startEKG(){
   loaderActive=true;
   clearLoadingError();
   ekgAnim(true);
-  loaderQuoteIdx=Math.floor(Math.random()*LOADING_MSGS.length);
+  loaderQuoteIdx=loaderDeckNext();
   renderLoaderQuote();
   setLoadPct(3);
   clearInterval(loaderQuoteTimer);clearInterval(loaderPctTimer);
-  loaderQuoteTimer=setInterval(()=>{loaderQuoteIdx++;renderLoaderQuote()},LOAD_MSG_MS);
+  loaderQuoteTimer=setInterval(()=>{loaderQuoteIdx=loaderDeckNext();renderLoaderQuote()},LOAD_MSG_MS);
   // Der Balken ist auf dieselben zehn Sekunden getaktet, damit er nicht
   // sekundenlang bei 98 % steht.
   loaderPctTimer=setInterval(()=>setLoadPct(Math.min(98,loaderPct+1.9)),200);
@@ -2049,14 +2103,14 @@ function renderPoolStatus(meta){
   }
   const date=meta.date?new Date(meta.date).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'}):'';
   wrap.innerHTML='<div style="display:flex;gap:12px;align-items:center;border-left:2px solid var(--app-accent);padding:6px 0 6px 14px">'+
-    '<div><div style="font-family:var(--font-heading);font-weight:800;font-size:14px;color:var(--app-ink)">'+(meta.name||'Altfragenpool')+'</div>'+
+    '<div><div style="font-family:var(--font-heading);font-weight:800;font-size:14px;color:var(--app-ink)">'+(state.poolKind==='allgemein'?'Fragenpool · VO-orientiert':(meta.name||POOL_LABELS[state.poolKind]||'Fragenpool'))+'</div>'+
     '<div style="font-size:12px;color:var(--app-mute)">'+(date?'Aktualisiert am '+date+' · ':'')+(meta.size||'?')+' KB · '+
     (state.parsedPool?state.parsedPool.length:0)+' Fragen erkannt</div></div></div>';
 }
 
 const POOL_LABELS={allgemein:'Physiologie allgemein',wochentest:'Wochentest'};
 const POOL_HINTS={
-  allgemein:'Die grosse Sammlung am Vorlesungsstoff entlang.',
+  allgemein:'Fragenpool, VO-orientiert — die grosse Sammlung am Vorlesungsstoff entlang.',
   wochentest:'Fragen der Wochentests, nach Vorlesungswoche geordnet.'
 };
 async function loadPoolFromServer(){
@@ -2325,7 +2379,7 @@ function closeAdmin(){
 }
 function setAdminTab(tab){
   document.querySelectorAll('#adminTabs [data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
-  const map={pool:'adminPanelPool',wt:'adminPanelWt',codes:'adminPanelCodes'};
+  const map={pool:'adminPanelPool',wt:'adminPanelWt',codes:'adminPanelCodes',fb:'adminPanelFb'};
   Object.keys(map).forEach(k=>{
     const el=document.getElementById(map[k]);
     if(el)el.style.display=k===tab?'block':'none';
@@ -2333,6 +2387,7 @@ function setAdminTab(tab){
   if(tab==='pool')setPoolTarget(poolUploadTarget);
   if(tab==='wt')loadWochentestAdminHint();
   if(tab==='codes'&&adminKey())loadCodes();
+  if(tab==='fb'&&adminKey())loadFeedback();
 }
 function loadWochentestAdminHint(){
   const st=document.getElementById('wtAdminStatus');
@@ -2598,6 +2653,132 @@ async function uploadWtTranscript(){
     setTimeout(()=>{closeWtAdmin();loadWochentest()},1000);
   }catch(e){document.getElementById('wtAdminStatus').textContent='Fehler: '+e.message}
   document.getElementById('wtUploadBtn').disabled=false;
+}
+
+// ── Rueckmeldung: Fehler melden, Altfrage einreichen ─────────────────────
+// Ein Modal fuer drei Anlaesse. Aus einer Frage heraus geoeffnet, haengt
+// der Fragekontext an, damit der Betreiber weiss, worum es geht.
+let fbKind='fehler',fbCtx=null;
+const FB_COPY={
+  fehler:{title:'Fehler melden',sub:'Was stimmt nicht? Falsche Lösung, Tippfehler, unklare Frage — alles hilft.',ph:'Zum Beispiel: Antwort c ist meiner Meinung nach richtig, weil …'},
+  frage:{title:'Altfrage einreichen',sub:'Du hast eine Frage aus einem Wochentest oder Rigorosum im Kopf? Rein damit — Frage, Optionen, und wenn du sie kennst, die Lösung.',ph:'Frage:\nOptionen:\na) …\nb) …\nRichtig: …\nWoche/Vorlesung: …'},
+  sonstiges:{title:'Feedback',sub:'Wünsche, Lob, Ärger, kaputte Knöpfe — schreib es einfach auf.',ph:'…'}
+};
+function openFeedback(kind,qi){
+  if(!hasApiKey){openKeyModal();return}
+  fbCtx=null;
+  if(typeof qi==='number'&&state.questions[qi]){
+    const q=state.questions[qi];
+    fbCtx={
+      qid:q.qid||'',topic:q.topic||'',
+      question:String(q.question||'').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim().slice(0,600),
+      mode:state.isWeekTest?'wochentest':state.isRigoOrig?'rigo':(state.flowMode||'')+'/'+(state.poolKind||'')
+    };
+  }
+  setFeedbackKind(kind||'fehler');
+  const ta=document.getElementById('fbText');if(ta)ta.value='';
+  const st=document.getElementById('fbStatus');if(st)st.textContent='';
+  const sb=document.getElementById('fbSendBtn');if(sb){sb.disabled=false;sb.textContent='Absenden'}
+  document.getElementById('feedbackOverlay').classList.add('active');
+  setTimeout(()=>{if(ta)ta.focus()},50);
+}
+function closeFeedback(){document.getElementById('feedbackOverlay').classList.remove('active')}
+function setFeedbackKind(kind){
+  fbKind=FB_COPY[kind]?kind:'sonstiges';
+  const c=FB_COPY[fbKind];
+  document.querySelectorAll('#fbKindSeg [data-kind]').forEach(b=>b.classList.toggle('on',b.dataset.kind===fbKind));
+  const t=document.getElementById('fbTitle');if(t)t.textContent=c.title;
+  const su=document.getElementById('fbSub');if(su)su.textContent=c.sub;
+  const ta=document.getElementById('fbText');if(ta)ta.placeholder=c.ph;
+  const cx=document.getElementById('fbContext');
+  if(cx){
+    if(fbCtx&&fbKind==='fehler'){
+      cx.style.display='';
+      cx.innerHTML='<b style="color:var(--app-ink)">Frage '+escapeHtml(fbCtx.qid||fbCtx.topic||'')+'</b>'+(fbCtx.qid&&fbCtx.topic?' · '+escapeHtml(fbCtx.topic):'')+'<br>'+escapeHtml(fbCtx.question.slice(0,220))+(fbCtx.question.length>220?'…':'');
+    }else cx.style.display='none';
+  }
+}
+async function sendFeedback(){
+  const ta=document.getElementById('fbText'),st=document.getElementById('fbStatus'),sb=document.getElementById('fbSendBtn');
+  const text=(ta?ta.value:'').trim();
+  if(text.length<5){if(st){st.style.color='var(--app-error)';st.textContent='Ein bisschen mehr Text, bitte.'}return}
+  if(sb){sb.disabled=true;sb.textContent='Wird gesendet…'}
+  if(st){st.style.color='var(--app-mute)';st.textContent=''}
+  try{
+    const res=await fetch(WORKER_URL+'/feedback',{method:'POST',headers:authHeaders({'Content-Type':'application/json'}),
+      body:JSON.stringify({kind:fbKind,text,context:(fbKind==='fehler'&&fbCtx)?fbCtx:{}})});
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok)throw new Error(data.error||'Fehler '+res.status);
+    if(st){st.style.color='var(--app-ok)';st.textContent='Danke — ist angekommen.'}
+    playAchievement();
+    setTimeout(closeFeedback,900);
+  }catch(e){
+    if(st){st.style.color='var(--app-error)';st.textContent=e.message||'Konnte nicht gesendet werden.'}
+    if(sb){sb.disabled=false;sb.textContent='Erneut senden'}
+  }
+}
+
+// Admin-Seite: lesen, abhaken, loeschen, exportieren
+let fbItems=[];
+const FB_KIND_LABEL={fehler:'Fehler',frage:'Altfrage',sonstiges:'Feedback'};
+async function loadFeedback(){
+  const key=adminKey(),st=document.getElementById('fbAdminStatus');
+  if(!key){if(st)st.textContent='Admin-Key fehlt.';return}
+  if(st)st.textContent='Lädt…';
+  try{
+    const res=await fetch(WORKER_URL+'/admin/feedback',{headers:{'X-Admin-Key':key}});
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.error||'Fehler '+res.status);
+    localStorage.setItem(ADMIN_KEY_STORE,key);
+    fbItems=data.items||[];
+    if(st)st.textContent=fbItems.length?(data.open+' offen · '+fbItems.length+' gesamt'):'Noch keine Meldungen.';
+    renderFeedbackList();
+  }catch(e){if(st)st.textContent='Fehler: '+e.message}
+}
+function renderFeedbackList(){
+  const el=document.getElementById('fbList');if(!el)return;
+  const showDone=!!(document.getElementById('fbShowDone')||{}).checked;
+  const rows=fbItems.filter(i=>showDone||!i.done);
+  if(!rows.length){el.innerHTML='<div style="font-size:13px;color:var(--app-mute);padding:6px 0">Nichts offen.</div>';return}
+  el.innerHTML=rows.map(i=>{
+    const d=new Date(i.createdAt||0).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});
+    const c=i.context||{};
+    const ctx=(c.qid||c.topic||c.question)?'<div style="margin-top:6px;padding:8px 10px;border-left:2px solid var(--app-rule);font-size:12px;line-height:18px;color:var(--app-mute)">'+
+      escapeHtml([c.qid,c.topic,c.mode].filter(Boolean).join(' · '))+(c.question?'<br>'+escapeHtml(c.question):'')+'</div>':'';
+    return '<div style="border:2px solid var(--app-rule);padding:12px 14px;background:var(--app-panel);opacity:'+(i.done?'.55':'1')+'">'+
+      '<div style="display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;font-size:12px;color:var(--app-mute)">'+
+        '<span style="font-family:var(--font-heading);font-weight:800;color:var(--app-accent);letter-spacing:.06em;text-transform:uppercase">'+escapeHtml(FB_KIND_LABEL[i.kind]||i.kind)+'</span>'+
+        '<span>'+escapeHtml(i.user||'?')+'</span><span>'+d+'</span>'+
+        '<span style="margin-left:auto;display:flex;gap:6px">'+
+          '<button type="button" class="btn btn-secondary btn-sm" onclick="setFeedbackDone(\''+i.id+'\','+(i.done?'false':'true')+')">'+(i.done?'Wieder öffnen':'Erledigt')+'</button>'+
+          '<button type="button" class="btn btn-secondary btn-sm" onclick="deleteFeedback(\''+i.id+'\')">Löschen</button></span></div>'+
+      '<div style="margin-top:8px;font-size:14px;line-height:22px;color:var(--app-ink);white-space:pre-wrap">'+escapeHtml(i.text||'')+'</div>'+ctx+'</div>';
+  }).join('');
+}
+async function setFeedbackDone(id,done){
+  const key=adminKey();if(!key)return;
+  try{
+    const res=await fetch(WORKER_URL+'/admin/feedback',{method:'PUT',headers:{'Content-Type':'application/json','X-Admin-Key':key},body:JSON.stringify({id,done})});
+    if(!res.ok)throw new Error('Fehler '+res.status);
+    const it=fbItems.find(x=>x.id===id);if(it)it.done=done;
+    renderFeedbackList();
+  }catch(e){const st=document.getElementById('fbAdminStatus');if(st)st.textContent='Fehler: '+e.message}
+}
+async function deleteFeedback(id){
+  const key=adminKey();if(!key)return;
+  if(!confirm('Meldung endgültig löschen?'))return;
+  try{
+    const res=await fetch(WORKER_URL+'/admin/feedback',{method:'DELETE',headers:{'Content-Type':'application/json','X-Admin-Key':key},body:JSON.stringify({id})});
+    if(!res.ok)throw new Error('Fehler '+res.status);
+    fbItems=fbItems.filter(x=>x.id!==id);
+    renderFeedbackList();
+  }catch(e){const st=document.getElementById('fbAdminStatus');if(st)st.textContent='Fehler: '+e.message}
+}
+function exportFeedback(){
+  const st=document.getElementById('fbAdminStatus');
+  const txt=JSON.stringify(fbItems,null,1);
+  navigator.clipboard.writeText(txt).then(()=>{if(st)st.textContent=fbItems.length+' Meldungen als JSON in der Zwischenablage.'})
+    .catch(()=>{if(st)st.textContent='Zwischenablage nicht erreichbar.'});
 }
 
 // ── RIGO-Altfragen Original — termin picker + session ─────────────────────
@@ -3224,7 +3405,7 @@ function runEvaluate(){
     });
     const s=!rated?{t:'Ohne Lösung',c:''}:score>=0.99?{t:'Vollständig',c:'full'}:score>0?{t:'Teilweise',c:'partial'}:{t:'Falsch',c:'wrong'};
     const fb=document.createElement('div');fb.className='feedback-block';
-    fb.innerHTML=`<div class="fb-row"><span class="fb-status ${s.c}">${s.t}</span><span class="fb-score">${rated?score.toFixed(2).replace('.',',')+' / 1,00 Pkt.':'nicht gewertet'}</span></div><div class="fb-explain">${q.explanation||''}</div><button class="btn btn-explain" onclick="deepDive(${i},this,'ddive')">🔬 Erklär mir das</button><div id="ddive${i}"></div>`;
+    fb.innerHTML=`<div class="fb-row"><span class="fb-status ${s.c}">${s.t}</span><span class="fb-score">${rated?score.toFixed(2).replace('.',',')+' / 1,00 Pkt.':'nicht gewertet'}</span></div><div class="fb-explain">${q.explanation||''}</div><button class="btn btn-explain" onclick="deepDive(${i},this,'ddive')">🔬 Erklär mir das</button> <button class="btn btn-explain" onclick="openFeedback('fehler',${i})">⚑ Fehler melden</button><div id="ddive${i}"></div>`;
     document.getElementById('q'+i).appendChild(fb);
   });
   const pct=scorable?Math.round(totalPts/scorable*100):0;
@@ -3384,7 +3565,7 @@ function buildResult(pct,pts,max,topicScores){
       else if(wc){cls='rv-miss';mark='✕'}
       optsHtml+=`<div class="option-row ${cls}"><span class="opt-mark" aria-hidden="true">${mark}</span><div class="opt-label"><span class="opt-letter">${opt.key.toUpperCase()}</span>${opt.text}</div></div>`;
     });
-    bl.innerHTML=`<div class="q-number">Frage ${i+1} · ${q.topic||''}</div><div class="q-text serif">${q.question}</div><div class="options">${optsHtml}</div><div class="feedback-block fb-${s.c}" style="margin-top:.85rem"><div class="fb-row"><span class="fb-status ${s.c}">${s.t}</span><span class="fb-score">${rated?score.toFixed(2).replace('.',',')+' / 1,00 Pkt.':'nicht gewertet'}</span></div><div class="fb-explain">${q.explanation||''}</div><button class="btn btn-explain" onclick="deepDive(${i},this,'rv_ddive')">🔬 Erklär mir das</button><div id="rv_ddive${i}"></div></div>`;
+    bl.innerHTML=`<div class="q-number">Frage ${i+1} · ${q.topic||''}</div><div class="q-text serif">${q.question}</div><div class="options">${optsHtml}</div><div class="feedback-block fb-${s.c}" style="margin-top:.85rem"><div class="fb-row"><span class="fb-status ${s.c}">${s.t}</span><span class="fb-score">${rated?score.toFixed(2).replace('.',',')+' / 1,00 Pkt.':'nicht gewertet'}</span></div><div class="fb-explain">${q.explanation||''}</div><button class="btn btn-explain" onclick="deepDive(${i},this,'rv_ddive')">🔬 Erklär mir das</button> <button class="btn btn-explain" onclick="openFeedback('fehler',${i})">⚑ Fehler melden</button><div id="rv_ddive${i}"></div></div>`;
     rv.appendChild(bl);
   });
 }
@@ -3787,8 +3968,21 @@ const RANKS=[
   {min:75,max:Infinity, m:'Professor emeritus', f:'Professorin emerita', icon:'📜', color:'#f59e0b'},
 ];
 // Special VIP badges (shown in parentheses alongside normal rank)
+// Sonderraenge im Ranking. OG: die ersten zwoelf Accounts — sie waren da,
+// als noch nichts fertig war.
 const VIP_BADGES={
-  'johnnywespos': {label:'CEO', color:'#DA291C'},
+  'johnnywespos':    {label:'CEO', color:'#DA291C'},
+  'panzerknacker':   {label:'OG',  color:'#F5B301'},
+  'rosecharlotte04': {label:'OG',  color:'#F5B301'},
+  'carlaoh':         {label:'OG',  color:'#F5B301'},
+  'alina':           {label:'OG',  color:'#F5B301'},
+  'hiwa':            {label:'OG',  color:'#F5B301'},
+  'generalhetke':    {label:'OG',  color:'#F5B301'},
+  'emmabmgt':        {label:'OG',  color:'#F5B301'},
+  'oktagon':         {label:'OG',  color:'#F5B301'},
+  'mxne_slg':        {label:'OG',  color:'#F5B301'},
+  'fina':            {label:'OG',  color:'#F5B301'},
+  'simon':           {label:'OG',  color:'#F5B301'},
 };
 function getVipBadge(username){
   if(!username)return null;
@@ -4194,7 +4388,7 @@ function wkPrepare(q){
   // Mehrfachauswahl waeren sie ein Freischein — jedes Kreuz sitzt richtig.
   if(opts.every(o=>/_{3,}/.test(o)))return null;
   return{
-    code:lec.code,semester:lec.semester,week:lec.week,vlTitle:lec.title,
+    qid:q.id||'',code:lec.code,semester:lec.semester,week:lec.week,vlTitle:lec.title,
     source:q.source||'',block:q.block,blockTitle:q.block_title||'',
     question:q.question||'',opts:opts,correct:corr,
     // Zu manchen Altfragen ist keine Loesung ueberliefert. Sie bleiben im
@@ -4484,7 +4678,7 @@ function wkToEngine(it,i){
   if(it.note.trim())expl+='<span style="display:block">'+wkRich(it.note.trim())+'</span>';
   if(it.extra.trim())expl+='<span style="display:block;margin-top:6px;color:var(--app-mute);font-size:12.5px">'+wkRich(it.extra.trim())+'</span>';
   return{
-    id:i+1,topic:it.code,question:wkRich(it.question),
+    id:i+1,qid:it.qid,topic:it.code,question:wkRich(it.question),
     options:options,correct:correct,explanation:expl
   };
 }
