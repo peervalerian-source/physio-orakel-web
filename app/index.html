@@ -250,6 +250,8 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
   padding: 16px 16px 16px 14px; border-left: 2px solid var(--app-accent);
   background: color-mix(in srgb, var(--app-panel) 60%, transparent);
 }
+.skript-group { font-family: var(--font-heading); font-weight: 800; font-size: 17px; line-height: 24px; color: var(--app-ink); padding: 26px 0 8px; border-bottom: 2px solid var(--app-rule); margin-bottom: 4px; }
+.skript-group:first-child { padding-top: 4px; }
 .skript-title { font-family: var(--font-heading); font-weight: 800; font-size: 16px; line-height: 22px; color: var(--app-ink); }
 .skript-desc { font-size: 13.5px; line-height: 21px; color: var(--app-mute); margin-top: 3px; }
 .skript-meta { font-size: 12px; line-height: 18px; color: var(--app-mute); margin-top: 5px; font-feature-settings: 'tnum' 1; }
@@ -2193,10 +2195,15 @@ async function renderSkripte(){
     el.innerHTML='<p class="cfg-sub" style="margin-top:18px"><b style="display:block;color:var(--app-ink)">Noch keine Skripte.</b>Sobald welche da sind, stehen sie hier.</p>';
     return;
   }
+  // Gruppen (Themenkatalog-Bloecke) bekommen eine Zwischenzeile, sobald
+  // sich die Gruppe von einer Zeile zur naechsten aendert.
+  let lastGroup=null;
   el.innerHTML=items.map(it=>{
+    let head='';
+    if(it.group&&it.group!==lastGroup){lastGroup=it.group;head='<div class="skript-group">'+escapeHtml(it.group)+'</div>'}
     const file='/skripte/'+encodeURIComponent(String(it.file||''));
     const meta=[it.pages?it.pages+' Seiten':'',fmtBytes(it.size),it.date?'Stand '+escapeHtml(it.date):''].filter(Boolean).join(' · ');
-    return '<div class="skript-row"><div>'+
+    return head+'<div class="skript-row"><div>'+
       '<div class="skript-title">'+escapeHtml(it.title||it.file||'Skript')+'</div>'+
       (it.desc?'<div class="skript-desc">'+escapeHtml(it.desc)+'</div>':'')+
       (meta?'<div class="skript-meta">'+meta+'</div>':'')+

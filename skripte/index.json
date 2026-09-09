@@ -1,1 +1,330 @@
-[]
+[
+ {
+  "file": "1_1_Membranen_Transport_Rezeptoren_Signaltransduktion.pdf",
+  "title": "1.1 · Membranen Transport Rezeptoren Signaltransduktion",
+  "group": "1 · Zell-, Nerven- und Muskelphysiologie",
+  "size": 171751,
+  "date": "September 2026",
+  "pages": 10
+ },
+ {
+  "file": "1_2_Ruhemembranpotential_Aktionspotential.pdf",
+  "title": "1.2 · Ruhemembranpotential Aktionspotential",
+  "group": "1 · Zell-, Nerven- und Muskelphysiologie",
+  "size": 168343,
+  "date": "September 2026",
+  "pages": 7
+ },
+ {
+  "file": "1_3_Synaptische_Uebertragung_Elektrotonische_Potentiale.pdf",
+  "title": "1.3 · Synaptische Übertragung Elektrotonische Potentiale",
+  "group": "1 · Zell-, Nerven- und Muskelphysiologie",
+  "size": 170974,
+  "date": "September 2026",
+  "pages": 9
+ },
+ {
+  "file": "1_4_Muskelzellen_Physiologie_Elektrophysiologie_Mechanik.pdf",
+  "title": "1.4 · Muskelzellen Physiologie Elektrophysiologie Mechanik",
+  "group": "1 · Zell-, Nerven- und Muskelphysiologie",
+  "size": 144999,
+  "date": "September 2026",
+  "pages": 9
+ },
+ {
+  "file": "1_5_Vegetative_efferente_Mechanismen.pdf",
+  "title": "1.5 · Vegetative efferente Mechanismen",
+  "group": "1 · Zell-, Nerven- und Muskelphysiologie",
+  "size": 164885,
+  "date": "September 2026",
+  "pages": 7
+ },
+ {
+  "file": "2_1_Elektrophysiologie_Herz.pdf",
+  "title": "2.1 · Elektrophysiologie Herz",
+  "group": "2 · Herz-Kreislauf-Physiologie",
+  "size": 132153,
+  "date": "September 2026",
+  "pages": 6
+ },
+ {
+  "file": "2_2_Elektrokardiographie_HZV_Echokardiographie.pdf",
+  "title": "2.2 · Elektrokardiographie HZV Echokardiographie",
+  "group": "2 · Herz-Kreislauf-Physiologie",
+  "size": 164684,
+  "date": "September 2026",
+  "pages": 7
+ },
+ {
+  "file": "2_3_Herzmechanik_Schlagvolumen_Herzzyklus.pdf",
+  "title": "2.3 · Herzmechanik Schlagvolumen Herzzyklus",
+  "group": "2 · Herz-Kreislauf-Physiologie",
+  "size": 135676,
+  "date": "September 2026",
+  "pages": 7
+ },
+ {
+  "file": "2_4_Gefaesssegmente_Haemodynamik_Blutdruck.pdf",
+  "title": "2.4 · Gefäßsegmente Hämodynamik Blutdruck",
+  "group": "2 · Herz-Kreislauf-Physiologie",
+  "size": 169155,
+  "date": "September 2026",
+  "pages": 8
+ },
+ {
+  "file": "2_5_Neuronale_hormonelle_Kreislaufsteuerung.pdf",
+  "title": "2.5 · Neuronale hormonelle Kreislaufsteuerung",
+  "group": "2 · Herz-Kreislauf-Physiologie",
+  "size": 167466,
+  "date": "September 2026",
+  "pages": 8
+ },
+ {
+  "file": "2_6_Lokale_Steuerung_Kreislauf.pdf",
+  "title": "2.6 · Lokale Steuerung Kreislauf",
+  "group": "2 · Herz-Kreislauf-Physiologie",
+  "size": 135593,
+  "date": "September 2026",
+  "pages": 6
+ },
+ {
+  "file": "2_7_Kreislauf_Herz_Gehirn_Haut.pdf",
+  "title": "2.7 · Kreislauf Herz Gehirn Haut",
+  "group": "2 · Herz-Kreislauf-Physiologie",
+  "size": 131934,
+  "date": "September 2026",
+  "pages": 6
+ },
+ {
+  "file": "2_8_Skelettmuskel_Splanchnikus_Kreislaufanpassung.pdf",
+  "title": "2.8 · Skelettmuskel Splanchnikus Kreislaufanpassung",
+  "group": "2 · Herz-Kreislauf-Physiologie",
+  "size": 162937,
+  "date": "September 2026",
+  "pages": 7
+ },
+ {
+  "file": "3_1_Atemmechanik_Ventilation_Diffusion_Lungendurchblutung.pdf",
+  "title": "3.1 · Atemmechanik Ventilation Diffusion Lungendurchblutung",
+  "group": "3 · Atmungsphysiologie",
+  "size": 193366,
+  "date": "September 2026",
+  "pages": 8
+ },
+ {
+  "file": "3_2_Gastransport_Hypoxieformen.pdf",
+  "title": "3.2 · Gastransport Hypoxieformen",
+  "group": "3 · Atmungsphysiologie",
+  "size": 131648,
+  "date": "September 2026",
+  "pages": 6
+ },
+ {
+  "file": "3_3_Atemzentren_Atemregulation.pdf",
+  "title": "3.3 · Atemzentren Atemregulation",
+  "group": "3 · Atmungsphysiologie",
+  "size": 132179,
+  "date": "September 2026",
+  "pages": 6
+ },
+ {
+  "file": "4_1_Nierendurchblutung_Primaerharn_proximaler_Tubulus.pdf",
+  "title": "4.1 · Nierendurchblutung Primärharn proximaler Tubulus",
+  "group": "4 · Nierenphysiologie und Säure-Basen-Haushalt",
+  "size": 163963,
+  "date": "September 2026",
+  "pages": 7
+ },
+ {
+  "file": "4_2_Henle_Sammelrohr_Harnwege.pdf",
+  "title": "4.2 · Henle Sammelrohr Harnwege",
+  "group": "4 · Nierenphysiologie und Säure-Basen-Haushalt",
+  "size": 161720,
+  "date": "September 2026",
+  "pages": 7
+ },
+ {
+  "file": "4_3_Volumen_pH_Osmoregulation.pdf",
+  "title": "4.3 · Volumen pH Osmoregulation",
+  "group": "4 · Nierenphysiologie und Säure-Basen-Haushalt",
+  "size": 163158,
+  "date": "September 2026",
+  "pages": 7
+ },
+ {
+  "file": "4_4_Saeure_Basen_Stoerungen_Kompensation.pdf",
+  "title": "4.4 · Säure Basen Stoerungen Kompensation",
+  "group": "4 · Nierenphysiologie und Säure-Basen-Haushalt",
+  "size": 136019,
+  "date": "September 2026",
+  "pages": 6
+ },
+ {
+  "file": "5_1_Verdauung_Mund_Magen.pdf",
+  "title": "5.1 · Verdauung Mund Magen",
+  "group": "5 · Verdauungsphysiologie",
+  "size": 161476,
+  "date": "September 2026",
+  "pages": 7
+ },
+ {
+  "file": "5_2_Verdauung_Duodenum_Rektum.pdf",
+  "title": "5.2 · Verdauung Duodenum Rektum",
+  "group": "5 · Verdauungsphysiologie",
+  "size": 138460,
+  "date": "September 2026",
+  "pages": 8
+ },
+ {
+  "file": "5_3_Verdauung_Absorption_Ionen_Vitamine.pdf",
+  "title": "5.3 · Verdauung Absorption Ionen Vitamine",
+  "group": "5 · Verdauungsphysiologie",
+  "size": 131616,
+  "date": "September 2026",
+  "pages": 6
+ },
+ {
+  "file": "6_1_Haematopoese_Blutzellen_Blutgruppen_Plasma.pdf",
+  "title": "6.1 · Hämatopoese Blutzellen Blutgruppen Plasma",
+  "group": "6 · Blutphysiologie und Hämostase",
+  "size": 175178,
+  "date": "September 2026",
+  "pages": 9
+ },
+ {
+  "file": "6_2_Haemostase_Thrombozyten_Gerinnung_Fibrinolyse.pdf",
+  "title": "6.2 · Hämostase Thrombozyten Gerinnung Fibrinolyse",
+  "group": "6 · Blutphysiologie und Hämostase",
+  "size": 138167,
+  "date": "September 2026",
+  "pages": 7
+ },
+ {
+  "file": "7_1_Hypophyse_Steuerung.pdf",
+  "title": "7.1 · Hypophyse Steuerung",
+  "group": "7 · Endokrinologie und Reproduktionsphysiologie",
+  "size": 131287,
+  "date": "September 2026",
+  "pages": 7
+ },
+ {
+  "file": "7_2_Nebenniere_Rinde_Mark.pdf",
+  "title": "7.2 · Nebenniere Rinde Mark",
+  "group": "7 · Endokrinologie und Reproduktionsphysiologie",
+  "size": 136896,
+  "date": "September 2026",
+  "pages": 7
+ },
+ {
+  "file": "7_3_Schilddruese_Energiehaushalt.pdf",
+  "title": "7.3 · Schilddrüse Energiehaushalt",
+  "group": "7 · Endokrinologie und Reproduktionsphysiologie",
+  "size": 162378,
+  "date": "September 2026",
+  "pages": 7
+ },
+ {
+  "file": "7_4_Glukoseerhoehende_Hormone.pdf",
+  "title": "7.4 · Glukoseerhöhende Hormone",
+  "group": "7 · Endokrinologie und Reproduktionsphysiologie",
+  "size": 138038,
+  "date": "September 2026",
+  "pages": 7
+ },
+ {
+  "file": "7_5_Insulin_Diabetes_mellitus.pdf",
+  "title": "7.5 · Insulin Diabetes mellitus",
+  "group": "7 · Endokrinologie und Reproduktionsphysiologie",
+  "size": 170183,
+  "date": "September 2026",
+  "pages": 9
+ },
+ {
+  "file": "7_6_Calcium_Phosphat_Knochen.pdf",
+  "title": "7.6 · Calcium Phosphat Knochen",
+  "group": "7 · Endokrinologie und Reproduktionsphysiologie",
+  "size": 166857,
+  "date": "September 2026",
+  "pages": 8
+ },
+ {
+  "file": "7_7_Hormonelle_Steuerung_Reproduktion_Mann.pdf",
+  "title": "7.7 · Hormonelle Steuerung Reproduktion Mann",
+  "group": "7 · Endokrinologie und Reproduktionsphysiologie",
+  "size": 164191,
+  "date": "September 2026",
+  "pages": 7
+ },
+ {
+  "file": "7_8_Hormonelle_Steuerung_Reproduktion_Frau.pdf",
+  "title": "7.8 · Hormonelle Steuerung Reproduktion Frau",
+  "group": "7 · Endokrinologie und Reproduktionsphysiologie",
+  "size": 139125,
+  "date": "September 2026",
+  "pages": 8
+ },
+ {
+  "file": "7_9_Schwangerschaft_Laktation.pdf",
+  "title": "7.9 · Schwangerschaft Laktation",
+  "group": "7 · Endokrinologie und Reproduktionsphysiologie",
+  "size": 163475,
+  "date": "September 2026",
+  "pages": 7
+ },
+ {
+  "file": "8_1_Zentrale_Steuerung_Somatomotorik.pdf",
+  "title": "8.1 · Zentrale Steuerung Somatomotorik",
+  "group": "8 · Neurophysiologie, Sinnesphysiologie und ZNS",
+  "size": 143725,
+  "date": "September 2026",
+  "pages": 8
+ },
+ {
+  "file": "8_2_Tastsinn_Thermorezeption_Rueckenmarkslaesion.pdf",
+  "title": "8.2 · Tastsinn Thermorezeption Rückenmarksläsion",
+  "group": "8 · Neurophysiologie, Sinnesphysiologie und ZNS",
+  "size": 161393,
+  "date": "September 2026",
+  "pages": 6
+ },
+ {
+  "file": "8_3_Nozizeption_Schmerz_Mediatoren.pdf",
+  "title": "8.3 · Nozizeption Schmerz Mediatoren",
+  "group": "8 · Neurophysiologie, Sinnesphysiologie und ZNS",
+  "size": 136348,
+  "date": "September 2026",
+  "pages": 7
+ },
+ {
+  "file": "8_4_Gehoer_Gleichgewicht_Chemische_Sinne.pdf",
+  "title": "8.4 · Gehör Gleichgewicht Chemische Sinne",
+  "group": "8 · Neurophysiologie, Sinnesphysiologie und ZNS",
+  "size": 143054,
+  "date": "September 2026",
+  "pages": 9
+ },
+ {
+  "file": "8_5_Auge_Visuelle_Wahrnehmung.pdf",
+  "title": "8.5 · Auge Visuelle Wahrnehmung",
+  "group": "8 · Neurophysiologie, Sinnesphysiologie und ZNS",
+  "size": 169164,
+  "date": "September 2026",
+  "pages": 8
+ },
+ {
+  "file": "8_6_Zentrale_Steuerung_Neurovegetativer_Funktionen.pdf",
+  "title": "8.6 · Zentrale Steuerung Neurovegetativer Funktionen",
+  "group": "8 · Neurophysiologie, Sinnesphysiologie und ZNS",
+  "size": 164869,
+  "date": "September 2026",
+  "pages": 7
+ },
+ {
+  "file": "8_7_Hirnrinde_EEG_Schlaf_Gedaechtnis.pdf",
+  "title": "8.7 · Hirnrinde EEG Schlaf Gedächtnis",
+  "group": "8 · Neurophysiologie, Sinnesphysiologie und ZNS",
+  "size": 164974,
+  "date": "September 2026",
+  "pages": 7
+ }
+]
