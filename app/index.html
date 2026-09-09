@@ -2015,7 +2015,7 @@ function onAuthSuccess(data,accessCode){
   showAuthStatus('Erfolgreich!','var(--app-ok)');
   document.getElementById('keyCornerBtn').classList.add('has-key');
   updateUserBadge();updateLoginHintVisibility();
-  setTimeout(()=>{closeKeyModal();syncStatsFromServer().then(()=>{loadPoolFromServer();loadWochentest();loadRigoOriginal()})},600);
+  setTimeout(()=>{closeKeyModal();syncStatsFromServer().then(()=>{loadPoolFromServer();loadWochentest();loadRigoOriginal()});if(typeof showReminderIfDue==='function')showReminderIfDue()},600);
 }
 async function logout(){
   const tok=getSessionToken();
@@ -2229,6 +2229,9 @@ function reminderState(){
   return{id:REMINDER.id,shown:0,dismissed:false};
 }
 function showReminderIfDue(){
+  // Nur fuer Angemeldete — wer noch kein Konto hat, sieht erst das
+  // Anmelde-Modal; der Reminder kommt dann direkt nach dem Login.
+  if(!hasApiKey||!currentUser)return;
   const st=reminderState();
   if(st.dismissed||st.shown>=REMINDER.maxShows)return;
   const ov=document.getElementById('reminderOverlay');if(!ov)return;
