@@ -240,6 +240,20 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
 .mc-arrow { font-family: var(--font-heading); font-weight: 800; font-size: 20px; color: var(--app-accent); }
 .mc-title { display: block; font-family: var(--font-heading); font-weight: 800; font-size: clamp(24px, 2.8vw, 32px); line-height: 1.1; letter-spacing: -0.02em; color: var(--app-ink); margin-top: 22px; }
 .mc-desc { display: block; font-size: 15px; line-height: 25px; color: var(--app-mute); margin-top: 12px; max-width: 34ch; }
+/* Kleiner Nebeneingang unter den Modus-Karten — kein dritter Modus,
+   nur ein Regal mit PDFs. */
+.mode-links { margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap; }
+/* Skripte-Regal: Zeilen auf ruhiger Flaeche, Aktion rechts. */
+.skript-list { margin-top: 22px; display: grid; gap: 2px; }
+.skript-row {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 20px; align-items: center;
+  padding: 16px 16px 16px 14px; border-left: 2px solid var(--app-accent);
+  background: color-mix(in srgb, var(--app-panel) 60%, transparent);
+}
+.skript-title { font-family: var(--font-heading); font-weight: 800; font-size: 16px; line-height: 22px; color: var(--app-ink); }
+.skript-desc { font-size: 13.5px; line-height: 21px; color: var(--app-mute); margin-top: 3px; }
+.skript-meta { font-size: 12px; line-height: 18px; color: var(--app-mute); margin-top: 5px; font-feature-settings: 'tnum' 1; }
+@media (max-width: 560px) { .skript-row { grid-template-columns: 1fr; } .skript-row .btn { justify-self: start; } }
 .home-foot { max-width: 1100px; margin: 0 auto; padding: 20px clamp(16px, 4vw, 56px) 56px; display: flex; gap: 12px 28px; flex-wrap: wrap; justify-content: space-between; }
 .home-foot p { font-size: 13px; line-height: 22px; color: var(--app-mute); margin: 0; }
 
@@ -839,6 +853,9 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
           <span class="mc-desc">PDF rein — Skript, Mitschrift, Folien. Das Orakel macht Fragen daraus.</span>
         </button>
       </div>
+      <div class="mode-links">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="openSkripte()">Skripte &amp; Unterlagen →</button>
+      </div>
 
     </div>
   </section>
@@ -959,6 +976,20 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
       <span class="cfg-foot-status" id="startHint">Wähle mindestens einen Punkt.</span>
       <button type="button" class="btn btn-primary btn-large" id="startBtn" onclick="startFromConfig()" disabled>Quiz starten <span aria-hidden="true">→</span></button>
     </div>
+  </section>
+</div>
+
+<!-- ══ S-Skripte: PDFs zum Herunterladen ══════════════════════════════════
+     Die Dateien liegen unter /skripte/, die Liste in /skripte/index.json.
+     Neues Skript = PDF in den Ordner, ein Eintrag in die Liste.
+     ══════════════════════════════════════════════════════════════════════ -->
+<div id="sSkripte" class="screen">
+  <section class="wrap">
+    <button type="button" class="btn btn-return" onclick="goTo('s1')"><span class="arr" aria-hidden="true">←</span> Zurück zur Startseite</button>
+    <span class="kicker">Unterlagen</span>
+    <h1 class="screen-h1">Skripte</h1>
+    <p class="cfg-sub" style="margin-top:14px;font-size:15px;line-height:24px">Zusammenfassungen und Skripte als PDF — zum Lesen oder Herunterladen.</p>
+    <div class="skript-list" id="skriptList"><p class="cfg-sub" style="margin-top:18px">Wird geladen…</p></div>
   </section>
 </div>
 
@@ -1785,7 +1816,7 @@ const state={
 };
 
 // ── Navigation ────────────────────────────────────────────────────────────────
-const SCREENS=['s1','s2','sUpload','s3','s4','s5'];
+const SCREENS=['s1','s2','sUpload','sSkripte','s3','s4','s5'];
 function goTo(id){
   SCREENS.forEach(s=>{const el=document.getElementById(s);if(el)el.classList.remove('active')});
   const target=document.getElementById(id);
@@ -2136,6 +2167,43 @@ function confirmLogout(){
   toggleUserMenu();
   if(confirm('Wirklich abmelden?'))logout();
 }
+// ── Skripte ───────────────────────────────────────────────────────────────
+const SKRIPTE_URL='/skripte/index.json';
+let skripteCache=null;
+function openSkripte(){
+  if(!hasApiKey){openKeyModal();return}
+  playTick();
+  goTo('sSkripte');
+  renderSkripte();
+}
+function fmtBytes(n){
+  n=parseInt(n,10);if(!n)return'';
+  return n>=1048576?(n/1048576).toFixed(1).replace('.',',')+' MB':Math.max(1,Math.round(n/1024))+' KB';
+}
+async function renderSkripte(){
+  const el=document.getElementById('skriptList');if(!el)return;
+  if(!skripteCache){
+    try{
+      const res=await fetch(SKRIPTE_URL,{cache:'no-cache'});
+      skripteCache=res.ok?(await res.json()):[];
+    }catch{skripteCache=[]}
+  }
+  const items=Array.isArray(skripteCache)?skripteCache:[];
+  if(!items.length){
+    el.innerHTML='<p class="cfg-sub" style="margin-top:18px"><b style="display:block;color:var(--app-ink)">Noch keine Skripte.</b>Sobald welche da sind, stehen sie hier.</p>';
+    return;
+  }
+  el.innerHTML=items.map(it=>{
+    const file='/skripte/'+encodeURIComponent(String(it.file||''));
+    const meta=[it.pages?it.pages+' Seiten':'',fmtBytes(it.size),it.date?'Stand '+escapeHtml(it.date):''].filter(Boolean).join(' · ');
+    return '<div class="skript-row"><div>'+
+      '<div class="skript-title">'+escapeHtml(it.title||it.file||'Skript')+'</div>'+
+      (it.desc?'<div class="skript-desc">'+escapeHtml(it.desc)+'</div>':'')+
+      (meta?'<div class="skript-meta">'+meta+'</div>':'')+
+      '</div><a class="btn btn-primary" href="'+file+'" target="_blank" rel="noopener" download>PDF öffnen ↓</a></div>';
+  }).join('');
+}
+
 // ── Reminder beim Oeffnen ─────────────────────────────────────────────────
 const REMINDER={
   id:'papier-2026-09',   // neue Kennung = neuer Reminder, Zaehler startet bei null
