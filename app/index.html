@@ -1388,6 +1388,28 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
   </div>
 </div>
 
+<!-- ══ Reminder beim Oeffnen ══════════════════════════════════════════════
+     Erscheint beim Laden der Seite, hoechstens viermal, oder bis jemand
+     „Nicht mehr anzeigen" ankreuzt. Text und Kennung stehen in REMINDER;
+     eine neue Kennung setzt den Zaehler fuer alle zurueck.
+     ══════════════════════════════════════════════════════════════════════ -->
+<div class="key-overlay" id="reminderOverlay" style="z-index:70">
+  <div class="key-backdrop" onclick="closeReminder()"></div>
+  <div class="key-panel" style="max-width:520px">
+    <button type="button" class="modal-close" onclick="closeReminder()" title="Schließen">✕</button>
+    <span class="kicker" id="reminderKicker">Wichtiger Reminder</span>
+    <div class="key-panel-title" id="reminderTitle" style="margin-top:6px"></div>
+    <div id="reminderBody" style="font-size:14.5px;line-height:24px;color:var(--app-ink);margin-top:14px"></div>
+    <label style="display:flex;gap:10px;align-items:center;margin-top:20px;font-size:13px;color:var(--app-mute);cursor:pointer">
+      <input type="checkbox" id="reminderDismiss" style="width:16px;height:16px;accent-color:var(--app-accent)">
+      Nicht mehr anzeigen
+    </label>
+    <div style="display:flex;justify-content:flex-end;margin-top:16px">
+      <button type="button" class="btn btn-primary" onclick="closeReminder()">Verstanden</button>
+    </div>
+  </div>
+</div>
+
 <!-- ══ Passwort aendern ══════════════════════════════════════════════════ -->
 <div class="key-overlay" id="pwOverlay">
   <div class="key-backdrop" onclick="closePwModal()"></div>
@@ -2114,7 +2136,45 @@ function confirmLogout(){
   toggleUserMenu();
   if(confirm('Wirklich abmelden?'))logout();
 }
+// ── Reminder beim Oeffnen ─────────────────────────────────────────────────
+const REMINDER={
+  id:'papier-2026-09',   // neue Kennung = neuer Reminder, Zaehler startet bei null
+  maxShows:4,
+  kicker:'Wichtiger Reminder',
+  title:'Das Physio-Orakel ergänzt euer Lernen – es ersetzt es nicht!',
+  body:[
+    'Durch die Umstellung auf <strong>Wochentests auf Papier</strong> können wir aktuell noch nicht sagen, wie gut die Altfragen die kommenden Tests abbilden. Das werden wir in den ersten Wochen herausfinden.',
+    'Zusätzlich habe ich <strong>Altfragen aus früheren Papiertests</strong> gesammelt, die ich in den kommenden Tagen in die Datenbank aufnehmen werde.',
+    '<strong>Viel Erfolg bei euren ersten Tests – ich drücke euch die Daumen!</strong>'
+  ]
+};
+const REMINDER_KEY='physio_orakel_reminder';
+function reminderState(){
+  try{const st=JSON.parse(localStorage.getItem(REMINDER_KEY)||'null');if(st&&st.id===REMINDER.id)return st}catch{}
+  return{id:REMINDER.id,shown:0,dismissed:false};
+}
+function showReminderIfDue(){
+  const st=reminderState();
+  if(st.dismissed||st.shown>=REMINDER.maxShows)return;
+  const ov=document.getElementById('reminderOverlay');if(!ov)return;
+  document.getElementById('reminderKicker').textContent=REMINDER.kicker;
+  document.getElementById('reminderTitle').textContent=REMINDER.title;
+  document.getElementById('reminderBody').innerHTML=REMINDER.body.map(p=>'<p style="margin:0 0 12px">'+p+'</p>').join('');
+  st.shown+=1;
+  try{localStorage.setItem(REMINDER_KEY,JSON.stringify(st))}catch{}
+  ov.classList.add('active');
+}
+function closeReminder(){
+  const ov=document.getElementById('reminderOverlay');if(!ov)return;
+  if(document.getElementById('reminderDismiss').checked){
+    const st=reminderState();st.dismissed=true;
+    try{localStorage.setItem(REMINDER_KEY,JSON.stringify(st))}catch{}
+  }
+  ov.classList.remove('active');
+}
+
 loadSession();
+showReminderIfDue();
 
 
 // ── Ladescreen ───────────────────────────────────────────────────────────────
