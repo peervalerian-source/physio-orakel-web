@@ -387,5 +387,19 @@
  "U-W-442": {
   "action": "remove",
   "note": "Fragment ohne Optionen (nur Stamm sichtbar); vollständige Version existiert unter anderer Nummer"
+ },
+ "U-W-203": {
+  "options": [
+   "Extrazelluläre freie/ionisierte Ca2+ Konzentration: 1,2 mM",
+   "Intrazelluläre Ca2+ Konzentration: 100 nM",
+   "Intrazelluläre K+ Konzentration: 5 mM",
+   "Blutplasma Na+ Konzentration: 105 mM",
+   "Blutplasma Cl- Konzentration: 10 mM"
+  ],
+  "correct": [
+   "Extrazelluläre freie/ionisierte Ca2+ Konzentration: 1,2 mM",
+   "Intrazelluläre Ca2+ Konzentration: 100 nM"
+  ],
+  "note": "[Extraktionsvermerk aus Option entfernt: Original gedruckt „100 mM“, handschriftlich zu nM korrigiert]"
  }
 }
