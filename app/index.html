@@ -1499,6 +1499,7 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
       <button type="button" data-tab="wt" onclick="setAdminTab('wt')">Material</button>
       <button type="button" data-tab="codes" onclick="setAdminTab('codes')">Codes</button>
       <button type="button" data-tab="fb" onclick="setAdminTab('fb')">Meldungen</button>
+      <button type="button" data-tab="dl" onclick="setAdminTab('dl')">Downloads</button>
     </div>
 
     <!-- Rueckmeldungen -->
@@ -1511,6 +1512,20 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
       </div>
       <div id="fbAdminStatus" style="font-size:13px;color:var(--app-mute);margin:12px 0"></div>
       <div id="fbList" style="display:grid;gap:10px;max-height:46vh;overflow:auto"></div>
+    </div>
+
+    <!-- Downloads -->
+    <div class="admin-panel" id="adminPanelDl" style="display:none;margin-top:16px">
+      <div class="key-panel-sub" style="margin-top:0">Wer hat welche Skripte geöffnet — gezählt ab dem Klick im Orakel.</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;align-items:center">
+        <button type="button" class="btn btn-secondary" onclick="loadDownloads()">Laden</button>
+        <div class="seg seg-text" id="dlViewSeg" style="margin-left:auto">
+          <button type="button" data-view="file" class="on" onclick="setDlView('file')">Nach Datei</button>
+          <button type="button" data-view="user" onclick="setDlView('user')">Nach Person</button>
+        </div>
+      </div>
+      <div id="dlAdminStatus" style="font-size:13px;color:var(--app-mute);margin:12px 0"></div>
+      <div id="dlList" style="display:grid;gap:6px;max-height:46vh;overflow:auto"></div>
     </div>
 
     <!-- Altfragenpool -->
@@ -2182,6 +2197,12 @@ function fmtBytes(n){
   n=parseInt(n,10);if(!n)return'';
   return n>=1048576?(n/1048576).toFixed(1).replace('.',',')+' MB':Math.max(1,Math.round(n/1024))+' KB';
 }
+// Ein Eintrag je Klick beim Worker — nebenher, ohne das Oeffnen zu bremsen.
+function trackDownload(file){
+  try{
+    fetch(WORKER_URL+'/event',{method:'POST',keepalive:true,headers:authHeaders({'Content-Type':'application/json'}),body:JSON.stringify({kind:'download',file:file})}).catch(()=>{});
+  }catch{}
+}
 async function renderSkripte(){
   const el=document.getElementById('skriptList');if(!el)return;
   if(!skripteCache){
@@ -2207,7 +2228,7 @@ async function renderSkripte(){
       '<div class="skript-title">'+escapeHtml(it.title||it.file||'Skript')+'</div>'+
       (it.desc?'<div class="skript-desc">'+escapeHtml(it.desc)+'</div>':'')+
       (meta?'<div class="skript-meta">'+meta+'</div>':'')+
-      '</div><a class="btn btn-primary" href="'+file+'" target="_blank" rel="noopener" download>PDF öffnen ↓</a></div>';
+      '</div><a class="btn btn-primary" href="'+file+'" target="_blank" rel="noopener" download onclick="trackDownload(\''+escapeHtml(String(it.file||'')).replace(/'/g,'')+'\')">PDF öffnen ↓</a></div>';
   }).join('');
 }
 
@@ -2631,7 +2652,7 @@ function closeAdmin(){
 }
 function setAdminTab(tab){
   document.querySelectorAll('#adminTabs [data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
-  const map={pool:'adminPanelPool',wt:'adminPanelWt',codes:'adminPanelCodes',fb:'adminPanelFb'};
+  const map={pool:'adminPanelPool',wt:'adminPanelWt',codes:'adminPanelCodes',fb:'adminPanelFb',dl:'adminPanelDl'};
   Object.keys(map).forEach(k=>{
     const el=document.getElementById(map[k]);
     if(el)el.style.display=k===tab?'block':'none';
@@ -2640,6 +2661,38 @@ function setAdminTab(tab){
   if(tab==='wt')loadWochentestAdminHint();
   if(tab==='codes'&&adminKey())loadCodes();
   if(tab==='fb'&&adminKey())loadFeedback();
+  if(tab==='dl'&&adminKey())loadDownloads();
+}
+// ── Admin: Downloads ──────────────────────────────────────────────────────
+let dlData=null,dlView='file';
+function setDlView(v){dlView=v;document.querySelectorAll('#dlViewSeg button').forEach(b=>b.classList.toggle('on',b.dataset.view===v));renderDownloads()}
+async function loadDownloads(){
+  const key=adminKey(),st=document.getElementById('dlAdminStatus');
+  if(!key){if(st)st.textContent='Admin-Key fehlt.';return}
+  if(st)st.textContent='Lädt…';
+  try{
+    const res=await fetch(WORKER_URL+'/admin/downloads',{headers:{'X-Admin-Key':key}});
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.error||'Fehler '+res.status);
+    dlData=data;localStorage.setItem(ADMIN_KEY_STORE,key);
+    if(st)st.textContent=data.total+' Abrufe gesamt · '+data.week+' in 7 Tagen · '+data.accounts+(data.accounts===1?' Konto':' Konten');
+    renderDownloads();
+  }catch(e){if(st)st.textContent='Fehler: '+e.message}
+}
+function fmtWhen(ms){return ms?new Date(ms).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):''}
+function renderDownloads(){
+  const el=document.getElementById('dlList');if(!el||!dlData)return;
+  const row=(a,b,c)=>'<div style="display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:6px 14px;align-items:baseline;border:2px solid var(--app-rule);padding:9px 12px;background:var(--app-panel);font-size:12.5px">'+
+    '<span style="font-family:var(--font-heading);font-weight:800;color:var(--app-ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+a+'</span>'+
+    '<span style="color:var(--app-accent);font-feature-settings:\'tnum\' 1">'+b+'</span><span style="color:var(--app-mute);white-space:nowrap">'+c+'</span></div>';
+  if(dlView==='file'){
+    el.innerHTML=dlData.byFile.length?dlData.byFile.map(f=>row(escapeHtml(f.file.replace(/\.pdf$/,'').replace(/_/g,' ')),f.n+'×',f.accounts+(f.accounts===1?' Konto':' Konten')+' · zuletzt '+fmtWhen(f.last))).join('')
+      :'<p class="cfg-sub">Noch keine Abrufe.</p>';
+  }else{
+    el.innerHTML=dlData.byUser.length?dlData.byUser.map(u=>row(escapeHtml(u.user),u.n+'× · '+u.files.length+(u.files.length===1?' Datei':' Dateien'),'zuletzt '+fmtWhen(u.last))+
+      '<div style="font-size:11.5px;color:var(--app-mute);margin:-2px 0 4px 12px">'+u.files.map(f=>escapeHtml(f.replace(/\.pdf$/,'').replace(/_/g,' '))).join(' · ')+'</div>').join('')
+      :'<p class="cfg-sub">Noch keine Abrufe.</p>';
+  }
 }
 function loadWochentestAdminHint(){
   const st=document.getElementById('wtAdminStatus');
