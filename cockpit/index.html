@@ -158,12 +158,17 @@ tr.row:hover td { background: var(--soft); }
   <div class="tools">
     <input class="input" id="userSearch" placeholder="Suchen: Name oder Mail" oninput="renderUsers()">
     <label class="status"><input type="checkbox" id="onlyActive" onchange="renderUsers()"> nur mit Runden</label>
-    <span class="status" style="margin-left:auto">Klick auf eine Zeile öffnet das Konto.</span>
+    <div class="seg" id="sortSeg" style="margin-left:auto">
+      <button data-s="leistung" class="on" onclick="setSort('leistung')">Leistung</button>
+      <button data-s="aktiv" onclick="setSort('aktiv')">Aktivität</button>
+      <button data-s="neu" onclick="setSort('neu')">Neueste</button>
+    </div>
+    <span class="status">Klick auf eine Zeile öffnet das Konto.</span>
   </div>
   <div class="scroll"><table id="usersTable"><thead><tr>
-    <th data-k="id" class="num">#</th><th data-k="username">Name</th><th data-k="email">Mail</th>
-    <th data-k="createdAt">Registriert</th><th data-k="rounds" class="num">Runden</th><th data-k="avgScore" class="num">Ø Score</th>
-    <th data-k="xp" class="num">XP</th><th data-k="lastRound">Letzte Runde</th>
+    <th data-k="rank" class="num">Platz</th><th data-k="username">Name</th><th data-k="email">Mail</th>
+    <th data-k="xp" class="num">XP</th><th data-k="rounds" class="num">Runden</th><th data-k="rounds7" class="num">7 Tage</th>
+    <th data-k="avgScore" class="num">Ø Score</th><th data-k="lastRound">Letzte Runde</th><th data-k="createdAt">Registriert</th>
   </tr></thead><tbody></tbody></table></div>
 
   <h2>Meldungen <small id="fbCount"></small></h2>
@@ -184,7 +189,7 @@ tr.row:hover td { background: var(--soft); }
 // ── Grundlagen ────────────────────────────────────────────────────────────
 const API=new URLSearchParams(location.search).get('api')||'https://physio-orakel-api.csmybgcyhh.workers.dev';
 const KEY_STORE='nephron_cockpit_key';
-let key='',range=30,stats=null,users=[],sortKey='id',sortDir=1;
+let key='',range=30,stats=null,users=[],sortKey='xp',sortDir=-1;
 const $=id=>document.getElementById(id);
 const esc=t=>String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const fmtN=n=>(Number(n)||0).toLocaleString('de-DE');
@@ -293,17 +298,34 @@ function renderTraffic(){
 }
 
 // ── Konten ────────────────────────────────────────────────────────────────
-document.querySelectorAll('#usersTable th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;if(sortKey===k)sortDir=-sortDir;else{sortKey=k;sortDir=k==='username'||k==='email'?1:-1}renderUsers()});
+// Platz = Rang nach XP ueber alle Konten, unabhaengig von Filter und Sortierung.
+function rankUsers(){const byXp=[...users].sort((a,b)=>b.xp-a.xp);byXp.forEach((u,i)=>u.rank=i+1)}
+// Voreinstellungen: Leistung = XP; Aktivitaet = Runden der letzten 7 Tage,
+// dann letzte Runde; Neueste = Registrierung.
+let sortMode='leistung';
+function setSort(m){
+  sortMode=m;document.querySelectorAll('#sortSeg button').forEach(b=>b.classList.toggle('on',b.dataset.s===m));
+  sortKey=m==='leistung'?'xp':m==='aktiv'?'rounds7':'createdAt';sortDir=-1;renderUsers();
+}
+document.querySelectorAll('#usersTable th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;if(sortKey===k)sortDir=-sortDir;else{sortKey=k;sortDir=k==='username'||k==='email'||k==='rank'?1:-1}sortMode='';document.querySelectorAll('#sortSeg button').forEach(b=>b.classList.remove('on'));renderUsers()});
 function renderUsers(){
+  rankUsers();
   const q=($('userSearch').value||'').toLowerCase().trim(),only=$('onlyActive').checked;
   let rows=users.filter(u=>(!q||u.username.toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q))&&(!only||u.rounds>0));
-  rows.sort((a,b)=>{const x=a[sortKey],y=b[sortKey];if(x==null&&y==null)return 0;if(x==null)return 1;if(y==null)return -1;return (x<y?-1:x>y?1:0)*sortDir});
+  rows.sort((a,b)=>{
+    const x=a[sortKey],y=b[sortKey];
+    let c=(x==null&&y==null)?0:x==null?1:y==null?-1:(x<y?-1:x>y?1:0)*sortDir;
+    // Bei Aktivitaet entscheidet danach die letzte Runde, dann XP.
+    if(c===0&&sortMode==='aktiv')c=((b.lastRound||0)-(a.lastRound||0))||(b.xp-a.xp);
+    if(c===0)c=b.xp-a.xp;
+    return c;
+  });
   document.querySelectorAll('#usersTable th').forEach(th=>th.classList.toggle('on',th.dataset.k===sortKey));
   $('usersCount').textContent=rows.length+' von '+users.length;
   $('usersTable').querySelector('tbody').innerHTML=rows.map(u=>'<tr class="row" onclick="openUser('+u.id+')">'+
-    '<td class="num">'+u.id+'</td><td><b>'+esc(u.username)+'</b></td><td style="color:var(--mute)">'+esc(u.email||'')+'</td>'+
-    '<td>'+fmtDate(u.createdAt)+'</td><td class="num">'+(u.rounds||0)+'</td><td class="num">'+(u.avgScore==null?'—':u.avgScore+' %')+'</td>'+
-    '<td class="num">'+fmtN(u.xp)+'</td><td>'+fmtWhen(u.lastRound)+'</td></tr>').join('')||'<tr><td colspan="8" class="empty">Kein Treffer.</td></tr>';
+    '<td class="num">'+u.rank+'</td><td><b>'+esc(u.username)+'</b></td><td style="color:var(--mute)">'+esc(u.email||'')+'</td>'+
+    '<td class="num">'+fmtN(u.xp)+'</td><td class="num">'+(u.rounds||0)+'</td><td class="num">'+(u.rounds7?'<span style="color:var(--ok)">'+u.rounds7+'</span>':'<span style="color:var(--mute)">0</span>')+'</td>'+
+    '<td class="num">'+(u.avgScore==null?'—':u.avgScore+' %')+'</td><td>'+fmtWhen(u.lastRound)+'</td><td style="color:var(--mute)">'+fmtDate(u.createdAt)+'</td></tr>').join('')||'<tr><td colspan="9" class="empty">Kein Treffer.</td></tr>';
 }
 async function openUser(id){
   $('drawer').classList.add('open');$('backdrop').classList.add('open');
