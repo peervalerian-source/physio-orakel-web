@@ -4127,7 +4127,11 @@ async function renderLeaderboard(){
       throw new Error('HTTP '+res.status+(bodyText?' — '+bodyText.slice(0,140):''));
     }
     const data=await res.json();
-    const rows=data.leaderboard||[];
+    const rows=(data.leaderboard||[]).map((r,i)=>Object.assign({rank:i+1},r));
+    // Steht man selbst nicht in der Liste, kommt die eigene Zeile mit Platz darunter.
+    const me=data.me;
+    const meListed=me&&rows.some(r=>r.username===me.username);
+    if(me&&!meListed)rows.push(Object.assign({gap:true},me));
     if(!rows.length){el.innerHTML='<div style="font-size:11px;color:var(--mid);padding:14px;text-align:center;border:2px solid var(--app-rule);background:var(--pure)">Noch keine Daten</div>';return}
     const myUsername=currentUser?currentUser.username:'';
     const line=(r)=>{
@@ -4161,8 +4165,9 @@ async function renderLeaderboard(){
     const rest=rows.slice(3);
     const restHtml=rest.length?'<div style="border-top:2px solid var(--app-rule);margin-top:24px">'+rest.map((r,i)=>{
       const m=line(r);
-      return `<div style="display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:12px;align-items:center;padding:11px 8px;border-bottom:2px solid var(--app-rule);${m.isMe?'background:var(--app-accent-soft);':''}">
-        <span style="font-family:var(--font-heading);font-weight:800;font-size:14px;color:var(--app-mute);font-feature-settings:'tnum' 1;text-align:center">${i+4}</span>
+      const gap=r.gap?`<div style="padding:8px 8px 2px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--app-mute)">··· dein Platz</div>`:'';
+      return gap+`<div style="display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:12px;align-items:center;padding:11px 8px;border-bottom:2px solid var(--app-rule);${m.isMe?'background:var(--app-accent-soft);':''}">
+        <span style="font-family:var(--font-heading);font-weight:800;font-size:14px;color:var(--app-mute);font-feature-settings:'tnum' 1;text-align:center">${r.rank||i+4}</span>
         <span style="min-width:0">
           <span style="display:block;font-family:var(--font-heading);font-weight:800;font-size:14.5px;color:${m.isMe?'var(--app-accent)':'var(--app-ink)'};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.username}${m.isMe?' · du':''}${m.vipTag}</span>
           <span style="display:block;font-size:11.5px;color:var(--app-mute)">${m.rank.icon} ${m.rank.title}</span>
