@@ -140,7 +140,7 @@ tr.row:hover td { background: var(--soft); }
     <div class="card"><h3>Modi</h3><div class="bar-list" id="modes"></div></div>
     <div class="card"><h3>Score-Verteilung</h3><div class="bar-list" id="scores"></div></div>
     <div class="card"><h3>Meistgespielt</h3><div class="bar-list" id="topics"></div></div>
-    <div class="card"><h3>Tageszeit (UTC)</h3><div id="hours"></div></div>
+    <div class="card"><h3>Tageszeit</h3><div id="hours"></div></div>
     <div class="card"><h3>KI-Erklärungen je Tag</h3><div class="bar-list" id="ai"></div></div>
     <div class="card"><h3>Skripte</h3><div class="bar-list" id="downloads"></div></div>
   </div>
@@ -193,8 +193,10 @@ let key='',range=30,stats=null,users=[],sortKey='xp',sortDir=-1;
 const $=id=>document.getElementById(id);
 const esc=t=>String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const fmtN=n=>(Number(n)||0).toLocaleString('de-DE');
-const fmtDate=ms=>ms?new Date(ms).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'}):'—';
-const fmtWhen=ms=>ms?new Date(ms).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+// Alle Zeiten in Budapester Ortszeit, egal wo der Browser gerade steht.
+const TZ='Europe/Budapest';
+const fmtDate=ms=>ms?new Date(ms).toLocaleDateString('de-DE',{timeZone:TZ,day:'2-digit',month:'2-digit',year:'2-digit'}):'—';
+const fmtWhen=ms=>ms?new Date(ms).toLocaleString('de-DE',{timeZone:TZ,day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
 const fmtFile=f=>String(f||'').replace(/\.pdf$/,'').replace(/_/g,' ');
 async function api(path){
   const res=await fetch(API+path,{headers:{'X-Admin-Key':key}});
@@ -226,7 +228,7 @@ async function loadAll(){
     const [s,u]=await Promise.all([api('/admin/stats?days='+range),api('/admin/users')]);
     stats=s;users=u.users||[];
     renderTiles();renderDays();renderUsage();renderTraffic();renderUsers();renderFeedback();
-    $('topStatus').textContent='Stand '+new Date(s.generatedAt).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})+' · '+fmtN(users.length)+' Konten';
+    $('topStatus').textContent='Stand '+fmtWhen(s.generatedAt)+' · '+fmtN(users.length)+' Konten';
   }catch(e){
     $('topStatus').textContent='Fehler: '+e.message;
     if(/abgelehnt/.test(e.message))leave();
