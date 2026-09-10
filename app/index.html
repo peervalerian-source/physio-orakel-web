@@ -869,7 +869,7 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
   <div style="max-width:1100px;margin:0 auto;padding:0 clamp(16px,4vw,56px) 40px;display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap">
     <button type="button" class="btn-link" onclick="openFeedback('frage')">Altfrage einreichen</button>
     <button type="button" class="btn-link" onclick="openFeedback('sonstiges')">Feedback</button>
-    <button type="button" class="btn-link" onclick="openAdmin()">admin</button>
+
   </div>
 </div>
 
@@ -2274,6 +2274,8 @@ function closeReminder(){
 
 loadSession();
 showReminderIfDue();
+// Verwaltung nur ueber das Cockpit erreichbar: /app/?admin
+if(/[?&]admin(=|&|$)/.test(location.search)){try{openAdmin('pool')}catch{}}
 
 
 // ── Ladescreen ───────────────────────────────────────────────────────────────

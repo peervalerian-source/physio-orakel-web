@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Cockpit — Nephron.at</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* Dieselbe Palette wie das Orakel — Cyan handelt, Lime ist richtig,
+   Korall warnt. Eine Seite fuer eine Person: Dichte ist hier erlaubt. */
+:root {
+  --bg: #0B1117; --panel: #111C22; --ink: #E8ECE9; --mute: #829097;
+  --accent: #35D6D0; --ok: #A7E86B; --warn: #C56CFF; --err: #FF7165;
+  --rule: color-mix(in srgb, #829097 58%, transparent);
+  --soft: color-mix(in srgb, #35D6D0 8%, #111C22);
+  --font: "Archivo", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 14px; line-height: 1.5; }
+a { color: var(--accent); }
+button, input, select { font: inherit; }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 22px clamp(16px, 3vw, 40px) 80px; }
+
+.top { display: flex; gap: 14px 24px; align-items: center; flex-wrap: wrap; padding-bottom: 16px; border-bottom: 2px solid var(--rule); }
+.brand { font-weight: 800; font-size: 20px; letter-spacing: -0.01em; }
+.brand small { display: block; font-weight: 400; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute); }
+.top .grow { flex: 1 1 auto; }
+.seg { display: inline-flex; border: 2px solid var(--rule); }
+.seg > button { all: unset; cursor: pointer; padding: 7px 14px; font-weight: 800; font-size: 13px; color: var(--ink); border-right: 2px solid var(--rule); }
+.seg > button:last-child { border-right: none; }
+.seg > button.on { background: var(--accent); color: var(--bg); }
+.btn { all: unset; cursor: pointer; font-weight: 800; font-size: 13px; padding: 8px 14px; border: 2px solid var(--rule); color: var(--ink); }
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.btn.primary:hover { background: var(--ok); border-color: var(--ok); color: var(--bg); }
+.btn.sm { font-size: 12px; padding: 5px 10px; }
+.input { background: transparent; border: 2px solid var(--rule); color: var(--ink); padding: 8px 12px; min-width: 240px; }
+.input:focus { outline: none; border-color: var(--accent); }
+.status { font-size: 12.5px; color: var(--mute); }
+
+.gate { max-width: 420px; margin: 18vh auto 0; border: 2px solid var(--rule); padding: 26px 24px; background: var(--panel); }
+.gate h1 { margin: 0 0 6px; font-size: 22px; }
+.gate p { margin: 0 0 16px; color: var(--mute); }
+
+h2 { font-size: 17px; margin: 34px 0 12px; padding-bottom: 8px; border-bottom: 2px solid var(--rule); display: flex; gap: 12px; align-items: baseline; }
+h2 small { font-weight: 400; font-size: 12.5px; color: var(--mute); }
+.grid { display: grid; gap: 12px; }
+.tiles { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); margin-top: 18px; }
+.tile { border-left: 2px solid var(--accent); background: color-mix(in srgb, var(--panel) 70%, transparent); padding: 12px 14px; }
+.tile .k { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mute); }
+.tile .v { font-size: 26px; font-weight: 800; line-height: 1.1; margin-top: 4px; font-feature-settings: 'tnum' 1; }
+.tile .d { font-size: 12px; color: var(--mute); margin-top: 4px; }
+.tile .d.up { color: var(--ok); } .tile .d.down { color: var(--err); }
+.cols { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.card { border: 2px solid var(--rule); padding: 14px 16px; background: color-mix(in srgb, var(--panel) 55%, transparent); min-width: 0; }
+.card h3 { margin: 0 0 10px; font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--mute); }
+svg.chart { width: 100%; height: auto; display: block; }
+.bar-list { display: grid; gap: 6px; }
+.bar-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; font-size: 13px; }
+.bar-row .lbl { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bar-row .n { color: var(--accent); font-feature-settings: 'tnum' 1; }
+.bar-row .bar { grid-column: 1 / -1; height: 5px; background: var(--rule); }
+.bar-row .bar > i { display: block; height: 100%; background: var(--accent); }
+.legend { display: flex; gap: 14px; font-size: 12px; color: var(--mute); margin-top: 6px; }
+.legend i { display: inline-block; width: 10px; height: 10px; margin-right: 5px; vertical-align: -1px; }
+
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mute); cursor: pointer; user-select: none; white-space: nowrap; }
+th.on { color: var(--accent); }
+td.num, th.num { text-align: right; font-feature-settings: 'tnum' 1; }
+tr.row { cursor: pointer; }
+tr.row:hover td { background: var(--soft); }
+.tag { display: inline-block; font-size: 11px; padding: 1px 6px; border: 1px solid var(--rule); color: var(--mute); margin-right: 4px; }
+.tag.ok { color: var(--ok); border-color: var(--ok); }
+.tag.warn { color: var(--warn); border-color: var(--warn); }
+.tag.err { color: var(--err); border-color: var(--err); }
+.tools { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+.scroll { max-height: 60vh; overflow: auto; border: 2px solid var(--rule); }
+
+/* Einzelkonto: Schublade von rechts */
+.drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(720px, 100%); background: var(--bg); border-left: 2px solid var(--rule); transform: translateX(100%); transition: transform 180ms ease; z-index: 20; overflow: auto; padding: 22px 24px 40px; }
+.drawer.open { transform: none; }
+.backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.55); display: none; z-index: 19; }
+.backdrop.open { display: block; }
+.drawer h2 { margin-top: 0; }
+.kv { display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; font-size: 13px; margin: 10px 0 16px; }
+.kv b { color: var(--mute); font-weight: 400; }
+.fb { border-left: 2px solid var(--warn); padding: 8px 12px; background: var(--panel); margin-bottom: 8px; font-size: 13px; }
+.fb.done { border-left-color: var(--rule); opacity: .6; }
+.fb .m { font-size: 11.5px; color: var(--mute); margin-bottom: 3px; }
+.empty { color: var(--mute); font-size: 13px; padding: 10px 0; }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- ── Schleuse ─────────────────────────────────────────────────────────── -->
+<div class="wrap" id="gate">
+  <div class="gate">
+    <h1>Cockpit</h1>
+    <p>Admin-Key eingeben. Er bleibt in diesem Browser gespeichert.</p>
+    <div style="display:grid;gap:10px">
+      <input class="input" type="password" id="keyInput" placeholder="Admin-Key" autocomplete="off" style="min-width:0">
+      <button class="btn primary" onclick="enter()">Öffnen</button>
+      <div class="status" id="gateStatus"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Cockpit ──────────────────────────────────────────────────────────── -->
+<div class="wrap" id="main" hidden>
+  <div class="top">
+    <div class="brand">Cockpit<small>Nephron.at · Physio-Orakel</small></div>
+    <div class="grow"></div>
+    <div class="seg" id="rangeSeg">
+      <button data-d="7" onclick="setRange(7)">7 Tage</button>
+      <button data-d="30" class="on" onclick="setRange(30)">30 Tage</button>
+      <button data-d="90" onclick="setRange(90)">90 Tage</button>
+    </div>
+    <button class="btn" onclick="loadAll()">Aktualisieren</button>
+    <a class="btn" href="/app/?admin" target="_blank" rel="noopener">Verwaltung ↗</a>
+    <button class="btn" onclick="leave()" title="Key aus diesem Browser entfernen">Abmelden</button>
+  </div>
+  <div class="status" id="topStatus" style="margin-top:10px"></div>
+
+  <div class="grid tiles" id="tiles"></div>
+
+  <h2>Verlauf <small id="rangeLabel"></small></h2>
+  <div class="card">
+    <div id="chartDays"></div>
+    <div class="legend"><span><i style="background:var(--accent)"></i>Quiz-Runden</span><span><i style="background:var(--ok)"></i>Registrierungen</span></div>
+  </div>
+
+  <h2>Nutzung</h2>
+  <div class="grid cols">
+    <div class="card"><h3>Modi</h3><div class="bar-list" id="modes"></div></div>
+    <div class="card"><h3>Score-Verteilung</h3><div class="bar-list" id="scores"></div></div>
+    <div class="card"><h3>Meistgespielt</h3><div class="bar-list" id="topics"></div></div>
+    <div class="card"><h3>Tageszeit (UTC)</h3><div id="hours"></div></div>
+    <div class="card"><h3>KI-Erklärungen je Tag</h3><div class="bar-list" id="ai"></div></div>
+    <div class="card"><h3>Skripte</h3><div class="bar-list" id="downloads"></div></div>
+  </div>
+
+  <div id="trafficSec" hidden>
+    <h2>Traffic <small>Cloudflare, Besucher pro Tag</small></h2>
+    <div class="grid cols">
+      <div class="card" style="grid-column:1/-1"><div id="chartTraffic"></div><div class="legend"><span><i style="background:var(--accent)"></i>Besucher</span><span><i style="background:var(--warn)"></i>Seitenaufrufe</span></div></div>
+      <div class="card"><h3>Länder (Requests)</h3><div class="bar-list" id="countries"></div></div>
+    </div>
+  </div>
+  <p class="status" id="trafficHint" hidden>Traffic-Block inaktiv — dafür braucht der Worker die Secrets <code>CF_ANALYTICS_TOKEN</code> (Cloudflare-API-Token mit <em>Analytics: Read</em>) und <code>CF_ZONE_ID</code>.</p>
+
+  <h2>Konten <small id="usersCount"></small></h2>
+  <div class="tools">
+    <input class="input" id="userSearch" placeholder="Suchen: Name oder Mail" oninput="renderUsers()">
+    <label class="status"><input type="checkbox" id="onlyActive" onchange="renderUsers()"> nur mit Runden</label>
+    <span class="status" style="margin-left:auto">Klick auf eine Zeile öffnet das Konto.</span>
+  </div>
+  <div class="scroll"><table id="usersTable"><thead><tr>
+    <th data-k="id" class="num">#</th><th data-k="username">Name</th><th data-k="email">Mail</th>
+    <th data-k="createdAt">Registriert</th><th data-k="rounds" class="num">Runden</th><th data-k="avgScore" class="num">Ø Score</th>
+    <th data-k="xp" class="num">XP</th><th data-k="lastRound">Letzte Runde</th>
+  </tr></thead><tbody></tbody></table></div>
+
+  <h2>Meldungen <small id="fbCount"></small></h2>
+  <div id="feedback"></div>
+</div>
+
+<!-- ── Einzelkonto ──────────────────────────────────────────────────────── -->
+<div class="backdrop" id="backdrop" onclick="closeUser()"></div>
+<div class="drawer" id="drawer">
+  <div style="display:flex;gap:12px;align-items:baseline">
+    <h2 id="dTitle" style="flex:1;border:none;padding:0"></h2>
+    <button class="btn sm" onclick="closeUser()">Schließen ✕</button>
+  </div>
+  <div id="dBody"></div>
+</div>
+
+<script>
+// ── Grundlagen ────────────────────────────────────────────────────────────
+const API=new URLSearchParams(location.search).get('api')||'https://physio-orakel-api.csmybgcyhh.workers.dev';
+const KEY_STORE='nephron_cockpit_key';
+let key='',range=30,stats=null,users=[],sortKey='id',sortDir=1;
+const $=id=>document.getElementById(id);
+const esc=t=>String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const fmtN=n=>(Number(n)||0).toLocaleString('de-DE');
+const fmtDate=ms=>ms?new Date(ms).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'}):'—';
+const fmtWhen=ms=>ms?new Date(ms).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+const fmtFile=f=>String(f||'').replace(/\.pdf$/,'').replace(/_/g,' ');
+async function api(path){
+  const res=await fetch(API+path,{headers:{'X-Admin-Key':key}});
+  const data=await res.json().catch(()=>({}));
+  if(res.status===403)throw new Error('Key abgelehnt');
+  if(!res.ok)throw new Error(data.error||'Fehler '+res.status);
+  return data;
+}
+
+// ── Schleuse ──────────────────────────────────────────────────────────────
+function enter(){
+  key=$('keyInput').value.trim();
+  if(!key){$('gateStatus').textContent='Key fehlt.';return}
+  $('gateStatus').textContent='Prüfe…';
+  api('/admin/stats?days=7').then(()=>{
+    try{localStorage.setItem(KEY_STORE,key)}catch{}
+    $('gate').hidden=true;$('main').hidden=false;loadAll();
+  }).catch(e=>{$('gateStatus').textContent=e.message;$('gateStatus').style.color='var(--err)'});
+}
+function leave(){try{localStorage.removeItem(KEY_STORE)}catch{}location.reload()}
+$('keyInput').addEventListener('keydown',e=>{if(e.key==='Enter')enter()});
+try{const k=localStorage.getItem(KEY_STORE);if(k){key=k;$('gate').hidden=true;$('main').hidden=false;loadAll()}}catch{}
+
+// ── Laden ─────────────────────────────────────────────────────────────────
+function setRange(d){range=d;document.querySelectorAll('#rangeSeg button').forEach(b=>b.classList.toggle('on',+b.dataset.d===d));loadAll()}
+async function loadAll(){
+  $('topStatus').textContent='Lädt…';
+  try{
+    const [s,u]=await Promise.all([api('/admin/stats?days='+range),api('/admin/users')]);
+    stats=s;users=u.users||[];
+    renderTiles();renderDays();renderUsage();renderTraffic();renderUsers();renderFeedback();
+    $('topStatus').textContent='Stand '+new Date(s.generatedAt).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})+' · '+fmtN(users.length)+' Konten';
+  }catch(e){
+    $('topStatus').textContent='Fehler: '+e.message;
+    if(/abgelehnt/.test(e.message))leave();
+  }
+}
+
+// ── Kacheln ───────────────────────────────────────────────────────────────
+function tile(k,v,now,before,suffix){
+  let d='';
+  if(before!=null){const diff=now-before;const cls=diff>0?'up':diff<0?'down':'';d='<div class="d '+cls+'">'+(diff>0?'+':'')+fmtN(diff)+' vs. Vorzeitraum</div>'}
+  else if(suffix)d='<div class="d">'+suffix+'</div>';
+  return '<div class="tile"><div class="k">'+k+'</div><div class="v">'+v+'</div>'+d+'</div>';
+}
+function renderTiles(){
+  const t=stats.totals;
+  $('tiles').innerHTML=
+    tile('Konten',fmtN(t.accounts),null,null,fmtN(t.inactive)+' ohne Runde')+
+    tile('Neu',fmtN(t.regNow),t.regNow,t.regBefore)+
+    tile('Aktiv',fmtN(t.activeNow),t.activeNow,t.activeBefore)+
+    tile('Runden',fmtN(t.rounds),t.rounds,t.roundsBefore)+
+    tile('Fragen',fmtN(t.questions),t.questions,t.questionsBefore)+
+    tile('Ø Score',t.avgScore+' %',t.avgScore,t.avgScoreBefore)+
+    tile('Downloads',fmtN(t.downloads),t.downloads,t.downloadsBefore)+
+    tile('Meldungen offen',fmtN(t.feedbackOpen),null,null,'&nbsp;');
+}
+
+// ── Balkendiagramm (SVG, zwei Reihen) ─────────────────────────────────────
+function barsSvg(rows,keyA,keyB,colA,colB){
+  const n=rows.length;if(!n)return'<div class="empty">Keine Daten.</div>';
+  const W=1000,H=220,padL=34,padB=26,padT=10;
+  const max=Math.max(1,...rows.map(r=>Math.max(r[keyA]||0,r[keyB]||0)));
+  const bw=(W-padL)/n,inner=Math.max(2,bw*0.7);
+  let s='<svg class="chart" viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">';
+  for(let g=0;g<=4;g++){const y=padT+(H-padT-padB)*(1-g/4);s+='<line x1="'+padL+'" x2="'+W+'" y1="'+y+'" y2="'+y+'" stroke="#829097" stroke-opacity=".25"/><text x="'+(padL-6)+'" y="'+(y+4)+'" font-size="11" text-anchor="end" fill="#829097">'+Math.round(max*g/4)+'</text>'}
+  rows.forEach((r,i)=>{
+    const x=padL+i*bw+(bw-inner)/2;
+    const hA=(r[keyA]||0)/max*(H-padT-padB),hB=(r[keyB]||0)/max*(H-padT-padB);
+    s+='<rect x="'+x+'" y="'+(H-padB-hA)+'" width="'+(inner/2)+'" height="'+hA+'" fill="'+colA+'"><title>'+esc(r.date)+': '+(r[keyA]||0)+'</title></rect>';
+    s+='<rect x="'+(x+inner/2)+'" y="'+(H-padB-hB)+'" width="'+(inner/2)+'" height="'+hB+'" fill="'+colB+'"><title>'+esc(r.date)+': '+(r[keyB]||0)+'</title></rect>';
+    const step=n>40?7:n>14?3:1;
+    if(i%step===0)s+='<text x="'+(x+inner/2)+'" y="'+(H-8)+'" font-size="10" text-anchor="middle" fill="#829097">'+esc(r.date.slice(8,10)+'.'+r.date.slice(5,7)+'.')+'</text>';
+  });
+  return s+'</svg>';
+}
+function renderDays(){
+  $('rangeLabel').textContent='letzte '+range+' Tage';
+  $('chartDays').innerHTML=barsSvg(stats.perDay,'rounds','reg','#35D6D0','#A7E86B');
+}
+function barList(el,pairs,fmt){
+  const max=Math.max(1,...pairs.map(p=>p[1]));
+  el.innerHTML=pairs.length?pairs.map(([l,n,extra])=>'<div class="bar-row"><span class="lbl" title="'+esc(l)+'">'+esc(l)+'</span><span class="n">'+(fmt?fmt(n,extra):fmtN(n))+'</span><span class="bar"><i style="width:'+Math.round(n/max*100)+'%"></i></span></div>').join(''):'<div class="empty">Nichts im Zeitraum.</div>';
+}
+function renderUsage(){
+  barList($('modes'),Object.entries(stats.modes).sort((a,b)=>b[1]-a[1]));
+  barList($('scores'),Object.entries(stats.scoreBins).map(([k,v])=>[k==='0'?'0 %':k+' %',v]));
+  barList($('topics'),stats.topics.map(([t,n])=>[t,n]));
+  barList($('downloads'),stats.downloadsByFile.slice(0,10).map(f=>[fmtFile(f.file),f.n,f.accounts]),(n,a)=>n+'× · '+a+' K.');
+  const ai=Object.entries(stats.ai||{}).sort().slice(-10);
+  barList($('ai'),ai.map(([d,v])=>[d.slice(8,10)+'.'+d.slice(5,7)+'.',v.calls,v.accounts]),(n,a)=>n+' Aufrufe · '+a+' K.');
+  const hrs=stats.hours||[];const max=Math.max(1,...hrs);
+  $('hours').innerHTML='<div style="display:grid;grid-template-columns:repeat(24,1fr);gap:2px;align-items:end;height:70px">'+hrs.map((v,h)=>'<div title="'+h+' Uhr: '+v+'" style="background:var(--accent);height:'+Math.max(2,Math.round(v/max*100))+'%;opacity:'+(v?1:.25)+'"></div>').join('')+'</div><div style="display:flex;justify-content:space-between;font-size:10px;color:var(--mute);margin-top:4px"><span>0</span><span>6</span><span>12</span><span>18</span><span>23</span></div>';
+}
+function renderTraffic(){
+  const t=stats.traffic;
+  $('trafficSec').hidden=!t;$('trafficHint').hidden=!!t;
+  if(!t)return;
+  $('chartTraffic').innerHTML=barsSvg(t.days,'visitors','views','#35D6D0','#C56CFF');
+  barList($('countries'),t.countries);
+}
+
+// ── Konten ────────────────────────────────────────────────────────────────
+document.querySelectorAll('#usersTable th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;if(sortKey===k)sortDir=-sortDir;else{sortKey=k;sortDir=k==='username'||k==='email'?1:-1}renderUsers()});
+function renderUsers(){
+  const q=($('userSearch').value||'').toLowerCase().trim(),only=$('onlyActive').checked;
+  let rows=users.filter(u=>(!q||u.username.toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q))&&(!only||u.rounds>0));
+  rows.sort((a,b)=>{const x=a[sortKey],y=b[sortKey];if(x==null&&y==null)return 0;if(x==null)return 1;if(y==null)return -1;return (x<y?-1:x>y?1:0)*sortDir});
+  document.querySelectorAll('#usersTable th').forEach(th=>th.classList.toggle('on',th.dataset.k===sortKey));
+  $('usersCount').textContent=rows.length+' von '+users.length;
+  $('usersTable').querySelector('tbody').innerHTML=rows.map(u=>'<tr class="row" onclick="openUser('+u.id+')">'+
+    '<td class="num">'+u.id+'</td><td><b>'+esc(u.username)+'</b></td><td style="color:var(--mute)">'+esc(u.email||'')+'</td>'+
+    '<td>'+fmtDate(u.createdAt)+'</td><td class="num">'+(u.rounds||0)+'</td><td class="num">'+(u.avgScore==null?'—':u.avgScore+' %')+'</td>'+
+    '<td class="num">'+fmtN(u.xp)+'</td><td>'+fmtWhen(u.lastRound)+'</td></tr>').join('')||'<tr><td colspan="8" class="empty">Kein Treffer.</td></tr>';
+}
+async function openUser(id){
+  $('drawer').classList.add('open');$('backdrop').classList.add('open');
+  $('dTitle').textContent='Lädt…';$('dBody').innerHTML='';
+  try{
+    const d=await api('/admin/user?id='+id);
+    const u=d.user;
+    $('dTitle').textContent=u.username;
+    const rounds=d.sessions||[];
+    const avg=rounds.length?Math.round(rounds.reduce((a,s)=>a+(Number(s.pct)||0),0)/rounds.length):null;
+    let h='<div class="kv">'+
+      '<b>Mail</b><span>'+esc(u.email)+'</span><b>Registriert</b><span>'+fmtWhen(u.createdAt)+'</span>'+
+      '<b>Letzter Login</b><span>'+fmtWhen(u.lastLogin)+' <span class="status">(nur ausdrückliche Logins)</span></span>'+
+      '<b>XP</b><span>'+fmtN(u.xp)+' · Serie '+u.bestStreak+'</span>'+
+      '<b>Runden</b><span>'+rounds.length+(avg!=null?' · Ø '+avg+' %':'')+'</span>'+
+      (u.achievements&&u.achievements.length?'<b>Erfolge</b><span>'+u.achievements.map(a=>'<span class="tag">'+esc(a)+'</span>').join('')+'</span>':'')+
+      '</div>';
+    h+='<h3 style="font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--mute);margin:14px 0 8px">Runden</h3>';
+    h+=rounds.length?'<div class="scroll" style="max-height:44vh"><table><thead><tr><th>Wann</th><th>Modus</th><th class="num">Score</th><th class="num">Punkte</th><th>Themen</th></tr></thead><tbody>'+
+      rounds.map(s=>{const p=Number(s.pct)||0;const cls=p>=75?'ok':p>=51?'warn':p>0?'':'err';
+        return '<tr><td>'+fmtWhen(s.at)+'</td><td>'+esc(s.mode||'?')+(s.difficulty&&s.difficulty!=='normal'?' <span class="tag">'+esc(s.difficulty)+'</span>':'')+'</td>'+
+        '<td class="num"><span class="tag '+cls+'">'+p+' %</span></td><td class="num">'+(s.pts!=null?Number(s.pts).toFixed(1).replace('.',','):'—')+' / '+(s.max||'—')+'</td>'+
+        '<td style="color:var(--mute)">'+Object.keys(s.topics||{}).slice(0,6).map(esc).join(', ')+'</td></tr>'}).join('')+'</tbody></table></div>':'<div class="empty">Noch keine Runde gespielt.</div>';
+    h+='<h3 style="font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--mute);margin:18px 0 8px">Skripte geöffnet</h3>';
+    h+=(d.downloads||[]).length?'<div class="bar-list">'+d.downloads.map(x=>'<div class="bar-row"><span class="lbl">'+esc(fmtFile(x.file))+'</span><span class="n" style="color:var(--mute)">'+fmtWhen(x.createdAt)+'</span></div>').join('')+'</div>':'<div class="empty">Keine.</div>';
+    h+='<h3 style="font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--mute);margin:18px 0 8px">Meldungen</h3>';
+    h+=(d.feedback||[]).length?d.feedback.map(fbHtml).join(''):'<div class="empty">Keine.</div>';
+    $('dBody').innerHTML=h;
+  }catch(e){$('dBody').innerHTML='<div class="empty" style="color:var(--err)">'+esc(e.message)+'</div>'}
+}
+function closeUser(){$('drawer').classList.remove('open');$('backdrop').classList.remove('open')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeUser()});
+
+// ── Meldungen ─────────────────────────────────────────────────────────────
+function fbHtml(f){
+  const ctx=f.context||{};
+  return '<div class="fb'+(f.done?' done':'')+'"><div class="m">'+fmtWhen(f.createdAt)+' · <b>'+esc(f.user)+'</b> · '+esc(f.kind)+(ctx.qid?' · '+esc(ctx.qid)+' ('+esc(ctx.topic||'')+')':'')+
+    (f.done?'':' · <a href="#" onclick="markDone(\''+esc(f.id)+'\');return false">erledigt</a>')+'</div>'+esc(f.text)+(ctx.question?'<div class="m" style="margin-top:4px">„'+esc(ctx.question)+'“</div>':'')+'</div>';
+}
+function renderFeedback(){
+  const list=stats.feedback||[];
+  $('fbCount').textContent=stats.totals.feedbackOpen+' offen · '+list.length+' gesamt';
+  $('feedback').innerHTML=list.length?list.map(fbHtml).join(''):'<div class="empty">Keine Meldungen.</div>';
+}
+async function markDone(id){
+  try{await fetch(API+'/admin/feedback',{method:'PUT',headers:{'Content-Type':'application/json','X-Admin-Key':key},body:JSON.stringify({id,done:true})});loadAll()}catch(e){alert(e.message)}
+}
+</script>
+</body>
+</html>
