@@ -2614,14 +2614,44 @@ function filterPoolByTopics(pool,selectedSubs){
   });
 }
 // Draw N random questions with even topic-group distribution
+// ── Wiederholung verteilen ────────────────────────────────────────────────
+// Der Browser merkt sich je Frage, wann sie zuletzt dran war. Gezogen wird
+// „am laengsten nicht gesehen zuerst", bei Gleichstand zufaellig — so ist
+// der ganze Bestand einmal durch, bevor irgendeine Frage wiederkommt.
+const SEEN_KEY='physio_orakel_seen';
+function seenLoad(){try{const o=JSON.parse(localStorage.getItem(SEEN_KEY)||'{}');return o&&typeof o==='object'?o:{}}catch{return{}}}
+function seenMark(keys){
+  const seen=seenLoad(),now=Date.now();
+  keys.forEach(k=>{if(k)seen[k]=now});
+  // Nicht endlos wachsen lassen — die aeltesten Eintraege fallen raus.
+  const ks=Object.keys(seen);
+  if(ks.length>6000)ks.sort((a,b)=>seen[a]-seen[b]).slice(0,ks.length-5000).forEach(k=>{delete seen[k]});
+  try{localStorage.setItem(SEEN_KEY,JSON.stringify(seen))}catch{}
+}
+function seenSort(items,keyOf){
+  const seen=seenLoad();
+  return items.map(it=>({it,t:seen[keyOf(it)]||0,r:Math.random()}))
+    .sort((a,b)=>a.t-b.t||a.r-b.r).map(x=>x.it);
+}
+// Kennung einer Frage ueber ihren Inhalt — faengt Dubletten unter
+// verschiedenen Nummern und Fragen ohne id.
+function qSignature(question,optionTexts){
+  const n=t=>String(t||'').toLowerCase().replace(/[^a-z0-9äöüß]+/g,' ').trim();
+  return n(question)+'|'+optionTexts.map(n).sort().join('|');
+}
+function poolKey(q){return qSignature(q.question,(q.options||[]).map(o=>typeof o==='string'?o:o.text))}
+
 function drawFromPool(pool,n,evenDistribution){
   if(pool.length===0)return[];
-  const shuffled=[...pool].sort(()=>Math.random()-0.5);
+  // Dieselbe Frage nur einmal je Runde, auch wenn sie doppelt im Pool steht.
+  const uniq=[],sig=new Set();
+  pool.forEach(q=>{const k=poolKey(q);if(!sig.has(k)){sig.add(k);uniq.push(q)}});
+  pool=uniq;
+  const shuffled=seenSort(pool,poolKey);
   if(!evenDistribution||pool.length<=n)return shuffled.slice(0,n);
   // Group by 'group' field, pick round-robin
   const byGroup={};
-  pool.forEach(q=>{const g=q.group||'other';if(!byGroup[g])byGroup[g]=[];byGroup[g].push(q)});
-  Object.values(byGroup).forEach(arr=>arr.sort(()=>Math.random()-0.5));
+  shuffled.forEach(q=>{const g=q.group||'other';if(!byGroup[g])byGroup[g]=[];byGroup[g].push(q)});
   const groupKeys=Object.keys(byGroup).sort(()=>Math.random()-0.5);
   const result=[];const idx={};groupKeys.forEach(k=>idx[k]=0);
   while(result.length<n){
@@ -3367,7 +3397,9 @@ async function startQuiz(){
       // Der Zug aus dem Pool ist sofort fertig — der Ladescreen bekommt
       // trotzdem seine Zeit, sonst blitzt er nur kurz auf.
       await new Promise(r=>setTimeout(r,MIN_LOAD_POOL_MS));
-      state.questions=drawFromPool(filtered,n,state.examMode).map((q,i)=>({
+      const drawn=drawFromPool(filtered,n,state.examMode);
+      seenMark(drawn.map(poolKey));
+      state.questions=drawn.map((q,i)=>({
         id:i+1,topic:q.topic||'',question:q.question,
         options:q.options,correct:q.correct,explanation:q.explanation||''
       }));
@@ -4632,7 +4664,7 @@ const WK_MIN_WEEK=2,WK_MAX_WEEK=14;
 
 const wk={
   loading:false,loaded:false,error:'',
-  lectures:[],items:[],byCode:new Map(),blocks:new Map(),
+  lectures:[],items:[],byCode:new Map(),blocks:new Map(),sigs:new Set(),dupes:0,
   semester:'Herbst',week:2,window:'beide',source:'beide',
   unsolved:false,  // Fragen ohne hinterlegte Loesung mitnehmen?
   off:new Set()   // abgewaehlte VL-Codes
@@ -4773,7 +4805,12 @@ async function wkLoad(){
         const fixed=wkApplyPatch(q,patch);
         if(!fixed)return;
         const item=wkPrepare(fixed);
-        if(item)wk.items.push(item);
+        if(!item)return;
+        // Inhaltlich gleiche Fragen unter zwei Nummern: nur die erste.
+        item.sig=qSignature(item.question,item.opts);
+        if(wk.sigs.has(item.sig)){wk.dupes++;return}
+        wk.sigs.add(item.sig);
+        wk.items.push(item);
       });
     });
     wk.loaded=true;
@@ -5040,7 +5077,9 @@ async function startWeekTest(){
   goTo('s3');startEKG();
   // Der Zug ist sofort fertig — der Ladescreen bekommt trotzdem seine Zeit.
   await new Promise(r=>setTimeout(r,MIN_LOAD_POOL_MS));
-  state.questions=wkShuffle(pool.slice()).slice(0,n).map(wkToEngine);
+  const picked=seenSort(pool,it=>it.sig).slice(0,n);
+  seenMark(picked.map(it=>it.sig));
+  state.questions=wkShuffle(picked).map(wkToEngine);
   stopEKG();
   state.userAnswers={};state.evaluated=false;state.currentQuestionIndex=0;state.quizStartTime=Date.now();
   const eb=document.getElementById('evalBtn');if(eb){eb.textContent='Auswerten';eb.disabled=false}
