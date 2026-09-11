@@ -142,7 +142,8 @@ tr.row:hover td { background: var(--soft); }
     <div class="card"><h3>Meistgespielt</h3><div class="bar-list" id="topics"></div></div>
     <div class="card"><h3>Tageszeit</h3><div id="hours"></div></div>
     <div class="card"><h3>KI-Erklärungen je Tag</h3><div class="bar-list" id="ai"></div></div>
-    <div class="card"><h3>Skripte</h3><div class="bar-list" id="downloads"></div></div>
+    <div class="card"><h3>Skripte nach Datei</h3><div class="bar-list" id="downloads"></div></div>
+    <div class="card"><h3>Skripte nach Konto</h3><div class="bar-list" id="downloadsUsers"></div></div>
   </div>
 
   <div id="trafficSec" hidden>
@@ -168,7 +169,7 @@ tr.row:hover td { background: var(--soft); }
   <div class="scroll"><table id="usersTable"><thead><tr>
     <th data-k="rank" class="num">Platz</th><th data-k="username">Name</th><th data-k="email">Mail</th>
     <th data-k="xp" class="num">XP</th><th data-k="rounds" class="num">Runden</th><th data-k="rounds7" class="num">7 Tage</th>
-    <th data-k="avgScore" class="num">Ø Score</th><th data-k="lastRound">Letzte Runde</th><th data-k="createdAt">Registriert</th>
+    <th data-k="avgScore" class="num">Ø Score</th><th data-k="pdfs" class="num" title="Skript-Abrufe im gewählten Zeitraum">PDFs</th><th data-k="lastRound">Letzte Runde</th><th data-k="createdAt">Registriert</th>
   </tr></thead><tbody></tbody></table></div>
 
   <h2>Meldungen <small id="fbCount"></small></h2>
@@ -286,6 +287,9 @@ function renderUsage(){
   barList($('scores'),Object.entries(stats.scoreBins).map(([k,v])=>[k==='0'?'0 %':k+' %',v]));
   barList($('topics'),stats.topics.map(([t,n])=>[t,n]));
   barList($('downloads'),stats.downloadsByFile.slice(0,10).map(f=>[fmtFile(f.file),f.n,f.accounts]),(n,a)=>n+'× · '+a+' K.');
+  // Nach Konto: Name anklickbar, darunter die Blaetter.
+  const du=stats.downloadsByUser||[];const dmax=Math.max(1,...du.map(u=>u.n));
+  $('downloadsUsers').innerHTML=du.length?du.slice(0,15).map(u=>'<div class="bar-row"><span class="lbl"><a href="#" onclick="openUser('+u.userId+');return false" style="text-decoration:none;font-weight:800">'+esc(u.user)+'</a> <span style="color:var(--mute);font-size:12px">· '+u.files.map(fmtFile).map(esc).join(', ')+'</span></span><span class="n">'+u.n+'× · '+fmtWhen(u.last)+'</span><span class="bar"><i style="width:'+Math.round(u.n/dmax*100)+'%"></i></span></div>').join(''):'<div class="empty">Nichts im Zeitraum.</div>';
   const ai=Object.entries(stats.ai||{}).sort().slice(-10);
   barList($('ai'),ai.map(([d,v])=>[d.slice(8,10)+'.'+d.slice(5,7)+'.',v.calls,v.accounts]),(n,a)=>n+' Aufrufe · '+a+' K.');
   const hrs=stats.hours||[];const max=Math.max(1,...hrs);
@@ -312,6 +316,8 @@ function setSort(m){
 document.querySelectorAll('#usersTable th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;if(sortKey===k)sortDir=-sortDir;else{sortKey=k;sortDir=k==='username'||k==='email'||k==='rank'?1:-1}sortMode='';document.querySelectorAll('#sortSeg button').forEach(b=>b.classList.remove('on'));renderUsers()});
 function renderUsers(){
   rankUsers();
+  const dl={};(stats&&stats.downloadsByUser||[]).forEach(u=>{dl[u.user]=u.n});
+  users.forEach(u=>{u.pdfs=dl[u.username]||0});
   const q=($('userSearch').value||'').toLowerCase().trim(),only=$('onlyActive').checked;
   let rows=users.filter(u=>(!q||u.username.toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q))&&(!only||u.rounds>0));
   rows.sort((a,b)=>{
@@ -327,7 +333,7 @@ function renderUsers(){
   $('usersTable').querySelector('tbody').innerHTML=rows.map(u=>'<tr class="row" onclick="openUser('+u.id+')">'+
     '<td class="num">'+u.rank+'</td><td><b>'+esc(u.username)+'</b></td><td style="color:var(--mute)">'+esc(u.email||'')+'</td>'+
     '<td class="num">'+fmtN(u.xp)+'</td><td class="num">'+(u.rounds||0)+'</td><td class="num">'+(u.rounds7?'<span style="color:var(--ok)">'+u.rounds7+'</span>':'<span style="color:var(--mute)">0</span>')+'</td>'+
-    '<td class="num">'+(u.avgScore==null?'—':u.avgScore+' %')+'</td><td>'+fmtWhen(u.lastRound)+'</td><td style="color:var(--mute)">'+fmtDate(u.createdAt)+'</td></tr>').join('')||'<tr><td colspan="9" class="empty">Kein Treffer.</td></tr>';
+    '<td class="num">'+(u.avgScore==null?'—':u.avgScore+' %')+'</td><td class="num">'+(u.pdfs?'<span style="color:var(--accent)">'+u.pdfs+'</span>':'<span style="color:var(--mute)">0</span>')+'</td><td>'+fmtWhen(u.lastRound)+'</td><td style="color:var(--mute)">'+fmtDate(u.createdAt)+'</td></tr>').join('')||'<tr><td colspan="10" class="empty">Kein Treffer.</td></tr>';
 }
 async function openUser(id){
   $('drawer').classList.add('open');$('backdrop').classList.add('open');
