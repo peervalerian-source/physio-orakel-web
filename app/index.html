@@ -240,9 +240,28 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
 .mc-arrow { font-family: var(--font-heading); font-weight: 800; font-size: 20px; color: var(--app-accent); }
 .mc-title { display: block; font-family: var(--font-heading); font-weight: 800; font-size: clamp(24px, 2.8vw, 32px); line-height: 1.1; letter-spacing: -0.02em; color: var(--app-ink); margin-top: 22px; }
 .mc-desc { display: block; font-size: 15px; line-height: 25px; color: var(--app-mute); margin-top: 12px; max-width: 34ch; }
-/* Kleiner Nebeneingang unter den Modus-Karten — kein dritter Modus,
-   nur ein Regal mit PDFs. */
-.mode-links { margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap; }
+/* Das Regal: eine flache Karte in der Sprache der Modus-Karten, ueber die
+   volle Breite — sichtbar, aber erkennbar kein dritter Modus. */
+.mode-links { margin-top: 18px; }
+.shelf-card {
+  all: unset; cursor: pointer; box-sizing: border-box; width: 100%;
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px 22px; align-items: center;
+  background: var(--app-panel); border: 2px solid var(--app-rule); border-left: 4px solid var(--app-accent);
+  padding: 18px 24px 18px 22px; transition: border-color 140ms, transform 140ms;
+}
+@media (hover: hover) { .shelf-card:hover { border-color: var(--app-accent); transform: translateY(-2px); } }
+.shelf-card:active { border-color: var(--app-accent); }
+.shelf-card:focus-visible { outline: 2px solid var(--app-accent); outline-offset: 2px; }
+.shelf-icon {
+  width: 44px; height: 44px; display: grid; place-items: center; flex: none;
+  border: 2px solid var(--app-accent); color: var(--app-accent);
+  font-family: var(--font-heading); font-weight: 800; font-size: 12px; letter-spacing: 0.06em;
+}
+.shelf-kicker { display: block; font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--app-accent); }
+.shelf-title { display: block; font-family: var(--font-heading); font-weight: 800; font-size: clamp(18px, 2vw, 22px); line-height: 1.15; letter-spacing: -0.01em; color: var(--app-ink); margin-top: 3px; }
+.shelf-desc { display: block; font-size: 14px; line-height: 22px; color: var(--app-mute); margin-top: 4px; }
+.shelf-arrow { font-family: var(--font-heading); font-weight: 800; font-size: 22px; color: var(--app-accent); }
+@media (max-width: 560px) { .shelf-card { grid-template-columns: auto minmax(0, 1fr); } .shelf-arrow { display: none; } }
 /* Skripte-Regal: Zeilen auf ruhiger Flaeche, Aktion rechts. */
 .skript-list { margin-top: 22px; display: grid; gap: 2px; }
 .skript-row {
@@ -856,7 +875,15 @@ textarea.input { min-height: 200px; resize: vertical; line-height: 1.5; font-siz
         </button>
       </div>
       <div class="mode-links">
-        <button type="button" class="btn btn-secondary btn-sm" onclick="openSkripte()">Skripte &amp; Unterlagen →</button>
+        <button type="button" class="shelf-card" onclick="openSkripte()">
+          <span class="shelf-icon" aria-hidden="true">PDF</span>
+          <span>
+            <span class="shelf-kicker">Unterlagen</span>
+            <span class="shelf-title">Skripte &amp; Themenblätter</span>
+            <span class="shelf-desc" id="shelfDesc">Zusammenfassungen zum Themenkatalog, nach Blöcken sortiert — zum Lesen oder Herunterladen.</span>
+          </span>
+          <span class="shelf-arrow" aria-hidden="true">→</span>
+        </button>
       </div>
 
     </div>
@@ -2203,6 +2230,16 @@ function trackDownload(file){
     fetch(WORKER_URL+'/event',{method:'POST',keepalive:true,headers:authHeaders({'Content-Type':'application/json'}),body:JSON.stringify({kind:'download',file:file})}).catch(()=>{});
   }catch{}
 }
+// Die Regal-Karte auf der Startseite nennt die Anzahl, sobald die Liste da ist.
+(async function(){
+  try{
+    const res=await fetch(SKRIPTE_URL,{cache:'no-cache'});
+    const list=res.ok?await res.json():[];
+    if(Array.isArray(list)&&list.length){skripteCache=list;const el=document.getElementById('shelfDesc');
+      const groups=new Set(list.map(i=>i.group).filter(Boolean)).size;
+      if(el)el.textContent=list.length+' Themenblätter als PDF'+(groups?' · '+groups+' Blöcke des Themenkatalogs':'')+' — zum Lesen oder Herunterladen.'}
+  }catch{}
+})();
 async function renderSkripte(){
   const el=document.getElementById('skriptList');if(!el)return;
   if(!skripteCache){
